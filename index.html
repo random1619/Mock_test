@@ -3,803 +3,828 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DEDSEC // MOCK_DECRYPTOR</title>
+  <title>ctOS // DEDSEC_MOCK_VAULT</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
 
     :root {
       color-scheme: dark;
-      --primary-neon: #00f3ff; /* Watch Dogs Cyan */
-      --accent-warning: #dfff00; /* Caution Yellow */
-      --accent-danger: #ff2a5f; /* DedSec Red */
-      --bg-dark: #07080b;
-      --bg-panel: #0f1117;
-      --bg-panel-soft: #161922;
+      --primary: #00f3ff; /* Watch Dogs Cyan */
+      --secondary: #bfff00; /* Caution Yellow */
+      --danger: #ff0055; /* DedSec Magenta-Red */
+      --success: #00ff66; /* Neon Green */
+      --bg-darker: #050608;
+      --bg-dark: #0c0e14;
+      --bg-panel: #131722;
+      --bg-panel-hover: #1b2030;
       --border-neon: rgba(0, 243, 255, 0.15);
-      --border-neon-strong: rgba(0, 243, 255, 0.6);
-      --text-primary: #e2e8f0;
-      --text-muted: #8090a0;
+      --border-neon-strong: rgba(0, 243, 255, 0.5);
+      --text-primary: #f1f5f9;
+      --text-muted: #94a3b8;
+      
       --font-header: 'Orbitron', sans-serif;
       --font-sans: 'Space Grotesk', sans-serif;
       --font-mono: 'Share Tech Mono', monospace;
-      --radius: 6px; /* User-friendly border radius */
+      --radius: 8px;
     }
 
     * {
       box-sizing: border-box;
-      transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      margin: 0;
+      padding: 0;
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary) var(--bg-dark);
     }
 
-    html,
-    body {
-      margin: 0;
-      min-height: 100%;
-      background-color: var(--bg-dark);
+    /* Custom scrollbar for premium look */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-darker);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: var(--radius);
     }
 
     body {
       font-family: var(--font-sans);
       color: var(--text-primary);
+      background-color: var(--bg-darker);
       background-image: 
-        linear-gradient(rgba(15, 17, 23, 0.95) 50%, rgba(7, 8, 11, 0.98) 50%),
-        linear-gradient(90deg, rgba(0, 243, 255, 0.015) 1px, transparent 1px),
-        linear-gradient(0deg, rgba(0, 243, 255, 0.015) 1px, transparent 1px);
-      background-size: 4px 4px, 24px 24px, 24px 24px;
-      position: relative;
+        radial-gradient(circle at 50% 50%, rgba(0, 243, 255, 0.03) 0%, transparent 80%),
+        linear-gradient(rgba(19, 23, 34, 0.96) 50%, rgba(5, 6, 8, 0.99) 50%),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.01) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(0, 243, 255, 0.01) 1px, transparent 1px);
+      background-size: 100% 100%, 4px 4px, 32px 32px, 32px 32px;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Soft top scanner beam that isn't visually intrusive */
-    @keyframes scan {
-      0% { transform: translateY(-10px); opacity: 0.2; }
-      50% { opacity: 0.8; }
-      100% { transform: translateY(12px); opacity: 0.2; }
-    }
-    .scanner-header-accent {
-      position: absolute;
+    /* Subtle Animated Scanning HUD Line */
+    .scanner-line {
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      height: 2px;
-      background: var(--primary-neon);
-      box-shadow: 0 0 10px var(--primary-neon);
-      animation: scan 4s ease-in-out infinite alternate;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      box-shadow: 0 0 12px var(--primary);
+      z-index: 9999;
+      animation: scan-vertical 8s linear infinite;
+      pointer-events: none;
     }
 
-    button,
-    input,
-    select {
-      font-family: var(--font-sans);
-      border-radius: var(--radius);
+    @keyframes scan-vertical {
+      0% { top: 0%; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
     }
 
-    a {
-      color: inherit;
-    }
-
-    .app {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 310px minmax(0, 1fr);
-    }
-
-    /* Sidebar Interface */
-    .sidebar {
+    header {
+      background: rgba(12, 14, 20, 0.9);
+      border-bottom: 2px solid var(--border-neon-strong);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(10px);
       position: sticky;
       top: 0;
-      height: 100vh;
-      padding: 24px;
-      border-right: 1px solid var(--border-neon-strong);
-      background: rgba(15, 17, 23, 0.95);
-      backdrop-filter: blur(12px);
-      overflow-y: auto;
+      z-index: 100;
     }
 
-    .brandmark {
-      margin-bottom: 24px;
-      border-bottom: 1px solid var(--border-neon);
-      padding-bottom: 16px;
-      position: relative;
-    }
-
-    .brandmark::before {
-      content: "[// DEDSEC_NET]";
-      position: absolute;
-      top: -12px;
-      right: 0;
-      font-size: 10px;
-      font-family: var(--font-mono);
-      color: var(--accent-warning);
-      letter-spacing: 1px;
-    }
-
-    .brandmark-title-wrapper {
+    .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 15px;
     }
 
-    .brandmark-icon {
-      width: 48px;
-      height: 48px;
+    .brand-logo {
+      width: 45px;
+      height: 45px;
+      border: 2px solid var(--primary);
+      background: rgba(0, 243, 255, 0.1);
       display: grid;
       place-items: center;
-      background: var(--bg-dark);
-      border: 2px solid var(--primary-neon);
-      color: var(--primary-neon);
-      font-family: var(--font-header);
-      font-weight: 900;
-      font-size: 18px;
-      border-radius: var(--radius);
-      box-shadow: 0 0 10px rgba(0, 243, 255, 0.25);
-    }
-
-    .brandmark h1 {
-      margin: 0;
       font-family: var(--font-header);
       font-size: 20px;
       font-weight: 900;
-      letter-spacing: 1px;
+      color: var(--primary);
+      text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+      border-radius: var(--radius);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-logo::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(transparent, rgba(0,243,255,0.2), transparent);
+      top: -100%;
+      animation: logo-scan 2s linear infinite;
+    }
+
+    @keyframes logo-scan {
+      0% { top: -100%; }
+      100% { top: 100%; }
+    }
+
+    .brand-info h1 {
+      font-family: var(--font-header);
+      font-size: 20px;
+      letter-spacing: 2px;
+      font-weight: 900;
       color: #fff;
     }
 
-    .brandmark p {
-      margin: 4px 0 0;
-      color: var(--primary-neon);
+    .brand-info p {
+      font-family: var(--font-mono);
       font-size: 11px;
+      color: var(--primary);
       text-transform: uppercase;
       letter-spacing: 1.5px;
+    }
+
+    .system-status {
+      display: flex;
+      align-items: center;
+      gap: 20px;
       font-family: var(--font-mono);
+      font-size: 12px;
     }
 
-    .side-section {
-      margin-top: 24px;
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .side-section h2 {
-      margin: 0 0 14px;
-      color: var(--accent-warning);
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--success);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--success);
+      animation: pulse 1.5s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    .layout-container {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      flex-grow: 1;
+      min-height: calc(100vh - 78px);
+    }
+
+    /* Sidebar controls */
+    aside {
+      background: rgba(19, 23, 34, 0.85);
+      border-right: 1px solid var(--border-neon);
+      padding: 25px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      overflow-y: auto;
+      height: calc(100vh - 78px);
+      position: sticky;
+      top: 78px;
+    }
+
+    .panel-title {
+      font-family: var(--font-header);
       font-size: 12px;
       font-weight: 700;
-      text-transform: uppercase;
       letter-spacing: 2px;
-      font-family: var(--font-header);
+      color: var(--secondary);
+      text-transform: uppercase;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
-    .side-section h2::after {
-      content: "";
+    .panel-title::after {
+      content: '';
       flex-grow: 1;
       height: 1px;
       background: var(--border-neon);
       margin-left: 10px;
     }
 
-    .brand-list,
-    .type-list {
-      display: grid;
+    .filter-group {
+      display: flex;
+      flex-direction: column;
       gap: 6px;
     }
 
-    .filter-button {
+    .filter-btn {
       width: 100%;
-      min-height: 38px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 8px 12px;
+      background: rgba(12, 14, 20, 0.5);
       border: 1px solid var(--border-neon);
-      background: rgba(22, 25, 34, 0.4);
       color: var(--text-primary);
-      cursor: pointer;
+      padding: 10px 15px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
       text-align: left;
       border-radius: var(--radius);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s ease;
     }
 
-    .filter-button::before {
-      content: ">";
-      font-family: var(--font-mono);
-      color: var(--primary-neon);
-      margin-right: 6px;
-      opacity: 0;
-      transform: translateX(-4px);
-      transition: all 0.15s ease;
-    }
-
-    .filter-button:hover {
+    .filter-btn:hover {
       background: rgba(0, 243, 255, 0.08);
-      border-color: var(--primary-neon);
+      border-color: var(--primary);
     }
 
-    .filter-button:hover::before {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    .filter-button.is-active {
-      background: rgba(0, 243, 255, 0.12);
-      border-color: var(--primary-neon);
-      color: var(--primary-neon);
-      box-shadow: 0 0 8px rgba(0, 243, 255, 0.2);
+    .filter-btn.active {
+      background: rgba(0, 243, 255, 0.15);
+      border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+      color: var(--primary);
       font-weight: 600;
     }
 
-    .filter-button.is-active::before {
-      opacity: 1;
-      transform: translateX(0);
-      content: "■";
-    }
-
-    .count-pill {
-      padding: 2px 8px;
-      background: var(--bg-dark);
+    .filter-btn .badge {
+      background: rgba(5, 6, 8, 0.6);
       border: 1px solid var(--border-neon);
-      color: var(--accent-warning);
+      padding: 2px 8px;
+      border-radius: 4px;
       font-size: 11px;
-      border-radius: var(--radius);
       font-family: var(--font-mono);
+      color: var(--secondary);
     }
 
-    .filter-button.is-active .count-pill {
-      border-color: var(--primary-neon);
+    .filter-btn.active .badge {
+      border-color: var(--primary);
     }
 
-    /* Main Content Area */
-    .main {
-      min-width: 0;
+    /* Main view area */
+    main {
       padding: 30px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
-      position: relative;
+      gap: 30px;
+      overflow-y: auto;
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
     }
 
-    .topbar {
+    /* Stats HUD widget */
+    .hud-grid {
       display: grid;
-      grid-template-columns: minmax(240px, 1fr) auto;
+      grid-template-columns: repeat(4, 1fr);
       gap: 20px;
-      align-items: start;
     }
 
-    .headline {
-      padding: 24px;
-      border: 1px solid var(--border-neon-strong);
-      background: rgba(15, 17, 23, 0.85);
+    .hud-card {
+      background: rgba(19, 23, 34, 0.7);
+      border: 1px solid var(--border-neon);
+      padding: 20px;
       border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      gap: 15px;
       position: relative;
       overflow: hidden;
     }
 
-    .headline::before {
-      content: "";
+    .hud-card::before {
+      content: '';
       position: absolute;
-      top: 0;
       left: 0;
+      top: 0;
       width: 4px;
       height: 100%;
-      background: var(--primary-neon);
+      background: var(--primary);
     }
 
-    .headline h2 {
-      margin: 0;
-      font-family: var(--font-header);
+    .hud-card.warning::before { background: var(--secondary); }
+    .hud-card.danger::before { background: var(--danger); }
+    .hud-card.success::before { background: var(--success); }
+
+    .hud-icon {
       font-size: 24px;
-      font-weight: 900;
-      letter-spacing: 1.5px;
-      color: #fff;
-      text-transform: uppercase;
+      color: var(--primary);
+    }
+    .hud-card.warning .hud-icon { color: var(--secondary); }
+    .hud-card.danger .hud-icon { color: var(--danger); }
+    .hud-card.success .hud-icon { color: var(--success); }
+
+    .hud-details h3 {
+      font-family: var(--font-mono);
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.1;
     }
 
-    .headline p {
-      margin: 10px 0 0;
-      color: var(--text-primary);
-      line-height: 1.6;
-      font-size: 14px;
-    }
-
-    .quick-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: flex-end;
-    }
-
-    .action {
-      min-height: 40px;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 18px;
-      border: 1px solid var(--primary-neon);
-      background: transparent;
-      color: var(--primary-neon);
-      text-decoration: none;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      cursor: pointer;
-      border-radius: var(--radius);
-    }
-
-    .action:hover {
-      background: rgba(0, 243, 255, 0.1);
-      box-shadow: 0 0 10px rgba(0, 243, 255, 0.25);
-    }
-
-    .action.primary {
-      background: var(--primary-neon);
-      color: var(--bg-dark);
-      border-color: var(--primary-neon);
-    }
-
-    .action.primary:hover {
-      background: #00d2dd;
-      box-shadow: 0 0 12px rgba(0, 243, 255, 0.4);
-    }
-
-    /* Diagnostics Telemetry Widgets */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 15px;
-    }
-
-    .stat {
-      padding: 16px;
-      border: 1px solid var(--border-neon);
-      background: rgba(15, 17, 23, 0.9);
-      border-radius: var(--radius);
-      position: relative;
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 28px;
-      font-family: var(--font-header);
-      font-weight: 900;
-      color: var(--primary-neon);
-    }
-
-    .stat span {
-      display: block;
-      margin-top: 6px;
-      color: var(--text-muted);
+    .hud-details p {
       font-size: 11px;
+      color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 1px;
+      margin-top: 4px;
     }
 
-    .stat:nth-child(1) { border-left: 3px solid var(--accent-warning); }
-    .stat:nth-child(1) strong { color: var(--accent-warning); }
-    .stat:nth-child(2) { border-left: 3px solid var(--primary-neon); }
-    .stat:nth-child(3) { border-left: 3px solid var(--accent-danger); }
-    .stat:nth-child(3) strong { color: var(--accent-danger); }
-    .stat:nth-child(4) { border-left: 3px solid var(--primary-neon); }
-
-    /* Hacking Terminal Console Widget */
-    .console-panel {
+    /* Toolbar search controls */
+    .controls-panel {
+      background: rgba(19, 23, 34, 0.9);
       border: 1px solid var(--border-neon-strong);
-      background: rgba(7, 8, 11, 0.9);
-      font-family: var(--font-mono);
-      display: flex;
-      flex-direction: column;
+      padding: 20px;
       border-radius: var(--radius);
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-    }
-
-    .console-header {
-      background: rgba(0, 243, 255, 0.08);
-      padding: 8px 14px;
-      font-size: 12px;
-      text-transform: uppercase;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: var(--primary-neon);
-      border-bottom: 1px solid var(--border-neon-strong);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-top-left-radius: var(--radius);
-      border-top-right-radius: var(--radius);
-    }
-
-    .console-header .pulse-dot {
-      width: 8px;
-      height: 8px;
-      background-color: var(--accent-warning);
-      border-radius: 50%;
-      animation: pulse 1.5s infinite alternate;
-    }
-
-    @keyframes pulse {
-      0% { opacity: 0.3; transform: scale(0.8); }
-      100% { opacity: 1; transform: scale(1.2); }
-    }
-
-    .console-body {
-      padding: 12px 14px;
-      font-size: 12px;
-      height: 110px;
-      overflow-y: auto;
-      color: var(--text-primary);
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .console-line {
-      display: flex;
-      gap: 10px;
-    }
-
-    .console-line .time {
-      color: var(--text-muted);
-      flex-shrink: 0;
-    }
-
-    .console-line .log-info {
-      color: var(--primary-neon);
-    }
-
-    .console-line .log-warning {
-      color: var(--accent-warning);
-    }
-
-    .console-line .log-danger {
-      color: var(--accent-danger);
-    }
-
-    /* Toolbar Filter Controls */
-    .toolbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
       display: grid;
-      grid-template-columns: minmax(200px, 1fr) 180px 160px;
-      gap: 12px;
+      grid-template-columns: 1fr auto auto;
+      gap: 15px;
       align-items: center;
-      padding: 12px;
-      border: 1px solid var(--border-neon-strong);
-      background: rgba(15, 17, 23, 0.95);
-      backdrop-filter: blur(8px);
-      border-radius: var(--radius);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
-    .searchbox {
+    .search-wrapper {
       position: relative;
-      display: block;
-      width: 100%;
     }
 
-    .searchbox span {
+    .search-wrapper i {
       position: absolute;
-      left: 12px;
+      left: 15px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--primary-neon);
+      color: var(--primary);
     }
 
-    .searchbox input,
-    .toolbar select {
+    .search-wrapper input {
       width: 100%;
-      height: 42px;
+      background: var(--bg-darker);
       border: 1px solid var(--border-neon);
-      background: var(--bg-dark);
       color: var(--text-primary);
-      padding: 0 12px;
-      outline: none;
+      padding: 12px 15px 12px 42px;
       border-radius: var(--radius);
+      outline: none;
+      font-size: 14px;
+      font-family: var(--font-sans);
     }
 
-    .searchbox input {
-      padding-left: 38px;
-    }
-
-    .searchbox input:focus,
-    .toolbar select:focus {
-      border-color: var(--primary-neon);
+    .search-wrapper input:focus {
+      border-color: var(--primary);
       box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
     }
 
-    .results-header {
+    .select-wrapper select {
+      background: var(--bg-darker);
+      border: 1px solid var(--border-neon);
+      color: var(--text-primary);
+      padding: 12px 20px;
+      border-radius: var(--radius);
+      outline: none;
+      font-size: 13px;
+      font-family: var(--font-mono);
+      cursor: pointer;
+    }
+
+    .select-wrapper select:focus {
+      border-color: var(--primary);
+    }
+
+    .quick-launch-btn {
+      background: var(--primary);
+      color: var(--bg-darker);
+      border: none;
+      padding: 12px 25px;
+      font-family: var(--font-header);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 1px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .quick-launch-btn:hover {
+      background: #fff;
+      box-shadow: 0 0 15px rgba(255,255,255,0.4);
+    }
+
+    /* Section-wise Mocks Container */
+    .sections-container {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .section-block {
+      background: rgba(19, 23, 34, 0.4);
+      border: 1px solid var(--border-neon);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .section-block-header {
+      border-bottom: 1px solid var(--border-neon);
+      padding-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .section-block-title {
+      font-family: var(--font-header);
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      color: var(--text-muted);
-      font-size: 13px;
-      border-bottom: 1px solid var(--border-neon);
-      padding-bottom: 8px;
+      gap: 10px;
     }
 
-    #activeFilters {
-      color: var(--accent-warning);
-      font-weight: 600;
+    .section-block-title i {
+      color: var(--primary);
     }
 
-    /* Decrypted Node Cards */
-    .result-grid {
+    .section-block-meta {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--secondary);
+    }
+
+    /* Mocks Grid */
+    .mocks-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
     }
 
     .mock-card {
-      padding: 18px;
+      background: var(--bg-panel);
       border: 1px solid var(--border-neon);
-      background: rgba(15, 17, 23, 0.85);
       border-radius: var(--radius);
-      position: relative;
-      overflow: hidden;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 180px;
+      position: relative;
+      min-height: 200px;
+      transition: all 0.2s ease;
     }
 
-    .mock-card::after {
-      content: "";
+    .mock-card::before {
+      content: '';
       position: absolute;
       top: 0;
       right: 0;
-      width: 8px;
-      height: 8px;
-      border-top: 2px solid var(--primary-neon);
-      border-right: 2px solid var(--primary-neon);
+      width: 10px;
+      height: 10px;
+      border-top: 2px solid var(--primary);
+      border-right: 2px solid var(--primary);
     }
 
     .mock-card:hover {
-      border-color: var(--primary-neon);
-      background: rgba(22, 25, 34, 0.95);
-      box-shadow: 0 5px 15px rgba(0, 243, 255, 0.15);
+      border-color: var(--primary);
+      background: var(--bg-panel-hover);
+      box-shadow: 0 5px 20px rgba(0, 243, 255, 0.15);
       transform: translateY(-2px);
     }
 
+    .mock-header {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
     .mock-title {
-      display: -webkit-box;
-      margin: 0 0 12px;
-      overflow: hidden;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
       font-size: 15px;
       font-weight: 600;
-      line-height: 1.45;
       color: #fff;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 5px;
     }
 
-    .mock-meta {
+    .mock-badge-group {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 16px;
+      gap: 5px;
     }
 
-    .tag {
+    .badge {
+      font-size: 10px;
       padding: 3px 8px;
-      background: var(--bg-panel-soft);
-      border: 1px solid var(--border-neon);
-      color: var(--text-primary);
-      font-size: 11px;
       border-radius: 4px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      font-weight: bold;
     }
 
-    .tag.brand {
-      background: rgba(0, 243, 255, 0.08);
-      color: var(--primary-neon);
-      border-color: var(--primary-neon);
+    .badge.brand {
+      background: rgba(0, 243, 255, 0.1);
+      color: var(--primary);
+      border: 1px solid var(--primary);
     }
 
-    .tag.pdf {
-      background: rgba(255, 42, 95, 0.08);
-      color: var(--accent-danger);
-      border-color: var(--accent-danger);
+    .badge.timer-badge {
+      background: rgba(255, 0, 85, 0.1);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+
+    .badge.soft-badge {
+      background: rgba(191, 255, 0, 0.1);
+      color: var(--secondary);
+      border: 1px solid var(--secondary);
+    }
+
+    .badge.type-badge {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .badge.pdf-badge {
+      background: rgba(255, 42, 95, 0.1);
+      color: var(--danger);
+      border: 1px solid var(--danger);
     }
 
     .mock-actions {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      margin-top: auto;
-    }
-
-    .open-link {
-      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      min-height: 34px;
-      padding: 6px 16px;
-      background: var(--primary-neon);
-      color: var(--bg-dark);
-      text-decoration: none;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border-radius: var(--radius);
+      margin-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 15px;
+      gap: 10px;
     }
 
-    .open-link:hover {
-      background: #fff;
-      box-shadow: 0 0 10px #fff;
-    }
-
-    .path-text {
-      min-width: 0;
+    .mock-path {
+      font-size: 11px;
+      font-family: var(--font-mono);
       color: var(--text-muted);
-      font-size: 10.5px;
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .launch-btn {
+      background: rgba(0, 243, 255, 0.1);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 6px 15px;
+      font-size: 12px;
+      font-family: var(--font-header);
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+      text-transform: uppercase;
+      text-decoration: none;
       white-space: nowrap;
     }
 
-    .empty {
-      display: none;
-      padding: 40px;
-      border: 2px dashed var(--accent-danger);
-      background: rgba(255, 42, 95, 0.05);
-      color: var(--accent-danger);
-      text-align: center;
-      text-transform: uppercase;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      border-radius: var(--radius);
+    .launch-btn:hover {
+      background: var(--primary);
+      color: var(--bg-darker);
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
     }
 
-    .pager {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-    }
-
-    .load-more {
-      min-height: 42px;
-      padding: 0 24px;
-      border: 1px solid var(--primary-neon);
+    .expand-btn {
       background: transparent;
-      cursor: pointer;
-      color: var(--primary-neon);
-      text-transform: uppercase;
-      font-weight: 700;
-      letter-spacing: 1px;
+      border: 1px dashed var(--border-neon);
+      color: var(--primary);
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 13px;
       border-radius: var(--radius);
+      cursor: pointer;
+      text-align: center;
+      width: 100%;
+      text-transform: uppercase;
     }
 
-    .load-more:hover {
+    .expand-btn:hover {
+      background: rgba(0, 243, 255, 0.05);
+      border-color: var(--primary);
+    }
+
+    .empty-state {
+      background: rgba(255, 0, 85, 0.05);
+      border: 2px dashed var(--danger);
+      color: var(--danger);
+      padding: 40px;
+      border-radius: var(--radius);
+      text-align: center;
+      font-family: var(--font-mono);
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    /* Logger Terminal widget */
+    .terminal-panel {
+      background: #050608;
+      border: 1px solid var(--border-neon-strong);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+      margin-top: 15px;
+    }
+
+    .terminal-header {
       background: rgba(0, 243, 255, 0.08);
-      box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+      border-bottom: 1px solid var(--border-neon-strong);
+      padding: 10px 15px;
+      font-family: var(--font-header);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      color: var(--primary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .load-more[hidden] {
-      display: none;
+    .terminal-body {
+      padding: 15px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      max-height: 150px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
-    /* Responsiveness layout adjustments */
-    @media (max-width: 1100px) {
-      .app { grid-template-columns: 1fr; }
-      .sidebar {
-        position: relative;
+    .terminal-line {
+      display: flex;
+      gap: 12px;
+    }
+
+    .terminal-time {
+      color: var(--text-muted);
+    }
+
+    .terminal-msg.info { color: var(--primary); }
+    .terminal-msg.warn { color: var(--secondary); }
+    .terminal-msg.err { color: var(--danger); }
+
+    @media (max-width: 1024px) {
+      .layout-container {
+        grid-template-columns: 1fr;
+      }
+      aside {
         height: auto;
-        border-right: 0;
-        border-bottom: 1px solid var(--border-neon-strong);
+        position: relative;
+        top: 0;
+        border-right: none;
+        border-bottom: 1px solid var(--border-neon);
       }
-      .brand-list,
-      .type-list {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-      .topbar,
-      .toolbar {
-        grid-template-columns: 1fr;
-      }
-      .quick-actions {
-        justify-content: flex-start;
-      }
-      .result-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+      .hud-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    @media (max-width: 720px) {
-      .main,
-      .sidebar {
-        padding: 16px;
+    @media (max-width: 640px) {
+      header {
+        padding: 10px 15px;
+        flex-direction: column;
+        gap: 10px;
       }
-      .headline h2 {
-        font-size: 22px;
-      }
-      .stats,
-      .brand-list,
-      .type-list,
-      .result-grid {
+      .hud-grid {
         grid-template-columns: 1fr;
       }
-      .toolbar {
-        position: relative;
+      .controls-panel {
+        grid-template-columns: 1fr;
+      }
+      main {
+        padding: 15px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="scanner-header-accent"></div>
-  <div class="app">
-    <aside class="sidebar">
-      <div class="brandmark">
-        <div class="brandmark-title-wrapper">
-          <div class="brandmark-icon">DS</div>
-          <div>
-            <h1>DEDSEC_VAULT</h1>
-            <p>ctOS DECRYPTION PORTAL</p>
-          </div>
-        </div>
+  <div class="scanner-line"></div>
+  
+  <header>
+    <div class="brand">
+      <div class="brand-logo">DS</div>
+      <div class="brand-info">
+        <h1>DEDSEC_VAULT</h1>
+        <p>ctOS DECRYPTION SYSTEM V4.0</p>
       </div>
-
-      <div class="side-section">
-        <h2>DOMAINS</h2>
-        <div id="brandList" class="brand-list"></div>
+    </div>
+    <div class="system-status">
+      <span id="activeFilters">ALL CONTEXTS ACTIVE</span>
+      <div class="status-indicator">
+        <span class="status-dot"></span>
+        <span>ONLINE</span>
       </div>
+    </div>
+  </header>
 
-      <div class="side-section">
-        <h2>DATASETS</h2>
-        <div id="typeList" class="type-list"></div>
+  <div class="layout-container">
+    <aside>
+      <div>
+        <div class="panel-title">DOMAINS</div>
+        <div class="filter-group" id="brandList"></div>
+      </div>
+      <div>
+        <div class="panel-title">DATASETS</div>
+        <div class="filter-group" id="typeList"></div>
       </div>
     </aside>
 
-    <main class="main">
-      <section class="topbar">
-        <div class="headline">
-          <h2>DECRYPTION STATUS: ACTIVE</h2>
-          <p>Access the global library index. Decrypt, filter, and extract documents directly from target hosts. Source nodes are fully resolved.</p>
+    <main>
+      <!-- HUD Diagnostics -->
+      <section class="hud-grid" aria-label="Library Status HUD">
+        <div class="hud-card">
+          <i class="fas fa-network-wired hud-icon"></i>
+          <div class="hud-details">
+            <h3 id="totalMocks">0</h3>
+            <p>Resolved Nodes</p>
+          </div>
         </div>
-        <div class="quick-actions">
-          <a id="randomMock" class="action primary" href="#">RUN_DECRYPT</a>
-          <a class="action" href="./mocks-manifest.json">RAW_LOG</a>
+        <div class="hud-card success">
+          <i class="fas fa-file-code hud-icon"></i>
+          <div class="hud-details">
+            <h3 id="htmlMocks">0</h3>
+            <p>HTML Players</p>
+          </div>
+        </div>
+        <div class="hud-card danger">
+          <i class="fas fa-file-pdf hud-icon"></i>
+          <div class="hud-details">
+            <h3 id="pdfMocks">0</h3>
+            <p>PDF Stacks</p>
+          </div>
+        </div>
+        <div class="hud-card warning">
+          <i class="fas fa-search hud-icon"></i>
+          <div class="hud-details">
+            <h3 id="matchingCount">0</h3>
+            <p>Active Context</p>
+          </div>
         </div>
       </section>
 
-      <section class="stats" aria-label="Library stats">
-        <div class="stat"><strong id="totalMocks">0</strong><span>RESOLVED NODES</span></div>
-        <div class="stat"><strong id="htmlMocks">0</strong><span>HTML FRAGMENTS</span></div>
-        <div class="stat"><strong id="pdfMocks">0</strong><span>PDF DOCUMENT STACKS</span></div>
-        <div class="stat"><strong id="visibleMocks">0</strong><span>ACTIVE CONTEXT</span></div>
+      <!-- Search and Launch bar -->
+      <section class="controls-panel">
+        <div class="search-wrapper">
+          <i class="fas fa-terminal"></i>
+          <input type="search" id="searchInput" placeholder="SEARCH NODES, TOPICS, SECTIONS, BRANDS..." autocomplete="off">
+        </div>
+        <div class="select-wrapper">
+          <select id="sortSelect">
+            <option value="name">SORT BY NAME</option>
+            <option value="brand">SORT BY DOMAIN</option>
+            <option value="section">SORT BY SECTION</option>
+          </select>
+        </div>
+        <a id="randomLaunch" class="quick-launch-btn" href="#">
+          <i class="fas fa-random"></i> Decrypt Random
+        </a>
       </section>
 
-      <section class="toolbar" aria-label="Catalog controls">
-        <label for="searchInput" class="searchbox">
-          <span aria-hidden="true">></span>
-          <input id="searchInput" type="search" placeholder="SEARCH SYSTEMS, TOPICS, NODES, DOMAINS..." autocomplete="off" />
-        </label>
-        <select id="sectionSelect" aria-label="Section filter"></select>
-        <select id="sortSelect" aria-label="Sort results">
-          <option value="name">SORT BY NAME</option>
-          <option value="brand">SORT BY BRAND</option>
-          <option value="section">SORT BY SECTION</option>
-        </select>
-      </section>
-
-      <div class="results-header">
-        <div id="resultSummary">Connecting...</div>
-        <div id="activeFilters"></div>
+      <!-- Section-wise Mocks Container -->
+      <section id="sectionsContainer" class="sections-container"></section>
+      <div id="emptyState" class="empty-state" style="display: none;">
+        SYSTEM WARNING: NO COMPATIBLE DECRYPTION NODES MATCH SELECTIVE PARAMETERS.
       </div>
 
-      <section id="resultGrid" class="result-grid" aria-label="Mock results"></section>
-      <div id="emptyState" class="empty">SYSTEM ALERT: NO DECIPHERABLE NODES MATCH SELECTED MATRIX.</div>
-      
-      <div class="pager">
-        <button id="loadMore" class="load-more" type="button">LOAD MORE ENTRIES</button>
-      </div>
-
-      <!-- Live region terminal logging panel -->
-      <section class="console-panel">
-        <div class="console-header">
-          <span>CONSOLE // TERMINAL_OUTPUT</span>
-          <span class="pulse-dot"></span>
+      <!-- Logging Terminal -->
+      <section class="terminal-panel">
+        <div class="terminal-header">
+          <span>LOGGER://SYSTEM_ACTIVITY_FEED</span>
+          <span class="status-indicator">
+            <span class="status-dot" style="background-color: var(--secondary); box-shadow: 0 0 8px var(--secondary);"></span>
+            <span>FEED ACTIVE</span>
+          </span>
         </div>
-        <div class="console-body" id="consoleLogs" aria-live="polite">
-          <!-- Live logged strings will appear here -->
-        </div>
+        <div class="terminal-body" id="consoleLogs"></div>
       </section>
     </main>
   </div>
@@ -807,100 +832,100 @@
   <script src="./mocks-manifest.js"></script>
   <script>
     const manifest = window.MOCKS_MANIFEST || { files: [] };
-    const brandRank = ['Pundits', 'pundits-mocks', 'Mocks Wallah', 'English Madhyam', 'english-madhyam', 'oliveboard', 'Testbook', 'Other Brands', 'Aman Sir'];
-    const brandNames = {
+    
+    // Customize Brand display names
+    const brandDisplayNames = {
       All: 'ALL_DOMAINS',
       Root: 'ROOT_DISPATCH',
       Pundits: 'THE_PUNDITS',
       'pundits-mocks': 'PUNDITS_ARCHIVE',
       'Mocks Wallah': 'MOCKS_WALLAH',
-      'English Madhyam': 'ENGLISH_MADHYAM_CLASSIC',
-      'english-madhyam': 'ENGLISH_MADHYAM_VAULT',
+      'English Madhyam': 'ENGLISH_MADHYAM_PREMIUM',
+      'english-madhyam': 'ENGLISH_MADHYAM_CLASSIC',
       oliveboard: 'OLIVEBOARD',
       Testbook: 'TESTBOOK',
       'Other Brands': 'OTHER_HOUSES',
       'Aman Sir': 'AMAN_SIR'
     };
-    const typeNames = {
+
+    // Customize dataset types
+    const typeDisplayNames = {
       All: 'ALL_DATASETS',
-      Mock: 'GENERAL_MOCKS',
+      Mock: 'STANDARD_MOCKS',
       Quiz: 'QUIZZES',
       'Full Mock': 'FULL_MOCKS',
       Sectional: 'SECTIONAL_TESTS',
-      'Topic Concept': 'TOPIC_CONCEPT_DRILLS',
-      'Previous Year': 'PYP_ARCHIVES',
+      'Topic Concept': 'CONCEPT_TESTS',
+      'Previous Year': 'PREVIOUS_YEAR_PAPERS',
       'Practice Set': 'PRACTICE_SETS',
       PDF: 'PDF_DOCUMENTS'
     };
+
     const state = {
       brand: 'All',
       type: 'All',
-      section: 'All',
       query: '',
       sort: 'name',
-      shown: 72
+      expandedSections: {} // tracks which section blocks are fully expanded
     };
 
-    const elements = {
+    const els = {
       brandList: document.getElementById('brandList'),
       typeList: document.getElementById('typeList'),
-      sectionSelect: document.getElementById('sectionSelect'),
-      sortSelect: document.getElementById('sortSelect'),
-      searchInput: document.getElementById('searchInput'),
-      resultGrid: document.getElementById('resultGrid'),
-      resultSummary: document.getElementById('resultSummary'),
-      activeFilters: document.getElementById('activeFilters'),
-      emptyState: document.getElementById('emptyState'),
-      loadMore: document.getElementById('loadMore'),
-      randomMock: document.getElementById('randomMock'),
       totalMocks: document.getElementById('totalMocks'),
       htmlMocks: document.getElementById('htmlMocks'),
       pdfMocks: document.getElementById('pdfMocks'),
-      visibleMocks: document.getElementById('visibleMocks'),
-      consoleLogs: document.getElementById('consoleLogs')
+      matchingCount: document.getElementById('matchingCount'),
+      searchInput: document.getElementById('searchInput'),
+      sortSelect: document.getElementById('sortSelect'),
+      randomLaunch: document.getElementById('randomLaunch'),
+      sectionsContainer: document.getElementById('sectionsContainer'),
+      emptyState: document.getElementById('emptyState'),
+      consoleLogs: document.getElementById('consoleLogs'),
+      activeFilters: document.getElementById('activeFilters')
     };
 
-    // Console Logging helper
-    function logToConsole(message, type = 'info') {
+    // Terminal Logging Helper
+    function log(msg, type = 'info') {
       const now = new Date();
       const timeStr = now.toTimeString().split(' ')[0] + '.' + String(now.getMilliseconds()).padStart(3, '0');
       const line = document.createElement('div');
-      line.className = 'console-line';
+      line.className = 'terminal-line';
       
-      let typeClass = 'log-info';
+      let typeClass = 'info';
       let prefix = '[OK] ';
       if (type === 'warn') {
-        typeClass = 'log-warning';
+        typeClass = 'warn';
         prefix = '[SYS] ';
-      } else if (type === 'danger') {
-        typeClass = 'log-danger';
+      } else if (type === 'err') {
+        typeClass = 'err';
         prefix = '[ERR] ';
       }
 
-      line.innerHTML = `<span class="time">[${timeStr}]</span><span class="${typeClass}">${prefix}${message}</span>`;
-      elements.consoleLogs.appendChild(line);
-      elements.consoleLogs.scrollTop = elements.consoleLogs.scrollHeight;
+      line.innerHTML = `<span class="terminal-time">[${timeStr}]</span><span class="terminal-msg ${typeClass}">${prefix}${msg}</span>`;
+      els.consoleLogs.appendChild(line);
+      els.consoleLogs.scrollTop = els.consoleLogs.scrollHeight;
 
-      // Limit console buffer to 20 lines
-      while (elements.consoleLogs.childElementCount > 20) {
-        elements.consoleLogs.removeChild(elements.consoleLogs.firstChild);
+      while (els.consoleLogs.childElementCount > 30) {
+        els.consoleLogs.removeChild(els.consoleLogs.firstChild);
       }
     }
 
-    logToConsole('DEDSEC Console initialized. Connection: ESTABLISHED.');
-    logToConsole(`Analyzing manifest database: ${manifest.files.length} mock files detected.`);
+    log('Connection established. Resolving ctOS mock network...');
+    log(`Database synchronized. Loaded ${manifest.files.length} active node paths.`);
 
-    const cleanName = (value) => value
+    // Helper functions
+    const cleanName = (name) => name
       .replace(/\.(html?|pdf)$/i, '')
       .replace(/^@/g, '')
       .replace(/\s+/g, ' ')
       .trim();
 
     const titleCase = (value) => value.replace(/[-_]/g, ' ').toUpperCase();
-    const brandLabel = (value) => brandNames[value] || titleCase(value);
-    const typeLabel = (value) => typeNames[value] || value.toUpperCase();
-    const encodePath = (file) => file.split('/').map(encodeURIComponent).join('/');
-    const formatCount = (value) => new Intl.NumberFormat('en-IN').format(value);
+    const getBrandLabel = (value) => brandDisplayNames[value] || titleCase(value);
+    const getTypeLabel = (value) => typeDisplayNames[value] || value.toUpperCase();
+    const encodePath = (path) => path.split('/').map(encodeURIComponent).join('/');
+    const formatNumber = (num) => new Intl.NumberFormat('en-IN').format(num);
 
     const inferType = (file) => {
       const text = file.toLowerCase();
@@ -914,194 +939,255 @@
       return 'Mock';
     };
 
-    const files = manifest.files.map((file, index) => {
+    // Preprocess mock files
+    const files = manifest.files.map((file, idx) => {
       const parts = file.split('/');
       const brand = parts.length > 1 ? parts[0] : 'Root';
-      const section = parts.length > 2 ? parts[1] : (parts.length > 1 ? 'Main' : 'Root');
+      const section = parts.length > 2 ? parts[1] : (parts.length > 1 ? 'General Tests' : 'Unsorted');
       const name = cleanName(parts[parts.length - 1]);
       const ext = file.toLowerCase().endsWith('.pdf') ? 'PDF' : 'HTML';
       const type = inferType(file);
+      
+      // Look for indicators in file names for better badges
+      const isSectionalTimer = file.toLowerCase().includes('sectional timer') || file.toLowerCase().includes('tierii') || file.toLowerCase().includes('tier ii');
+      const isSoftSwitch = !isSectionalTimer && (file.toLowerCase().includes('tier1') || file.toLowerCase().includes('tier i') || file.toLowerCase().includes('pre'));
+
       const search = `${file} ${brand} ${section} ${name} ${type} ${ext}`.toLowerCase();
-      return { index, file, brand, section, name, ext, type, search };
+      return { idx, file, brand, section, name, ext, type, isSectionalTimer, isSoftSwitch, search };
     });
 
-    logToConsole('Mapped indexing layers and inferred system types.');
+    log('Node type-inferenced & parsed metadata indexing maps compiled.');
 
-    const unique = (items) => [...new Set(items)].sort((a, b) => a.localeCompare(b));
+    // Count statistics
+    const uniqueValues = (arr) => [...new Set(arr)].sort((a,b) => a.localeCompare(b));
     const brandCounts = new Map();
     const typeCounts = new Map();
-    for (const item of files) {
-      brandCounts.set(item.brand, (brandCounts.get(item.brand) || 0) + 1);
-      typeCounts.set(item.type, (typeCounts.get(item.type) || 0) + 1);
+
+    files.forEach(f => {
+      brandCounts.set(f.brand, (brandCounts.get(f.brand) || 0) + 1);
+      typeCounts.set(f.type, (typeCounts.get(f.type) || 0) + 1);
+    });
+
+    const orderedBrands = ['All', ...uniqueValues(files.map(f => f.brand))];
+    const orderedTypes = ['All', ...uniqueValues(files.map(f => f.type))];
+
+    function makeFilterBtn(label, count, active, onClick) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `filter-btn${active ? ' active' : ''}`;
+      btn.innerHTML = `<span>${label}</span><span class="badge">${formatNumber(count)}</span>`;
+      btn.addEventListener('click', onClick);
+      return btn;
     }
 
-    const orderedBrands = ['All', ...unique(files.map((item) => item.brand)).sort((a, b) => {
-      const ai = brandRank.indexOf(a);
-      const bi = brandRank.indexOf(b);
-      return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi) || a.localeCompare(b);
-    })];
-
-    const orderedTypes = ['All', ...unique(files.map((item) => item.type))];
-
-    function makeFilterButton(label, count, active, onClick) {
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = `filter-button${active ? ' is-active' : ''}`;
-      button.innerHTML = `<span>${label}</span><span class="count-pill">${formatCount(count)}</span>`;
-      button.addEventListener('click', onClick);
-      return button;
-    }
-
-    function renderSidebar() {
-      elements.brandList.replaceChildren(...orderedBrands.map((brand) => {
-        const count = brand === 'All' ? files.length : brandCounts.get(brand);
-        return makeFilterButton(brandLabel(brand), count, state.brand === brand, () => {
-          logToConsole(`Set domain filter: ${brandLabel(brand).toUpperCase()}`);
-          state.brand = brand;
-          state.section = 'All';
-          state.shown = 72;
+    function renderFilters() {
+      // Sidebar domains
+      els.brandList.replaceChildren(...orderedBrands.map(b => {
+        const count = b === 'All' ? files.length : brandCounts.get(b);
+        return makeFilterBtn(getBrandLabel(b), count, state.brand === b, () => {
+          log(`Subsystem filter update: ${getBrandLabel(b)} active.`);
+          state.brand = b;
           render();
         });
       }));
 
-      elements.typeList.replaceChildren(...orderedTypes.map((type) => {
-        const count = type === 'All' ? files.length : typeCounts.get(type);
-        return makeFilterButton(typeLabel(type), count, state.type === type, () => {
-          logToConsole(`Set dataset filter: ${typeLabel(type).toUpperCase()}`);
-          state.type = type;
-          state.shown = 72;
+      // Sidebar datasets
+      els.typeList.replaceChildren(...orderedTypes.map(t => {
+        const count = t === 'All' ? files.length : typeCounts.get(t);
+        return makeFilterBtn(getTypeLabel(t), count, state.type === t, () => {
+          log(`Subsystem filter update: ${getTypeLabel(t)} active.`);
+          state.type = t;
           render();
         });
       }));
     }
 
-    function availableSections() {
-      const relevant = state.brand === 'All' ? files : files.filter((item) => item.brand === state.brand);
-      return ['All', ...unique(relevant.map((item) => item.section))];
-    }
-
-    function syncSectionSelect() {
-      const sections = availableSections();
-      if (!sections.includes(state.section)) state.section = 'All';
-      elements.sectionSelect.innerHTML = sections.map((section) => {
-        const label = section === 'All' ? 'ALL_SECTIONS' : section.toUpperCase();
-        return `<option value="${section}">${label}</option>`;
-      }).join('');
-      elements.sectionSelect.value = state.section;
-    }
-
-    function filteredFiles() {
+    function getFilteredAndSorted() {
       const query = state.query.toLowerCase().trim();
-      const queryTokens = query ? query.split(/\s+/) : [];
-      let items = files.filter((item) => {
-        if (state.brand !== 'All' && item.brand !== state.brand) return false;
-        if (state.type !== 'All' && item.type !== state.type) return false;
-        if (state.section !== 'All' && item.section !== state.section) return false;
-        if (queryTokens.length > 0) {
-          // All tokens must be found inside target file metadata string
-          return queryTokens.every(token => item.search.includes(token));
+      const tokens = query ? query.split(/\s+/) : [];
+
+      let items = files.filter(f => {
+        if (state.brand !== 'All' && f.brand !== state.brand) return false;
+        if (state.type !== 'All' && f.type !== state.type) return false;
+        if (tokens.length > 0) {
+          return tokens.every(token => f.search.includes(token));
         }
         return true;
       });
 
-      items = items.sort((a, b) => {
+      items.sort((a, b) => {
         if (state.sort === 'brand') return a.brand.localeCompare(b.brand) || a.name.localeCompare(b.name);
         if (state.sort === 'section') return a.section.localeCompare(b.section) || a.name.localeCompare(b.name);
         return a.name.localeCompare(b.name);
       });
+
       return items;
+    }
+
+    function renderHUD(items) {
+      els.totalMocks.textContent = formatNumber(files.length);
+      els.htmlMocks.textContent = formatNumber(files.filter(f => f.ext === 'HTML').length);
+      els.pdfMocks.textContent = formatNumber(files.filter(f => f.ext === 'PDF').length);
+      els.matchingCount.textContent = formatNumber(items.length);
     }
 
     function renderCard(item) {
       const href = `./${encodePath(item.file)}`;
-      const article = document.createElement('article');
-      article.className = 'mock-card';
-      article.innerHTML = `
-        <h3 class="mock-title">${item.name}</h3>
-        <div class="mock-meta">
-          <span class="tag brand">${brandLabel(item.brand)}</span>
-          <span class="tag">${item.section.toUpperCase()}</span>
-          <span class="tag">${typeLabel(item.type)}</span>
-          <span class="tag ${item.ext === 'PDF' ? 'pdf' : ''}">${item.ext}</span>
+      const card = document.createElement('div');
+      card.className = 'mock-card';
+      
+      let badges = `<span class="badge brand">${getBrandLabel(item.brand)}</span>`;
+      if (item.ext === 'PDF') {
+        badges += `<span class="badge pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>`;
+      } else {
+        badges += `<span class="badge type-badge">CBT CBT</span>`;
+        if (item.isSectionalTimer) {
+          badges += `<span class="badge timer-badge"><i class="fas fa-clock"></i> Sectional Timer (Lock)</span>`;
+        }
+        if (item.isSoftSwitch) {
+          badges += `<span class="badge soft-badge"><i class="fas fa-exchange-alt"></i> Soft Switching</span>`;
+        }
+      }
+
+      card.innerHTML = `
+        <div class="mock-header">
+          <h4 class="mock-title" title="${item.name}">${item.name}</h4>
+          <div class="mock-badge-group">
+            ${badges}
+          </div>
         </div>
         <div class="mock-actions">
-          <a class="open-link" href="${href}" target="_self">DECRYPT</a>
-          <span class="path-text" title="${item.file}">${item.file}</span>
+          <span class="mock-path" title="${item.file}">${item.file}</span>
+          <a class="launch-btn" href="${href}" target="_self">Decrypt Node</a>
         </div>
       `;
 
-      article.querySelector('.open-link').addEventListener('click', () => {
-        logToConsole(`Request decrypt stream for node: ${item.name}`, 'warn');
+      card.querySelector('.launch-btn').addEventListener('click', () => {
+        log(`Broadcasting decrypt request to payload: ${item.name}`, 'warn');
       });
 
-      return article;
+      return card;
     }
 
-    function renderStats(items) {
-      elements.totalMocks.textContent = formatCount(files.length);
-      elements.htmlMocks.textContent = formatCount(files.filter((item) => item.ext === 'HTML').length);
-      elements.pdfMocks.textContent = formatCount(files.filter((item) => item.ext === 'PDF').length);
-      elements.visibleMocks.textContent = formatCount(items.length);
+    function renderSectionWise(items) {
+      els.sectionsContainer.innerHTML = '';
+      
+      // Group by sections
+      const sectionsMap = {};
+      items.forEach(item => {
+        const key = item.section;
+        if (!sectionsMap[key]) {
+          sectionsMap[key] = [];
+        }
+        sectionsMap[key].push(item);
+      });
+
+      const sectionKeys = Object.keys(sectionsMap).sort((a,b) => a.localeCompare(b));
+      
+      if (sectionKeys.length === 0) {
+        els.emptyState.style.display = 'block';
+        return;
+      }
+      els.emptyState.style.display = 'none';
+
+      sectionKeys.forEach(secName => {
+        const secItems = sectionsMap[secName];
+        const block = document.createElement('div');
+        block.className = 'section-block';
+        
+        const isExpanded = !!state.expandedSections[secName];
+        const limit = 8;
+        const visibleItems = isExpanded ? secItems : secItems.slice(0, limit);
+
+        block.innerHTML = `
+          <div class="section-block-header">
+            <div class="section-block-title">
+              <i class="fas fa-folder-open"></i>
+              <span>${secName.toUpperCase()}</span>
+            </div>
+            <div class="section-block-meta">${secItems.length} Resolved Mocks</div>
+          </div>
+          <div class="mocks-grid" id="grid-${secName}"></div>
+        `;
+
+        const grid = block.querySelector(`#grid-${secName}`);
+        grid.replaceChildren(...visibleItems.map(renderCard));
+
+        if (secItems.length > limit && !isExpanded) {
+          const expandBtn = document.createElement('button');
+          expandBtn.className = 'expand-btn';
+          expandBtn.innerHTML = `<i class="fas fa-plus"></i> Load ${secItems.length - limit} More Nodes in this Section`;
+          expandBtn.addEventListener('click', () => {
+            log(`Expanding block layout for section: ${secName.toUpperCase()}`);
+            state.expandedSections[secName] = true;
+            render();
+          });
+          block.appendChild(expandBtn);
+        } else if (isExpanded) {
+          const collapseBtn = document.createElement('button');
+          collapseBtn.className = 'expand-btn';
+          collapseBtn.innerHTML = `<i class="fas fa-minus"></i> Collapse Section`;
+          collapseBtn.addEventListener('click', () => {
+            log(`Collapsing block layout for section: ${secName.toUpperCase()}`);
+            state.expandedSections[secName] = false;
+            render();
+          });
+          block.appendChild(collapseBtn);
+        }
+
+        els.sectionsContainer.appendChild(block);
+      });
+    }
+
+    function updateHeaderStatus() {
+      const activeFilters = [];
+      if (state.brand !== 'All') activeFilters.push(`DOMAIN: ${getBrandLabel(state.brand)}`);
+      if (state.type !== 'All') activeFilters.push(`DATASET: ${getTypeLabel(state.type)}`);
+      if (state.query) activeFilters.push(`QUERY: "${state.query.toUpperCase()}"`);
+      
+      els.activeFilters.textContent = activeFilters.length > 0 ? activeFilters.join(' | ') : 'ALL MOCKS RESOLVED';
     }
 
     function render() {
-      renderSidebar();
-      syncSectionSelect();
+      renderFilters();
+      
+      const items = getFilteredAndSorted();
+      renderHUD(items);
+      renderSectionWise(items);
+      updateHeaderStatus();
 
-      const items = filteredFiles();
-      renderStats(items);
-      const visible = items.slice(0, state.shown);
-      elements.resultGrid.replaceChildren(...visible.map(renderCard));
-      elements.emptyState.style.display = items.length ? 'none' : 'block';
-      elements.loadMore.hidden = visible.length >= items.length;
-      elements.resultSummary.textContent = `${formatCount(visible.length)} NODES LOADED // ${formatCount(items.length)} MATCHING IDENTIFIED`;
-
-      const active = [
-        state.brand !== 'All' ? brandLabel(state.brand) : '',
-        state.type !== 'All' ? typeLabel(state.type) : '',
-        state.section !== 'All' ? state.section.toUpperCase() : '',
-        state.query ? `QUERY: "${state.query.toUpperCase()}"` : ''
-      ].filter(Boolean);
-      elements.activeFilters.textContent = active.length ? active.join(' | ') : 'NO FILTERS ACTIVE';
-
-      const randomItem = items.length ? items[Math.floor(Math.random() * items.length)] : files[0];
-      elements.randomMock.href = randomItem ? `./${encodePath(randomItem.file)}` : '#';
+      // Configure random launch URL
+      if (items.length > 0) {
+        const rand = items[Math.floor(Math.random() * items.length)];
+        els.randomLaunch.href = `./${encodePath(rand.file)}`;
+      } else {
+        els.randomLaunch.href = '#';
+      }
     }
 
-    elements.searchInput.addEventListener('input', (event) => {
-      state.query = event.target.value;
-      state.shown = 72;
-      logToConsole(`Searching query matrix: "${state.query.toUpperCase()}"`);
+    // Event Listeners
+    els.searchInput.addEventListener('input', (e) => {
+      state.query = e.target.value;
+      log(`Decoding query matrix: "${state.query.toUpperCase()}"`);
       render();
     });
 
-    elements.sectionSelect.addEventListener('change', (event) => {
-      state.section = event.target.value;
-      state.shown = 72;
-      logToConsole(`Set segment zone filter: ${state.section.toUpperCase()}`);
+    els.sortSelect.addEventListener('change', (e) => {
+      state.sort = e.target.value;
+      log(`Re-ordering tree indexes by sort: ${state.sort.toUpperCase()}`);
       render();
     });
 
-    elements.sortSelect.addEventListener('change', (event) => {
-      state.sort = event.target.value;
-      logToConsole(`Re-indexing list structure sorted by: ${state.sort.toUpperCase()}`);
-      render();
-    });
-
-    elements.loadMore.addEventListener('click', () => {
-      state.shown += 72;
-      logToConsole(`Buffer limits expanded. Visible buffer incremented.`);
-      render();
-    });
-
-    elements.randomMock.addEventListener('click', (e) => {
-      if (elements.randomMock.href.endsWith('#')) {
-        logToConsole('Decrypt action error: No resolved targets available.', 'danger');
+    els.randomLaunch.addEventListener('click', (e) => {
+      if (els.randomLaunch.getAttribute('href') === '#') {
+        e.preventDefault();
+        log('No decryption node maps resolved under active parameters.', 'err');
       } else {
-        logToConsole('Initiating random decipher sequence...', 'warn');
+        log('Injecting decipher stream packet into randomized host Node...', 'warn');
       }
     });
 
+    // Initial render
     render();
   </script>
 </body>

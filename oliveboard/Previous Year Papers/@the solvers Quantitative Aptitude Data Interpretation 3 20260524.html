@@ -2066,13 +2066,21 @@
                 if (this.sectionTimer) clearInterval(this.sectionTimer);
                 
                 const section = this.sections[this.currentSectionIdx];
-                section.time_left = section.timer;
+                if (section.time_left === undefined) {
+                    section.time_left = section.timer;
+                }
                 
-                this.sectionTimer = setInterval(() => {
-                    section.time_left--;
+                const updateTimerDisplay = () => {
                     const mins = Math.floor(section.time_left / 60);
                     const secs = section.time_left % 60;
                     this.els.sectionTimer.textContent = ` | ${mins}:${secs.toString().padStart(2, '0')}`;
+                };
+                
+                updateTimerDisplay();
+                
+                this.sectionTimer = setInterval(() => {
+                    section.time_left--;
+                    updateTimerDisplay();
                     
                     if (section.time_left <= 0) {
                         clearInterval(this.sectionTimer);
@@ -2086,6 +2094,12 @@
                 const section = this.sections[this.currentSectionIdx];
                 this.els.sectionName.textContent = section.name;
                 this.els.sectionBadge.style.display = 'block';
+                
+                if (section.time_left !== undefined) {
+                    const mins = Math.floor(section.time_left / 60);
+                    const secs = section.time_left % 60;
+                    this.els.sectionTimer.textContent = ` | ${mins}:${secs.toString().padStart(2, '0')}`;
+                }
             }
 
             submitSection() {

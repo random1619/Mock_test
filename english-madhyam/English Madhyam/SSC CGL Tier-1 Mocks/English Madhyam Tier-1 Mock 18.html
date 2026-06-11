@@ -2,1673 +2,1899 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#6366f1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>devgagan</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #8b5cf6;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --error: #ef4444;
-            --info: #06b6d4;
-            
-            --glass-bg: rgba(255, 255, 255, 0.95);  /* Changed from 0.25 to 0.95 */
-            --glass-border: rgba(255, 255, 255, 0.8);  /* Changed from 0.18 to 0.8 */
-            --shadow-light: 0 8px 32px rgba(31, 38, 135, 0.37);
-            --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.3);
-            
-            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        
-[data-theme="light"] {
-    --bg: #ffffff;  /* Changed from gradient to solid white */
-    --card-bg: #ffffff;  /* Changed from transparent to solid white */
-    --text: #1a202c;
-    --text-secondary: #4a5568;
-    --border: rgba(0, 0, 0, 0.1);  /* Changed to darker border for contrast */
-    --nav-bg: #ffffff;  /* Changed from transparent to solid white */
-}
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
 
-[data-theme="dark"] {
-    --bg: #1a1a2e;  /* Changed from gradient to solid dark */
-    --card-bg: #16213e;  /* Changed from transparent to solid dark */
-    --text: #f7fafc;
-    --text-secondary: #a0aec0;
-    --border: rgba(255, 255, 255, 0.1);
-    --nav-bg: #0c0c0c;  /* Changed from transparent to solid dark */
-}
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
+        :root {
+            --primary: #1e40af;
+            --primary-hover: #1e3a8a;
+            --success: #059669;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --bg: #f3f4f6;
+            --card: #ffffff;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #d1d5db;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --radius: 6px;
+            --font-sans: 'Space Grotesk', sans-serif;
+            --font-mono: 'Share Tech Mono', monospace;
+        }
+
+        body.dark-mode {
+            --bg: #0b0f19;
+            --card: #151f32;
+            --text: #f3f4f6;
+            --text-light: #9ca3af;
+            --border: #374151;
+            --primary: #3b82f6;
+            --primary-hover: #60a5fa;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: var(--font-sans);
             background: var(--bg);
             color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
+            line-height: 1.5;
+            transition: background 0.2s ease, color 0.2s ease;
         }
-        
-        body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--bg);  /* Now just using the solid color */
-    z-index: -1;
-}
-        
-        /* Floating particles animation */
-        .particles {
+
+        /* Welcome Screen */
+        .welcome-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
-        }
-        
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            animation: float 6s infinite ease-in-out;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
-            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.3; }
-        }
-        
-        /* Header with glassmorphism */
-        .header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: var(--nav-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            padding: 16px 20px;
-            z-index: 100;
-            transition: var(--transition);
-        }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        
-        .menu-btn {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            color: var(--text);
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            backdrop-filter: blur(10px);
-            font-size: 18px;
-        }
-        
-        .menu-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-light);
-        }
-        
-        .menu-btn:active {
-            transform: scale(0.95);
-        }
-        
-        .logo {
-            font-weight: 800;
-            font-size: 20px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.5px;
-        }
-        
-        [data-theme="dark"] .logo {
-    background: none;
-    -webkit-text-fill-color: white; /* White text in dark mode */
-    color: white; /* Fallback */
-}
-        
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .theme-toggle {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            color: var(--text);
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            backdrop-filter: blur(10px);
-            font-size: 20px;
-        }
-        
-        .theme-toggle:hover {
-            transform: rotate(180deg) scale(1.1);
-            box-shadow: var(--shadow-light);
-        }
-        
-        /* Advanced Timer */
-        .timer-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .timer {
-            background: linear-gradient(135deg, var(--error), #dc2626);
-            color: white;
-            padding: 12px 16px;
-            border-radius: 16px;
-            font-family: 'Inter', monospace;
-            font-weight: 600;
-            font-size: 14px;
-            box-shadow: var(--shadow-light);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .timer.warning {
-            animation: pulse 1s infinite;
-        }
-        
-        .timer.critical {
-            animation: shake 0.5s infinite;
-            background: linear-gradient(135deg, #dc2626, #991b1b);
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-2px); }
-            75% { transform: translateX(2px); }
-        }
-        
-        .progress-ring {
-            width: 40px;
-            height: 40px;
-            transform: rotate(-90deg);
-        }
-        
-        .progress-circle {
-            fill: none;
-            stroke: rgba(255, 255, 255, 0.3);
-            stroke-width: 3;
-        }
-        
-        .progress-circle.progress {
-            stroke: var(--primary);
-            stroke-linecap: round;
-            transition: stroke-dashoffset 0.3s ease;
-        }
-        
-        /* Main Content */
-        .main {
-            margin: 80px 0 100px;
-            padding: 20px;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .question-container {
-    background: var(--card-bg);  /* Now uses solid color */
-    /* Remove or reduce blur effect */
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 32px;
-    box-shadow: var(--shadow-heavy);
-    position: relative;
-    overflow: hidden;
-    transition: var(--transition);
-}
-        .question-container::before {
-            content: '';
-            position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--info));
-            background-size: 200% 100%;
-            animation: gradient-flow 3s linear infinite;
+            bottom: 0;
+            background: var(--bg);
+            z-index: 1000;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
         }
-        
-        @keyframes gradient-flow {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 200% 50%; }
+
+        .welcome-screen.hidden {
+            display: none;
         }
-        
+
+        .welcome-container {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            margin: 20px auto;
+            border: 1px solid var(--border);
+        }
+
+        .welcome-header {
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .welcome-header h1 {
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .test-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .detail-item {
+            background: rgba(0,0,0,0.02);
+            padding: 15px;
+            border-radius: var(--radius);
+            border-left: 3px solid var(--primary);
+            border-top: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .section-info {
+            margin-bottom: 25px;
+        }
+
+        .section-info h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .section-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+        }
+
+        .section-table th,
+        .section-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        .section-table th {
+            background: rgba(0,0,0,0.04);
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .subsec-container {
+            margin-top: 8px;
+            padding-left: 15px;
+        }
+
+        .subsec-row {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .welcome-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .start-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .start-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .channel-link {
+            color: var(--primary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: 2px solid var(--primary);
+            border-radius: var(--radius);
+            font-weight: 600;
+        }
+
+        /* CBT Interface */
+        .exam-container {
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .exam-container.active {
+            display: flex;
+        }
+
+        /* Header block */
+        .exam-header {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .exam-title {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary);
+        }
+
+        .exam-timer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timer-box {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 16px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .dark-mode .timer-box {
+            background: #78350f;
+            color: #fef3c7;
+        }
+
+        /* Candidate info block */
+        .candidate-bar {
+            background: rgba(0,0,0,0.02);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .candidate-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .candidate-photo {
+            width: 36px;
+            height: 36px;
+            background: var(--border);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            color: var(--text-light);
+        }
+
+        .candidate-details {
+            font-size: 13px;
+        }
+
+        .candidate-name {
+            font-weight: 600;
+        }
+
+        .section-badge {
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 4px;
+        }
+
+        /* Segment switcher tabs */
+        .section-tabs {
+            display: flex;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .section-tab {
+            padding: 14px 20px;
+            border: none;
+            background: transparent;
+            color: var(--text-light);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+        }
+
+        .section-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .section-tab.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Main Workspace */
+        .exam-main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 300px;
+            background: var(--bg);
+        }
+
+        .question-area {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 120px);
+            overflow: hidden;
+        }
+
+        .question-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .question-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
         .question-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .question-marks {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .lang-toggle {
+            display: flex;
+            background: rgba(0,0,0,0.05);
+            padding: 2px;
+            border-radius: var(--radius);
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            padding: 6px 12px;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: var(--radius);
+            color: var(--text-light);
+        }
+
+        .lang-btn.active {
+            background: var(--card);
+            color: var(--primary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .comprehension {
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .comprehension h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .question-text {
+            font-size: 16px;
+            line-height: 1.6;
             margin-bottom: 24px;
         }
-        
-        .question-number {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 12px 20px;
-            border-radius: 16px;
-            font-weight: 700;
-            font-size: 14px;
-            box-shadow: var(--shadow-light);
+
+        /* Math rendering fractions */
+        .math-exp {
+            display: inline-block;
+            vertical-align: middle;
             position: relative;
+            margin: 0 2px;
         }
         
-        .question-info {
+        .math-num {
+            text-align: center;
+            display: block;
+            padding: 0;
+        }
+        
+        .math-line {
+            display: block;
+            border-top: 1px solid;
+            padding: 0;
+            text-align: center;
+        }
+
+        .options-list {
             display: flex;
             flex-direction: column;
-            align-items: flex-end;
-            gap: 4px;
+            gap: 12px;
         }
-        
-        .question-progress {
-            color: var(--text-secondary);
-            font-size: 12px;
-            font-weight: 500;
-        }
-        
-        .question-marks {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--success);
-            padding: 4px 8px;
-            border-radius: 8px;
-            font-size: 10px;
-            font-weight: 600;
-        }
-        
-        .question-text {
-            font-size: 18px;
-            line-height: 1.7;
-            margin-bottom: 32px;
-            color: var(--text);
-            font-weight: 500;
-        }
-        
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        
+
         .option {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 2px solid var(--border);
-            border-radius: 20px;
-            padding: 20px 24px;
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-            font-size: 16px;
-            font-weight: 500;
-            color: var(--text);
-            overflow: hidden;
-        }
-        
-        .option::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
-        
-        .option:hover::before {
-            left: 100%;
-        }
-        
-        .option:hover {
-            transform: translateY(-4px);
-            border-color: var(--primary);
-            box-shadow: var(--shadow-light);
-        }
-        
-        .option:active {
-            transform: scale(0.98);
-        }
-
-        .menu-btn, .theme-toggle, .nav-btn.prev, .action-btn.flag {
-    background: var(--card-bg);  /* Solid background */
-    backdrop-filter: none;  /* Remove blur */
-}
-
-.sidebar {
-    background: var(--card-bg);  /* Solid background */
-    backdrop-filter: none;  /* Remove blur */
-}
-        
-        .option.selected {
-            background: rgba(99, 102, 241, 0.15);
-            border-color: var(--primary);
-            color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-light);
-        }
-        
-        .option.correct {
-            background: rgba(16, 185, 129, 0.15);
-            border-color: var(--success);
-            color: var(--success);
-        }
-        
-        .option.incorrect {
-            background: rgba(239, 68, 68, 0.15);
-            border-color: var(--error);
-            color: var(--error);
-        }
-        
-        .option.disabled {
-            background: rgba(160, 174, 192, 0.1);
-            border-color: var(--text-secondary);
-            color: var(--text-secondary);
-            cursor: not-allowed;
-        }
-        
-        .option-indicator {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            transition: var(--transition);
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 700;
+            padding: 14px 18px;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            gap: 12px;
         }
-        
+
+        .option:hover:not(.submitted) {
+            border-color: var(--primary);
+            background: rgba(30, 64, 175, 0.02);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background: rgba(30, 64, 175, 0.05);
+        }
+
+        .option.correct {
+            border-color: var(--success) !important;
+            background: rgba(16, 185, 129, 0.08) !important;
+        }
+
+        .option.wrong {
+            border-color: var(--danger) !important;
+            background: rgba(239, 68, 68, 0.08) !important;
+        }
+
+        .option-indicator {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
         .option.selected .option-indicator {
+            border-color: var(--primary);
             background: var(--primary);
             color: white;
         }
-        
+
         .option.correct .option-indicator {
-            background: var(--success);
-            color: white;
+            border-color: var(--success) !important;
+            background: var(--success) !important;
+            color: white !important;
         }
-        
-        .option.incorrect .option-indicator {
-            background: var(--error);
-            color: white;
+
+        .option.wrong .option-indicator {
+            border-color: var(--danger) !important;
+            background: var(--danger) !important;
+            color: white !important;
         }
-        
-        .option:not(.selected):not(.correct):not(.incorrect) .option-indicator {
-            border: 2px solid var(--border);
-        }
-        
-        /* Solution Panel */
-        .solution-panel {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            border-radius: 20px;
-            padding: 24px;
+
+        .solution-box {
             margin-top: 24px;
-            backdrop-filter: blur(10px);
-            transform: translateY(20px);
-            opacity: 0;
-            transition: var(--transition);
-        }
-        
-        .solution-panel.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        
-        .solution-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-            color: var(--warning);
-            font-weight: 700;
-        }
-        
-        .solution-content {
-            color: var(--text);
-            line-height: 1.6;
-            font-size: 15px;
-        }
-        
-        /* Navigation */
-        .navigation {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background: var(--nav-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border);
-            padding: 16px 20px;
-            z-index: 90;
-        }
-        
-        .nav-content {
-            display: flex;
-            gap: 12px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .nav-btn {
-            flex: 1;
-            padding: 16px 24px;
-            border: none;
-            border-radius: 16px;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .nav-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.6s;
-        }
-        
-        .nav-btn:hover::before {
-            left: 100%;
-        }
-        
-        .nav-btn:active {
-            transform: scale(0.95);
-        }
-        
-        .nav-btn.prev {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            color: var(--text);
-            backdrop-filter: blur(10px);
-        }
-        
-        .nav-btn.next {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            box-shadow: var(--shadow-light);
-        }
-        
-        .nav-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .nav-btn:disabled::before {
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: var(--radius);
+            padding: 20px;
             display: none;
         }
-        
-        /* Question Panel Sidebar */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            max-width: 400px;
-            height: 100vh;
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-left: 1px solid var(--border);
-            z-index: 200;
-            transition: var(--transition);
+
+        .solution-box.show {
+            display: block;
+        }
+
+        .solution-header {
+            color: var(--success);
+            font-weight: 700;
+            margin-bottom: 10px;
             display: flex;
-            flex-direction: column;
-            box-shadow: var(--shadow-heavy);
+            align-items: center;
+            gap: 6px;
         }
-        
-        .sidebar.open {
-            right: 0;
+
+        .solution-stats {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+            display: flex;
+            gap: 15px;
         }
-        
-        .sidebar-header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 24px;
+
+        /* Navigation control bar */
+        .navigation-bar {
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
         }
-        
-        .sidebar-title {
-            font-weight: 800;
-            font-size: 20px;
-        }
-        
-        .close-btn {
-            background: rgba(255, 255, 255, 0.2);
+
+        .nav-btn {
             border: none;
-            color: white;
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 14px;
             cursor: pointer;
-            transition: var(--transition);
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            font-size: 18px;
+            gap: 8px;
         }
-        
-        .close-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: rotate(90deg);
+
+        .btn-prev {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
         }
-        
-        .sidebar-body {
-            flex: 1;
-            padding: 24px;
-            overflow-y: auto;
-        }
-        
-        .questions-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
-            margin-bottom: 32px;
-        }
-        
-        .question-btn {
-            background: var(--card-bg);
-            border: 2px solid var(--border);
-            color: var(--text-secondary);
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-            position: relative;
-        }
-        
-        .question-btn:hover {
-            transform: scale(1.1);
-            box-shadow: var(--shadow-light);
-        }
-        
-        .question-btn:active {
-            transform: scale(0.95);
-        }
-        
-        .question-btn.current {
+
+        .btn-next {
             background: var(--primary);
             color: white;
-            border-color: var(--primary);
-            box-shadow: var(--shadow-light);
         }
-        
-        .question-btn.answered {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--success);
-            border-color: var(--success);
+
+        .btn-next:hover {
+            background: var(--primary-hover);
         }
-        
-        .question-btn.correct {
+
+        .btn-review {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .btn-review.marked {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-submit {
             background: var(--success);
             color: white;
-            border-color: var(--success);
         }
-        
-        .question-btn.incorrect {
-            background: var(--error);
-            color: white;
-            border-color: var(--error);
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
-        
-        .question-btn.flagged::after {
-            content: '🚩';
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            font-size: 10px;
+
+        .progress-info {
+            text-align: center;
+            font-size: 13px;
         }
-        
-        /* Legend */
-        .legend {
+
+        /* Sidebar Question Navigator */
+        .navigator-sidebar {
+            background: var(--card);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 120px);
+        }
+
+        .navigator-header {
+            padding: 16px;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .navigator-grid {
+            flex: 1;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 32px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            padding: 16px;
+            overflow-y: auto;
+            align-content: start;
         }
-        
+
+        .nav-question {
+            aspect-ratio: 1;
+            border: 2px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            border-radius: var(--radius);
+            font-size: 13px;
+            font-weight: 600;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+        }
+
+        .nav-question.current {
+            border-color: var(--primary);
+            background: rgba(30, 64, 175, 0.05);
+            color: var(--primary);
+        }
+
+        .nav-question.answered {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .nav-question.wrong {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+        }
+
+        .nav-question.review {
+            background: var(--warning);
+            border-color: var(--warning);
+            color: white;
+        }
+
+        .nav-question.disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .navigator-legend {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+            font-size: 12px;
+            color: var(--text-light);
+            display: grid;
+            gap: 8px;
+        }
+
         .legend-item {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 12px;
-            font-weight: 500;
         }
-        
-        .legend-dot {
+
+        .legend-box {
             width: 16px;
             height: 16px;
-            border-radius: 50%;
-            flex-shrink: 0;
+            border-radius: 3px;
         }
-        
-        .legend-dot.current { background: var(--primary); }
-        .legend-dot.answered { background: var(--success); }
-        .legend-dot.unattempted { background: var(--text-secondary); }
-        .legend-dot.flagged { background: var(--warning); }
-        
-        /* Action Buttons */
-        .action-buttons {
+
+        /* Result Modal */
+        .result-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .result-modal.show {
+            display: flex;
+        }
+
+        .result-container {
+            background: var(--card);
+            border-radius: var(--radius);
+            max-width: 500px;
+            width: 100%;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .result-score {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 10px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .result-stat {
+            padding: 12px;
+            border-radius: var(--radius);
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .result-stat-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .result-stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .result-stat.correct {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
+            color: var(--success);
+        }
+
+        .result-stat.incorrect {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.05);
+            color: var(--danger);
+        }
+
+        .section-results {
+            margin-bottom: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .section-results h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .section-results-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .section-results-table th,
+        .section-results-table td {
+            padding: 6px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .section-results-table th {
+            background: rgba(0,0,0,0.03);
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .result-btn {
+            flex: 1;
+            border: none;
+            padding: 12px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-close {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-review-ans {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .theme-toggle:hover {
+            color: var(--primary);
+        }
+
+        .mobile-only {
+            display: none;
+        }
+
+        /* Mobile drawer navigation */
+        .mobile-navigator {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            width: 280px;
+            background: var(--card);
+            border-left: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            z-index: 200;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
             display: flex;
             flex-direction: column;
-            gap: 12px;
         }
-        
-        .action-btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 16px;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            transition: var(--transition);
-            backdrop-filter: blur(10px);
-        }
-        
-        .action-btn.flag {
-            background: rgba(245, 158, 11, 0.2);
-            color: var(--warning);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-        }
-        
-        .action-btn.submit {
-            background: linear-gradient(135deg, var(--error), #dc2626);
-            color: white;
-            box-shadow: var(--shadow-light);
-        }
-        
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-heavy);
-        }
-        
-        .action-btn:active {
-            transform: scale(0.98);
-        }
-        
-        /* Overlay */
-        .overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            z-index: 150;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-        }
-        
-        .overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        /* Result Modal */
-        .modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.8);
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: 32px;
-            max-width: 90vw;
-            width: 480px;
-            z-index: 300;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            box-shadow: var(--shadow-heavy);
-            overflow: hidden;
-        }
-        
-        .modal.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -50%) scale(1);
-        }
-        
-        .modal-header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 40px 32px;
-            text-align: center;
-        }
-        
-        .modal-title {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-        
-        .modal-subtitle {
-            opacity: 0.9;
-            font-size: 16px;
-            font-weight: 500;
-        }
-        
-        .modal-body {
-            padding: 32px;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-        
-        .stat-card {
-            text-align: center;
-            padding: 20px 16px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-        }
-        
-        .stat-label {
-            color: var(--text-secondary);
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-        
-        .stat-value {
-            color: var(--text);
-            font-size: 24px;
-            font-weight: 800;
-        }
-        
-        .final-score {
-            background: linear-gradient(135deg, var(--success), #059669);
-            color: white;
-            border-radius: 20px;
-            padding: 32px;
-            text-align: center;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-light);
-        }
-        
-        .score-text {
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-        
-        .percentage-text {
-            opacity: 0.9;
-            font-size: 18px;
-            font-weight: 600;
-        }
-        
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .modal-btn {
-            flex: 1;
-            padding: 16px;
-            border: none;
-            border-radius: 16px;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            transition: var(--transition);
-            backdrop-filter: blur(10px);
-        }
-        
-        .modal-btn.primary {
-            background: rgba(99, 102, 241, 0.2);
-            color: var(--primary);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-        }
-        
-        .modal-btn.success {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--success);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-        
-        .modal-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-light);
-        }
-        
-        /* Auto-save indicator */
-        .auto-save {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            background: var(--success);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            transform: translateX(100px);
-            opacity: 0;
-            transition: var(--transition);
-            z-index: 90;
-        }
-        
-        .auto-save.show {
+
+        .mobile-navigator.open {
             transform: translateX(0);
-            opacity: 1;
         }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .header-content {
-                padding: 0 4px;
+
+        .mobile-nav-header {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .close-nav {
+            font-size: 24px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        @media (max-width: 1023px) {
+            .exam-main {
+                grid-template-columns: 1fr;
             }
-            
-            .main {
-                padding: 16px;
-                margin: 70px 0 90px;
+            .desktop-only {
+                display: none;
             }
-            
-            .question-container {
-                padding: 24px 20px;
+            .mobile-only {
+                display: block;
             }
-            
-            .question-text {
-                font-size: 16px;
+            .question-area {
+                height: calc(100vh - 120px);
             }
-            
-            .option {
-                padding: 16px 20px;
+        }
+
+        @media (max-width: 640px) {
+            .exam-header {
+                padding: 10px 15px;
+            }
+            .exam-title {
                 font-size: 15px;
             }
-            
-            .nav-content {
-                padding: 0 4px;
+            .timer-box {
+                font-size: 14px;
+                padding: 6px 12px;
             }
-            
-            .nav-btn {
-                padding: 14px 20px;
-                font-size: 15px;
+            .candidate-bar {
+                padding: 8px 15px;
             }
-            
-            .modal {
-                width: 95vw;
-                margin: 0 16px;
+            .section-tab {
+                padding: 10px 14px;
+                font-size: 13px;
             }
-            
-            .questions-grid {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 10px;
-            }
-            
-            .question-btn {
-                width: 44px;
-                height: 44px;
-            }
-        }
-        
-        /* Touch interactions */
-        @media (hover: none) and (pointer: coarse) {
-            .option:hover {
-                transform: none;
-            }
-            
-            .nav-btn:hover {
-                transform: none;
-            }
-            
-            .question-btn:hover {
-                transform: none;
-            }
-        }
-        
-        /* Accessibility */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-        
-        /* Focus styles for accessibility */
-        .option:focus,
-        .nav-btn:focus,
-        .question-btn:focus,
-        .menu-btn:focus,
-        .theme-toggle:focus {
-            outline: 2px solid var(--primary);
-            outline-offset: 2px;
         }
     </style>
 </head>
-<body data-theme="light">
-    <!-- Floating particles background -->
-    <div class="particles" id="particles"></div>
-    
-    <!-- Auto-save indicator -->
-    <div class="auto-save" id="autoSave">
-        ✓ Auto-saved
+<body>
+    <!-- Welcome Start page -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-container">
+            <div class="welcome-header">
+                <h1><i class="fas fa-graduation-cap"></i> CBT Portal</h1>
+                <p>Computer Based Test Environment</p>
+            </div>
+            
+            <div class="test-details">
+                <div class="detail-item">
+                    <div class="detail-label">Total Questions</div>
+                    <div class="detail-value" id="welcomeTotalQs">0</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Total Marks</div>
+                    <div class="detail-value" id="welcomeTotalMarks">0</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Duration</div>
+                    <div class="detail-value" id="welcomeDuration">0 mins</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Marking Scheme</div>
+                    <div class="detail-value" id="welcomeMarksScheme">+0.0 / -0.0</div>
+                </div>
+            </div>
+            
+            <div class="section-info" id="welcomeSectionsBlock" style="display:none;">
+                <h3><i class="fas fa-layer-group"></i> Section Details</h3>
+                <table class="section-table">
+                    <thead>
+                        <tr>
+                            <th>Section Name</th>
+                            <th>Questions</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="welcomeSectionsBody"></tbody>
+                </table>
+            </div>
+            
+            <div class="welcome-actions">
+                <button class="start-btn" id="startBtn">
+                    <i class="fas fa-play"></i> Start Test
+                </button>
+            </div>
+        </div>
     </div>
     
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <div class="header-left">
-                <button class="menu-btn" onclick="toggleSidebar()">
-                    ☰
-                </button>
-                <div class="logo">Mocks Wallah</div>
+    <!-- Active Exam Interface -->
+    <div class="exam-container" id="examContainer">
+        <div class="exam-header">
+            <div class="exam-title">Mocks Wallah</div>
+            <div class="exam-timer">
+                <div class="timer-box" id="mainTimer">00:00</div>
+                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <button class="nav-btn btn-submit mobile-only" id="submitBtn">Submit</button>
             </div>
-            <div class="header-right">
-                <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" aria-label="Toggle theme">
-                    🌙
-                </button>
-                <div class="timer-container">
-                    <svg class="progress-ring" width="40" height="40">
-                        <circle class="progress-circle" cx="20" cy="20" r="18"></circle>
-                        <circle class="progress-circle progress" cx="20" cy="20" r="18" 
-                                stroke-dasharray="113.1" stroke-dashoffset="0" id="progressCircle"></circle>
-                    </svg>
-                    <div class="timer" id="timer">20:00</div>
+        </div>
+        
+        <div class="candidate-bar">
+            <div class="candidate-info">
+                <div class="candidate-photo">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="candidate-details">
+                    <div class="candidate-name">Candidate</div>
+                    <div class="candidate-id">ID: User</div>
+                </div>
+            </div>
+            <div class="section-badge" id="sectionBadge" style="display:none;">
+                <span id="sectionName"></span><span id="sectionTimer"></span>
+            </div>
+        </div>
+
+        <!-- Section tabs for Soft Switching (Tier I) -->
+        <div class="section-tabs" id="sectionTabs" style="display:none;"></div>
+        
+        <div class="exam-main">
+            <div class="question-area">
+                <div class="question-scroll">
+                    <div class="question-card">
+                        <div class="question-header">
+                            <div>
+                                <div class="question-number" id="questionNum">Question 1</div>
+                                <div class="question-marks" id="questionMarks">Marks: 3.0</div>
+                            </div>
+                            <div class="lang-toggle">
+                                <button class="lang-btn active" id="engBtn">English</button>
+                                <button class="lang-btn" id="hinBtn">हिंदी</button>
+                            </div>
+                        </div>
+                        
+                        <div class="comprehension" id="comprehension" style="display:none;">
+                            <h4><i class="fas fa-book-open"></i> Comprehension</h4>
+                            <div id="comprehensionText"></div>
+                        </div>
+                        
+                        <div class="question-text" id="questionText"></div>
+                        <div class="options-list" id="optionsList"></div>
+                        
+                        <div class="solution-box" id="solutionBox">
+                            <div class="solution-header">
+                                <i class="fas fa-lightbulb"></i> Solution
+                            </div>
+                            <div class="solution-stats" id="solutionStats"></div>
+                            <div id="solutionText"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="navigation-bar">
+                    <button class="nav-btn btn-prev" id="prevBtn"><i class="fas fa-chevron-left"></i> Prev</button>
+                    <div class="progress-info">
+                        <div id="progressText">Question 1</div>
+                        <div style="font-size:11px;margin-top:4px">
+                            Answered: <span id="answeredCount">0</span>
+                        </div>
+                    </div>
+                    <button class="nav-btn btn-review" id="reviewBtn"><i class="fas fa-flag"></i> Mark for Review</button>
+                    <button class="nav-btn mobile-only" id="navigatorBtn"><i class="fas fa-th"></i> Grid</button>
+                    <button class="nav-btn btn-submit desktop-only" id="submitBtnDesktop">Submit</button>
+                    <button class="nav-btn btn-next">Next <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            
+            <div class="navigator-sidebar desktop-only">
+                <div class="navigator-header">Question Navigator</div>
+                <div class="navigator-grid" id="desktopNav"></div>
+                <div class="navigator-legend">
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--success)"></div>
+                        <span>Answered</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--warning)"></div>
+                        <span>Marked for Review</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--danger)"></div>
+                        <span>Incorrect</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--card);border:2px solid var(--border)"></div>
+                        <span>Unattempted</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </header>
+    </div>
     
-    <!-- Main Content -->
-    <main class="main">
-        <div class="question-container" id="questionContainer">
-            <div class="question-header">
-                <div class="question-number" id="questionNumber">Q1</div>
-                <div class="question-info">
-                    <div class="question-progress" id="questionProgress">1 of 25</div>
-                    <div class="question-marks">+1.0 / -0.25</div>
-                </div>
+    <!-- Mobile drawer panel -->
+    <div class="mobile-navigator" id="mobileNav">
+        <div class="mobile-nav-header">
+            <h3>Question Navigator</h3>
+            <button class="close-nav" id="closeNav">&times;</button>
+        </div>
+        <div class="navigator-grid" id="mobileNavGrid"></div>
+        <div class="navigator-legend">
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--success)"></div>
+                <span>Answered</span>
             </div>
-            <div class="question-text" id="questionText"></div>
-            <div class="options-container" id="optionsContainer"></div>
-            <div class="solution-panel" id="solutionPanel">
-                <div class="solution-header">
-                    <span>💡</span>
-                    <span>Solution</span>
-                </div>
-                <div class="solution-content" id="solutionContent"></div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--warning)"></div>
+                <span>Marked for Review</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--danger)"></div>
+                <span>Incorrect</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--card);border:2px solid var(--border)"></div>
+                <span>Unattempted</span>
             </div>
         </div>
-    </main>
+    </div>
     
-    <!-- Navigation -->
-    <nav class="navigation">
-        <div class="nav-content">
-            <button class="nav-btn prev" id="prevBtn" onclick="previousQuestion()" disabled>
-                ← Previous
-            </button>
-            <button class="nav-btn next" id="nextBtn" onclick="nextQuestion()">
-                Next →
-            </button>
-        </div>
-    </nav>
-    
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="sidebar-title">Question Panel</div>
-            <button class="close-btn" onclick="closeSidebar()" aria-label="Close panel">×</button>
-        </div>
-        <div class="sidebar-body">
-            <div class="questions-grid" id="questionsGrid"></div>
-            <div class="legend">
-                <div class="legend-item">
-                    <div class="legend-dot current"></div>
-                    <span>Current</span>
+    <!-- Result Overlay -->
+    <div class="result-modal" id="resultModal">
+        <div class="result-container">
+            <div class="result-header">
+                <h2>Test Completed!</h2>
+                <div class="result-score" id="resultScore">0.00</div>
+            </div>
+            
+            <div class="result-grid">
+                <div class="result-stat correct">
+                    <div class="result-stat-value" id="correctCount">0</div>
+                    <div class="result-stat-label">Correct</div>
                 </div>
-                <div class="legend-item">
-                    <div class="legend-dot answered"></div>
-                    <span>Answered</span>
+                <div class="result-stat incorrect">
+                    <div class="result-stat-value" id="incorrectCount">0</div>
+                    <div class="result-stat-label">Incorrect</div>
                 </div>
-                <div class="legend-item">
-                    <div class="legend-dot unattempted"></div>
-                    <span>Unattempted</span>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="unattemptedCount">0</div>
+                    <div class="result-stat-label">Unattempted</div>
                 </div>
-                <div class="legend-item">
-                    <div class="legend-dot flagged"></div>
-                    <span>Flagged</span>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="timeTaken">0</div>
+                    <div class="result-stat-label">Minutes</div>
                 </div>
             </div>
-            <div class="action-buttons">
-                <button class="action-btn flag" onclick="toggleFlag()" id="flagBtn">
-                    🚩 Flag Question
-                </button>
-                <button class="action-btn submit" onclick="submitTest()">
-                    Submit Test
-                </button>
+            
+            <div class="section-results" id="sectionResults" style="display:none;">
+                <h3>Section-wise Performance</h3>
+                <table class="section-results-table">
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Attempted</th>
+                            <th>Correct</th>
+                            <th>Wrong</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sectionResultsBody"></tbody>
+                </table>
             </div>
-        </div>
-    </aside>
-    
-    <!-- Overlay -->
-    <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
-    
-    <!-- Result Modal -->
-    <div class="modal" id="resultModal">
-        <div class="modal-header">
-            <div class="modal-title" id="resultTitle">Test Completed!</div>
-            <div class="modal-subtitle" id="resultSubtitle">Great job on completing the test</div>
-        </div>
-        <div class="modal-body">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Correct</div>
-                    <div class="stat-value" id="correctCount">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Wrong</div>
-                    <div class="stat-value" id="wrongCount">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Skipped</div>
-                    <div class="stat-value" id="skippedCount">0</div>
-                </div>
-            </div>
-            <div class="final-score">
-                <div class="score-text" id="finalScore">0 Marks</div>
-                <div class="percentage-text" id="finalPercentage">0%</div>
-            </div>
-            <div class="modal-actions">
-                <button class="modal-btn primary" onclick="viewSolutions()">
-                    View Solutions
-                </button>
-                <button class="modal-btn success" onclick="retakeTest()">
-                    Retake Test
-                </button>
+            
+            <div class="result-actions">
+                <button class="result-btn btn-close" id="closeResult">Close</button>
+                <button class="result-btn btn-review-ans" id="reviewAnswers">Review Answers</button>
             </div>
         </div>
     </div>
     
     <script>
-        // Core Variables
         const questions = [{"id": "130409", "question": "<strong>Comprehension:</strong><br> It has been a tumultuous time for the Indian rupee even as the Reserve Bank of India (RBI) has been actively stepping into the foreign exchange market to stem its free fall in pursuit of what it calls an ‘orderly’ exchange movement. The rupee had hit an all-time low of 85 to the U.S. dollar on December 19. Last Friday, it came precariously close to the 86-mark before a late intervention by the central bank pulled it back to 85.53. A confluence of factors at work have hurt the rupee in recent times, including the sustained outflows of foreign portfolio investments from securities markets after key indices peaked in late September. Overstretched stock valuations, a demotivating corporate performance in the July-September quarter, and China’s economic stimulus, nudged emerging market portfolios from Mumbai to Beijing. The Donald Trump factor added a fresh headwind with the dollar strengthening since his U.S. presidential electoral victory, and emerging market currencies were further rattled by his warning of a 100% tariff on BRICS nations for a common currency plan to challenge the dominance of the U.S. dollar in global trade.<br> Even before fears about Mr. Trump’s generally protectionist stance on trade matters materialise, India’s goods trade story is sputtering. Record trade deficits and import bills are going to show up in this quarter’s current account deficit, which is expected to double from around 1.2% of GDP in the second quarter. Services trade is still throwing up a surplus but the uncertainty around the H-1B visa regixme will be a key monitorable, despite Mr. Trump’s latest soothing comments on the system. The previous RBI Governor, Shaktikanta Das, did well to forthrightly dismiss the BRICS currency as just an idea in the air, and stress that India has no de-dollarisation agenda. The government must also issue an unequivocal statement to this effect in public fora and in diplomatic parleys to put the issue to rest. It is true that the currencies of other emerging markets have taken a bigger hit and a falling rupee bodes well for exporters, but India also needs to worry about importing inflation, especially on inelastic items such as edible oil and crude petroleum. Moreover, foreign investment flows are uncertain as is the U.S. monetary policy outlook for 2025. There is also a limit to the extent the central bank can deploy forex reserves to manage the rupee’s trajectory, and the Finance Ministry has conceded that recent exchange rate movements cramp the freedom for monetary policymakers. India’s present economic woes are linked to domestic drivers such as faltering consumption and reluctant investments. With the rupee coming under pressure, the country’s external resilience could be tested as well in 2025, and policymakers must gear up to manage this new risk.<br> <strong>What best describes the tone of the passage?</strong>", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Nostalgic", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Analytical", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Humorous", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Sarcastic"], "correct_answer": 1, "solution": "No solution available"}, {"id": "130410", "question": "<strong>Comprehension:</strong><br> It has been a tumultuous time for the Indian rupee even as the Reserve Bank of India (RBI) has been actively stepping into the foreign exchange market to stem its free fall in pursuit of what it calls an ‘orderly’ exchange movement. The rupee had hit an all-time low of 85 to the U.S. dollar on December 19. Last Friday, it came precariously close to the 86-mark before a late intervention by the central bank pulled it back to 85.53. A confluence of factors at work have hurt the rupee in recent times, including the sustained outflows of foreign portfolio investments from securities markets after key indices peaked in late September. Overstretched stock valuations, a demotivating corporate performance in the July-September quarter, and China’s economic stimulus, nudged emerging market portfolios from Mumbai to Beijing. The Donald Trump factor added a fresh headwind with the dollar strengthening since his U.S. presidential electoral victory, and emerging market currencies were further rattled by his warning of a 100% tariff on BRICS nations for a common currency plan to challenge the dominance of the U.S. dollar in global trade.<br> Even before fears about Mr. Trump’s generally protectionist stance on trade matters materialise, India’s goods trade story is sputtering. Record trade deficits and import bills are going to show up in this quarter’s current account deficit, which is expected to double from around 1.2% of GDP in the second quarter. Services trade is still throwing up a surplus but the uncertainty around the H-1B visa regixme will be a key monitorable, despite Mr. Trump’s latest soothing comments on the system. The previous RBI Governor, Shaktikanta Das, did well to forthrightly dismiss the BRICS currency as just an idea in the air, and stress that India has no de-dollarisation agenda. The government must also issue an unequivocal statement to this effect in public fora and in diplomatic parleys to put the issue to rest. It is true that the currencies of other emerging markets have taken a bigger hit and a falling rupee bodes well for exporters, but India also needs to worry about importing inflation, especially on inelastic items such as edible oil and crude petroleum. Moreover, foreign investment flows are uncertain as is the U.S. monetary policy outlook for 2025. There is also a limit to the extent the central bank can deploy forex reserves to manage the rupee’s trajectory, and the Finance Ministry has conceded that recent exchange rate movements cramp the freedom for monetary policymakers. India’s present economic woes are linked to domestic drivers such as faltering consumption and reluctant investments. With the rupee coming under pressure, the country’s external resilience could be tested as well in 2025, and policymakers must gear up to manage this new risk.<br> <strong>Which conclusion can be drawn from the passage regarding the Indian rupee’s trajectory and the RBI’s intervention?</strong>", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> The RBI has completely halted its interventions in the foreign exchange market.", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> The rupee’s decline is driven entirely by domestic consumption issues.", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Multiple external and domestic factors have weakened the rupee, prompting the RBI to intervene for an orderly exchange movement.", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> The U.S. monetary policy in 2025 is solely responsible for the rupee’s depreciation."], "correct_answer": 2, "solution": "No solution available"}, {"id": "130411", "question": "<strong>Comprehension:</strong><br> It has been a tumultuous time for the Indian rupee even as the Reserve Bank of India (RBI) has been actively stepping into the foreign exchange market to stem its free fall in pursuit of what it calls an ‘orderly’ exchange movement. The rupee had hit an all-time low of 85 to the U.S. dollar on December 19. Last Friday, it came precariously close to the 86-mark before a late intervention by the central bank pulled it back to 85.53. A confluence of factors at work have hurt the rupee in recent times, including the sustained outflows of foreign portfolio investments from securities markets after key indices peaked in late September. Overstretched stock valuations, a demotivating corporate performance in the July-September quarter, and China’s economic stimulus, nudged emerging market portfolios from Mumbai to Beijing. The Donald Trump factor added a fresh headwind with the dollar strengthening since his U.S. presidential electoral victory, and emerging market currencies were further rattled by his warning of a 100% tariff on BRICS nations for a common currency plan to challenge the dominance of the U.S. dollar in global trade.<br> Even before fears about Mr. Trump’s generally protectionist stance on trade matters materialise, India’s goods trade story is sputtering. Record trade deficits and import bills are going to show up in this quarter’s current account deficit, which is expected to double from around 1.2% of GDP in the second quarter. Services trade is still throwing up a surplus but the uncertainty around the H-1B visa regixme will be a key monitorable, despite Mr. Trump’s latest soothing comments on the system. The previous RBI Governor, Shaktikanta Das, did well to forthrightly dismiss the BRICS currency as just an idea in the air, and stress that India has no de-dollarisation agenda. The government must also issue an unequivocal statement to this effect in public fora and in diplomatic parleys to put the issue to rest. It is true that the currencies of other emerging markets have taken a bigger hit and a falling rupee bodes well for exporters, but India also needs to worry about importing inflation, especially on inelastic items such as edible oil and crude petroleum. Moreover, foreign investment flows are uncertain as is the U.S. monetary policy outlook for 2025. There is also a limit to the extent the central bank can deploy forex reserves to manage the rupee’s trajectory, and the Finance Ministry has conceded that recent exchange rate movements cramp the freedom for monetary policymakers. India’s present economic woes are linked to domestic drivers such as faltering consumption and reluctant investments. With the rupee coming under pressure, the country’s external resilience could be tested as well in 2025, and policymakers must gear up to manage this new risk.<br> <strong>Which factor, mentioned in the passage, significantly contributed to the recent weakening of the Indian rupee?</strong>", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Improved corporate earnings in the July-September quarter", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> The dollar’s strengthening following Donald Trump’s electoral victory", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> A sharp decrease in India’s overall import bills", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Continuous inflow of foreign portfolio investments into Indian markets"], "correct_answer": 1, "solution": "No solution available"}, {"id": "130412", "question": "<strong>Comprehension:</strong><br> It has been a tumultuous time for the Indian rupee even as the Reserve Bank of India (RBI) has been actively stepping into the foreign exchange market to stem its free fall in pursuit of what it calls an ‘orderly’ exchange movement. The rupee had hit an all-time low of 85 to the U.S. dollar on December 19. Last Friday, it came precariously close to the 86-mark before a late intervention by the central bank pulled it back to 85.53. A confluence of factors at work have hurt the rupee in recent times, including the sustained outflows of foreign portfolio investments from securities markets after key indices peaked in late September. Overstretched stock valuations, a demotivating corporate performance in the July-September quarter, and China’s economic stimulus, nudged emerging market portfolios from Mumbai to Beijing. The Donald Trump factor added a fresh headwind with the dollar strengthening since his U.S. presidential electoral victory, and emerging market currencies were further rattled by his warning of a 100% tariff on BRICS nations for a common currency plan to challenge the dominance of the U.S. dollar in global trade.<br> Even before fears about Mr. Trump’s generally protectionist stance on trade matters materialise, India’s goods trade story is sputtering. Record trade deficits and import bills are going to show up in this quarter’s current account deficit, which is expected to double from around 1.2% of GDP in the second quarter. Services trade is still throwing up a surplus but the uncertainty around the H-1B visa regixme will be a key monitorable, despite Mr. Trump’s latest soothing comments on the system. The previous RBI Governor, Shaktikanta Das, did well to forthrightly dismiss the BRICS currency as just an idea in the air, and stress that India has no de-dollarisation agenda. The government must also issue an unequivocal statement to this effect in public fora and in diplomatic parleys to put the issue to rest. It is true that the currencies of other emerging markets have taken a bigger hit and a falling rupee bodes well for exporters, but India also needs to worry about importing inflation, especially on inelastic items such as edible oil and crude petroleum. Moreover, foreign investment flows are uncertain as is the U.S. monetary policy outlook for 2025. There is also a limit to the extent the central bank can deploy forex reserves to manage the rupee’s trajectory, and the Finance Ministry has conceded that recent exchange rate movements cramp the freedom for monetary policymakers. India’s present economic woes are linked to domestic drivers such as faltering consumption and reluctant investments. With the rupee coming under pressure, the country’s external resilience could be tested as well in 2025, and policymakers must gear up to manage this new risk.<br> <strong>Who dismissed the BRICS currency proposal as “just an idea in the air”?</strong>", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Donald Trump", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> The Finance Ministry", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> The previous RBI Governor, Shaktikanta Das", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> The Commerce Ministry"], "correct_answer": 2, "solution": "No solution available"}, {"id": "130413", "question": "<strong>Comprehension:</strong><br> It has been a tumultuous time for the Indian rupee even as the Reserve Bank of India (RBI) has been actively stepping into the foreign exchange market to stem its free fall in pursuit of what it calls an ‘orderly’ exchange movement. The rupee had hit an all-time low of 85 to the U.S. dollar on December 19. Last Friday, it came precariously close to the 86-mark before a late intervention by the central bank pulled it back to 85.53. A confluence of factors at work have hurt the rupee in recent times, including the sustained outflows of foreign portfolio investments from securities markets after key indices peaked in late September. Overstretched stock valuations, a demotivating corporate performance in the July-September quarter, and China’s economic stimulus, nudged emerging market portfolios from Mumbai to Beijing. The Donald Trump factor added a fresh headwind with the dollar strengthening since his U.S. presidential electoral victory, and emerging market currencies were further rattled by his warning of a 100% tariff on BRICS nations for a common currency plan to challenge the dominance of the U.S. dollar in global trade.<br> Even before fears about Mr. Trump’s generally protectionist stance on trade matters materialise, India’s goods trade story is sputtering. Record trade deficits and import bills are going to show up in this quarter’s current account deficit, which is expected to double from around 1.2% of GDP in the second quarter. Services trade is still throwing up a surplus but the uncertainty around the H-1B visa regixme will be a key monitorable, despite Mr. Trump’s latest soothing comments on the system. The previous RBI Governor, Shaktikanta Das, did well to forthrightly dismiss the BRICS currency as just an idea in the air, and stress that India has no de-dollarisation agenda. The government must also issue an unequivocal statement to this effect in public fora and in diplomatic parleys to put the issue to rest. It is true that the currencies of other emerging markets have taken a bigger hit and a falling rupee bodes well for exporters, but India also needs to worry about importing inflation, especially on inelastic items such as edible oil and crude petroleum. Moreover, foreign investment flows are uncertain as is the U.S. monetary policy outlook for 2025. There is also a limit to the extent the central bank can deploy forex reserves to manage the rupee’s trajectory, and the Finance Ministry has conceded that recent exchange rate movements cramp the freedom for monetary policymakers. India’s present economic woes are linked to domestic drivers such as faltering consumption and reluctant investments. With the rupee coming under pressure, the country’s external resilience could be tested as well in 2025, and policymakers must gear up to manage this new risk.<br> <strong>Complete the following statement from the passage:</strong><br> “Services trade is still throwing up a surplus, but the uncertainty around the ______ will be a key monitorable, despite Mr. Trump’s latest soothing comments on the system.”", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> H-1B visa regime", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Indian Goods and Services Tax (GST)", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Foreign Direct Investment (FDI) guidelines", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Tariff concessions from emerging economies"], "correct_answer": 0, "solution": "No solution available"}, {"id": "130414", "question": "<strong>Select the option that can be used as a one-word substitute for the given group of words.</strong></p> <p>Morbid compulsion to consume alcohol continuously", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Satyromania", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Maniac", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Kleptomania", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Dipsomania"], "correct_answer": 3, "solution": "D) <strong>Dipsomania</strong> (noun) – Morbid compulsion to consume alcohol continuously. मद्यपान की असामान्य लत"}, {"id": "130415", "question": "<strong>Select the option that expresses the given sentence in active voice.</strong></p> <p>The painting was admired by art enthusiasts from around the world.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> The painting was being admired by art enthusiasts from around the world.", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Art enthusiasts from around the world admired the painting.", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Art enthusiasts from around the world have admired the painting.", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> The painting has been admired by art enthusiasts from around the world"], "correct_answer": 1, "solution": "B) Art enthusiasts from around the world admired the painting.\n\n'was admired' के बदले 'admired' का प्रयोग होगा। Active Voice में हमेशा 'Subject + V² [Verb का Simple Past रूप] + Object' का प्रयोग होता है, जैसे—\n\n(i) The letter was written by her.\n\nActive: She wrote the letter.\n\nSubject → She V² → wrote Object → the letter\n\nExplanation in English:\n\n(B) In place of ‘was admired’, ‘admired’ will be used.\n\nIn Active Voice, we always use the formula:\n\nSubject + V² [Simple Past form of the Verb] + Object\n\nFor example:\n\n(i) The letter was written by her.\n\nActive: She wrote the letter.\n\n→ Subject → She → V² → wrote → Object → the letter"}, {"id": "130416", "question": "<strong>Select the word segment that can substitute the bracketed word segment correctly and complete the sentence meaningfully.</strong></p> <p>(Each participant have) performed well.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Each participant was", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Each participant has", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Each participant have been", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Each participant were"], "correct_answer": 1, "solution": "B) Each participant have' के बदले <strong>'Each participant has'</strong> का प्रयोग होगा क्योंकि 'Each participant' Singular है, और Singular Subject के साथ Singular Verb 'has' का प्रयोग किया जाता है, न कि Plural Verb 'have' का; जैसे— Each participant has received a certificate.\n\n<strong>'Each participant has'</strong> will be used instead of 'Each participant have' because 'Each participant' is singular, and with a singular subject, we use the singular verb 'has', not the plural verb 'have'; Like— Each participant has received a certificate."}, {"id": "130417", "question": "<strong>Select the most appropriate meaning of the underlined idiom.</strong></p> <p>Fatima was <ins><strong>at her wits’ end</strong></ins> trying to decide on a serene place for spending the holidays in", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> So worried, confused or annoyed that she does not know what to do next", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> So worried, confused or annoyed that she became unconscious", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> So calm and composed that she knows what to do next", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> So worried, confused or annoyed that she insulted others for no reason"], "correct_answer": 0, "solution": "A) <strong>At her wits’ end</strong> (idiom) – So worried, confused, or annoyed that she does not know what to do next इतना चिंतित, भ्रमित या परेशान कि वह समझ नहीं पा रही कि आगे क्या करना है।"}, {"id": "130418", "question": "<strong>Parts of a sentence are given below in jumbled order. Arrange the parts in the correct order to form a meaningful sentence.</strong></p> <p>P. having the opportunity of observing people’s</p> <p>Q. we respect and appreciate their point of views</p> <p>R. the advantage of travelling different places and</p> <p>S. culture, custom and lifestyle, is that", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> RQPS", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> PSQR", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> RPSQ", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> SQPR"], "correct_answer": 2, "solution": "C) <strong>RPSQ</strong>\n\nThe sentence starts with (R) \"the advantage of travelling different places and\" as it introduces the main subject, which is the advantage of traveling.\n\n(P) \"having the opportunity of observing people’s\" follows as it describes what this advantage is related to.\n\n(S) \"culture, custom and lifestyle, is that\" comes next, completing the description of the opportunity mentioned in the previous part.\n\n(Q) \"we respect and appreciate their point of views\" concludes the sentence by explaining the outcome of the stated advantage."}, {"id": "130419", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>Taut", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Slack", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Tight", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Torn", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Flaccid"], "correct_answer": 1, "solution": "B) <strong>Taut</strong> (adjective) – Stretched or pulled tight, not slack, rigid, tense. कसावदार\n\nSynonym: <strong>Tight</strong> (adjective) – Firmly or closely fixed in place, stretched, secure. कस हुआ"}, {"id": "130420", "question": "<strong>Select the option that expresses the given sentence in active voice.</strong></p> <p>He will be made President by the people.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> People will be making him the President.", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> The people will make him President.", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> By the people, he shall be made the President.", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> He will be made President by the people."], "correct_answer": 1, "solution": "B) The people will make him President\n\nPassive Voice को Active Voice में बदलते समय, कर्ता (subject) वाक्य की शुरुआत में आता है और क्रिया (verb) के साथ सीधा कार्य करता है। जैसे—\n\n(i) He will be made President by the people.\n\nTo Be → will be V³ → made Active Voice → The people will make him President.\n\nExplanation: 'The people' को कर्ता (subject) के रूप में रखा गया और 'will make' क्रिया (verb) के रूप में प्रयोग किया गया।\n\nExplanation in English:\n\n(B) ‘The people will make him President’ will be used. While converting Passive Voice into Active Voice, the subject appears at the beginning of the sentence and directly performs the action. For example:\n\n(i) He will be made President by the people.\n\n→ To Be → will be → V3 → made Active Voice → The people will make him President.\n\nExplanation: 'The people' is placed as the subject, and 'will make' is used as the verb."}, {"id": "130421", "question": "<strong>Which of the following idioms means ‘to steal from a shop’?</strong>", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Golden opportunity", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Green thumb", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Five-finger discount", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Black sheep"], "correct_answer": 2, "solution": "C) <strong>Five-finger discount</strong> (noun) – The act of stealing goods from a retail establishment without paying. चोरी करना"}, {"id": "130422", "question": "<strong>Parts of the following sentence have been given as options. Select the option that contains an error.</strong></p> <p>I are dancing with my husband at my sister’s wedding.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> husband at my", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> sister’s wedding", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> with my", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> I are dancing"], "correct_answer": 3, "solution": "D) 'I are dancing' के बदले <strong>'I am dancing'</strong> का प्रयोग होगा क्योंकि Subject (I) के साथ Verb 'are' का प्रयोग करना गलत है। 'I' के साथ हमेशा 'am' का प्रयोग होता है; जैसे— I am going to the market.\n\n'I <strong>am dancing'</strong> will be used instead of 'I are dancing' because using the verb 'are' with the subject 'I' is incorrect. The verb 'am' should always be used with 'I'; Like— I am going to the market."}, {"id": "130423", "question": "<strong>Select the most appropriate ANTONYM of the given word.</strong></p> <p>Miserable", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Melodious", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Settled", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Restrained", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Cheerful"], "correct_answer": 3, "solution": "D) <strong>Miserable</strong> (adjective) – Very unhappy, distressed, sorrowful, wretched. दुखी, परेशान\n\nAntonym: <strong>Cheerful</strong> (adjective) – Happy, joyful, in good spirits, optimistic. प्रसन्न, खुश"}, {"id": "130424", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>Confiscate", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Restock", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Destroy", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Seize", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Titivate"], "correct_answer": 2, "solution": "C) <strong>Confiscate</strong> (verb) – To take or seize someone's property with authority. ज़ब्त करना\n\nSynonym: <strong>Seize</strong> (verb) – Take hold of suddenly and forcibly, confiscate, grab. जब्त करना"}, {"id": "130425", "question": "<strong>Select the most appropriate meaning of the given word.</strong></p> <p>Edible", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Noisome", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Mortal", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Noxious", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Nutritive"], "correct_answer": 3, "solution": "D) <strong>Edible</strong> (adjective) – Fit to be eaten; suitable for consumption. खाने योग्य\n\nMeaning: <strong>Nutritive</strong> (adjective) – Providing nourishment; promoting growth and good health. पोषण से भरपूर"}, {"id": "130426", "question": "<strong>Select the most appropriate synonym of the bracketed word in the following sentence to fill in the blank.</strong></p> <p>The elaborate syllabi had to be ________(summarised) to make a presentation in the UGC assessment meeting.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Expanded", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Recapitulated", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Prolonged", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Lengthened"], "correct_answer": 1, "solution": "B) Summarised</strong> – To make a summary of, condense, sum up. <strong>सारांशित करना\n\nSynonym:<strong> Recapitulated (verb)</strong> – To summarize and state again the main points of something, restate, repeat, review. <strong>पुनःस्मरण कराना</strong>"}, {"id": "130427", "question": "<strong>Select the most appropriate homophone to fill in the blank.</strong></p> <p>He has the ________ to express his thoughts.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Right", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Ride", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Write", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Rite"], "correct_answer": 0, "solution": "'A) <strong>right'</strong> का use होगा क्योंकि 'right' का अर्थ है किसी कार्य को करने का अधिकार या स्वतंत्रता। वाक्य में बताया गया है कि व्यक्ति को अपने विचार व्यक्त करने का अधिकार है, इसलिए 'right' यहाँ सही विकल्प है। जबकि 'ride' का अर्थ है सवारी करना, 'write' का अर्थ है लिखना, और 'rite' का अर्थ है किसी धार्मिक या पारंपरिक अनुष्ठान, जो इस संदर्भ में सही नहीं है।\n\n<strong>'right'</strong> will be used because it means having the freedom or authority to do something. The sentence states that the person has the right to express his thoughts, making 'right' the correct option. Whereas, 'ride' means to travel on something, 'write' means to put words on paper, and 'rite' refers to a religious or traditional ceremony, which do not fit the context."}, {"id": "130428", "question": "<strong>Select the most appropriate synonym of the given phrasal verb.</strong></p> <p>Let’s <strong>pencil in</strong> the meeting for next Monday and confirm later based on everyone's availability.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Candid", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Schedule", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Reluctant", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Dishonest"], "correct_answer": 1, "solution": "<strong>B) Pencil in</strong> (phrasal verb) – Schedule, plan, arrange, set up, organize अस्थायी रूप से तय करना\n\n<strong>Candid</strong> (adjective) – Truthful, straightforward, frank, honest. ईमानदार\n\n<strong>Reluctant</strong> (adjective) – Unwilling or hesitant to do something, unwilling, disinclined, averse. अनिच्छुक\n\n<strong>Dishonest</strong> (adjective) – Not truthful, deceptive, misleading. बेईमान"}, {"id": "130429", "question": "<strong>Comprehension:</strong></p> <p><strong>In the following passage, some words have been deleted. Read the passage carefully and select the most appropriate option to fill in each blank.</strong><br> Finishing with six medals, India couldn’t improve on its last Olympics medal _____1_____ of seven. On the medals tally, it slipped from 48th to 70th place. With defending javelin champion Neeraj Chopra _____2_____ silver, the lack of a gold medal cost the country a good 10 places this time. So how will a cold-hearted reviewer — who treats Vinesh Phogat’s tragic 100 grams miss with hard objectivity — see the performance of India’s biggest-ever Olympic _____3____ in 2024? Paris will be remembered for the lessons it taught a nation with grand sporting dreams of producing world-class athletes and hosting mega international events. As the _____4_____ come ______5_____in Paris, Indian sports needs to go into a huddle. The important stake-holders — federations, Sports Authority of India, Sports Ministry and other non-government organisations — need to pull in the same direction.</p> <p><strong>Select the most appropriate option to fill in blank number 1.</strong>", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Soul", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Haul", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Claim", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Overhaul"], "correct_answer": 1, "solution": "No solution available"}, {"id": "130430", "question": "<strong>Comprehension:</strong></p> <p><strong>In the following passage, some words have been deleted. Read the passage carefully and select the most appropriate option to fill in each blank.</strong><br> Finishing with six medals, India couldn’t improve on its last Olympics medal _____1_____ of seven. On the medals tally, it slipped from 48th to 70th place. With defending javelin champion Neeraj Chopra _____2_____ silver, the lack of a gold medal cost the country a good 10 places this time. So how will a cold-hearted reviewer — who treats Vinesh Phogat’s tragic 100 grams miss with hard objectivity — see the performance of India’s biggest-ever Olympic _____3____ in 2024? Paris will be remembered for the lessons it taught a nation with grand sporting dreams of producing world-class athletes and hosting mega international events. As the _____4_____ come ______5_____in Paris, Indian sports needs to go into a huddle. The important stake-holders — federations, Sports Authority of India, Sports Ministry and other non-government organisations — need to pull in the same direction.</p> <p><strong>Select the most appropriate option to fill in blank number 2.</strong>", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> settling for", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> set aside", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> stand for", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> see off"], "correct_answer": 0, "solution": "No solution available"}, {"id": "130431", "question": "<strong>Comprehension:</strong></p> <p><strong>In the following passage, some words have been deleted. Read the passage carefully and select the most appropriate option to fill in each blank.</strong><br> Finishing with six medals, India couldn’t improve on its last Olympics medal _____1_____ of seven. On the medals tally, it slipped from 48th to 70th place. With defending javelin champion Neeraj Chopra _____2_____ silver, the lack of a gold medal cost the country a good 10 places this time. So how will a cold-hearted reviewer — who treats Vinesh Phogat’s tragic 100 grams miss with hard objectivity — see the performance of India’s biggest-ever Olympic _____3____ in 2024? Paris will be remembered for the lessons it taught a nation with grand sporting dreams of producing world-class athletes and hosting mega international events. As the _____4_____ come ______5_____in Paris, Indian sports needs to go into a huddle. The important stake-holders — federations, Sports Authority of India, Sports Ministry and other non-government organisations — need to pull in the same direction.</p> <p><strong>Select the most appropriate option to fill in blank number 3.</strong>", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> stringent", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> contingent", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> diligent", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> urgent"], "correct_answer": 1, "solution": "No solution available"}, {"id": "130432", "question": "<strong>Comprehension:</strong></p> <p><strong>In the following passage, some words have been deleted. Read the passage carefully and select the most appropriate option to fill in each blank.</strong><br> Finishing with six medals, India couldn’t improve on its last Olympics medal _____1_____ of seven. On the medals tally, it slipped from 48th to 70th place. With defending javelin champion Neeraj Chopra _____2_____ silver, the lack of a gold medal cost the country a good 10 places this time. So how will a cold-hearted reviewer — who treats Vinesh Phogat’s tragic 100 grams miss with hard objectivity — see the performance of India’s biggest-ever Olympic _____3____ in 2024? Paris will be remembered for the lessons it taught a nation with grand sporting dreams of producing world-class athletes and hosting mega international events. As the _____4_____ come ______5_____in Paris, Indian sports needs to go into a huddle. The important stake-holders — federations, Sports Authority of India, Sports Ministry and other non-government organisations — need to pull in the same direction.</p> <p><strong>Select the most appropriate option to fill in blank number 4</strong>", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> curtains", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> ruins", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> remains", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> command"], "correct_answer": 0, "solution": "No solution available"}, {"id": "130433", "question": "<strong>In the following passage, some words have been deleted. Read the passage carefully and select the most appropriate option to fill in each blank.</strong><br> Finishing with six medals, India couldn’t improve on its last Olympics medal _____1_____ of seven. On the medals tally, it slipped from 48th to 70th place. With defending javelin champion Neeraj Chopra _____2_____ silver, the lack of a gold medal cost the country a good 10 places this time. So how will a cold-hearted reviewer — who treats Vinesh Phogat’s tragic 100 grams miss with hard objectivity — see the performance of India’s biggest-ever Olympic _____3____ in 2024? Paris will be remembered for the lessons it taught a nation with grand sporting dreams of producing world-class athletes and hosting mega international events. As the _____4_____ come ______5_____in Paris, Indian sports needs to go into a huddle. The important stake-holders — federations, Sports Authority of India, Sports Ministry and other non-government organisations — need to pull in the same direction.</p> <p><strong>Select the most appropriate option to fill in blank number 5</strong>", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> up", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> in", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> by", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> down"], "correct_answer": 3, "solution": "No solution available"}];
-        const examConfig = {
-            id: '6504',
-            duration: 20,
-            positiveMarks: 1.0,
-            negativeMarks: 0.25
-        };
+        const sectionsData = null;
+        const marksPerQ = 3.0;
+        const negMarks = 1.0;
+        const totalDuration = 60;
         
-        let currentQuestionIndex = 0;
-        let userAnswers = {};
-        let flaggedQuestions = new Set();
-        let timeLeft = examConfig.duration * 60;
-        let timerInterval;
-        let isTestFinished = false;
-        let solutionMode = false;
-        let touchStartX = 0;
-        let touchStartY = 0;
-        
-        // Initialize app
-        function initializeApp() {
-            createParticles();
-            generateQuestionsGrid();
-            loadQuestion();
-            startTimer();
-            setupTouchGestures();
-            setupAutoSave();
-            
-            // Prevent accidental page leave
-            window.addEventListener('beforeunload', (e) => {
-                if (!isTestFinished) {
-                    e.preventDefault();
-                    e.returnValue = 'Test in progress. Are you sure you want to leave?';
-                }
-            });
-        }
-        
-        // Create floating particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = window.innerWidth < 768 ? 20 : 40;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                particlesContainer.appendChild(particle);
+        class CBTExamApp {
+            constructor() {
+                this.questions = questions;
+                this.sections = sectionsData;
+                this.currentQuestion = 0;
+                this.answers = new Array(this.questions.length).fill(null);
+                this.markedForReview = new Array(this.questions.length).fill(false);
+                this.timeSpent = new Array(this.questions.length).fill(0);
+                this.isEnglish = true;
+                this.isSubmitted = false;
+                this.startTime = null;
+                this.lastQuestionTime = null;
+                this.mainTimer = null;
+                this.sectionTimer = null;
+                
+                // Determine active section index for hard locks, or custom segment tabs
+                this.currentSectionIdx = 0;
+                
+                this.totalTimeLeft = totalDuration * 60;
+                
+                this.initElements();
+                this.setupWelcomeScreen();
+                this.setupThemeToggle();
+                this.setupBeforeUnload();
             }
-        }
-        
-        // Load current question
-        function loadQuestion() {
-            const question = questions[currentQuestionIndex];
             
-            // Update question info
-            document.getElementById('questionNumber').textContent = `Q${currentQuestionIndex + 1}`;
-            document.getElementById('questionProgress').textContent = 
-                `${currentQuestionIndex + 1} of ${questions.length}`;
-            document.getElementById('questionText').innerHTML = question.question;
-            
-            // Load options
-            const optionsContainer = document.getElementById('optionsContainer');
-            optionsContainer.innerHTML = '';
-            
-            question.options.forEach((option, index) => {
-                const optionElement = document.createElement('div');
-                optionElement.className = 'option';
-                optionElement.innerHTML = option;
+            initElements() {
+                this.els = {
+                    welcomeScreen: document.getElementById('welcomeScreen'),
+                    examContainer: document.getElementById('examContainer'),
+                    mainTimer: document.getElementById('mainTimer'),
+                    sectionBadge: document.getElementById('sectionBadge'),
+                    sectionName: document.getElementById('sectionName'),
+                    sectionTimer: document.getElementById('sectionTimer'),
+                    sectionTabs: document.getElementById('sectionTabs'),
+                    questionNum: document.getElementById('questionNum'),
+                    questionMarks: document.getElementById('questionMarks'),
+                    questionText: document.getElementById('questionText'),
+                    comprehension: document.getElementById('comprehension'),
+                    comprehensionText: document.getElementById('comprehensionText'),
+                    optionsList: document.getElementById('optionsList'),
+                    solutionBox: document.getElementById('solutionBox'),
+                    solutionStats: document.getElementById('solutionStats'),
+                    solutionText: document.getElementById('solutionText'),
+                    progressText: document.getElementById('progressText'),
+                    answeredCount: document.getElementById('answeredCount'),
+                    desktopNav: document.getElementById('desktopNav'),
+                    mobileNav: document.getElementById('mobileNav'),
+                    mobileNavGrid: document.getElementById('mobileNavGrid'),
+                    resultModal: document.getElementById('resultModal'),
+                    resultScore: document.getElementById('resultScore'),
+                    correctCount: document.getElementById('correctCount'),
+                    incorrectCount: document.getElementById('incorrectCount'),
+                    unattemptedCount: document.getElementById('unattemptedCount'),
+                    timeTaken: document.getElementById('timeTaken'),
+                    sectionResults: document.getElementById('sectionResults'),
+                    sectionResultsBody: document.getElementById('sectionResultsBody')
+                };
+            }
+
+            setupWelcomeScreen() {
+                document.getElementById('welcomeTotalQs').textContent = this.questions.length;
+                document.getElementById('welcomeTotalMarks').textContent = (this.questions.length * marksPerQ).toFixed(1);
+                document.getElementById('welcomeDuration').textContent = totalDuration;
+                document.getElementById('welcomeMarksScheme').textContent = `+${marksPerQ.toFixed(1)} / -${negMarks.toFixed(1)}`;
                 
-                const indicator = document.createElement('div');
-                indicator.className = 'option-indicator';
-                optionElement.appendChild(indicator);
-                
-                if (solutionMode) {
-                    // Show solution mode styling
-                    if (index === question.correct_answer) {
-                        optionElement.classList.add('correct');
-                        indicator.textContent = '✓';
-                    } else if (userAnswers[currentQuestionIndex] === index) {
-                        optionElement.classList.add('incorrect');
-                        indicator.textContent = '✗';
-                    } else {
-                        optionElement.classList.add('disabled');
+                if (this.sections && this.sections.length > 0) {
+                    const sBlock = document.getElementById('welcomeSectionsBlock');
+                    const sBody = document.getElementById('welcomeSectionsBody');
+                    sBlock.style.display = 'block';
+                    sBody.innerHTML = this.sections.map(s => `
+                        <tr>
+                            <td>
+                                <strong>${s.name}</strong>
+                                ${s.subsections ? `<div class="subsec-container">${s.subsections.map(sub => `<div class="subsec-row">${sub.name}: Q${sub.start+1}-Q${sub.end+1}</div>`).join('')}</div>` : ''}
+                            </td>
+                            <td>Q${s.start+1} - Q${s.end+1}</td>
+                            <td>${Math.round(s.timer / 60)} mins</td>
+                        </tr>
+                    `).join('');
+                }
+
+                document.getElementById('startBtn').addEventListener('click', () => {
+                    this.els.welcomeScreen.classList.add('hidden');
+                    this.els.examContainer.classList.add('active');
+                    this.startExam();
+                });
+            }
+
+            setupThemeToggle() {
+                const btn = document.getElementById('themeToggle');
+                btn.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-mode');
+                    const isDark = document.body.classList.contains('dark-mode');
+                    btn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                });
+            }
+
+            setupBeforeUnload() {
+                window.addEventListener('beforeunload', (e) => {
+                    if (!this.isSubmitted) {
+                        e.preventDefault();
+                        e.returnValue = 'Your test is in progress. Are you sure you want to leave?';
+                        return e.returnValue;
                     }
-                    optionElement.style.pointerEvents = 'none';
+                });
+            }
+
+            startExam() {
+                this.startTime = Date.now();
+                this.lastQuestionTime = this.startTime;
+                
+                // If it is Tier I (no hard sectionsData), construct segment switcher bar dynamically
+                if (!this.sections || this.sections.length === 0) {
+                    this.buildSoftSections();
+                }
+                
+                this.createNavigator();
+                this.startMainTimer();
+                
+                if (this.sections && this.sections.length > 0) {
+                    this.startSectionTimer();
+                    this.updateSectionInfo();
+                }
+                
+                this.loadQuestion(0);
+                this.setupEventListeners();
+            }
+
+            // Dynamically construct Tier I segments (Reasoning, GK, Maths, English)
+            buildSoftSections() {
+                if (this.questions.length === 100) {
+                    this.softSections = [
+                        { name: "REASONING", start: 0, end: 24 },
+                        { name: "GENERAL AWARENESS", start: 25, end: 49 },
+                        { name: "QUANTITATIVE APTITUDE", start: 50, end: 74 },
+                        { name: "ENGLISH COMPREHENSION", start: 75, end: 99 }
+                    ];
                 } else {
-                    // Normal mode
-                    if (userAnswers[currentQuestionIndex] === index) {
-                        optionElement.classList.add('selected');
-                        indicator.textContent = '✓';
+                    // Fallback division by 4
+                    const part = Math.floor(this.questions.length / 4);
+                    this.softSections = [
+                        { name: "SECTION A", start: 0, end: part - 1 },
+                        { name: "SECTION B", start: part, end: (part * 2) - 1 },
+                        { name: "SECTION C", start: part * 2, end: (part * 3) - 1 },
+                        { name: "SECTION D", start: part * 3, end: this.questions.length - 1 }
+                    ];
+                }
+                
+                this.els.sectionTabs.style.display = 'flex';
+                this.renderSoftSectionTabs();
+            }
+
+            renderSoftSectionTabs() {
+                this.els.sectionTabs.innerHTML = this.softSections.map((sec, idx) => {
+                    const isActive = this.currentQuestion >= sec.start && this.currentQuestion <= sec.end;
+                    return `<button class="section-tab${isActive ? ' active' : ''}" onclick="window.app.goToQuestion(${sec.start})">${sec.name}</button>`;
+                }).join('');
+            }
+
+            updateSoftSectionTabs() {
+                if (!this.softSections) return;
+                const tabs = this.els.sectionTabs.querySelectorAll('.section-tab');
+                this.softSections.forEach((sec, idx) => {
+                    const isActive = this.currentQuestion >= sec.start && this.currentQuestion <= sec.end;
+                    tabs[idx].classList.toggle('active', isActive);
+                });
+            }
+
+            setupEventListeners() {
+                document.getElementById('engBtn').onclick = () => this.setLanguage(true);
+                document.getElementById('hinBtn').onclick = () => this.setLanguage(false);
+                document.getElementById('prevBtn').onclick = () => this.navigate(-1);
+                document.querySelector('.navigation-bar .btn-next').onclick = () => this.navigate(1);
+                document.getElementById('reviewBtn').onclick = () => this.toggleReview();
+                document.getElementById('submitBtn').onclick = () => this.confirmSubmit();
+                document.getElementById('submitBtnDesktop').onclick = () => this.confirmSubmit();
+                document.getElementById('navigatorBtn').onclick = () => this.openMobileNav();
+                document.getElementById('closeNav').onclick = () => this.closeMobileNav();
+                document.getElementById('closeResult').onclick = () => this.closeResultModal();
+                document.getElementById('reviewAnswers').onclick = () => this.reviewAnswers();
+            }
+
+            createNavigator() {
+                [this.els.desktopNav, this.els.mobileNavGrid].forEach(container => {
+                    container.innerHTML = '';
+                    this.questions.forEach((_, i) => {
+                        const btn = document.createElement('div');
+                        btn.className = 'nav-question';
+                        btn.textContent = i + 1;
+                        btn.onclick = () => this.goToQuestion(i);
+                        container.appendChild(btn);
+                    });
+                });
+            }
+
+            extractText(html, isEng) {
+                if (!html) return '';
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                
+                const langSpans = temp.querySelectorAll('span.eqt, span.hqt');
+                langSpans.forEach(span => {
+                    if ((isEng && span.classList.contains('hqt')) || 
+                        (!isEng && span.classList.contains('eqt'))) {
+                        span.style.display = 'none';
+                    } else {
+                        span.style.display = '';
+                    }
+                });
+                
+                return temp.innerHTML;
+            }
+
+            getQuestionMarks(qIdx) {
+                if (!this.sections) return marksPerQ;
+                for (const section of this.sections) {
+                    if (qIdx >= section.start && qIdx <= section.end) {
+                        if (section.subsections) {
+                            for (const subsec of section.subsections) {
+                                if (qIdx >= subsec.start && qIdx <= subsec.end) {
+                                    return subsec.marks_per_q;
+                                }
+                            }
+                        }
+                        return marksPerQ;
+                    }
+                }
+                return marksPerQ;
+            }
+
+            loadQuestion(idx) {
+                if (this.currentQuestion !== idx) {
+                    const now = Date.now();
+                    this.timeSpent[this.currentQuestion] += (now - this.lastQuestionTime) / 1000;
+                    this.lastQuestionTime = now;
+                }
+                
+                this.currentQuestion = idx;
+                const q = this.questions[idx];
+                const qMarks = this.getQuestionMarks(idx);
+                
+                this.els.questionNum.textContent = `Question ${idx + 1} of ${this.questions.length}`;
+                this.els.questionMarks.textContent = `Marks: ${qMarks.toFixed(1)}`;
+                this.els.progressText.textContent = `Question ${idx + 1} of ${this.questions.length}`;
+                this.updateAnsweredCount();
+                this.updateNavigator();
+                this.updateNavigationButtons();
+                this.updateReviewButton();
+                this.updateSoftSectionTabs();
+                
+                if (q.comp) {
+                    this.els.comprehension.style.display = 'block';
+                    this.els.comprehensionText.innerHTML = this.extractText(q.comp, this.isEnglish);
+                } else {
+                    this.els.comprehension.style.display = 'none';
+                }
+                
+                this.els.questionText.innerHTML = this.extractText(q.question, this.isEnglish);
+                this.loadOptions(q, idx);
+                
+                if (this.isSubmitted && q.solution) {
+                    const timeSpent = Math.round(this.timeSpent[idx]);
+                    const mins = Math.floor(timeSpent / 60);
+                    const secs = timeSpent % 60;
+                    const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+                    
+                    this.els.solutionStats.innerHTML = `
+                        <span><i class="fas fa-clock"></i> Time spent: ${timeStr}</span>
+                        <span><i class="fas fa-check-circle"></i> Correct Option: ${String.fromCharCode(65 + q.correct_option_id)}</span>
+                    `;
+                    this.els.solutionText.innerHTML = this.extractText(q.solution, this.isEnglish);
+                    this.els.solutionBox.classList.add('show');
+                } else {
+                    this.els.solutionBox.classList.remove('show');
+                }
+            }
+
+            loadOptions(q, qIdx) {
+                this.els.optionsList.innerHTML = '';
+                const userAnswer = this.answers[qIdx];
+                const correctAnswer = q.correct_option_id;
+                
+                if (!q.options || !Array.isArray(q.options)) return;
+                
+                q.options.forEach((opt, i) => {
+                    const div = document.createElement('div');
+                    let className = 'option';
+                    
+                    if (this.isSubmitted) className += ' submitted';
+                    if (userAnswer === i) className += ' selected';
+                    
+                    if (this.isSubmitted && correctAnswer !== undefined) {
+                        if (i === correctAnswer) {
+                            className += ' correct';
+                        } else if (userAnswer === i && userAnswer !== correctAnswer) {
+                            className += ' wrong';
+                        }
                     }
                     
-                    optionElement.onclick = () => selectOption(index);
-                    optionElement.onkeydown = (e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            selectOption(index);
+                    div.className = className;
+                    
+                    let indicator = String.fromCharCode(65 + i);
+                    if (this.isSubmitted && correctAnswer !== undefined) {
+                        if (i === correctAnswer) {
+                            indicator = '✓';
+                        } else if (userAnswer === i) {
+                            indicator = '✗';
                         }
-                    };
-                    optionElement.tabIndex = 0;
-                }
-                
-                optionsContainer.appendChild(optionElement);
-            });
-            
-            // Handle solution panel
-            const solutionPanel = document.getElementById('solutionPanel');
-            if (solutionMode && question.solution) {
-                document.getElementById('solutionContent').innerHTML = question.solution;
-                solutionPanel.classList.add('show');
-            } else {
-                solutionPanel.classList.remove('show');
-            }
-            
-            // Update navigation
-            updateNavigation();
-            updateQuestionsGrid();
-            updateFlagButton();
-            
-            // Add entrance animation
-            const container = document.getElementById('questionContainer');
-            container.style.transform = 'translateY(20px)';
-            container.style.opacity = '0';
-            setTimeout(() => {
-                container.style.transform = 'translateY(0)';
-                container.style.opacity = '1';
-            }, 100);
-        }
-        
-        // Select an option
-        function selectOption(index) {
-            if (solutionMode) return;
-            
-            const currentAnswer = userAnswers[currentQuestionIndex];
-            
-            if (currentAnswer === index) {
-                // Deselect if clicking the same option
-                delete userAnswers[currentQuestionIndex];
-            } else {
-                // Select new option
-                userAnswers[currentQuestionIndex] = index;
-            }
-            
-            // Update UI
-            const options = document.querySelectorAll('.option');
-            options.forEach((option, i) => {
-                const indicator = option.querySelector('.option-indicator');
-                if (userAnswers[currentQuestionIndex] === i) {
-                    option.classList.add('selected');
-                    indicator.textContent = '✓';
-                } else {
-                    option.classList.remove('selected');
-                    indicator.textContent = '';
-                }
-            });
-            
-            updateQuestionsGrid();
-            showAutoSave();
-        }
-        
-        // Generate questions grid
-        function generateQuestionsGrid() {
-            const grid = document.getElementById('questionsGrid');
-            grid.innerHTML = '';
-            
-            questions.forEach((_, index) => {
-                const button = document.createElement('button');
-                button.className = 'question-btn';
-                button.textContent = index + 1;
-                button.onclick = () => goToQuestion(index);
-                button.setAttribute('aria-label', `Go to question ${index + 1}`);
-                grid.appendChild(button);
-            });
-        }
-        
-        // Update questions grid styling
-        function updateQuestionsGrid() {
-            const buttons = document.querySelectorAll('.question-btn');
-            buttons.forEach((button, index) => {
-                button.className = 'question-btn';
-                
-                if (index === currentQuestionIndex) {
-                    button.classList.add('current');
-                } else if (solutionMode) {
-                    if (userAnswers[index] === questions[index].correct_answer) {
-                        button.classList.add('correct');
-                    } else if (userAnswers[index] !== undefined) {
-                        button.classList.add('incorrect');
+                    } else if (userAnswer === i) {
+                        indicator = '✓';
                     }
-                } else if (userAnswers[index] !== undefined) {
-                    button.classList.add('answered');
+                    
+                    div.innerHTML = `
+                        <div class="option-indicator">${indicator}</div>
+                        <div class="option-text">${this.extractText(opt, this.isEnglish)}</div>
+                    `;
+                    
+                    if (!this.isSubmitted) {
+                        div.onclick = () => this.selectOption(i, qIdx);
+                    }
+                    
+                    this.els.optionsList.appendChild(div);
+                });
+            }
+
+            selectOption(optIdx, qIdx) {
+                if (this.isSubmitted) return;
+                this.answers[qIdx] = this.answers[qIdx] === optIdx ? null : optIdx;
+                this.loadOptions(this.questions[qIdx], qIdx);
+                this.updateAnsweredCount();
+                this.updateNavigator();
+            }
+
+            toggleReview() {
+                if (this.isSubmitted) return;
+                this.markedForReview[this.currentQuestion] = !this.markedForReview[this.currentQuestion];
+                this.updateNavigator();
+                this.updateReviewButton();
+            }
+
+            updateReviewButton() {
+                const btn = document.getElementById('reviewBtn');
+                if (this.markedForReview[this.currentQuestion]) {
+                    btn.classList.add('marked');
+                    btn.innerHTML = '<i class="fas fa-flag"></i> Marked';
+                } else {
+                    btn.classList.remove('marked');
+                    btn.innerHTML = '<i class="fas fa-flag"></i> Mark for Review';
                 }
-                
-                if (flaggedQuestions.has(index)) {
-                    button.classList.add('flagged');
-                }
-            });
-        }
-        
-        // Navigation functions
-        function previousQuestion() {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                loadQuestion();
             }
-        }
-        
-        function nextQuestion() {
-            if (currentQuestionIndex < questions.length - 1) {
-                currentQuestionIndex++;
-                loadQuestion();
-            } else if (!solutionMode) {
-                submitTest();
-            }
-        }
-        
-        function goToQuestion(index) {
-            currentQuestionIndex = index;
-            loadQuestion();
-            closeSidebar();
-        }
-        
-        function updateNavigation() {
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            
-            prevBtn.disabled = currentQuestionIndex === 0;
-            
-            if (solutionMode) {
-                nextBtn.textContent = currentQuestionIndex === questions.length - 1 ? 
-                    'Finish Review' : 'Next →';
-                nextBtn.onclick = currentQuestionIndex === questions.length - 1 ? 
-                    finishReview : nextQuestion;
-            } else {
-                nextBtn.textContent = currentQuestionIndex === questions.length - 1 ? 
-                    'Submit Test' : 'Next →';
-                nextBtn.onclick = currentQuestionIndex === questions.length - 1 ? 
-                    submitTest : nextQuestion;
-            }
-        }
-        
-        // Timer functions
-        function startTimer() {
-            const timerElement = document.getElementById('timer');
-            const progressCircle = document.getElementById('progressCircle');
-            const circumference = 2 * Math.PI * 18;
-            const totalTime = examConfig.duration * 60;
-            
-            timerInterval = setInterval(() => {
-                if (timeLeft <= 0) {
-                    submitTest();
+
+            navigate(dir) {
+                const newIdx = this.currentQuestion + dir;
+                if (this.isSubmitted) {
+                    if (newIdx >= 0 && newIdx < this.questions.length) {
+                        this.loadQuestion(newIdx);
+                    }
                     return;
                 }
                 
-                timeLeft--;
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-                
-                // Update progress circle
-                const progress = (totalTime - timeLeft) / totalTime;
-                const offset = circumference * progress;
-                progressCircle.style.strokeDashoffset = offset;
-                
-                // Add warning effects
-                if (timeLeft <= 300) { // 5 minutes
-                    timerElement.classList.add('warning');
-                }
-                if (timeLeft <= 60) { // 1 minute
-                    timerElement.classList.add('critical');
-                }
-            }, 1000);
-        }
-        
-        // Toggle question flag
-        function toggleFlag() {
-            if (flaggedQuestions.has(currentQuestionIndex)) {
-                flaggedQuestions.delete(currentQuestionIndex);
-            } else {
-                flaggedQuestions.add(currentQuestionIndex);
-            }
-            updateFlagButton();
-            updateQuestionsGrid();
-        }
-        
-        function updateFlagButton() {
-            const flagBtn = document.getElementById('flagBtn');
-            if (flaggedQuestions.has(currentQuestionIndex)) {
-                flagBtn.textContent = '🏴 Unflag Question';
-                flagBtn.style.background = 'rgba(239, 68, 68, 0.2)';
-                flagBtn.style.color = 'var(--error)';
-            } else {
-                flagBtn.textContent = '🚩 Flag Question';
-                flagBtn.style.background = 'rgba(245, 158, 11, 0.2)';
-                flagBtn.style.color = 'var(--warning)';
-            }
-        }
-        
-        // Theme toggle
-        function toggleTheme() {
-            const body = document.body;
-            const themeBtn = document.getElementById('themeBtn');
-            const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
-            body.setAttribute('data-theme', newTheme);
-            themeBtn.textContent = newTheme === 'light' ? '🌙' : '☀️';
-            
-            // Save preference
-            localStorage.setItem('theme', newTheme);
-        }
-        
-        // Sidebar functions
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('show');
-        }
-        
-        function closeSidebar() {
-            document.getElementById('sidebar').classList.remove('open');
-            document.getElementById('overlay').classList.remove('show');
-        }
-        
-        // Touch gesture support
-        function setupTouchGestures() {
-            const main = document.querySelector('.main');
-            
-            main.addEventListener('touchstart', (e) => {
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-            });
-            
-            main.addEventListener('touchend', (e) => {
-                const touchEndX = e.changedTouches[0].clientX;
-                const touchEndY = e.changedTouches[0].clientY;
-                const deltaX = touchEndX - touchStartX;
-                const deltaY = touchEndY - touchStartY;
-                
-                // Only trigger if horizontal swipe is dominant
-                if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
-                    if (deltaX > 0 && currentQuestionIndex > 0) {
-                        // Swipe right - previous question
-                        previousQuestion();
-                    } else if (deltaX < 0 && currentQuestionIndex < questions.length - 1) {
-                        // Swipe left - next question
-                        nextQuestion();
+                if (this.sections && this.sections.length > 0) {
+                    const currentSection = this.sections[this.currentSectionIdx];
+                    if (newIdx < currentSection.start || newIdx > currentSection.end) {
+                        return;
                     }
                 }
-            });
-        }
-        
-        // Auto-save functionality
-        function setupAutoSave() {
-            // Save answers periodically
-            setInterval(() => {
-                if (!isTestFinished) {
-                    saveProgress();
+                
+                if (newIdx >= 0 && newIdx < this.questions.length) {
+                    this.loadQuestion(newIdx);
                 }
-            }, 30000); // Every 30 seconds
-        }
-        
-        function saveProgress() {
-            const progress = {
-                answers: userAnswers,
-                flagged: Array.from(flaggedQuestions),
-                currentQuestion: currentQuestionIndex,
-                timeLeft: timeLeft
-            };
-            
-            // In a real implementation, this would save to a server
-            console.log('Progress saved:', progress);
-        }
-        
-        function showAutoSave() {
-            const autoSave = document.getElementById('autoSave');
-            autoSave.classList.add('show');
-            setTimeout(() => {
-                autoSave.classList.remove('show');
-            }, 2000);
-        }
-        
-        // Submit test
-        function submitTest() {
-            if (isTestFinished) return;
-            
-            isTestFinished = true;
-            clearInterval(timerInterval);
-            
-            // Calculate results
-            let correct = 0, wrong = 0, skipped = 0, totalMarks = 0;
-            
-            questions.forEach((question, index) => {
-                if (userAnswers[index] === undefined) {
-                    skipped++;
-                } else if (userAnswers[index] === question.correct_answer) {
-                    correct++;
-                    totalMarks += examConfig.positiveMarks;
-                } else {
-                    wrong++;
-                    totalMarks -= examConfig.negativeMarks;
-                }
-            });
-            
-            const maxMarks = questions.length * examConfig.positiveMarks;
-            const percentage = Math.max(0, Math.round((totalMarks / maxMarks) * 100));
-            
-            // Show results
-            document.getElementById('resultTitle').textContent = 
-                `${correct}/${questions.length} Correct`;
-            document.getElementById('resultSubtitle').textContent = 
-                `You scored ${totalMarks} out of ${maxMarks} marks`;
-            document.getElementById('correctCount').textContent = correct;
-            document.getElementById('wrongCount').textContent = wrong;
-            document.getElementById('skippedCount').textContent = skipped;
-            document.getElementById('finalScore').textContent = `${totalMarks} Marks`;
-            document.getElementById('finalPercentage').textContent = `${percentage}%`;
-            
-            document.getElementById('resultModal').classList.add('show');
-            closeSidebar();
-        }
-        
-        // View solutions
-        function viewSolutions() {
-            document.getElementById('resultModal').classList.remove('show');
-            solutionMode = true;
-            currentQuestionIndex = 0;
-            loadQuestion();
-        }
-        
-        // Finish review
-        function finishReview() {
-            solutionMode = false;
-            currentQuestionIndex = 0;
-            loadQuestion();
-        }
-        
-        // Retake test
-        function retakeTest() {
-            if (confirm('Are you sure you want to retake the test? All progress will be lost.')) {
-                location.reload();
             }
-        }
-        
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (solutionMode) return;
-            
-            switch(e.key) {
-                case 'ArrowLeft':
-                    e.preventDefault();
-                    previousQuestion();
-                    break;
-                case 'ArrowRight':
-                    e.preventDefault();
-                    nextQuestion();
-                    break;
-                case 'f':
-                case 'F':
-                    if (e.ctrlKey || e.metaKey) {
-                        e.preventDefault();
-                        toggleFlag();
+
+            goToQuestion(idx) {
+                if (this.isSubmitted) {
+                    this.loadQuestion(idx);
+                    this.closeMobileNav();
+                    return;
+                }
+                
+                if (this.sections && this.sections.length > 0) {
+                    const currentSection = this.sections[this.currentSectionIdx];
+                    if (idx < currentSection.start || idx > currentSection.end) {
+                        return;
                     }
-                    break;
-                case 'm':
-                case 'M':
-                    if (e.ctrlKey || e.metaKey) {
-                        e.preventDefault();
-                        toggleSidebar();
-                    }
-                    break;
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                    if (!e.ctrlKey && !e.metaKey) {
-                        e.preventDefault();
-                        const optionIndex = parseInt(e.key) - 1;
-                        if (optionIndex < questions[currentQuestionIndex].options.length) {
-                            selectOption(optionIndex);
+                }
+                
+                this.loadQuestion(idx);
+                this.closeMobileNav();
+            }
+
+            updateNavigator() {
+                [this.els.desktopNav, this.els.mobileNavGrid].forEach(container => {
+                    const btns = container.querySelectorAll('.nav-question');
+                    btns.forEach((btn, i) => {
+                        btn.className = 'nav-question';
+                        
+                        if (i === this.currentQuestion) {
+                            btn.classList.add('current');
+                        } else if (this.isSubmitted) {
+                            if (this.answers[i] !== null && this.questions[i].correct_option_id !== undefined) {
+                                if (this.answers[i] === this.questions[i].correct_option_id) {
+                                    btn.classList.add('answered');
+                                } else {
+                                    btn.classList.add('wrong');
+                                }
+                            }
+                        } else {
+                            if (this.markedForReview[i]) {
+                                btn.classList.add('review');
+                            } else if (this.answers[i] !== null) {
+                                btn.classList.add('answered');
+                            }
+                            
+                            if (this.sections && this.sections.length > 0) {
+                                const currentSection = this.sections[this.currentSectionIdx];
+                                if (i < currentSection.start || i > currentSection.end) {
+                                    btn.classList.add('disabled');
+                                }
+                            }
                         }
-                    }
-                    break;
+                    });
+                });
             }
+
+            updateNavigationButtons() {
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.querySelector('.navigation-bar .btn-next');
+                const reviewBtn = document.getElementById('reviewBtn');
+                
+                prevBtn.disabled = this.currentQuestion === 0;
+                nextBtn.disabled = this.currentQuestion === this.questions.length - 1;
+                
+                if (this.isSubmitted) {
+                    reviewBtn.style.display = 'none';
+                } else {
+                    reviewBtn.style.display = 'inline-flex';
+                }
+                
+                if (this.sections && this.sections.length > 0 && !this.isSubmitted) {
+                    const currentSection = this.sections[this.currentSectionIdx];
+                    prevBtn.disabled = prevBtn.disabled || (this.currentQuestion === currentSection.start);
+                    nextBtn.disabled = nextBtn.disabled || (this.currentQuestion === currentSection.end);
+                }
+            }
+
+            updateAnsweredCount() {
+                const count = this.answers.filter(a => a !== null).length;
+                this.els.answeredCount.textContent = count;
+            }
+
+            setLanguage(isEng) {
+                this.isEnglish = isEng;
+                document.getElementById('engBtn').classList.toggle('active', isEng);
+                document.getElementById('hinBtn').classList.toggle('active', !isEng);
+                this.loadQuestion(this.currentQuestion);
+            }
+
+            startMainTimer() {
+                this.mainTimer = setInterval(() => {
+                    this.totalTimeLeft--;
+                    if (this.totalTimeLeft <= 0) {
+                        clearInterval(this.mainTimer);
+                        this.submitTest();
+                        return;
+                    }
+                    const mins = Math.floor(this.totalTimeLeft / 60);
+                    const secs = this.totalTimeLeft % 60;
+                    this.els.mainTimer.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+                }, 1000);
+            }
+
+            startSectionTimer() {
+                if (!this.sections || this.sections.length === 0) return;
+                
+                if (this.sectionTimer) clearInterval(this.sectionTimer);
+                
+                const section = this.sections[this.currentSectionIdx];
+                if (section.time_left === undefined) {
+                    section.time_left = section.timer;
+                }
+                
+                const updateTimerDisplay = () => {
+                    const mins = Math.floor(section.time_left / 60);
+                    const secs = section.time_left % 60;
+                    this.els.sectionTimer.textContent = ` | ${mins}:${secs.toString().padStart(2, '0')}`;
+                };
+                
+                updateTimerDisplay();
+                
+                this.sectionTimer = setInterval(() => {
+                    section.time_left--;
+                    updateTimerDisplay();
+                    
+                    if (section.time_left <= 0) {
+                        clearInterval(this.sectionTimer);
+                        this.submitSection();
+                    }
+                }, 1000);
+            }
+
+            updateSectionInfo() {
+                if (!this.sections || this.sections.length === 0) return;
+                const section = this.sections[this.currentSectionIdx];
+                this.els.sectionName.textContent = section.name;
+                this.els.sectionBadge.style.display = 'block';
+                
+                if (section.time_left !== undefined) {
+                    const mins = Math.floor(section.time_left / 60);
+                    const secs = section.time_left % 60;
+                    this.els.sectionTimer.textContent = ` | ${mins}:${secs.toString().padStart(2, '0')}`;
+                }
+            }
+
+            submitSection() {
+                if (!this.sections || this.sections.length === 0) return;
+                
+                const section = this.sections[this.currentSectionIdx];
+                section.submitted = true;
+                clearInterval(this.sectionTimer);
+                
+                const nextSectionIdx = this.currentSectionIdx + 1;
+                if (nextSectionIdx < this.sections.length) {
+                    this.currentSectionIdx = nextSectionIdx;
+                    this.startSectionTimer();
+                    this.updateSectionInfo();
+                    this.loadQuestion(this.sections[nextSectionIdx].start);
+                } else {
+                    this.submitTest();
+                }
+                
+                this.updateNavigator();
+            }
+
+            confirmSubmit() {
+                if (this.sections && this.sections.length > 0) {
+                    const section = this.sections[this.currentSectionIdx];
+                    const unanswered = this.answers.slice(section.start, section.end + 1)
+                        .filter(a => a === null).length;
+                    
+                    let msg = unanswered > 0 
+                        ? `You have ${unanswered} unanswered questions in this section. Submit Section?`
+                        : 'Submit this section?';
+                    
+                    if (confirm(msg)) this.submitSection();
+                } else {
+                    const unanswered = this.answers.filter(a => a === null).length;
+                    let msg = unanswered > 0 
+                        ? `You have ${unanswered} unanswered questions. Submit entire test?`
+                        : 'Submit test?';
+                    
+                    if (confirm(msg)) this.submitTest();
+                }
+            }
+
+            submitTest() {
+                if (this.isSubmitted) return;
+                
+                const now = Date.now();
+                this.timeSpent[this.currentQuestion] += (now - this.lastQuestionTime) / 1000;
+                
+                this.isSubmitted = true;
+                clearInterval(this.mainTimer);
+                if (this.sectionTimer) clearInterval(this.sectionTimer);
+                
+                document.getElementById('submitBtn').style.display = 'none';
+                document.getElementById('submitBtnDesktop').style.display = 'none';
+                document.getElementById('reviewBtn').style.display = 'none';
+                
+                if (this.sections && this.sections.length > 0) {
+                    this.els.sectionBadge.style.display = 'none';
+                }
+                
+                const results = this.calculateResults();
+                this.showResults(results);
+                this.loadQuestion(this.currentQuestion);
+                this.updateNavigator();
+            }
+
+            calculateResults() {
+                const timeTaken = Math.round((Date.now() - this.startTime) / 60000);
+                let correct = 0, incorrect = 0, unattempted = 0, score = 0;
+                
+                const sectionResults = [];
+                
+                if (this.sections && this.sections.length > 0) {
+                    for (const section of this.sections) {
+                        let secCorrect = 0, secIncorrect = 0, secUnattempted = 0, secScore = 0;
+                        const subsecResults = [];
+                        
+                        if (section.subsections) {
+                            for (const subsec of section.subsections) {
+                                let subCorrect = 0, subIncorrect = 0, subUnattempted = 0, subScore = 0;
+                                
+                                for (let i = subsec.start; i <= subsec.end; i++) {
+                                    const userAns = this.answers[i];
+                                    const correctAns = this.questions[i].correct_option_id;
+                                    
+                                    if (userAns === null) {
+                                        subUnattempted++;
+                                    } else if (correctAns !== undefined && userAns === correctAns) {
+                                        subCorrect++;
+                                        subScore += subsec.marks_per_q;
+                                    } else {
+                                        subIncorrect++;
+                                        subScore -= negMarks;
+                                    }
+                                }
+                                
+                                subsecResults.push({
+                                    name: subsec.name,
+                                    attempted: subCorrect + subIncorrect,
+                                    correct: subCorrect,
+                                    incorrect: subIncorrect,
+                                    unattempted: subUnattempted,
+                                    score: Math.max(0, subScore)
+                                });
+                                
+                                secCorrect += subCorrect;
+                                secIncorrect += subIncorrect;
+                                secUnattempted += subUnattempted;
+                                secScore += subScore;
+                            }
+                        } else {
+                            for (let i = section.start; i <= section.end; i++) {
+                                const userAns = this.answers[i];
+                                const correctAns = this.questions[i].correct_option_id;
+                                
+                                if (userAns === null) {
+                                    secUnattempted++;
+                                } else if (correctAns !== undefined && userAns === correctAns) {
+                                    secCorrect++;
+                                    secScore += marksPerQ;
+                                } else {
+                                    secIncorrect++;
+                                    secScore -= negMarks;
+                                }
+                            }
+                        }
+                        
+                        sectionResults.push({
+                            name: section.name,
+                            attempted: secCorrect + secIncorrect,
+                            correct: secCorrect,
+                            incorrect: secIncorrect,
+                            unattempted: secUnattempted,
+                            score: Math.max(0, secScore),
+                            subsections: subsecResults.length > 0 ? subsecResults : null
+                        });
+                        
+                        correct += secCorrect;
+                        incorrect += secIncorrect;
+                        unattempted += secUnattempted;
+                        score += secScore;
+                    }
+                } else {
+                    this.questions.forEach((q, i) => {
+                        const userAns = this.answers[i];
+                        const correctAns = q.correct_option_id;
+                        
+                        if (userAns === null) {
+                            unattempted++;
+                        } else if (correctAns !== undefined && userAns === correctAns) {
+                            correct++;
+                            score += marksPerQ;
+                        } else {
+                            incorrect++;
+                            score -= negMarks;
+                        }
+                    });
+                }
+                
+                return {
+                    score: Math.max(0, score),
+                    correct,
+                    incorrect,
+                    unattempted,
+                    timeTaken,
+                    sectionResults: sectionResults.length > 0 ? sectionResults : null
+                };
+            }
+
+            showResults(results) {
+                this.els.resultScore.textContent = `${results.score.toFixed(2)}/${(this.questions.length * marksPerQ).toFixed(1)}`;
+                this.els.correctCount.textContent = results.correct;
+                this.els.incorrectCount.textContent = results.incorrect;
+                this.els.unattemptedCount.textContent = results.unattempted;
+                this.els.timeTaken.textContent = results.timeTaken;
+                
+                if (results.sectionResults) {
+                    this.els.sectionResults.style.display = 'block';
+                    this.els.sectionResultsBody.innerHTML = '';
+                    
+                    results.sectionResults.forEach(section => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td><strong>${section.name}</strong></td>
+                            <td>${section.attempted}</td>
+                            <td>${section.correct}</td>
+                            <td>${section.incorrect}</td>
+                            <td><strong>${section.score.toFixed(2)}</strong></td>
+                        `;
+                        this.els.sectionResultsBody.appendChild(row);
+                        
+                        if (section.subsections) {
+                            section.subsections.forEach(subsec => {
+                                const subRow = document.createElement('tr');
+                                subRow.className = 'subsection-row';
+                                subRow.innerHTML = `
+                                    <td style="padding-left: 20px;">${subsec.name}</td>
+                                    <td>${subsec.attempted}</td>
+                                    <td>${subsec.correct}</td>
+                                    <td>${subsec.incorrect}</td>
+                                    <td>${subsec.score.toFixed(2)}</td>
+                                `;
+                                this.els.sectionResultsBody.appendChild(subRow);
+                            });
+                        }
+                    });
+                } else {
+                    this.els.sectionResults.style.display = 'none';
+                }
+                
+                this.els.resultModal.classList.add('show');
+            }
+
+            closeResultModal() {
+                this.els.resultModal.classList.remove('show');
+            }
+
+            reviewAnswers() {
+                this.closeResultModal();
+                this.loadQuestion(0);
+            }
+
+            openMobileNav() {
+                this.els.mobileNav.classList.add('open');
+            }
+
+            closeMobileNav() {
+                this.els.mobileNav.classList.remove('open');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.app = new CBTExamApp();
         });
-        
-        // Initialize when DOM is loaded
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeApp);
-        } else {
-            initializeApp();
-        }
-        
-        // Load saved theme
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            document.body.setAttribute('data-theme', savedTheme);
-            document.getElementById('themeBtn').textContent = savedTheme === 'light' ? '🌙' : '☀️';
-        }
     </script>
 </body>
 </html>
