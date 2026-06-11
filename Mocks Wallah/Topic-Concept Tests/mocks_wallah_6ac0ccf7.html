@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mocks Wallah</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #7209b7;
+            --secondary: #4361ee;
+            --accent: #f72585;
+            --success: #06d6a0;
+            --warning: #ffd166;
+            --danger: #ef476f;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        body {
+            background-color: #f0f2f5;
+            font-size: 16px;
+            padding-bottom: 60px; /* Space for fixed navigation */
+        }
+        .navbar {
+            background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,.1);
+            padding: 0.5rem 1rem;
+        }
+        .navbar-brand {
+            font-size: 1.1rem;
+            margin-right: 0;
+        }
+        .navbar .container-fluid {
+            justify-content: space-between;
+        }
+        .controls-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+        .timer-display {
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: white;
+            border-radius: 50px;
+            box-shadow: 0 3px 8px rgba(0,0,0,.1);
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+        }
+        .nav-btn {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            margin-left: 0.25rem;
+        }
+        .question-nav {
+            position: fixed;
+            top: 56px;
+            right: 0;
+            height: calc(100vh - 56px);
+            width: 280px;
+            transform: translateX(280px);
+            transition: transform .3s;
+            z-index: 100;
+            background: #fff;
+            box-shadow: -5px 0 15px rgba(0,0,0,.1);
+        }
+        .question-nav.show {
+            transform: translateX(0);
+        }
+        .main-content {
+            transition: margin .3s;
+            min-height: calc(100vh - 116px);
+        }
+        .question-text {
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+        .question-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+            gap: 6px;
+        }
+        .q-box {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            border: 1px solid #dee2e6;
+            background: #fff;
+            transition: all .2s;
+        }
+        .q-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 5px rgba(0,0,0,.1);
+        }
+        .q-box.attempted {
+            background-color: var(--secondary);
+            color: white;
+        }
+        .q-box.correct {
+            background-color: var(--success);
+            color: white;
+        }
+        .q-box.incorrect {
+            background-color: var(--danger);
+            color: white;
+        }
+        .q-box.current {
+            border: 2px solid var(--accent) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,.15);
+        }
+        .card {
+            border-radius: 12px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,.08);
+        }
+        .option-label {
+            border-radius: 8px;
+            transition: all .2s;
+            border: 1px solid #dee2e6;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+        }
+        .option-label:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,0,0,.05);
+        }
+        .form-check-input:checked + .option-label {
+            border-color: var(--primary);
+            background-color: rgba(114,9,183,.05);
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Bottom fixed navigation for mobile */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,.1);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 90;
+        }
+        
+        @media (min-width: 992px) {
+            .main-content.with-nav {
+                margin-right: 280px;
+            }
+            .question-nav {
+                transform: translateX(0);
+            }
+            .nav-toggle-btn {
+                display: none;
+            }
+            .bottom-nav {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .question-grid {
+                grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+            }
+            .option-label {
+                padding: 0.625rem 0.875rem;
+                font-size: 0.95rem;
+            }
+            .question-text {
+                font-size: 1rem;
+            }
+            .navbar-brand {
+                font-size: 1rem;
+            }
+            .timer-display {
+                font-size: 0.8125rem;
+                padding: 0.2rem 0.6rem;
+            }
+            .nav-btn {
+                padding: 0.2rem 0.6rem;
+                font-size: 0.8125rem;
+            }
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header navbar -->
+    <nav class="navbar navbar-dark sticky-top">
+        <div class="container-fluid px-2">
+            <a class="navbar-brand fw-bold" href="#"><i class="fas fa-graduation-cap me-1"></i>Mocks Wallah</a>
+            
+            <div class="controls-group">
+                <!-- Timer -->
+                <div class="timer-display me-1 fw-bold" id="timer">
+                    <i class="far fa-clock me-1"></i><span id="timer-display">12:00</span>
+                </div>
+                
+                <!-- Submit button -->
+                <button class="btn btn-light btn-sm nav-btn me-1" id="submit-btn" onclick="confirmSubmit()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+                
+                <!-- Language toggle -->
+                <button class="btn btn-light btn-sm nav-btn me-1" id="lang-btn" onclick="toggleLanguage()">
+                    <span id="lang-text">En</span>
+                </button>
+                
+                <!-- Questions toggle for mobile -->
+                <button class="btn btn-light btn-sm nav-btn nav-toggle-btn" id="nav-toggle" onclick="toggleNav()">
+                    <i class="fas fa-th"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main content -->
+    <div class="main-content" id="main-content">
+        <div class="container py-3">
+            <!-- Question counter -->
+            <div class="fw-bold text-center mb-3" id="question-counter">Question 1 of 25</div>
+            
+            <!-- Questions will be displayed here -->
+            <div id="questions-container"></div>
+        </div>
+    </div>
+    
+    <!-- Bottom navigation for mobile -->
+    <div class="bottom-nav d-lg-none">
+        <button class="btn btn-outline-primary px-3" onclick="prevQuestion()">
+            <i class="fas fa-chevron-left me-1"></i> Previous
+        </button>
+        <button class="btn btn-outline-primary px-3" onclick="nextQuestion()">
+            Next <i class="fas fa-chevron-right ms-1"></i>
+        </button>
+    </div>
+    
+    <!-- Question navigation sidebar -->
+    <div class="question-nav" id="question-nav">
+        <div class="p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="m-0">Questions</h5>
+                <div>
+                    <span class="badge bg-secondary me-1" id="attempted-count">0</span>
+                    <span class="badge bg-secondary" id="total-count">25</span>
+                    <button class="btn btn-sm btn-outline-secondary ms-2 d-lg-none" onclick="toggleNav()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Section selector moved here -->
+            <div class="mb-3">
+                <label for="section-selector" class="form-label small text-muted">Jump to Section</label>
+                <select class="form-select form-select-sm" id="section-selector" onchange="switchSection(this.value)">
+                    <option value="all">All Sections</option>
+                </select>
+            </div>
+            
+            <div class="question-grid" id="question-boxes"></div>
+        </div>
+    </div>
+    
+    <!-- Results modal -->
+    <div class="modal fade" id="results-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0">
+                <div class="modal-header border-0" style="background:linear-gradient(135deg,var(--primary),var(--secondary));color:white">
+                    <h5 class="modal-title">Test Results</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row text-center g-2">
+                        <div class="col-6">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#4361ee,#3a0ca3);color:white">
+                                <h3 id="score-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Score</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#06d6a0,#1b9aaa);color:white">
+                                <h3 id="correct-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Correct</div>
+                            </div>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#ef476f,#f72585);color:white">
+                                <h3 id="incorrect-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Incorrect</div>
+                            </div>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#6c757d,#495057);color:white">
+                                <h3 id="unattempted-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Unattempted</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-primary" onclick="reviewTest()">Review Test</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Questions data
+        const questions = [];
+        const sections = {};
+        let currentLang = "en";
+        let currentQuestion = 0;
+        let answers = {};
+        let submitted = false;
+        let totalTime = 12 * 60;
+        let resultsModal;
+        
+        // Initialize the test
+        window.onload = function() {
+            initializeTest();
+            startTimer();
+            resultsModal = new bootstrap.Modal(document.getElementById('results-modal'));
+            
+            // If on desktop, show the question navigation by default
+            if (window.innerWidth >= 992) {
+                document.getElementById('question-nav').classList.add('show');
+                document.getElementById('main-content').classList.add('with-nav');
+            }
+        };
+        
+        // Initialize test data
+        function initializeTest() {
+            // Add sections and questions
+            
+            sections["7"] = {
+                name: "English",
+                start: 0,
+                end: 23
+            };
+            
+            document.getElementById('section-selector').innerHTML += 
+                `<option value="7">English</option>`;
+            
+            sections["misc"] = {
+                name: "Miscellaneous",
+                start: 24,
+                end: 24
+            };
+            
+            document.getElementById('section-selector').innerHTML += 
+                `<option value="misc">Miscellaneous</option>`;
+            
+            
+                questions.push({
+                    id: "1",
+                    section: "7",
+                    question_en: "<p>1. Select the appropriate synonym of the given word.<br>Abort</p>",
+                    question_hi: "<p>1. Select the appropriate synonym of the given word.<br>Abort</p>",
+                    options_en: ["<p>End</p>", "<p>Begin</p>", 
+                                "<p>Continue</p>", "<p>Hate</p>"],
+                    options_hi: ["<p>End</p>", "<p>Begin</p>",
+                                "<p>Continue</p>", "<p>Hate</p>"],
+                    solution_en: "<p>1.(a) <br><strong>End</strong> - a final part of something, especially a period of time, an activity, or a story.<br><strong>Abort</strong> - bring to a premature end because of a problem or fault.<br><strong>Begin</strong> - perform or undergo the first part of (an action or activity).<br><strong>Continue</strong> - persist in an activity or process.<br><strong>Hate</strong> - feel intense dislike for.</p>",
+                    solution_hi: "<p>1.(a) <br><strong>End</strong> (अंत) - a final part of something, especially a period of time, an activity, or a story.<br><strong>Abort</strong> (अधूरा छोड़ना) - bring to a premature end because of a problem or fault.<br><strong>Begin</strong> (आरंभ करना) - perform or undergo the first part of (an action or activity).<br><strong>Continue</strong> (जारी रखना) - persist in an activity or process.<br><strong>Hate</strong> (घृणा करना) - feel intense dislike for.</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "2",
+                    section: "7",
+                    question_en: "<p>2. Select the correct indirect form of the given sentence.<br>\"What are going to call the puppy,Jane ?\" the boy asked.</p>",
+                    question_hi: "<p>2. Select the correct indirect form of the given sentence.<br>\"What are going to call the puppy,Jane?\" the boy asked.</p>",
+                    options_en: ["<p>The boy asked Jane what she was going to call the puppy.</p>", "<p>Jane asked the boy what is he going to call the puppy.</p>", 
+                                "<p>The boy wondered what Jane were going to call the puppy.</p>", "<p>The boy told Jane what she was going to call her puppy.</p>"],
+                    options_hi: ["<p>The boy asked Jane what she was going to call the puppy.</p>", "<p>Jane asked the boy what is he going to call the puppy.</p>",
+                                "<p>The boy wondered what Jane were going to call the puppy.</p>", "<p>The boy told Jane what she was going to call her puppy.</p>"],
+                    solution_en: "<p>2.(a) The boy asked Jane what she was going to call the puppy.(indirect form)</p>",
+                    solution_hi: "<p>2.(a) The boy asked Jane what she was going to call the puppy. (indirect form)</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "3",
+                    section: "7",
+                    question_en: "<p>3. Select the most appropriate sequence from the given options to make a meaningful paragraph from jumbled sentences.<br>A. They also visit ailing friends and relatives, or attend to personal matters even during office hours.<br>B. Once in office, they receive friends and relatives who call them any time without prior appointment.<br>C. We can frequently find a large number of people sitting here and there and doing nothing.<br>D. Even those who are employed often come late to office and leave early unless they are forced to be punctual.</p>",
+                    question_hi: "<p>3. Select the most appropriate sequence from the given options to make a meaningful paragraph from jumbled sentences.<br>A. They also visit ailing friends and relatives, or attend to personal matters even during office hours.<br>B. Once in office, they receive friends and relatives who call them any time without prior appointment.<br>C. We can frequently find a large number of people sitting here and there and doing nothing.<br>D. Even those who are employed often come late to office and leave early unless they are forced to be punctual.</p>",
+                    options_en: ["<p>DCAB</p>", "<p>ABCD</p>", 
+                                "<p>CDBA</p>", "<p>ACDB</p>"],
+                    options_hi: ["<p>DCAB</p>", "<p>ABCD</p>",
+                                "<p>CDBA</p>", "<p>ACDB</p>"],
+                    solution_en: "<p>3.(c) CDBA. <br>Option (c) CDBA is the correct sequence.</p>",
+                    solution_hi: "<p>3.(c) CDBA. <br>Option (c) CDBA में सही sequence है।</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "4",
+                    section: "7",
+                    question_en: "<p>4. Select the most appropriate words which that means the same as the group of words given.<br>Having something more than required</p>",
+                    question_hi: "<p>4. Select the most appropriate words which that means the same as the group of words given.<br>Having something more than required</p>",
+                    options_en: ["<p>Surrogate</p>", "<p>Surcharge</p>", 
+                                "<p>Surplus</p>", "<p>Surroundings</p>"],
+                    options_hi: ["<p>Surrogate</p>", "<p>Surcharge</p>",
+                                "<p>Surplus</p>", "<p>Surroundings</p>"],
+                    solution_en: "<p>4.(c) Surplus.</p>",
+                    solution_hi: "<p>4.(c) Surplus.</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "5",
+                    section: "7",
+                    question_en: "<p>5. Identify the segment in the sentence which contains the grammatical error from the given options.<br>We must get this post send as soon as possible.</p>",
+                    question_hi: "<p>5. Identify the segment in the sentence which contains the grammatical error from the given options.<br>We must get this post send as soon as possible.</p>",
+                    options_en: ["<p>We must</p>", "<p>get this post</p>", 
+                                "<p>soon as possible</p>", "<p>send as</p>"],
+                    options_hi: ["<p>We must</p>", "<p>get this post</p>",
+                                "<p>soon as possible</p>", "<p>send as</p>"],
+                    solution_en: "<p>5.(d) send as.<br>Use &lsquo;sent&rsquo; instead of &lsquo;send&rsquo;.</p>",
+                    solution_hi: "<p>5.(d) send as.<br>&lsquo;Send&rsquo; के स्थान पर &lsquo;sent&rsquo; का प्रयोग करना चाहिए।</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "6",
+                    section: "7",
+                    question_en: "<p>6. Select the most appropriate option to substitute the underline segment in the given sentence.If there is no need to substitute it, select no improvement.<br>I was sitting at home doing nothing when <span style=\"text-decoration: underline;\"><strong>I had heard</strong></span> that song again.</p>",
+                    question_hi: "<p>6. Select the most appropriate option to substitute the underline segment in the given sentence.If there is no need to substitute it, select no improvement.<br>I was sitting at home doing nothing when <span style=\"text-decoration: underline;\"><strong>I had heard</strong></span> that song again.</p>",
+                    options_en: ["<p>no improvement</p>", "<p>has heard</p>", 
+                                "<p>heard</p>", "<p>hears</p>"],
+                    options_hi: ["<p>no improvement</p>", "<p>has heard</p>",
+                                "<p>heard</p>", "<p>hears</p>"],
+                    solution_en: "<p>6.(c) heard. <br>Instead of &lsquo;I had heard&rsquo; , &lsquo;I heard&rsquo; should be used. <br>There are sentences which have one incomplete sentence (subordinate clause) related with a complete sentence (principal clause) and both pertain to Past Tense. When two sentences of Past Tense come in one Sentence, rule of Past Indefinite Tense will apply to the incomplete sentence and rule of Past Tense (as per type of the sentence) will be applied to the complete sentence.</p>",
+                    solution_hi: "<p>6.(c) heard. <br>&lsquo;I had heard&rsquo; के स्थान पर &lsquo;I heard&rsquo; का प्रयोग करना चाहिए। <br>ये ऐसे sentences होते हैं जिनमें एक incomplete sentence (subordinate clause), एक complete sentence (principal clause) से संबंधित होता है तथा दोनों का संबंध &lsquo;Past Tense&rsquo; से होता है। जब &lsquo;Past Tense&rsquo; के दो sentences एक ही Sentence में आते हैं, तो incomplete sentence में &lsquo;Past Indefinite Tense&rsquo; का तथा complete sentence में &lsquo;Past Tense&rsquo; का rule (sentence के type के अनुसार) लागू होगा।</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "7",
+                    section: "7",
+                    question_en: "<p>7. <strong>Cloze Test :</strong><br>In a way, adult education is an educational movement through the movement (7) _____ village schools. In the beginning, the (8) ____were suspicious. It was hard to persuade (9) _____to realise that they were really getting something (10) _____ the schools. They were not at all sure that they wanted their (11) _____ to leave their homes.<br>Select the most appropriate option for blank no.7</p>",
+                    question_hi: "<p>7. <strong>Cloze Test :</strong><br>In a way, adult education is an educational movement through the movement (7) _____ village schools. In the beginning, the (8) ____were suspicious. It was hard to persuade (9) _____to realise that they were really getting something (10) _____ the schools. They were not at all sure that they wanted their (11) _____ to leave their homes.<br>Select the most appropriate option for blank no.7</p>",
+                    options_en: ["<p>of</p>", "<p>by</p>", 
+                                "<p>in</p>", "<p>from</p>"],
+                    options_hi: ["<p>of</p>", "<p>by</p>",
+                                "<p>in</p>", "<p>from</p>"],
+                    solution_en: "<p>7.(a) Of</p>",
+                    solution_hi: "<p>7.(a) Of</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "8",
+                    section: "7",
+                    question_en: "<p>8. <strong>Cloze Test :</strong><br>In a way, adult education is an educational movement through the movement (7) _____ village schools. In the beginning, the (8) ____were suspicious. It was hard to persuade (9) _____to realise that they were really getting something (10) _____ the schools. They were not at all sure that they wanted their (11) _____ to leave their homes.<br>Select the most appropriate option for blank no.8</p>",
+                    question_hi: "<p>8. <strong>Cloze Test :</strong><br>In a way, adult education is an educational movement through the movement (7) _____ village schools. In the beginning, the (8) ____were suspicious. It was hard to persuade (9) _____to realise that they were really getting something (10) _____ the schools. They were not at all sure that they wanted their (11) _____ to leave their homes.<br>Select the most appropriate option for blank no.8</p>",
+                    options_en: ["<p>children</p>", "<p>officers</p>", 
+                                "<p>politicians</p>", "<p>villagers</p>"],
+                    options_hi: ["<p>children</p>", "<p>officers</p>",
+                                "<p>politicians</p>", "<p>villagers</p>"],
+                    solution_en: "<p>8.(d) villagers</p>",
+                    solution_hi: "<p>8.(d) villagers</p>",
+                    correct: "8",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "9",
+                    section: "7",
+                    question_en: "<p>9. <strong>Cloze Test :</strong><br>In a way, adult education is an educational movement through the movement (7) _____ village schools. In the beginning, the (8) ____were suspicious. It was hard to persuade (9) _____to realise that they were really getting something (10) _____ the schools. They were not at all sure that they wanted their (11) _____ to leave their homes.<br>Select the most appropriate option for blank no.9</p>",
+                    question_hi: "<p>9. <strong>Cloze Test :</strong><br>In a way, adult education is an educational movement through the movement (7) _____ village schools. In the beginning, the (8) ____were suspicious. It was hard to persuade (9) _____to realise that they were really getting something (10) _____ the schools. They were not at all sure that they wanted their (11) _____ to leave their homes.<br>Select the most appropriate option for blank no.9</p>",
+                    options_en: ["<p>them</p>", "<p>they</p>", 
+                                "<p>him</p>", "<p>us</p>"],
+                    options_hi: ["<p>them</p>", "<p>they</p>",
+                                "<p>him</p>", "<p>us</p>"],
+                    solution_en: "<p>9.(a) them</p>",
+                    solution_hi: "<p>9.(a) them</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "10",
+                    section: "7",
+                    question_en: "<p>10. <strong>Cloze Test :</strong><br>In a way, adult education is an educational movement through the movement (7) _____ village schools. In the beginning, the (8) ____were suspicious. It was hard to persuade (9) _____to realise that they were really getting something (10) _____ the schools. They were not at all sure that they wanted their (11) _____ to leave their homes.<br>Select the most appropriate option for blank no.10</p>",
+                    question_hi: "<p>10. <strong>Cloze Test :</strong><br>In a way, adult education is an educational movement through the movement (7) _____ village schools. In the beginning, the (8) ____were suspicious. It was hard to persuade (9) _____to realise that they were really getting something (10) _____ the schools. They were not at all sure that they wanted their (11) _____ to leave their homes.<br>Select the most appropriate option for blank no.10</p>",
+                    options_en: ["<p>to</p>", "<p>from</p>", 
+                                "<p>by</p>", "<p>for</p>"],
+                    options_hi: ["<p>to</p>", "<p>from</p>",
+                                "<p>by</p>", "<p>for</p>"],
+                    solution_en: "<p>10.(b) from</p>",
+                    solution_hi: "<p>10.(b) from</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "11",
+                    section: "7",
+                    question_en: "<p>11. <strong>Cloze Test :</strong><br>In a way, adult education is an educational movement through the movement (7) _____ village schools. In the beginning, the (8) ____were suspicious. It was hard to persuade (9) _____to realise that they were really getting something (10) _____ the schools. They were not at all sure that they wanted their (11) _____ to leave their homes.<br>Select the most appropriate option for blank no.11</p>",
+                    question_hi: "<p>11. <strong>Cloze Test :</strong><br>In a way, adult education is an educational movement through the movement (7) _____ village schools. In the beginning, the (8) ____were suspicious. It was hard to persuade (9) _____to realise that they were really getting something (10) _____ the schools. They were not at all sure that they wanted their (11) _____ to leave their homes.<br>Select the most appropriate option for blank no.11</p>",
+                    options_en: ["<p>parents</p>", "<p>children</p>", 
+                                "<p>teachers</p>", "<p>villagers</p>"],
+                    options_hi: ["<p>parents</p>", "<p>children</p>",
+                                "<p>teachers</p>", "<p>villagers</p>"],
+                    solution_en: "<p>11.(b) children</p>",
+                    solution_hi: "<p>11.(b) children</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "12",
+                    section: "7",
+                    question_en: "<p>12. Select the most appropriate word to fill in the blank.<br>My cousin\'s study on the reading habits of school children across three states has been recognised as a _______ piece of research.</p>",
+                    question_hi: "<p>12. Select the most appropriate word to fill in the blank.<br>My cousin\'s study on the reading habits of school children across three states has been recognised as a _______ piece of research.</p>",
+                    options_en: ["<p>negligent</p>", "<p>useless</p>", 
+                                "<p>pioneering</p>", "<p>proud</p>"],
+                    options_hi: ["<p>negligent</p>", "<p>useless</p>",
+                                "<p>pioneering</p>", "<p>proud</p>"],
+                    solution_en: "<p>12.(c) Pioneering</p>",
+                    solution_hi: "<p>12.(c) Pioneering</p>",
+                    correct: " c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "13",
+                    section: "7",
+                    question_en: "<p>13. Select the correct passive form of the given sentence.<br>The commander ordered his soldiers to move forward and attack the enemy camps.</p>",
+                    question_hi: "<p>13. Select the correct passive form of the given sentence.<br>The commander ordered his soldiers to move forward and attack the enemy camps.</p>",
+                    options_en: ["<p>The commander was ordered by his soldiers to move forward and attack the enemy camps.</p>", "<p>The soldiers were ordered by their commander to move forward and attack the enemy camps.</p>", 
+                                "<p>His soldiers were ordered by the commander to be moved forward and attacked the enemy camps.</p>", "<p>The commander ordered his soldiers to be moved forward and attacked the enemy camps.</p>"],
+                    options_hi: ["<p>The commander was ordered by his soldiers to move forward and attack the enemy camps.</p>", "<p>The soldiers were ordered by their commander to move forward and attack the enemy camps.</p>",
+                                "<p>His soldiers were ordered by the commander to be moved forward and attacked the enemy camps.</p>", "<p>The commander ordered his soldiers to be moved forward and attacked the enemy camps.</p>"],
+                    solution_en: "<p>13.(b) The soldiers were ordered by their commander to move forward and attack the enemy camps.(passive form)</p>",
+                    solution_hi: "<p>13.(b) The soldiers were ordered by their commander to move forward and attack the enemy camps.(passive form)</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "14",
+                    section: "7",
+                    question_en: "<p>14. Select the most appropriate words which that means the same as the group of words given.<br>Anger about an unfair situation or about someone\'s unfair behaviour.</p>",
+                    question_hi: "<p>14. Select the most appropriate words which that means the same as the group of words given.<br>Anger about an unfair situation or about someone\'s unfair behaviour.</p>",
+                    options_en: ["<p>Indigenisation</p>", "<p>Indulgence</p>", 
+                                "<p>Induction</p>", "<p>Indignation</p>"],
+                    options_hi: ["<p>Indigenisation</p>", "<p>Indulgence</p>",
+                                "<p>Induction</p>", "<p>Indignation</p>"],
+                    solution_en: "<p>14.(d) Indignation - Anger about an unfair situation or about someone\'s unfair behaviour.</p>",
+                    solution_hi: "<p>14.(d) Indignation (क्रोध/आक्रोश) - Anger about an unfair situation or about someone\'s unfair behaviour.</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "15",
+                    section: "7",
+                    question_en: "<p>15. Select the appropriate antonym of the given word.<br>Emerge</p>",
+                    question_hi: "<p>15. Select the appropriate antonym of the given word.<br>Emerge</p>",
+                    options_en: ["<p>Announce</p>", "<p>Appear</p>", 
+                                "<p>Surface</p>", "<p>Disappear</p>"],
+                    options_hi: ["<p>Announce</p>", "<p>Appear</p>",
+                                "<p>Surface</p>", "<p>Disappear</p>"],
+                    solution_en: "<p>15.(d) <br><strong>Disappear</strong> - cease to be visible.<br><strong>Emerge</strong> - move out of or away from something and become visible.<br><strong>Announce</strong> - make a formal public statement about a fact, occurrence, or intention.<br><strong>Appear</strong> - come into sight; become visible or noticeable, especially without apparent cause.<br><strong>Surface</strong> - the outside part or uppermost layer of something.</p>",
+                    solution_hi: "<p>15.(d) <br><strong>Disappear</strong> (अदृश्य होना) - cease to be visible.<br><strong>Emerge</strong> (प्रकट होना) - move out of or away from something and become visible.<br><strong>Announce</strong> (घोषणा करना) - make a formal public statement about a fact, occurrence, or intention.<br><strong>Appear</strong> (दिखना/नज़र आना) - come into sight; become visible or noticeable, especially without apparent cause.<br><strong>Surface</strong> (सतह) - the outside part or uppermost layer of something.</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "16",
+                    section: "7",
+                    question_en: "<p>16. Select the INCORRECTLY spelt word.</p>",
+                    question_hi: "<p>16. Select the INCORRECTLY spelt word.</p>",
+                    options_en: ["<p>Dilemma</p>", "<p>Athelete</p>", 
+                                "<p>Guarantee</p>", "<p>Convenience</p>"],
+                    options_hi: ["<p>Dilemma</p>", "<p>Athelete</p>",
+                                "<p>Guarantee</p>", "<p>Convenience</p>"],
+                    solution_en: "<p>16.(b) Athelete.<br>&lsquo;Athlete&rsquo; is the correct spelling.</p>",
+                    solution_hi: "<p>16.(b) Athelete.<br>&lsquo;Athlete&rsquo; सही spelling है।</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "17",
+                    section: "7",
+                    question_en: "<p>17. Select the appropriate synonym of the given word.<br>Exceed</p>",
+                    question_hi: "<p>17. Select the appropriate synonym of the given word.<br>Exceed</p>",
+                    options_en: ["<p>Decrease</p>", "<p>Surpass</p>", 
+                                "<p>Improve</p>", "<p>Decline</p>"],
+                    options_hi: ["<p>Decrease</p>", "<p>Surpass</p>",
+                                "<p>Improve</p>", "<p>Decline</p>"],
+                    solution_en: "<p>17.(b) <br><strong>Surpass</strong> - exceed; be greater than.<br><strong>Exceed</strong> - be greater in number or size than (a quantity, number, or other measurable thing).<br><strong>Decrease</strong> - make or become smaller or fewer in size, amount, intensity, or degree.<br><strong>Improve</strong> - make or become better.<br><strong>Decline</strong> - (typically of something regarded as good) become smaller, fewer, or less; decrease.</p>",
+                    solution_hi: "<p>17.(b) <br><strong>Surpass</strong> (बढ़ना) - exceed; be greater than.<br><strong>Exceed</strong> (अधिक होना) - be greater in number or size than (a quantity, number, or other measurable thing).<br><strong>Decrease</strong> (कम होना) - make or become smaller or fewer in size, amount, intensity, or degree.<br><strong>Improve</strong> (सुधारना) - make or become better.<br><strong>Decline</strong> (ह्रास/गिरावट) - (typically of something regarded as good) become smaller, fewer, or less; decrease.</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "18",
+                    section: "7",
+                    question_en: "<p>18. Select the most appropriate meaning of the given idiom.<br>Blind alley</p>",
+                    question_hi: "<p>18. Select the most appropriate meaning of the given idiom.<br>Blind alley</p>",
+                    options_en: ["<p>A state of deep thought</p>", "<p>Taking first step after somebody\'s approach</p>", 
+                                "<p>A person who comes to meet occasionally</p>", "<p>A situation in which no further progress can be made</p>"],
+                    options_hi: ["<p>A state of deep thought</p>", "<p>Taking first step after somebody\'s approach</p>",
+                                "<p>A person who comes to meet occasionally</p>", "<p>A situation in which no further progress can be made</p>"],
+                    solution_en: "<p>18.(d) Blind alley: A situation in which no further progress can be made</p>",
+                    solution_hi: "<p>18.(d) Blind alley - A situation in which no further progress can be made./एक ऐसी स्थिति जिसमें आगे कोई प्रगति नहीं की जा सकती।</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "19",
+                    section: "7",
+                    question_en: "<p>19. Identify the segment in the sentence which contains the grammatical error from the given options.<br>Sita has no taste in classical dance.</p>",
+                    question_hi: "<p>19. Identify the segment in the sentence which contains the grammatical error from the given options.<br>Sita has no taste in classical dance.</p>",
+                    options_en: ["<p>classical dance</p>", "<p>in</p>", 
+                                "<p>no taste</p>", "<p>Sita has</p>"],
+                    options_hi: ["<p>classical dance</p>", "<p>in</p>",
+                                "<p>no taste</p>", "<p>Sita has</p>"],
+                    solution_en: "<p>19.(b) in.<br>\'Taste for\' is the correct usage here. \'Taste for\' is used to express a person\'s liking or interest for a particular thing.</p>",
+                    solution_hi: "<p>19.(b) in.<br>यहाँ \'Taste for\' सही प्रयोग है। \'Taste for\' का प्रयोग किसी particular thing के लिए किसी व्यक्ति की पसंद या रुचि (liking or interest) व्यक्त करने के लिए किया जाता है।</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "20",
+                    section: "7",
+                    question_en: "<p>20. Select the most appropriate sequence from the given options to make a meaningful paragraph from jumbled sentences.<br>A. Accommodation and food were given free.<br>B. This was held in a hostel for poor students built by a philanthropist.<br>C. A few years ago, I was the chief guest at a small function.<br>D. But the inmates of the hostel had to bear other expenses like clothing and toiletries.</p>",
+                    question_hi: "<p>20. Select the most appropriate sequence from the given options to make a meaningful paragraph from jumbled sentences.<br>A. Accommodation and food were given free.<br>B. This was held in a hostel for poor students built by a philanthropist.<br>C. A few years ago, I was the chief guest at a small function.<br>D. But the inmates of the hostel had to bear other expenses like clothing and toiletries.</p>",
+                    options_en: ["<p>CBAD</p>", "<p>BCAD</p>", 
+                                "<p>ABCD</p>", "<p>BCDA</p>"],
+                    options_hi: ["<p>CBAD</p>", "<p>BCAD</p>",
+                                "<p>ABCD</p>", "<p>BCDA</p>"],
+                    solution_en: "<p>20.(a) CBAD.<br>Option (d) CBAD is the correct sequence.</p>",
+                    solution_hi: "<p>20.(a) CBAD.<br>Option (d) CBAD में सही sequence है।</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "21",
+                    section: "7",
+                    question_en: "21. Select the appropriate antonym of the given word.<br /> Mellow",
+                    question_hi: "21. Select the appropriate antonym of the given word.<br /> Mellow",
+                    options_en: [" Hard", " Soft", 
+                                " Medium", " Shiny"],
+                    options_hi: ["<p>Hard</p>", "<p>Soft</p>",
+                                "<p>Medium</p>", "<p>Shiny</p>"],
+                    solution_en: "<p>21.(a) <br><strong>Hard</strong> - solid, firm, and rigid; not easily broken, bent, or pierced.<br><strong>Mellow</strong> - (especially of a sound, flavour, or colour) pleasantly smooth or soft; free from harshness.<br><strong>Soft</strong> - easy to mould, cut, compress, or fold; not hard or firm to the touch.<br><strong>Medium</strong> - an agency or means of doing something.<br><strong>Shiny</strong> - (of a smooth surface) reflecting light, typically because very clean or polished.</p>",
+                    solution_hi: "<p>21.(a) <br><strong>Hard</strong> (ठोस) - solid, firm, and rigid; not easily broken, bent, or pierced.<br><strong>Mellow</strong> (कोमल) - (especially of a sound, flavour, or colour) pleasantly smooth or soft; free from harshness.<br><strong>Soft</strong> (मुलायम) - easy to mould, cut, compress, or fold; not hard or firm to the touch.<br><strong>Medium</strong> (माध्यम) - an agency or means of doing something.<br><strong>Shiny</strong> (चमकदार) - (of a smooth surface) reflecting light, typically because very clean or polished.</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "22",
+                    section: "7",
+                    question_en: "<p>22. Select the most appropriate meaning of the given idiom.<br>The acid test</p>",
+                    question_hi: "<p>22. Select the most appropriate meaning of the given idiom.<br>The acid test</p>",
+                    options_en: ["<p>Throwing acid on someone\'s face</p>", "<p>An unpleasant or offensive test</p>", 
+                                "<p>A fact, event or situation that proves something</p>", "<p>A critical situation or crisis</p>"],
+                    options_hi: ["<p>Throwing acid on someone\'s face</p>", "<p>An unpleasant or offensive test</p>",
+                                "<p>A fact, event or situation that proves something</p>", "<p>A critical situation or crisis</p>"],
+                    solution_en: "<p>22.(c) The acid test - A fact, event or situation that proves something.</p>",
+                    solution_hi: "<p>22.(c) The acid test - A fact, event or situation that proves something./कोई तथ्य, घटना या स्थिति जो कुछ सिद्ध करती हो।</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "23",
+                    section: "7",
+                    question_en: "<p>23. Select the INCORRECTLY spelt word.</p>",
+                    question_hi: "<p>23. Select the INCORRECTLY spelt word.</p>",
+                    options_en: ["<p>Soldier</p>", "<p>Beginning</p>", 
+                                "<p>Shining</p>", "<p>Guidence</p>"],
+                    options_hi: ["<p>Soldier</p>", "<p>Beginning</p>",
+                                "<p>Shining</p>", "<p>Guidence</p>"],
+                    solution_en: "<p>23.(d) Guidence.<br>&lsquo;Guidance&rsquo; is the correct spelling.</p>",
+                    solution_hi: "<p>23.(d) Guidence.<br>&lsquo;Guidance&rsquo; सही spelling है।</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "24",
+                    section: "7",
+                    question_en: "<p>24. Select the most appropriate word to fill in the blank.<br>Suzerainty is having political control over a ______ state.</p>",
+                    question_hi: "<p>24. Select the most appropriate word to fill in the blank.<br>Suzerainty is having political control over a ______ state.</p>",
+                    options_en: ["<p>backward</p>", "<p>unified</p>", 
+                                "<p>democratic</p>", "<p>dependent</p>"],
+                    options_hi: ["<p>backward</p>", "<p>unified</p>",
+                                "<p>democratic</p>", "<p>dependent</p>"],
+                    solution_en: "<p>24.(d) dependent.<br>Suzerainty is any relationship in which one region or polity controls the foreign policy and relations of a tributary state, while allowing the tributary state to have internal autonomy.</p>",
+                    solution_hi: "<p>24.(d) dependent.<br>अधिराजत्व (Suzerainty) वह संबंध है जिसमें एक क्षेत्र (region) या राज व्यवस्था (polity) किसी अधीनस्थ राज्य (tributary state) की foreign policy तथा relations को नियंत्रित करती है, जबकि अधीनस्थ राज्य को आंतरिक स्वायत्तता (internal autonomy) की अनुमति देती है।</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "25",
+                    section: "misc",
+                    question_en: "<p>25. Select the most appropriate option to substitute the underline segment in the given sentence.If there is no need to substitute it, select no improvement.<br>One evening, when father was coming home from work, I <span style=\"text-decoration: underline;\"><strong>played</strong></span> in the front garden.</p>",
+                    question_hi: "<p>25. Select the most appropriate option to substitute the underline segment in the given sentence.If there is no need to substitute it, select no improvement.<br>One evening, when father was coming home from work, I <span style=\"text-decoration: underline;\"><strong>played</strong></span> in the front garden.</p>",
+                    options_en: ["<p>no improvement</p>", "<p>play</p>", 
+                                "<p>am playing</p>", "<p>was playing</p>"],
+                    options_hi: ["<p>no improvement</p>", "<p>play</p>",
+                                "<p>am playing</p>", "<p>was playing</p>"],
+                    solution_en: "<p>25.(d) was playing.<br>Using the past continuous \"was playing\" creates a parallel structure with \"was coming\" and more accurately reflects two actions happening concurrently in the past. Hence,\'was playing\' will be used.</p>",
+                    solution_hi: "<p>25.(d) was playing.<br>Past continuous \"was playing\" का प्रयोग \"was coming\" के साथ एक parallel structure बनाता है तथा past में एक साथ घटित हो रही दो actions को अधिक सटीकता से दर्शाता है। इसलिए, \'was playing\' का प्रयोग किया जाएगा।</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+            
+            // Generate question boxes
+            const boxesContainer = document.getElementById('question-boxes');
+            questions.forEach((q, index) => {
+                const box = document.createElement('div');
+                box.className = 'q-box';
+                box.textContent = index + 1;
+                box.onclick = () => showQuestion(index);
+                box.id = `box-${index}`;
+                boxesContainer.appendChild(box);
+            });
+            
+            // Show first question
+            showQuestion(0);
+            updateProgress();
+        }
+        
+        // Show a specific question
+        function showQuestion(index) {
+            if (index < 0 || index >= questions.length) return;
+            
+            currentQuestion = index;
+            const question = questions[index];
+            
+            // Update question counter
+            document.getElementById('question-counter').textContent = `Question ${index + 1} of ${questions.length}`;
+            
+            // Update question boxes
+            document.querySelectorAll('.q-box').forEach(box => box.classList.remove('current'));
+            document.getElementById(`box-${index}`).classList.add('current');
+            
+            // Generate question HTML - more compact
+            let html = `
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="question-text mb-3">
+                            <div class="en">${question.question_en}</div>
+                            <div class="hi" style="display:none">${question.question_hi}</div>
+                        </div>
+                        <div class="options">`;
+                        
+            // Add options
+            ['a', 'b', 'c', 'd'].forEach((opt, i) => {
+                let optionClass = 'option-label';
+                
+                // When reviewing, highlight user's choice and correct answer
+                if (submitted) {
+                    if (opt === question.correct) {
+                        optionClass += ' border-success bg-success bg-opacity-10';
+                    }
+                    if (answers[question.id] === opt && opt !== question.correct) {
+                        optionClass += ' border-danger bg-danger bg-opacity-10';
+                    }
+                }
+                
+                html += `
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="q${index}" 
+                            id="opt-${index}-${opt}" value="${opt}" 
+                            ${answers[question.id] === opt ? 'checked' : ''}
+                            onclick="selectAnswer('${question.id}', '${opt}')">
+                        <label class="form-check-label w-100 ${optionClass}" for="opt-${index}-${opt}">
+                            ${submitted && opt === question.correct ? '<i class="fas fa-check-circle text-success me-1"></i>' : ''}
+                            <div class="en">${question.options_en[i]}</div>
+                            <div class="hi" style="display:none">${question.options_hi[i]}</div>
+                        </label>
+                    </div>`;
+            });
+            
+            // Add solution if submitted
+            if (submitted) {
+                const isCorrect = answers[question.id] === question.correct;
+                const alertClass = isCorrect ? 'alert-success' : 'alert-danger';
+                const resultText = answers[question.id] ? (isCorrect ? 'Correct!' : 'Incorrect!') : 'Not attempted';
+                
+                html += `
+                    <div class="alert ${alertClass} mt-3 py-2">
+                        <strong>${resultText}</strong>
+                        <div class="mt-1 small">
+                            <strong>Solution:</strong>
+                            <div class="en">${question.solution_en}</div>
+                            <div class="hi" style="display:none">${question.solution_hi}</div>
+                        </div>
+                    </div>`;
+            }
+            
+            html += `</div></div>`;
+            
+            document.getElementById('questions-container').innerHTML = html;
+            
+            // Apply language settings
+            applyLanguage();
+            
+            // If in mobile view, close the menu
+            if (window.innerWidth < 992) {
+                toggleNav(false);
+            }
+        }
+        
+        // Apply current language
+        function applyLanguage() {
+            document.querySelectorAll(`.${currentLang}`).forEach(el => el.style.display = 'block');
+            document.querySelectorAll(`.${currentLang === 'en' ? 'hi' : 'en'}`).forEach(el => el.style.display = 'none');
+        }
+        
+        // Select an answer
+        function selectAnswer(qId, option) {
+            if (submitted) return;
+            
+            answers[qId] = option;
+            updateProgress();
+            
+            // Mark question as attempted in the navigation
+            const index = questions.findIndex(q => q.id === qId);
+            if (index >= 0) {
+                document.getElementById(`box-${index}`).classList.add('attempted');
+            }
+        }
+        
+        // Navigate to previous/next question
+        function prevQuestion() { if (currentQuestion > 0) showQuestion(currentQuestion - 1); }
+        function nextQuestion() { if (currentQuestion < questions.length - 1) showQuestion(currentQuestion + 1); }
+        
+        // Switch section
+        function switchSection(sectionId) {
+            if (sectionId === 'all') {
+                showQuestion(0);
+                return;
+            }
+            
+            const section = sections[sectionId];
+            if (section) showQuestion(section.start);
+        }
+        
+        // Toggle language
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            applyLanguage();
+            
+            // Update button text
+            document.getElementById('lang-text').textContent = currentLang === 'en' ? 'Hi' : 'En';
+        }
+        
+        // Toggle navigation sidebar
+        function toggleNav(show) {
+            const nav = document.getElementById('question-nav');
+            const content = document.getElementById('main-content');
+            
+            if (show === undefined) {
+                show = !nav.classList.contains('show');
+            }
+            
+            if (show) {
+                nav.classList.add('show');
+                if (window.innerWidth >= 992) {
+                    content.classList.add('with-nav');
+                }
+            } else {
+                nav.classList.remove('show');
+                if (window.innerWidth >= 992) {
+                    content.classList.remove('with-nav');
+                }
+            }
+        }
+        
+        // Update progress
+        function updateProgress() {
+            const attempted = Object.keys(answers).length;
+            document.getElementById('attempted-count').textContent = attempted;
+        }
+        
+        // Start timer - compact
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            let timeLeft = totalTime;
+            
+            const timerInterval = setInterval(() => {
+                if (timeLeft <= 0 || submitted) {
+                    clearInterval(timerInterval);
+                    if (!submitted) submitTest();
+                    return;
+                }
+                
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                timeLeft--;
+            }, 1000);
+        }
+        
+        // Confirm before submitting
+        function confirmSubmit() {
+            if (submitted) return;
+            
+            const attempted = Object.keys(answers).length;
+            const remaining = questions.length - attempted;
+            
+            if (confirm(`You have attempted ${attempted} of ${questions.length} questions.
+${remaining} questions are unattempted.
+
+Are you sure you want to submit?`)) {
+                submitTest();
+            }
+        }
+        
+        // Submit test
+        function submitTest() {
+            if (submitted) return;
+            
+            submitted = true;
+            
+            let score = 0;
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let unattemptedCount = 0;
+            
+            questions.forEach((q, index) => {
+                const userAns = answers[q.id];
+                const box = document.getElementById(`box-${index}`);
+                
+                box.classList.remove('attempted');
+                
+                if (!userAns) {
+                    unattemptedCount++;
+                    box.classList.add('bg-secondary', 'text-white');
+                } else if (userAns === q.correct) {
+                    correctCount++;
+                    score += q.pos_marks;
+                    box.classList.add('correct');
+                } else {
+                    incorrectCount++;
+                    score -= q.neg_marks;
+                    box.classList.add('incorrect');
+                }
+            });
+            
+            // Update result values
+            document.getElementById('score-value').textContent = score.toFixed(2);
+            document.getElementById('correct-value').textContent = correctCount;
+            document.getElementById('incorrect-value').textContent = incorrectCount;
+            document.getElementById('unattempted-value').textContent = unattemptedCount;
+            
+            // Show the results modal
+            resultsModal.show();
+            
+            // Disable submit button
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.classList.replace('btn-light', 'btn-success');
+            submitBtn.innerHTML = '<i class="fas fa-check"></i>';
+            
+            // Refresh current question view to show solution
+            showQuestion(currentQuestion);
+        }
+        
+        // Review test
+        function reviewTest() {
+            resultsModal.hide();
+            showQuestion(0);
+        }
+        
+        // Add event listener for window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 992) {
+                if (document.getElementById('question-nav').classList.contains('show')) {
+                    document.getElementById('main-content').classList.add('with-nav');
+                }
+            } else {
+                document.getElementById('main-content').classList.remove('with-nav');
+            }
+        });
+    </script>
+</body>
+</html>

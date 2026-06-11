@@ -1,0 +1,2210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBT Exam - sk</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #1e40af;
+            --success: #059669;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --bg: #f3f4f6;
+            --card: #ffffff;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #d1d5db;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+        }
+        
+        /* Welcome Screen Styles */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg);
+            z-index: 1000;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+        
+        .welcome-screen.hidden {
+            display: none;
+        }
+        
+        .welcome-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            margin: 20px auto;
+        }
+        
+        .welcome-header {
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .welcome-header h1 {
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .test-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .detail-item {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .detail-label {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .section-info {
+            margin-bottom: 25px;
+        }
+        
+        .section-info h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .section-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        .section-table th,
+        .section-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+        
+        .section-table th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .subsec-container {
+            margin-top: 8px;
+            padding-left: 15px;
+        }
+        
+        .subsec-row {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+        
+        .welcome-instructions {
+            background: #fef3c7;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+        }
+        
+        .welcome-instructions h3 {
+            color: var(--warning);
+            margin-bottom: 12px;
+        }
+        
+        .welcome-instructions ul {
+            padding-left: 20px;
+        }
+        
+        .welcome-instructions li {
+            margin-bottom: 8px;
+        }
+        
+        .welcome-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .start-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .start-btn:hover {
+            background: #1e3a8a;
+        }
+        
+        .channel-link {
+            color: var(--primary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: 2px solid var(--primary);
+            border-radius: 6px;
+            font-weight: 600;
+        }
+        
+        .channel-link:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* CBT Exam Interface */
+        .exam-container {
+            display: none;
+            height: 100vh;
+            flex-direction: column;
+        }
+        
+        .exam-container.active {
+            display: flex;
+        }
+        
+        /* Top Header */
+        .exam-header {
+            background: var(--primary);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+        }
+        
+        .exam-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .exam-timer {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .timer-box {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        /* Candidate Info Bar */
+        .candidate-bar {
+            background: white;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        
+        .candidate-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .candidate-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 4px;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--text-light);
+            border: 2px solid var(--border);
+        }
+        
+        .candidate-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .candidate-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .candidate-id {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        
+        .section-badge {
+            background: var(--success);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        /* Main Content Area - FIXED LAYOUT */
+        .exam-main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            min-height: 0;
+        }
+        
+        /* Question Area with separate scroll */
+        .question-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg);
+            min-width: 0;
+        }
+        
+        .question-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .question-card {
+            background: white;
+            border-radius: 6px;
+            padding: 25px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--bg);
+        }
+        
+        .question-number {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .question-marks {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+        
+        .lang-toggle {
+            display: flex;
+            gap: 5px;
+            background: var(--bg);
+            padding: 3px;
+            border-radius: 4px;
+        }
+        
+        .lang-btn {
+            padding: 6px 15px;
+            border: none;
+            background: transparent;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .lang-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .comprehension {
+            background: #eff6ff;
+            border-left: 3px solid var(--primary);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .comprehension h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .question-text {
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+        
+        .option:hover:not(.submitted) {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+        
+        .option.selected {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+        
+        .option.correct {
+            border-color: var(--success);
+            background: #d1fae5;
+        }
+        
+        .option.wrong {
+            border-color: var(--danger);
+            background: #fee2e2;
+        }
+        
+        .option-indicator {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            margin-right: 12px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2px;
+        }
+        
+        .option.selected .option-indicator {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+        
+        .option.correct .option-indicator {
+            border-color: var(--success);
+            background: var(--success);
+            color: white;
+        }
+        
+        .option.wrong .option-indicator {
+            border-color: var(--danger);
+            background: var(--danger);
+            color: white;
+        }
+        
+        .option-text {
+            flex: 1;
+            font-size: 14px;
+        }
+        
+        .solution-box {
+            background: #d1fae5;
+            border-left: 3px solid var(--success);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .solution-box.show {
+            display: block;
+        }
+        
+        .solution-header {
+            color: var(--success);
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .solution-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+        
+        /* Navigation Controls - FIXED AT BOTTOM OF QUESTION AREA */
+        .navigation-bar {
+            background: white;
+            padding: 15px 20px;
+            border-top: 2px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-prev {
+            background: var(--bg);
+            color: var(--text);
+        }
+        
+        .btn-next {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-review {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .btn-review.marked {
+            background: #92400e;
+        }
+        
+        .btn-submit {
+            background: var(--success);
+            color: white;
+        }
+        
+        .progress-info {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-light);
+        }
+        
+        /* Question Navigator Sidebar - SEPARATE SCROLL */
+        .navigator-sidebar {
+            width: 300px;
+            background: white;
+            border-left: 1px solid var(--border);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .navigator-header {
+            padding: 15px;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            color: var(--text);
+            flex-shrink: 0;
+        }
+        
+        .navigator-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            padding: 15px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        .nav-question {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            background: white;
+        }
+        
+        .nav-question:hover {
+            background: var(--bg);
+        }
+        
+        .nav-question.current {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .nav-question.answered {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+        
+        .nav-question.review {
+            background: var(--warning);
+            color: white;
+            border-color: var(--warning);
+        }
+        
+        .nav-question.wrong {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+        
+        .nav-question.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .navigator-legend {
+            padding: 15px;
+            border-top: 1px solid var(--border);
+            font-size: 12px;
+            flex-shrink: 0;
+            background: white;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+        
+        /* Mobile Navigator Panel */
+        .mobile-navigator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            z-index: 999;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+            overflow-y: auto;
+        }
+        
+        .mobile-navigator.open {
+            transform: translateY(0);
+        }
+        
+        .mobile-nav-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .close-nav {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* Result Modal */
+        .result-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .result-modal.show {
+            display: flex;
+        }
+        
+        .result-container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .result-header h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .result-score {
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--success);
+        }
+        
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .result-stat {
+            background: var(--bg);
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .result-stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .result-stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        
+        .result-stat.correct .result-stat-value {
+            color: var(--success);
+        }
+        
+        .result-stat.incorrect .result-stat-value {
+            color: var(--danger);
+        }
+        
+        .section-results {
+            margin-bottom: 25px;
+        }
+        
+        .section-results h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .section-results-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .section-results-table th,
+        .section-results-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+        
+        .section-results-table th {
+            background: var(--bg);
+            font-weight: 600;
+        }
+        
+        .section-results-table .subsection-row {
+            background: #f9fafb;
+            font-size: 13px;
+        }
+        
+        .section-results-table .subsection-row td:first-child {
+            padding-left: 30px;
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .result-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btn-close {
+            background: var(--bg);
+            color: var(--text);
+        }
+        
+        .btn-review-ans {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Responsive Design */
+        @media (min-width: 1024px) {
+            .navigator-sidebar {
+                display: flex;
+            }
+            
+            .mobile-only {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 1023px) {
+            .desktop-only {
+                display: none;
+            }
+            
+            .navigation-bar {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .question-scroll {
+                padding: 15px;
+            }
+            
+            .question-card {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .exam-header {
+                padding: 10px 15px;
+            }
+            
+            .exam-title {
+                font-size: 14px;
+            }
+            
+            .timer-box {
+                padding: 6px 10px;
+                font-size: 14px;
+            }
+            
+            .candidate-bar {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+            
+            .nav-btn {
+                padding: 8px 15px;
+                font-size: 13px;
+            }
+            
+            .navigator-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .result-container {
+                padding: 20px;
+            }
+            
+            .section-results-table {
+                font-size: 13px;
+            }
+            
+            .section-results-table th,
+            .section-results-table td {
+                padding: 8px;
+            }
+        }
+        
+        /* Print Styles */
+        @media print {
+            .exam-header,
+            .candidate-bar,
+            .navigation-bar,
+            .navigator-sidebar,
+            .mobile-navigator {
+                display: none !important;
+            }
+            
+            .question-scroll {
+                padding: 0;
+            }
+            
+            .question-card {
+                page-break-inside: avoid;
+                margin-bottom: 30px;
+                border: 1px solid var(--border);
+            }
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        
+        table, th, td {
+            border: 1px solid var(--border);
+        }
+        
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-container">
+            <div class="welcome-header">
+                <h1><i class="fas fa-graduation-cap"></i> sk</h1>
+                <p>Computer Based Test</p>
+            </div>
+            
+            <div class="test-details">
+                <div class="detail-item">
+                    <div class="detail-label">Test ID</div>
+                    <div class="detail-value">0</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Total Questions</div>
+                    <div class="detail-value">20</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Total Marks</div>
+                    <div class="detail-value">20.0</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Duration</div>
+                    <div class="detail-value">8 mins</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Marking Scheme</div>
+                    <div class="detail-value">+1.0 / -0.25</div>
+                </div>
+            </div>
+            
+            
+        <div class="welcome-instructions">
+            <h3>Instructions</h3>
+            <ul>
+                <li>Read each question carefully before answering</li>
+                <li>You can mark questions for review and come back later</li>
+                <li>The timer will automatically submit the test when time is up</li>
+                <li>Negative marking applies for wrong answers</li>
+            </ul>
+        </div>
+        
+            
+            <div class="welcome-actions">
+                <button class="start-btn" id="startBtn">
+                    <i class="fas fa-play"></i> Start Test
+                </button>
+                <a href="https://t.me/mocks_wallah_again" target="_blank" class="channel-link">
+                    <i class="fab fa-telegram"></i> Join Channel
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Exam Interface -->
+    <div class="exam-container" id="examContainer">
+        <!-- Top Header -->
+        <div class="exam-header">
+            <div class="exam-title">sk</div>
+            <div class="exam-timer">
+                <div class="timer-box" id="mainTimer">8:00</div>
+                <button class="nav-btn btn-submit mobile-only" id="submitBtn">Submit</button>
+            </div>
+        </div>
+        
+        <!-- Candidate Info Bar -->
+        <div class="candidate-bar">
+            <div class="candidate-info">
+                <div class="candidate-photo">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="candidate-details">
+                    <div class="candidate-name">Candidate</div>
+                    <div class="candidate-id">Test ID: 0</div>
+                </div>
+            </div>
+            <div class="section-badge" id="sectionBadge">
+                <span id="sectionName"></span>
+                <span id="sectionTimer"></span>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="exam-main">
+            <!-- Question Area -->
+            <div class="question-area">
+                <div class="question-scroll">
+                    <div class="question-card">
+                        <div class="question-header">
+                            <div>
+                                <div class="question-number" id="questionNum">Question 1 of 20</div>
+                                <div class="question-marks" id="questionMarks">Marks: 1.0</div>
+                            </div>
+                            <div class="lang-toggle">
+                                <button class="lang-btn active" id="engBtn">English</button>
+                                <button class="lang-btn" id="hinBtn">हिंदी</button>
+                            </div>
+                        </div>
+                        
+                        <div class="comprehension" id="comprehension" style="display:none;">
+                            <h4><i class="fas fa-book-open"></i> Comprehension</h4>
+                            <div id="comprehensionText"></div>
+                        </div>
+                        
+                        <div class="question-text" id="questionText"></div>
+                        
+                        <div class="options-list" id="optionsList"></div>
+                        
+                        <div class="solution-box" id="solutionBox">
+                            <div class="solution-header">
+                                <i class="fas fa-lightbulb"></i> Solution
+                            </div>
+                            <div class="solution-stats" id="solutionStats"></div>
+                            <div id="solutionText"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation Bar inside Question Area -->
+                <div class="navigation-bar">
+                    <button class="nav-btn btn-prev" id="prevBtn">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    
+                    <div class="progress-info">
+                        <div id="progressText">Question 1 of 20</div>
+                        <div style="font-size:11px;margin-top:4px">
+                            Answered: <span id="answeredCount">0</span> | 
+                            <a href="https://t.me/mocks_wallah_again" style="color:var(--primary)">Mocks Wallah</a>
+                        </div>
+                    </div>
+                    
+                    <button class="nav-btn btn-review" id="reviewBtn">
+                        <i class="fas fa-flag"></i>
+                    </button>
+                    
+                    <button class="nav-btn mobile-only" id="navigatorBtn">
+                        <i class="fas fa-th"></i> Questions
+                    </button>
+                    
+                    <button class="nav-btn btn-submit desktop-only" id="submitBtnDesktop">Submit</button>
+                    
+                    <button class="nav-btn btn-next" id="nextBtn">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Desktop Navigator Sidebar -->
+            <div class="navigator-sidebar desktop-only">
+                <div class="navigator-header">Question Navigator</div>
+                <div class="navigator-grid" id="desktopNav"></div>
+                <div class="navigator-legend">
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--success)"></div>
+                        <span>Answered</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--warning)"></div>
+                        <span>Marked for Review</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--danger)"></div>
+                        <span>Incorrect</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:white;border:2px solid var(--border)"></div>
+                        <span>Not Visited</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Navigator Panel -->
+    <div class="mobile-navigator" id="mobileNav">
+        <div class="mobile-nav-header">
+            <h3>Question Navigator</h3>
+            <button class="close-nav" id="closeNav">&times;</button>
+        </div>
+        <div class="navigator-grid" id="mobileNavGrid"></div>
+        <div class="navigator-legend">
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--success)"></div>
+                <span>Answered</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--warning)"></div>
+                <span>Marked for Review</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--danger)"></div>
+                <span>Incorrect</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:white;border:2px solid var(--border)"></div>
+                <span>Not Visited</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Result Modal -->
+    <div class="result-modal" id="resultModal">
+        <div class="result-container">
+            <div class="result-header">
+                <h2>Test Completed!</h2>
+                <div class="result-score" id="resultScore">0/20.0</div>
+            </div>
+            
+            <div class="result-grid">
+                <div class="result-stat correct">
+                    <div class="result-stat-value" id="correctCount">0</div>
+                    <div class="result-stat-label">Correct</div>
+                </div>
+                <div class="result-stat incorrect">
+                    <div class="result-stat-value" id="incorrectCount">0</div>
+                    <div class="result-stat-label">Incorrect</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="unattemptedCount">0</div>
+                    <div class="result-stat-label">Unattempted</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="timeTaken">0</div>
+                    <div class="result-stat-label">Minutes</div>
+                </div>
+            </div>
+            
+            <div class="section-results" id="sectionResults" style="display:none;">
+                <h3>Section-wise Performance</h3>
+                <table class="section-results-table" id="sectionResultsTable">
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Attempted</th>
+                            <th>Correct</th>
+                            <th>Wrong</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sectionResultsBody"></tbody>
+                </table>
+            </div>
+            
+            <div class="result-actions">
+                <button class="result-btn btn-close" id="closeResult">Close</button>
+                <button class="result-btn btn-review-ans" id="reviewAnswers">Review Answers</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const questions = [
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>In May 2026, the Union Minister of Commerce and Industry, Piyush Goyal, felicitated the winners of the 4<sup>th</sup> edition of the “LEAPS (Logistics Excellence, Advancement and Performance Shield) Awards 2025’’. Across how many categories, spanning Core Logistics, MSMEs, Startups, Institutions, and Special Categories, were the awards presented?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>मई 2026 में, केंद्रीय वाणिज्य और उद्योग मंत्री, पीयूष गोयल ने \"LEAPS (लॉजिस्टिक्स एक्सीलेंस, एडवांसमेंट एंड परफॉर्मेंस शील्ड) अवार्ड्स 2025\" के चौथे संस्करण के विजेताओं को सम्मानित किया। कोर लॉजिस्टिक्स, एमएसएमई, स्टार्टअप, इंस्टीट्यूशंस और विशेष श्रेणियों को मिलाकर कितनी श्रेणियों में पुरस्कार प्रदान किए गए?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>10</p></span><span class=\"hqt\"><p>10</p></span>",
+      "<span class=\"eqt\"><p>12</p></span><span class=\"hqt\"><p>12</p></span>",
+      "<span class=\"eqt\"><p>18</p></span><span class=\"hqt\"><p>18</p></span>",
+      "<span class=\"eqt\"><p>13</p></span><span class=\"hqt\"><p>13</p></span>",
+      "<span class=\"eqt\"><p>16</p></span><span class=\"hqt\"><p>16</p></span>"
+    ],
+    "correct_option_id": 3,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\"><p>Union Minister of Commerce and Industry Piyush Goyal has felicitated the winners of “LEAPS (Logistics Excellence, Advancement and Performance Shield) Awards 2025” across 13 categories spanning Core Logistics, MSMEs, Startups, Institutions and Special Categories at the LEAPS Awards 2025. The Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce &amp; Industry, organised the award ceremony of LEAPS 2025, the 4<sup>th</sup> edition of the initiative. The Union Minister also released the 7<sup>th</sup> edition of ‘LEADS (Logistics Ease Across Different States) 2025’ report. LEADS is DPIIT’s flagship assessment of logistics performance across states and UTs. LEADS 2025 framework has transitioned from its previous three-tier classification to a more comprehensive four-tier performance framework – Exemplars, High Performers, Accelerators, and Growth-Seekers. Exemplars represent the top-performing states and UTs, demonstrating sustained excellence across policy, infrastructure, service delivery, and regulatory dimensions. Within this tier, Tamil Nadu leads the Coastal States, while Uttar Pradesh ranks highest among Landlocked States. Mizoram secures the top position for North-Eastern States, and Delhi emerges as the leading UT. High Performers comprise states and UTs that demonstrate strong and consistent outcomes across the majority of performance indicators. This category includes Gujarat, Kerala, and Maharashtra as Coastal States. The Landlocked States group features Haryana, Telangana, Chhattisgarh, and Bihar. For North-Eastern States, Tripura and Meghalaya achieve this status, while Jammu &amp; Kashmir and Puducherry represent the UTs. Accelerators comprise states and UTs that have demonstrated notable improvement momentum and a clear reform orientation in recent years. The Coastal States in this tier are Andhra Pradesh, Odisha, Goa, and Karnataka. The Landlocked States include Punjab, Jharkhand, Madhya Pradesh, Uttarakhand, and Himachal Pradesh. The North-Eastern cohort comprises Nagaland, Arunachal Pradesh, Manipur, and Assam. The UTs group includes Dadra &amp; Nagar Haveli and Daman &amp; Diu, Chandigarh, Ladakh, and Lakshadweep. Growth Seekers represent states and UTs that are at a foundational stage of logistics system development and institutional strengthening. West Bengal is the sole Coastal State in this category, while Rajasthan represents the Landlocked States. Sikkim is positioned here among the North-Eastern States, and the Andaman &amp; Nicobar Islands represent the UTs.&nbsp; <a href=\"https://www.pib.gov.in/PressReleasePage.aspx?PRID=2260854&amp;reg=3&amp;lang=1\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; Piyush Goyal – felicitated winners of “LEAPS Awards 2025” (4<sup>th</sup> edition) across 13 categories<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Organised by – DPIIT, Ministry of Commerce &amp; Industry<br><br>•&nbsp; Piyush Goyal – released 7<sup>th</sup> edition of LEADS 2025 report<br><br>•&nbsp; LEADS 2025 framework: 4-tier performance – Exemplars, High Performers, Accelerators, Growth-Seekers<br><br>•&nbsp; <strong>Exemplars:</strong> Tamil Nadu (Coastal), Uttar Pradesh (Landlocked), Mizoram (North-East), Delhi (UT)<br><br>•&nbsp; <strong>High Performers:</strong><br><br>•&nbsp; <strong>&nbsp;&nbsp;&nbsp;–&nbsp; </strong>Gujarat, Kerala, Maharashtra (Coastal)&nbsp; |&nbsp; Jammu &amp; Kashmir, Puducherry (UTs)<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Haryana, Telangana, Chhattisgarh, Bihar (Landlocked)&nbsp; |&nbsp; Tripura, Meghalaya (North-East)<br><br>•&nbsp; <strong>Accelerators:</strong><br><br>•&nbsp; <strong>&nbsp;&nbsp;&nbsp;–&nbsp; </strong>Andhra Pradesh, Odisha, Goa, Karnataka (Coastal)<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Punjab, Jharkhand, Madhya Pradesh, Uttarakhand, Himachal Pradesh (Landlocked)<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Nagaland, Arunachal Pradesh, Manipur, Assam (North-East)<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Dadra &amp; Nagar Haveli &amp; Daman &amp; Diu, Chandigarh, Ladakh, Lakshadweep (UTs)<br><br>•&nbsp; <strong>Growth Seekers:</strong> West Bengal (Coastal), Rajasthan (Landlocked), Sikkim (North-East), Andaman &amp; Nicobar Islands (UTs)<br><br>•&nbsp; <strong>Winners of LEAPS 2025:</strong><br><br>&nbsp;</p><div class=\"table-responsive\"><figure class=\"table\"><table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td><img alt=\"\" src=\" https://in-maa-1.linodeobjects.com/smartkeeda-assets/testzoneassets/images/uploads/15MAY1652026\n.jpg\"></td></tr></tbody></table></figure></div></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><p>Union Minister of Commerce and Industry Piyush Goyal has felicitated the winners of “LEAPS (Logistics Excellence, Advancement and Performance Shield) Awards 2025” across 13 categories spanning Core Logistics, MSMEs, Startups, Institutions and Special Categories at the LEAPS Awards 2025. The Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce &amp; Industry, organised the award ceremony of LEAPS 2025, the 4<sup>th</sup> edition of the initiative. The Union Minister also released the 7<sup>th</sup> edition of ‘LEADS (Logistics Ease Across Different States) 2025’ report. LEADS is DPIIT’s flagship assessment of logistics performance across states and UTs. LEADS 2025 framework has transitioned from its previous three-tier classification to a more comprehensive four-tier performance framework – Exemplars, High Performers, Accelerators, and Growth-Seekers. Exemplars represent the top-performing states and UTs, demonstrating sustained excellence across policy, infrastructure, service delivery, and regulatory dimensions. Within this tier, Tamil Nadu leads the Coastal States, while Uttar Pradesh ranks highest among Landlocked States. Mizoram secures the top position for North-Eastern States, and Delhi emerges as the leading UT. High Performers comprise states and UTs that demonstrate strong and consistent outcomes across the majority of performance indicators. This category includes Gujarat, Kerala, and Maharashtra as Coastal States. The Landlocked States group features Haryana, Telangana, Chhattisgarh, and Bihar. For North-Eastern States, Tripura and Meghalaya achieve this status, while Jammu &amp; Kashmir and Puducherry represent the UTs. Accelerators comprise states and UTs that have demonstrated notable improvement momentum and a clear reform orientation in recent years. The Coastal States in this tier are Andhra Pradesh, Odisha, Goa, and Karnataka. The Landlocked States include Punjab, Jharkhand, Madhya Pradesh, Uttarakhand, and Himachal Pradesh. The North-Eastern cohort comprises Nagaland, Arunachal Pradesh, Manipur, and Assam. The UTs group includes Dadra &amp; Nagar Haveli and Daman &amp; Diu, Chandigarh, Ladakh, and Lakshadweep. Growth Seekers represent states and UTs that are at a foundational stage of logistics system development and institutional strengthening. West Bengal is the sole Coastal State in this category, while Rajasthan represents the Landlocked States. Sikkim is positioned here among the North-Eastern States, and the Andaman &amp; Nicobar Islands represent the UTs.&nbsp; <a href=\"https://www.pib.gov.in/PressReleasePage.aspx?PRID=2260854&amp;reg=3&amp;lang=1\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; Piyush Goyal – felicitated winners of “LEAPS Awards 2025” (4<sup>th</sup> edition) across 13 categories<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Organised by – DPIIT, Ministry of Commerce &amp; Industry<br><br>•&nbsp; Piyush Goyal – released 7<sup>th</sup> edition of LEADS 2025 report<br><br>•&nbsp; LEADS 2025 framework: 4-tier performance – Exemplars, High Performers, Accelerators, Growth-Seekers<br><br>•&nbsp; <strong>Exemplars:</strong> Tamil Nadu (Coastal), Uttar Pradesh (Landlocked), Mizoram (North-East), Delhi (UT)<br><br>•&nbsp; <strong>High Performers:</strong><br><br>•&nbsp;&nbsp;<strong> &nbsp;&nbsp;–&nbsp; </strong>Gujarat, Kerala, Maharashtra (Coastal)&nbsp; |&nbsp; Jammu &amp; Kashmir, Puducherry (UTs)<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Haryana, Telangana, Chhattisgarh, Bihar (Landlocked)&nbsp; |&nbsp; Tripura, Meghalaya (North-East)<br><br>•&nbsp; <strong>Accelerators:</strong><br><br>•&nbsp;&nbsp;<strong> &nbsp;&nbsp;–&nbsp; </strong>Andhra Pradesh, Odisha, Goa, Karnataka (Coastal)<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Punjab, Jharkhand, Madhya Pradesh, Uttarakhand, Himachal Pradesh (Landlocked)<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Nagaland, Arunachal Pradesh, Manipur, Assam (North-East)<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Dadra &amp; Nagar Haveli &amp; Daman &amp; Diu, Chandigarh, Ladakh, Lakshadweep (UTs)<br><br>•&nbsp; <strong>Growth Seekers:</strong> West Bengal (Coastal), Rajasthan (Landlocked), Sikkim (North-East), Andaman &amp; Nicobar Islands (UTs)<br><br>•&nbsp; <strong>Winners of LEAPS 2025:</strong><br><br>&nbsp;</p><div class=\"table-responsive\"><figure class=\"table\"><table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td><img alt=\"\" src=\" https://in-maa-1.linodeobjects.com/smartkeeda-assets/testzoneassets/images/uploads/15MAY1652026\n.jpg\"></td></tr></tbody></table></figure></div></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>What was the theme of ‘International Day of Families’ observed on May 15, 2026?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>15 मई, 2026 को मनाए गए 'अंतर्राष्ट्रीय परिवार दिवस' का विषय क्या था?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>“Families, Inequalities and Child Wellbeing”</p></span><span class=\"hqt\"><p>“Families, Inequalities and Child Wellbeing”</p></span>",
+      "<span class=\"eqt\"><p>“Stronger Families, Stronger Societies”</p></span><span class=\"hqt\"><p>“Stronger Families, Stronger Societies”</p></span>",
+      "<span class=\"eqt\"><p>“Families and Sustainable Development”</p></span><span class=\"hqt\"><p>“Families and Sustainable Development”</p></span>",
+      "<span class=\"eqt\"><p>“Family Health and Happiness”</p></span><span class=\"hqt\"><p>“Family Health and Happiness”</p></span>",
+      "<span class=\"eqt\"><p>“Empowering Every Family”</p></span><span class=\"hqt\"><p>“Empowering Every Family”</p></span>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">May 15 – International Day of Families<br><br>(Theme - “Families, Inequalities and Child Wellbeing”)</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">May 15 – International Day of Families<br><br>(Theme - “Families, Inequalities and Child Wellbeing”)</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>The National Statistical Office (NSO) revised the release date for the Provisional Estimates (PE) of Annual Gross Domestic Product (GDP) and Quarterly Estimates of GDP for 4<sup>th</sup> Quarter (Q4) from the last working day of May to which date every year?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>राष्ट्रीय सांख्यिकी कार्यालय (NSO) ने वार्षिक सकल घरेलू उत्पाद (GDP) के अनंतिम अनुमान (PE) और चौथी तिमाही (Q4) के लिए GDP के त्रैमासिक अनुमान की रिलीज की तारीख को मई के आखिरी कार्य दिवस से हर साल किस तारीख तक संशोधित किया?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>15<sup>th</sup> June<br>&nbsp;</p></span><span class=\"hqt\"><p>15 जून</p></span>",
+      "<span class=\"eqt\"><p>7<sup>th</sup> June<br>&nbsp;</p></span><span class=\"hqt\"><p>7 जून</p></span>",
+      "<span class=\"eqt\"><p>10<sup>th</sup> June<br>&nbsp;</p></span><span class=\"hqt\"><p>10 जून</p></span>",
+      "<span class=\"eqt\"><p>30<sup>th</sup> June<br>&nbsp;</p></span><span class=\"hqt\"><p>30 जून</p></span>",
+      "<span class=\"eqt\"><p>1<sup>st</sup> May</p></span><span class=\"hqt\"><p>1 मई</p></span>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">The National Statistics Office (NSO), Ministry of Statistics &amp; Programme Implementation (MoSPI) has revised the release date of the Provisional Estimates (PE) of Annual Gross Domestic Product (GDP) and Quarterly Estimates of GDP for 4<sup>th</sup> Quarter (Q4) from the last working day of May to 7<sup>th</sup> June (or the previous working day if 7<sup>th</sup> June is a holiday) of every year. The revision in the release schedule has been made after due consultation with the Advisory Committee on National Accounts Statistics (ACNAS). The need for revising the release date has arisen as certain critical datasets become available only after a lag of up to two months. In particular, the statutory timeline for filing audited Q4 and annual financial results by listed companies is 60 days from the end of the financial year, resulting in a large number of companies furnishing their financial statements closer to the deadline of 31<sup>st</sup> May. Further, in respect of Central Government Accounts, key fiscal data relating to revenue expenditure, capital expenditure, taxes, subsidies, and interest payments for the month of March are finalized and become available only after a lag of two months. Accordingly, the Press Note on Provisional Estimates (PE) of GDP for FY 2025-26 and Quarterly Estimates of GDP for the 4<sup>th</sup> Quarter (January-March) of 2025-26 is scheduled to be released on 5<sup>th</sup> June, 2026.&nbsp; <a href=\"https://www.pib.gov.in/PressReleasePage.aspx?PRID=2260360&amp;reg=3&amp;lang=2\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; NSO (MoSPI) – revised release date of Provisional Estimates (PE) of Annual GDP &amp; Quarterly Estimates of GDP for 4<sup>th</sup> Quarter (Q4) from last working day of May to 7<sup>th</sup> June (or previous working day if 7<sup>th</sup> June is a holiday) of every year<br><br>•&nbsp; Revision in release schedule has been made after due consultation with Advisory Committee on National Accounts Statistics (ACNAS)<br><br>•&nbsp; Press Note on Provisional Estimates (PE) of GDP for FY26 &amp; Quarterly Estimates of GDP for Q4 of FY26 – scheduled to be released on Jun 5, 2026<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of NSO – New Delhi&nbsp; |&nbsp; Chairperson – Prof. Rajeeva Laxman Karandikar</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">The National Statistics Office (NSO), Ministry of Statistics &amp; Programme Implementation (MoSPI) has revised the release date of the Provisional Estimates (PE) of Annual Gross Domestic Product (GDP) and Quarterly Estimates of GDP for 4<sup>th</sup> Quarter (Q4) from the last working day of May to 7<sup>th</sup> June (or the previous working day if 7<sup>th</sup> June is a holiday) of every year. The revision in the release schedule has been made after due consultation with the Advisory Committee on National Accounts Statistics (ACNAS). The need for revising the release date has arisen as certain critical datasets become available only after a lag of up to two months. In particular, the statutory timeline for filing audited Q4 and annual financial results by listed companies is 60 days from the end of the financial year, resulting in a large number of companies furnishing their financial statements closer to the deadline of 31<sup>st</sup> May. Further, in respect of Central Government Accounts, key fiscal data relating to revenue expenditure, capital expenditure, taxes, subsidies, and interest payments for the month of March are finalized and become available only after a lag of two months. Accordingly, the Press Note on Provisional Estimates (PE) of GDP for FY 2025-26 and Quarterly Estimates of GDP for the 4<sup>th</sup> Quarter (January-March) of 2025-26 is scheduled to be released on 5<sup>th</sup> June, 2026.&nbsp; <a href=\"https://www.pib.gov.in/PressReleasePage.aspx?PRID=2260360&amp;reg=3&amp;lang=2\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; NSO (MoSPI) – revised release date of Provisional Estimates (PE) of Annual GDP &amp; Quarterly Estimates of GDP for 4<sup>th</sup> Quarter (Q4) from last working day of May to 7<sup>th</sup> June (or previous working day if 7<sup>th</sup> June is a holiday) of every year<br><br>•&nbsp; Revision in release schedule has been made after due consultation with Advisory Committee on National Accounts Statistics (ACNAS)<br><br>•&nbsp; Press Note on Provisional Estimates (PE) of GDP for FY26 &amp; Quarterly Estimates of GDP for Q4 of FY26 – scheduled to be released on Jun 5, 2026<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of NSO – New Delhi&nbsp; |&nbsp; Chairperson – Prof. Rajeeva Laxman Karandikar</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>Which day is observed annually as ‘Endangered Species Day’?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>प्रतिवर्ष किस दिन को 'लुप्तप्राय प्रजाति दिवस' के रूप में मनाया जाता है?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>May 16</p></span><span class=\"hqt\"><p>16 मई</p></span>",
+      "<span class=\"eqt\"><p>May 15</p></span><span class=\"hqt\"><p>15 मई</p></span>",
+      "<span class=\"eqt\"><p>May 10</p></span><span class=\"hqt\"><p>10 मई</p></span>",
+      "<span class=\"eqt\"><p>May 6</p></span><span class=\"hqt\"><p>6 मई</p></span>",
+      "<span class=\"eqt\"><p>May 5</p></span><span class=\"hqt\"><p>5 मई</p></span>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">May 15 – Endangered Species Day</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">May 15 – Endangered Species Day</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>As per news of May 2026, which bank is set to open a branch at Gujarat International Finance Tec-City (GIFT City) in India?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>मई 2026 की खबर के अनुसार, कौन सा बैंक भारत में गुजरात इंटरनेशनल फाइनेंस टेक-सिटी (गिफ्ट सिटी) में एक शाखा खोलने के लिए तैयार है?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Cathay United Bank</p></span><span class=\"hqt\"><p>Cathay United Bank</p></span>",
+      "<span class=\"eqt\"><p>Taishin International Bank</p></span><span class=\"hqt\"><p>Taishin International Bank</p></span>",
+      "<span class=\"eqt\"><p>Shanghai Commercial &amp; Savings Bank</p></span><span class=\"hqt\"><p>Shanghai Commercial &amp; Savings Bank</p></span>",
+      "<span class=\"eqt\"><p>Hua Nan Commercial Bank</p></span><span class=\"hqt\"><p>Hua Nan Commercial Bank</p></span>",
+      "<span class=\"eqt\"><p>CTBC Bank</p></span><span class=\"hqt\"><p>CTBC Bank</p></span>"
+    ],
+    "correct_option_id": 4,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">CTBC Bank is set to open a branch at Gujarat International Finance Tec-City (GIFT City) in India. The Financial Supervisory Commission has approved CTBC Bank’s application to establish a new branch in India. Pending approval from Indian authorities, the bank would become the 1<sup>st</sup> Taiwanese bank with a presence in GIFT City. CTBC Bank operates two branches in New Delhi and Sriperumbudur, offering services in Mandarin, English, and Hindi. The commission added that Mega International Commercial Bank and Bank of Taiwan each have a representative office in Mumbai. Taipei Fubon Commercial Bank is also set to open a branch in the city. As of last year, the bank has established 12 branches worldwide, including in Hong Kong, New York, Tokyo, Ho Chi Minh City, Singapore, and Shanghai. It also operates seven representative offices in Bangkok, Hanoi, Beijing, and Los Angeles. Gujarat International Finance Tec-City was established in April 2015.&nbsp; <a href=\"https://www.taiwannews.com.tw/news/6019785\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; CTBC Bank – to open a new branch in India at GIFT City, Gandhinagar<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; approved by the Financial Supervisory Commission&nbsp; (It would become 1<sup>st</sup> Taiwanese bank in GIFT City)<br><br>•&nbsp; CTBC Bank operates two branches in New Delhi &amp; Sriperumbudur&nbsp; (offering services in Mandarin, English, &amp; Hindi)<br><br>•&nbsp; Taipei Fubon Commercial Bank – also set to open a branch in GIFT city<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of CTBC Bank – Taipei, Taiwan&nbsp; |&nbsp; Chairman – James Chen&nbsp; |&nbsp; President – Tony Yang&nbsp; |&nbsp; Established in – 1966</span><br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of GIFT City – Gandhinagar, Gujarat&nbsp; |&nbsp; Chairman – Uday Kotak&nbsp; |&nbsp; MD &amp; CEO – Sanjay Kaul</span>&nbsp; |&nbsp; <span style=\"color:rgb(31,73,125);\">Established in – 2015</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">CTBC Bank is set to open a branch at Gujarat International Finance Tec-City (GIFT City) in India. The Financial Supervisory Commission has approved CTBC Bank’s application to establish a new branch in India. Pending approval from Indian authorities, the bank would become the 1<sup>st</sup> Taiwanese bank with a presence in GIFT City. CTBC Bank operates two branches in New Delhi and Sriperumbudur, offering services in Mandarin, English, and Hindi. The commission added that Mega International Commercial Bank and Bank of Taiwan each have a representative office in Mumbai. Taipei Fubon Commercial Bank is also set to open a branch in the city. As of last year, the bank has established 12 branches worldwide, including in Hong Kong, New York, Tokyo, Ho Chi Minh City, Singapore, and Shanghai. It also operates seven representative offices in Bangkok, Hanoi, Beijing, and Los Angeles. Gujarat International Finance Tec-City was established in April 2015.&nbsp; <a href=\"https://www.taiwannews.com.tw/news/6019785\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; CTBC Bank – to open a new branch in India at GIFT City, Gandhinagar<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; approved by the Financial Supervisory Commission&nbsp; (It would become 1<sup>st</sup> Taiwanese bank in GIFT City)<br><br>•&nbsp; CTBC Bank operates two branches in New Delhi &amp; Sriperumbudur&nbsp; (offering services in Mandarin, English, &amp; Hindi)<br><br>•&nbsp; Taipei Fubon Commercial Bank – also set to open a branch in GIFT city<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of CTBC Bank – Taipei, Taiwan&nbsp; |&nbsp; Chairman – James Chen&nbsp; |&nbsp; President – Tony Yang&nbsp; |&nbsp; Established in – 1966</span><br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of GIFT City – Gandhinagar, Gujarat&nbsp; |&nbsp; Chairman – Uday Kotak&nbsp; |&nbsp; MD &amp; CEO – Sanjay Kaul</span>&nbsp; |&nbsp; <span style=\"color:rgb(31,73,125);\">Established in – 2015</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>In May 2026, Akash Ambani was appointed as Managing Director (MD) of Jio Platforms for a tenure of how many years?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>मई 2026 में, आकाश अंबानी को कितने वर्षों के कार्यकाल के लिए Jio प्लेटफ़ॉर्म के प्रबंध निदेशक (MD) के रूप में नियुक्त किया गया था?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>6 years</p></span><span class=\"hqt\"><p>6 साल</p></span>",
+      "<span class=\"eqt\"><p>4 years</p></span><span class=\"hqt\"><p>4 साल</p></span>",
+      "<span class=\"eqt\"><p>5 years</p></span><span class=\"hqt\"><p>5 साल</p></span>",
+      "<span class=\"eqt\"><p>3 years</p></span><span class=\"hqt\"><p>3 साल</p></span>",
+      "<span class=\"eqt\"><p>2 years</p></span><span class=\"hqt\"><p>2 साल</p></span>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">Digital services company Jio Platforms has appointed Akash Ambani as its Managing Director (MD) for a period of 5 years ahead of its initial public offering (IPO). Jio Platforms is expected to file draft papers for its IPO by the end of May 2026 or in June 2026. Ambani has been on the board of Jio Platforms’ telecom arm Reliance Jio Infocomm (RJIL) since October 2014. In June 2022, he was elevated to the position of Chairman of RJIL. During his tenure, Jio achieved the feat of crossing the 100 million subscriber mark in less than 6 months of its launch in 2016. Akash Ambani, son of Mukesh Ambani, has been serving as Chairman of Reliance Jio Infocomm Limited (RJIL), the telecom arm of Jio Platforms, since June 2022.&nbsp; <a href=\"https://economictimes.indiatimes.com/news/company/corporate-trends/jio-platforms-appoints-akash-ambani-as-md-for-five-years-ahead-of-ipo/articleshow/131082582.cms?from=mdr\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; Akash Ambani – appointed MD of Jio Platforms for 5 years<br><br>•&nbsp; Akash Ambani – serving as Chairman of Reliance Jio Infocomm Ltd (RJIL), the telecom arm of Jio Platforms<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of Jio Platforms – Mumbai, MH&nbsp; |&nbsp; Chairman – Mukesh Ambani&nbsp; |&nbsp; MD – Akash Ambani&nbsp; |&nbsp; CEO – Kiran Thomas</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">Digital services company Jio Platforms has appointed Akash Ambani as its Managing Director (MD) for a period of 5 years ahead of its initial public offering (IPO). Jio Platforms is expected to file draft papers for its IPO by the end of May 2026 or in June 2026. Ambani has been on the board of Jio Platforms’ telecom arm Reliance Jio Infocomm (RJIL) since October 2014. In June 2022, he was elevated to the position of Chairman of RJIL. During his tenure, Jio achieved the feat of crossing the 100 million subscriber mark in less than 6 months of its launch in 2016. Akash Ambani, son of Mukesh Ambani, has been serving as Chairman of Reliance Jio Infocomm Limited (RJIL), the telecom arm of Jio Platforms, since June 2022.&nbsp; <a href=\"https://economictimes.indiatimes.com/news/company/corporate-trends/jio-platforms-appoints-akash-ambani-as-md-for-five-years-ahead-of-ipo/articleshow/131082582.cms?from=mdr\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; Akash Ambani – appointed MD of Jio Platforms for 5 years<br><br>•&nbsp; Akash Ambani – serving as Chairman of Reliance Jio Infocomm Ltd (RJIL), the telecom arm of Jio Platforms<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of Jio Platforms – Mumbai, MH&nbsp; |&nbsp; Chairman – Mukesh Ambani&nbsp; |&nbsp; MD – Akash Ambani&nbsp; |&nbsp; CEO – Kiran Thomas</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>Consider the following statements regarding the ‘Amended BharatNet Programme’ in Andhra Pradesh:</strong><br><br><strong>P) The Government of India has approved financial support of ₹2,432 crore for the implementation of the programme in Andhra Pradesh.</strong><br><br><strong>Q) The Union Cabinet approved the Amended BharatNet Programme in 2023.</strong><br><br><strong>R) The programme comes under the Ministry of Electronics and Information Technology (MeitY).</strong><br><br><strong>Which of the above statements is/are incorrect?</strong></div></span><span class=\"hqt\"><p><strong>आंध्र प्रदेश में 'संशोधित भारतनेट कार्यक्रम' के संबंध में निम्नलिखित कथनों पर विचार करें:</strong></p><p><strong>P) भारत सरकार ने आंध्र प्रदेश में कार्यक्रम के कार्यान्वयन के लिए ₹2,432 करोड़ की वित्तीय सहायता को मंजूरी दी है।</strong></p><p><strong>Q) केंद्रीय मंत्रिमंडल ने 2023 में संशोधित भारतनेट कार्यक्रम को मंजूरी दे दी।</strong></p><p><strong>R) कार्यक्रम इलेक्ट्रॉनिक्स और सूचना प्रौद्योगिकी मंत्रालय (MeitY) के अंतर्गत आता है।</strong></p><p><strong>उपरोक्त में से कौन सा कथन गलत है/हैं?</strong></p></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Only R</p></span><span class=\"hqt\"><p>केवल R</p></span>",
+      "<span class=\"eqt\"><p>Only Q</p></span><span class=\"hqt\"><p>केवल Q</p></span>",
+      "<span class=\"eqt\"><p>Only P</p></span><span class=\"hqt\"><p>केवल P</p></span>",
+      "<span class=\"eqt\"><p>All of these are incorrect</p></span><span class=\"hqt\"><p>ये सभी ग़लत हैं</p></span>",
+      "<span class=\"eqt\"><p>None of these is incorrect</p></span><span class=\"hqt\"><p>इनमें से कोई भी ग़लत नहीं है</p></span>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">Digital Bharat Nidhi (DBN), the Andhra Pradesh government, Andhra Pradesh BharatNet Infrastructure Limited (APBIL), Bharat Sanchar Nigam Limited (BSNL), and Andhra Pradesh State FiberNet Limited (APSFL) have signed a pact for the implementation of the ‘Amended BharatNet Programme’ to accelerate broadband connectivity across the rural parts of the state. The Government of India has approved financial support of Rs 2,432 crore for the implementation of the programme in Andhra Pradesh. The Union Cabinet approved the Amended BharatNet Programme on 4 August 2023 to provide optical fiber (OF) connectivity to 2.64 lakh Gram Panchayats (GPs) and OF connectivity to non-GP villages on demand. The National Optical Fibre Network (NOFN) was launched in 2011 and later renamed the BharatNet Project in 2015 under the Ministry of Communications to provide high-speed broadband connectivity to every GP across India.&nbsp; <a href=\"https://www.business-standard.com/industry/news/dbn-andhra-sign-pact-for-bharatnet-expansion-with-2-432-cr-financial-aid-126051400022_1.html\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; DBN + AP Govt + APBIL + BSNL + APSFL = a pact for ‘Amended BharatNet Programme’&nbsp; (Fin Outlay - Rs 2,432 Cr)<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Aim: To accelerate rural broadband connectivity in Andhra Pradesh<br><br>•&nbsp; Union Cabinet approved Amended BharatNet Programme on Aug 4, 2023 – optical fiber connectivity to 2.64 lakh Gram Panchayats &amp; on-demand OF to non-GP villages<br><br>•&nbsp; ‘National Optical Fibre Network (NOFN)’ launched in 2011 – renamed as ‘BharatNet’ in 2015;<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; under – Ministry of Communications<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of Digital Bharat Nidhi – New Delhi&nbsp; |&nbsp; Administrator – Niraj Verma&nbsp; |&nbsp; Established in – 2024</span><br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of BSNL – New Delhi&nbsp; |&nbsp; CMD – Robert Jerard Ravi (additional charge)</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">Digital Bharat Nidhi (DBN), the Andhra Pradesh government, Andhra Pradesh BharatNet Infrastructure Limited (APBIL), Bharat Sanchar Nigam Limited (BSNL), and Andhra Pradesh State FiberNet Limited (APSFL) have signed a pact for the implementation of the ‘Amended BharatNet Programme’ to accelerate broadband connectivity across the rural parts of the state. The Government of India has approved financial support of Rs 2,432 crore for the implementation of the programme in Andhra Pradesh. The Union Cabinet approved the Amended BharatNet Programme on 4 August 2023 to provide optical fiber (OF) connectivity to 2.64 lakh Gram Panchayats (GPs) and OF connectivity to non-GP villages on demand. The National Optical Fibre Network (NOFN) was launched in 2011 and later renamed the BharatNet Project in 2015 under the Ministry of Communications to provide high-speed broadband connectivity to every GP across India.&nbsp; <a href=\"https://www.business-standard.com/industry/news/dbn-andhra-sign-pact-for-bharatnet-expansion-with-2-432-cr-financial-aid-126051400022_1.html\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; DBN + AP Govt + APBIL + BSNL + APSFL = a pact for ‘Amended BharatNet Programme’&nbsp; (Fin Outlay - Rs 2,432 Cr)<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Aim: To accelerate rural broadband connectivity in Andhra Pradesh<br><br>•&nbsp; Union Cabinet approved Amended BharatNet Programme on Aug 4, 2023 – optical fiber connectivity to 2.64 lakh Gram Panchayats &amp; on-demand OF to non-GP villages<br><br>•&nbsp; ‘National Optical Fibre Network (NOFN)’ launched in 2011 – renamed as ‘BharatNet’ in 2015;<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; under – Ministry of Communications<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of Digital Bharat Nidhi – New Delhi&nbsp; |&nbsp; Administrator – Niraj Verma&nbsp; |&nbsp; Established in – 2024</span><br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of BSNL – New Delhi&nbsp; |&nbsp; CMD – Robert Jerard Ravi (additional charge)</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>In which Indian state were the new spider species ‘Psechrus ntu’ and ‘Psechrus phenshunyu’ discovered in 2026?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>2026 में किस भारतीय राज्य में मकड़ी की नई प्रजातियाँ 'पेसेक्रस एनटीयू' और 'सेक्रस फेंशुन्यू' की खोज की गई थी?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Mizoram</p></span><span class=\"hqt\"><p>मिजोरम</p></span>",
+      "<span class=\"eqt\"><p>Assam</p></span><span class=\"hqt\"><p>असम</p></span>",
+      "<span class=\"eqt\"><p>Nagaland</p></span><span class=\"hqt\"><p>नागालैंड</p></span>",
+      "<span class=\"eqt\"><p>Meghalaya</p></span><span class=\"hqt\"><p>मेघालय</p></span>",
+      "<span class=\"eqt\"><p>Manipur</p></span><span class=\"hqt\"><p>मणिपुर</p></span>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">‘Psechrus ntu” &amp; “Psechrus phenshunyu”, two new species of spider – discovered in Nagaland</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">‘Psechrus ntu” &amp; “Psechrus phenshunyu”, two new species of spider – discovered in Nagaland</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>Which state’s Thingpui and Thinglaidum, two ginger varieties, received Geographical Indication (GI) tags in 2021?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>किस राज्य की अदरक की दो किस्मों थिंगपुई और थिंगलैडम को 2021 में भौगोलिक संकेत (GI) टैग प्राप्त हुआ?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Tripura</p></span><span class=\"hqt\"><p>त्रिपुरा</p></span>",
+      "<span class=\"eqt\"><p>Mizoram</p></span><span class=\"hqt\"><p>मिजोरम</p></span>",
+      "<span class=\"eqt\"><p>Manipur</p></span><span class=\"hqt\"><p>मणिपुर</p></span>",
+      "<span class=\"eqt\"><p>Sikkim</p></span><span class=\"hqt\"><p>मणिपुर</p></span>",
+      "<span class=\"eqt\"><p>Arunachal Pradesh</p></span><span class=\"hqt\"><p>अरुणाचल प्रदेश</p></span>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">Mizoram has launched the Rs 189.79-crore “Mizoram Ginger Mission”, a Centre-backed initiative aimed at strengthening ginger cultivation, processing and global market access for farmers in the state. Implemented under the Ministry of Development of North Eastern Region (DONER), the mission seeks to transform ginger farming in Mizoram through value addition, branding, processing infrastructure and export integration. The mission is built around 4 pillars - convergence, value addition, branding and market integration. The project will include one integrated processing hub, 3 spoke centres and more than 30 strategic interventions, while aiming to connect nearly 20,000 farming households into a unified value-chain ecosystem. Mizo ginger contains 6-8% oleoresin, significantly higher than the global average of around 3%, but farmers currently receive only Rs 8 to Rs 15 per kilogram despite international market values crossing Rs 500 per kilogram. Two ginger varieties from Mizoram - Thingpui and Thinglaidum - received Geographical Indication (GI) tags in 2021.&nbsp; <a href=\"https://www.indiatodayne.in/amp/mizoram/story/centre-launches-rs-189-crore-mizoram-ginger-mission-to-take-mizo-ginger-global-1391682-2026-05-14\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; Mizoram – launched “Mizoram Ginger Mission” to strengthen ginger cultivation, processing &amp; global market access<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Cost – Rs 189.79 Cr&nbsp; |&nbsp; Implemented under – Ministry of Development of North Eastern Region (DONER)<br><br>•&nbsp; Mission built on 4 pillars – Convergence, Value addition, Branding, &amp; Market integration<br><br>•&nbsp; Thingpui &amp; Thinglaidum ginger varieties (Mizoram) – received GI tags in 2021<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">Mizoram: Capital – Aizawl&nbsp; |&nbsp; CM – Lalduhoma&nbsp; |&nbsp; Governor – General V. K. Singh</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">Mizoram has launched the Rs 189.79-crore “Mizoram Ginger Mission”, a Centre-backed initiative aimed at strengthening ginger cultivation, processing and global market access for farmers in the state. Implemented under the Ministry of Development of North Eastern Region (DONER), the mission seeks to transform ginger farming in Mizoram through value addition, branding, processing infrastructure and export integration. The mission is built around 4 pillars - convergence, value addition, branding and market integration. The project will include one integrated processing hub, 3 spoke centres and more than 30 strategic interventions, while aiming to connect nearly 20,000 farming households into a unified value-chain ecosystem. Mizo ginger contains 6-8% oleoresin, significantly higher than the global average of around 3%, but farmers currently receive only Rs 8 to Rs 15 per kilogram despite international market values crossing Rs 500 per kilogram. Two ginger varieties from Mizoram - Thingpui and Thinglaidum - received Geographical Indication (GI) tags in 2021.&nbsp; <a href=\"https://www.indiatodayne.in/amp/mizoram/story/centre-launches-rs-189-crore-mizoram-ginger-mission-to-take-mizo-ginger-global-1391682-2026-05-14\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; Mizoram – launched “Mizoram Ginger Mission” to strengthen ginger cultivation, processing &amp; global market access<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Cost – Rs 189.79 Cr&nbsp; |&nbsp; Implemented under – Ministry of Development of North Eastern Region (DONER)<br><br>•&nbsp; Mission built on 4 pillars – Convergence, Value addition, Branding, &amp; Market integration<br><br>•&nbsp; Thingpui &amp; Thinglaidum ginger varieties (Mizoram) – received GI tags in 2021<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">Mizoram: Capital – Aizawl&nbsp; |&nbsp; CM – Lalduhoma&nbsp; |&nbsp; Governor – General V. K. Singh</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>Consider the following statements regarding RBI’s revised framework for outward remittance services:</strong><br><br><strong>P) RBI removed the earlier approval-based framework for non-bank entities partnering with AD Category-I banks.</strong><br><br><strong>Q) The revised framework applies to cross-border outward remittance via online and mobile channels operated by third-party entities.</strong><br><br><strong>R) RBI clarified that regulatory compliance, KYC checks, and Foreign Exchange Management Act, 1999 (FEMA) adherence remain the responsibility of AD banks.</strong><br><br><strong>Which of the above statements is/are correct?</strong></div></span><span class=\"hqt\"><p><strong>बाह्य प्रेषण सेवाओं के लिए RBI के संशोधित ढांचे के संबंध में निम्नलिखित कथनों पर विचार करें:</strong></p><p><strong>P) RBI ने एडी श्रेणी-I बैंकों के साथ साझेदारी करने वाली गैर-बैंक संस्थाओं के लिए पहले के अनुमोदन-आधारित ढांचे को हटा दिया।</strong></p><p><strong>Q) संशोधित रूपरेखा तीसरे पक्ष की संस्थाओं द्वारा संचालित ऑनलाइन और मोबाइल चैनलों के माध्यम से सीमा पार जावक प्रेषण पर लागू होती है।</strong></p><p><strong>R) RBI ने स्पष्ट किया कि नियामक अनुपालन, केवाईसी जांच और विदेशी मुद्रा प्रबंधन अधिनियम, 1999 (फेमा) का पालन एडी बैंकों की जिम्मेदारी है।</strong></p><p><strong>उपरोक्त में से कौन सा/से कथन सही है/हैं?</strong></p></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Only P and Q</p></span><span class=\"hqt\"><p>केवल P और Q</p></span>",
+      "<span class=\"eqt\"><p>Only P and R</p></span><span class=\"hqt\"><p>केवल P और R</p></span>",
+      "<span class=\"eqt\"><p>Only Q and R</p></span><span class=\"hqt\"><p>केवल Q और R</p></span>",
+      "<span class=\"eqt\"><p>Only P</p></span><span class=\"hqt\"><p>केवल P</p></span>",
+      "<span class=\"eqt\"><p>All statements are correct</p></span><span class=\"hqt\"><p>सभी कथन सही हैं</p></span>"
+    ],
+    "correct_option_id": 4,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">The Reserve Bank of India (RBI) has removed the earlier approval-based framework under which non-bank entities had to obtain specific permission from the RBI for tie-up arrangements with Authorised Dealer (AD) Category-I banks for outward remittance services. The revised framework will apply to cross-border outward remittance of funds for non-trade current account transactions facilitated through websites, online platforms, software applications and mobile applications operated by third-party entities. However, RBI has made it clear that the entire responsibility for regulatory compliance, Know Your Customer (KYC) checks and Foreign Exchange Management Act, 1999 (FEMA) adherence will continue to rest solely with the AD banks. In addition, banks have been directed to inform customers about the foreign exchange rate, mark-up, service charges, estimated delivery timelines and grievance redressal contacts before initiating transactions.&nbsp; <a href=\"https://bfsi.economictimes.indiatimes.com/articles/rbi-eases-outward-remittance-ties-with-fintechs-boosting-cross-border-transactions/131073783\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; RBI – removed earlier approval-based framework for non-bank entities for tie-ups with AD Category-I banks for outward remittance services<br><br>•&nbsp; Revised framework – applies to cross-border outward remittance of funds via websites, online platforms, software, and mobile apps operated by third-party entities<br><br>•&nbsp; RBI clarified: Regulatory compliance, KYC checks &amp; FEMA adherence remain the responsibility of AD banks<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of RBI – Mumbai, Maharashtra&nbsp; |&nbsp; Governor – Sanjay Malhotra (26<sup>th</sup>)&nbsp; |&nbsp; Established on – 1<sup>st</sup> April, 1935</span><br><br><span style=\"color:rgb(31,73,125);\">&nbsp; &nbsp;Total Deputy Governors (4) – Swaminathan Janakiraman&nbsp; |&nbsp; T. Rabi Sankar&nbsp; |&nbsp; M. Rajeshwar Rao&nbsp; |&nbsp; Poonam Gupta</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">The Reserve Bank of India (RBI) has removed the earlier approval-based framework under which non-bank entities had to obtain specific permission from the RBI for tie-up arrangements with Authorised Dealer (AD) Category-I banks for outward remittance services. The revised framework will apply to cross-border outward remittance of funds for non-trade current account transactions facilitated through websites, online platforms, software applications and mobile applications operated by third-party entities. However, RBI has made it clear that the entire responsibility for regulatory compliance, Know Your Customer (KYC) checks and Foreign Exchange Management Act, 1999 (FEMA) adherence will continue to rest solely with the AD banks. In addition, banks have been directed to inform customers about the foreign exchange rate, mark-up, service charges, estimated delivery timelines and grievance redressal contacts before initiating transactions.&nbsp; <a href=\"https://bfsi.economictimes.indiatimes.com/articles/rbi-eases-outward-remittance-ties-with-fintechs-boosting-cross-border-transactions/131073783\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; RBI – removed earlier approval-based framework for non-bank entities for tie-ups with AD Category-I banks for outward remittance services<br><br>•&nbsp; Revised framework – applies to cross-border outward remittance of funds via websites, online platforms, software, and mobile apps operated by third-party entities<br><br>•&nbsp; RBI clarified: Regulatory compliance, KYC checks &amp; FEMA adherence remain the responsibility of AD banks<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of RBI – Mumbai, Maharashtra&nbsp; |&nbsp; Governor – Sanjay Malhotra (26<sup>th</sup>)&nbsp; |&nbsp; Established on – 1<sup>st</sup> April, 1935</span><br><br><span style=\"color:rgb(31,73,125);\">&nbsp; &nbsp;Total Deputy Governors (4) – Swaminathan Janakiraman&nbsp; |&nbsp; T. Rabi Sankar&nbsp; |&nbsp; M. Rajeshwar Rao&nbsp; |&nbsp; Poonam Gupta</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>In May 2026, Yoweri Museveni was sworn in as the President of which country for a 7<sup>th</sup> term?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>मई 2026 में, योवेरी मुसेवेनी ने 7वीं बार किस देश के राष्ट्रपति के रूप में शपथ ली?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Kenya</p></span><span class=\"hqt\"><p>केन्या</p></span>",
+      "<span class=\"eqt\"><p>Tanzania</p></span><span class=\"hqt\"><p>तंजानिया</p></span>",
+      "<span class=\"eqt\"><p>Rwanda</p></span><span class=\"hqt\"><p>दक्षिण सूडान</p></span>",
+      "<span class=\"eqt\"><p>Uganda</p></span><span class=\"hqt\"><p>युगांडा</p></span>",
+      "<span class=\"eqt\"><p>South Sudan</p></span><span class=\"hqt\"><p>South Sudan</p></span>"
+    ],
+    "correct_option_id": 3,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">Ugandan President Yoweri Museveni has been sworn in for a seventh term, extending his 40-year tenure following a landslide victory in the January 2026 elections, at an event at the Kololo Independence Grounds in Uganda’s capital, Kampala. Museveni won 71.65% of the vote. Opposition leader Bobi Wine, an entertainer whose real name is Robert Kyagulanyi, received 24.72%. Since taking office in 1986, Museveni has twice changed the constitution to remove term and age limits.&nbsp; <a href=\"https://www.aljazeera.com/news/2026/5/12/ugandas-yoweri-museveni-sworn-in-for-seventh-term-as-president\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; Yoweri Museveni – sworn as the President of Uganda (7<sup>th</sup> term)<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; extending his 40-year tenure following a landslide victory in the Jan 2026 elections<br><br>•&nbsp; Since taking office in 1986, Museveni has twice changed the constitution to remove term &amp; age limits<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">Uganda – Kampala – Ugandan Shilling&nbsp; |&nbsp; President – Yoweri Museveni&nbsp; |&nbsp; PM – Robinah Nabbanja</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">Ugandan President Yoweri Museveni has been sworn in for a seventh term, extending his 40-year tenure following a landslide victory in the January 2026 elections, at an event at the Kololo Independence Grounds in Uganda’s capital, Kampala. Museveni won 71.65% of the vote. Opposition leader Bobi Wine, an entertainer whose real name is Robert Kyagulanyi, received 24.72%. Since taking office in 1986, Museveni has twice changed the constitution to remove term and age limits.&nbsp; <a href=\"https://www.aljazeera.com/news/2026/5/12/ugandas-yoweri-museveni-sworn-in-for-seventh-term-as-president\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; Yoweri Museveni – sworn as the President of Uganda (7<sup>th</sup> term)<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; extending his 40-year tenure following a landslide victory in the Jan 2026 elections<br><br>•&nbsp; Since taking office in 1986, Museveni has twice changed the constitution to remove term &amp; age limits<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">Uganda – Kampala – Ugandan Shilling&nbsp; |&nbsp; President – Yoweri Museveni&nbsp; |&nbsp; PM – Robinah Nabbanja</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>In May 2026, the IndiaAI Mission signed an MoU with which nonprofit organisation for the development, curation, and sharing of high-quality language and multimodal datasets?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>मई 2026 में, IndiaAI मिशन ने उच्च गुणवत्ता वाली भाषा और मल्टीमॉडल डेटासेट के विकास, क्यूरेशन और साझाकरण के लिए किस गैर-लाभकारी संगठन के साथ एक समझौता ज्ञापन पर हस्ताक्षर किए?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>AI4India</p></span><span class=\"hqt\"><p>AI4India</p></span>",
+      "<span class=\"eqt\"><p>Karya</p></span><span class=\"hqt\"><p>Karya</p></span>",
+      "<span class=\"eqt\"><p>Data Empowerment Foundation</p></span><span class=\"hqt\"><p>Data Empowerment Foundation</p></span>",
+      "<span class=\"eqt\"><p>AI for All Foundation</p></span><span class=\"hqt\"><p>AI for All Foundation</p></span>",
+      "<span class=\"eqt\"><p>None of these</p></span><span class=\"hqt\"><p>इनमें से कोई नहीं</p></span>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">The IndiaAI Mission, under the Ministry of Electronics and Information Technology (MeitY), has signed an MoU with Karya, a nonprofit organisation that works to increase accessibility of the AI economy. The MoU is focused on the development, curation, and sharing of high-quality language and multimodal datasets to support inclusive and representative AI systems. As part of the partnership, both entities will undertake technical cooperation to strengthen AIKosh data infrastructure, model evaluation frameworks, and standards for dataset quality, validation, and interoperability. The partnership also aims to support capacity building and ecosystem development through training programmes, workshops, technical consultations, and knowledge-sharing initiatives across government and partner institutions.&nbsp; <a href=\"https://www.pib.gov.in/PressReleasePage.aspx?PRID=2260790&amp;lang=2&amp;reg=3\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; IndiaAI Mission (MeitY) + Karya = signed an MoU<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Aim: development, curation, &amp; sharing of high-quality language and multimodal datasets<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of Karya – Mumbai, Maharashtra&nbsp; |&nbsp; CEO – Manu Chopra</span><br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">CEO of IndiaAI Mission – Abhishek Singh</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">The IndiaAI Mission, under the Ministry of Electronics and Information Technology (MeitY), has signed an MoU with Karya, a nonprofit organisation that works to increase accessibility of the AI economy. The MoU is focused on the development, curation, and sharing of high-quality language and multimodal datasets to support inclusive and representative AI systems. As part of the partnership, both entities will undertake technical cooperation to strengthen AIKosh data infrastructure, model evaluation frameworks, and standards for dataset quality, validation, and interoperability. The partnership also aims to support capacity building and ecosystem development through training programmes, workshops, technical consultations, and knowledge-sharing initiatives across government and partner institutions.&nbsp; <a href=\"https://www.pib.gov.in/PressReleasePage.aspx?PRID=2260790&amp;lang=2&amp;reg=3\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; IndiaAI Mission (MeitY) + Karya = signed an MoU<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Aim: development, curation, &amp; sharing of high-quality language and multimodal datasets<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of Karya – Mumbai, Maharashtra&nbsp; |&nbsp; CEO – Manu Chopra</span><br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">CEO of IndiaAI Mission – Abhishek Singh</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>Santhosh K. Nayar, who passed away in 2026, was known for his work in which field?</strong></div></span><span class=\"hqt\"><p><strong>संतोष के. नायर, जिनका 2026 में निधन हो गया, किस क्षेत्र में अपने काम के लिए जाने जाते थे?</strong></p></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Tamil Cinema</p></span><span class=\"hqt\"><p>तमिल सिनेमा</p></span>",
+      "<span class=\"eqt\"><p>Kannada Cinema</p></span><span class=\"hqt\"><p>कन्नड़ सिनेमा</p></span>",
+      "<span class=\"eqt\"><p>Telugu Cinema</p></span><span class=\"hqt\"><p>तेलुगु सिनेमा</p></span>",
+      "<span class=\"eqt\"><p>Malayalam Cinema</p></span><span class=\"hqt\"><p>मलयालम सिनेमा</p></span>",
+      "<span class=\"eqt\"><p>None of these</p></span><span class=\"hqt\"><p>इनमें से कोई नहीं</p></span>"
+    ],
+    "correct_option_id": 3,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">Santhosh K. Nayar – Malayalam Actor – passed away</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">Santhosh K. Nayar – Malayalam Actor – passed away</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>The CCEA approved an increase in the Minimum Support Price (MSP) for 14 Kharif crops for the marketing season 2026-27. What is the estimated total payout to farmers under this revision?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>CCEA ने विपणन सत्र 2026-27 के लिए 14 खरीफ फसलों के लिए न्यूनतम समर्थन मूल्य (MSP) में वृद्धि को मंजूरी दे दी। इस संशोधन के तहत किसानों को कुल भुगतान का अनुमान क्या है?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>₹1.5 lakh Cr</p></span><span class=\"hqt\"><p>₹1.5 लाख करोड़</p></span>",
+      "<span class=\"eqt\"><p>₹2.0 lakh Cr</p></span><span class=\"hqt\"><p>₹2.0 लाख करोड़</p></span>",
+      "<span class=\"eqt\"><p>₹3.0 lakh Cr</p></span><span class=\"hqt\"><p>₹3.0 लाख करोड़</p></span>",
+      "<span class=\"eqt\">₹4.2 lakh Cr\n</span><span class=\"hqt\"><p>\n\t₹4.2 लाख करोड़</p></span>",
+      "<span class=\"eqt\"><p>\n\t₹2.6 lakh Cr</p></span><span class=\"hqt\">₹2.6 लाख करोड़\n</span>"
+    ],
+    "correct_option_id": 4,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">The Cabinet Committee on Economic Affairs (CCEA), chaired by Prime Minister Narendra Modi, approved an increase in Minimum Support Prices (MSP) for 14 Kharif crops for the marketing season 2026-27, aimed at ensuring remunerative returns to farmers and encouraging crop diversification. The estimated total payout to farmers will be ₹2.6 lakh crore with procurement expected to reach approximately 824 lakh metric tonnes across all Kharif crops. Among all crops, the highest absolute increase in MSP was approved for sunflower seed at ₹622 per quintal, followed by cotton at ₹557 per quintal, nigerseed at ₹515 per quintal and sesamum at ₹500 per quintal, reflecting the government’s strategy to promote oilseeds and reduce import dependence. For major food grains, paddy’s MSP increased from ₹2,369 per quintal to ₹2,441 per quintal (common variety) with Grade A paddy at ₹2,461 per quintal, while maize was raised to ₹2,410 per quintal, bajra to ₹2,900 per quintal and ragi to ₹5,205 per quintal. For pulses, the MSP for tur/arhar (pigeon pea) was set at ₹8,195 per quintal, moong at ₹8,680 per quintal and urad at ₹9,550 per quintal. The MSP increases maintain the government’s policy of ensuring at least 50% profit margin over the cost of production. The revised MSPs align with the Union Budget 2018-19 principle of fixing MSP at 1.5 times the all-India weighted average cost of production.&nbsp; <a href=\"https://ddnews.gov.in/en/cabinet-approves-higher-msp-for-14-kharif-crops-for-2026-27-marketing-season/\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; CCEA approved an increase in MSP for 14 Kharif crops for the marketing season 2026-27<br><br>•&nbsp; Estimated total payout to farmers will be – ₹2.6 lakh Cr<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Procurement expected to reach approx 824 lakh metric tonnes across all Kharif crops<br><br>•&nbsp; Among all crops, the highest absolute increase in MSP was approved for – sunflower seed (₹622 per quintal)<br><br>•&nbsp; Latest MSPs (per quintal) of major food grains:<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Paddy – ₹2,441 &nbsp;|&nbsp; Maize – ₹2,410&nbsp; |&nbsp; Bajra – ₹2,900 &nbsp;|&nbsp; Ragi – ₹5,205 &nbsp;|&nbsp; Pulses – ₹8,195<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Moong – ₹8,680 &nbsp;|&nbsp; Urad – ₹9,550<br><br>•&nbsp; Increases in MSP maintain the Govt’s policy of ensuring at least 50% profit margin over the cost of production<br><br>•&nbsp; Revised MSPs align with the Union Budget 2018-19 principle of fixing MSP at 1.5 times the all-India weighted average cost of production</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">The Cabinet Committee on Economic Affairs (CCEA), chaired by Prime Minister Narendra Modi, approved an increase in Minimum Support Prices (MSP) for 14 Kharif crops for the marketing season 2026-27, aimed at ensuring remunerative returns to farmers and encouraging crop diversification. The estimated total payout to farmers will be ₹2.6 lakh crore with procurement expected to reach approximately 824 lakh metric tonnes across all Kharif crops. Among all crops, the highest absolute increase in MSP was approved for sunflower seed at ₹622 per quintal, followed by cotton at ₹557 per quintal, nigerseed at ₹515 per quintal and sesamum at ₹500 per quintal, reflecting the government’s strategy to promote oilseeds and reduce import dependence. For major food grains, paddy’s MSP increased from ₹2,369 per quintal to ₹2,441 per quintal (common variety) with Grade A paddy at ₹2,461 per quintal, while maize was raised to ₹2,410 per quintal, bajra to ₹2,900 per quintal and ragi to ₹5,205 per quintal. For pulses, the MSP for tur/arhar (pigeon pea) was set at ₹8,195 per quintal, moong at ₹8,680 per quintal and urad at ₹9,550 per quintal. The MSP increases maintain the government’s policy of ensuring at least 50% profit margin over the cost of production. The revised MSPs align with the Union Budget 2018-19 principle of fixing MSP at 1.5 times the all-India weighted average cost of production.&nbsp; <a href=\"https://ddnews.gov.in/en/cabinet-approves-higher-msp-for-14-kharif-crops-for-2026-27-marketing-season/\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; CCEA approved an increase in MSP for 14 Kharif crops for the marketing season 2026-27<br><br>•&nbsp; Estimated total payout to farmers will be – ₹2.6 lakh Cr<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Procurement expected to reach approx 824 lakh metric tonnes across all Kharif crops<br><br>•&nbsp; Among all crops, the highest absolute increase in MSP was approved for – sunflower seed (₹622 per quintal)<br><br>•&nbsp; Latest MSPs (per quintal) of major food grains:<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Paddy – ₹2,441 &nbsp;|&nbsp; Maize – ₹2,410&nbsp; |&nbsp; Bajra – ₹2,900 &nbsp;|&nbsp; Ragi – ₹5,205 &nbsp;|&nbsp; Pulses – ₹8,195<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Moong – ₹8,680 &nbsp;|&nbsp; Urad – ₹9,550<br><br>•&nbsp; Increases in MSP maintain the Govt’s policy of ensuring at least 50% profit margin over the cost of production<br><br>•&nbsp; Revised MSPs align with the Union Budget 2018-19 principle of fixing MSP at 1.5 times the all-India weighted average cost of production</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>In May 2026, the Investor Education and Protection Fund Authority (IEPFA) partnered with which broadcasting company to strengthen investor awareness initiatives across India?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>मई 2026 में, निवेशक शिक्षा और संरक्षण निधि प्राधिकरण (IEPFA) ने पूरे भारत में निवेशक जागरूकता पहल को मजबूत करने के लिए किस प्रसारण कंपनी के साथ साझेदारी की?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Prasar Bharati</p></span><span class=\"hqt\"><p>Prasar Bharati</p></span>",
+      "<span class=\"eqt\"><p>JioStar</p></span><span class=\"hqt\"><p>JioStar</p></span>",
+      "<span class=\"eqt\"><p>Sun TV Network</p></span><span class=\"hqt\"><p>Sun TV Network</p></span>",
+      "<span class=\"eqt\"><p>ABP Group</p></span><span class=\"hqt\"><p>ABP Group</p></span>",
+      "<span class=\"eqt\"><p>TV9 Network</p></span><span class=\"hqt\"><p>TV9 Network</p></span>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">The Investor Education and Protection Fund Authority (IEPFA), under the Ministry of Corporate Affairs, has entered into an MoU with Public Service broadcaster Prasar Bharati to strengthen nationwide investor awareness initiatives through the dissemination of informative scroll messages on Doordarshan across national and regional channels. The collaboration aims to leverage Prasar Bharati’s extensive reach to deliver key messages related to investor awareness, the process of reclaiming unclaimed dividends and shares transferred to the IEPFA. The scroll messages will be broadcast on Doordarshan channels. Through this initiative, IEPFA seeks to empower investors with timely and accurate information, encouraging them to utilize facilities such as the Search Facility and file claims through Form IEPF-5.&nbsp; <a href=\"https://www.pib.gov.in/PressReleaseDetail.aspx?PRID=2260732&amp;lang=1&amp;reg=3\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; IEPFA + Prasar Bharati = an MoU to strengthen nationwide investor awareness initiatives<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; through the dissemination of informative scroll messages on Doordarshan across national &amp; regional channels<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of IEPFA – New Delhi&nbsp; |&nbsp; CEO – Anita Shah Akella&nbsp; |&nbsp; Founded in – September 2016</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">The Investor Education and Protection Fund Authority (IEPFA), under the Ministry of Corporate Affairs, has entered into an MoU with Public Service broadcaster Prasar Bharati to strengthen nationwide investor awareness initiatives through the dissemination of informative scroll messages on Doordarshan across national and regional channels. The collaboration aims to leverage Prasar Bharati’s extensive reach to deliver key messages related to investor awareness, the process of reclaiming unclaimed dividends and shares transferred to the IEPFA. The scroll messages will be broadcast on Doordarshan channels. Through this initiative, IEPFA seeks to empower investors with timely and accurate information, encouraging them to utilize facilities such as the Search Facility and file claims through Form IEPF-5.&nbsp; <a href=\"https://www.pib.gov.in/PressReleaseDetail.aspx?PRID=2260732&amp;lang=1&amp;reg=3\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; IEPFA + Prasar Bharati = an MoU to strengthen nationwide investor awareness initiatives<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; through the dissemination of informative scroll messages on Doordarshan across national &amp; regional channels<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of IEPFA – New Delhi&nbsp; |&nbsp; CEO – Anita Shah Akella&nbsp; |&nbsp; Founded in – September 2016</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>Sunil Bharti Mittal and Nisaba Godrej were recently in the news for being reappointed for 5 years. They hold key positions in which telecommunications company?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>सुनील भारती मित्तल और निसाबा गोदरेज हाल ही में 5 साल के लिए दोबारा नियुक्त किए जाने को लेकर खबरों में थे। वे किस दूरसंचार कंपनी में प्रमुख पदों पर हैं?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Indus Towers Ltd.</p></span><span class=\"hqt\"><p>Indus Towers Ltd.</p></span>",
+      "<span class=\"eqt\"><p>Vodafone Idea Ltd.</p></span><span class=\"hqt\"><p>Vodafone Idea Ltd.</p></span>",
+      "<span class=\"eqt\"><p>None of these</p></span><span class=\"hqt\"><p>None of these</p></span>",
+      "<span class=\"eqt\"><p>Tata Communications Ltd.</p></span><span class=\"hqt\"><p>Tata Communications Ltd.</p></span>",
+      "<span class=\"eqt\"><p>Bharat Sanchar Nigam Ltd.</p></span><span class=\"hqt\"><p>Bharat Sanchar Nigam Ltd.</p></span>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">Bharti Airtel has reappointed its founder, Sunil Bharti Mittal, as the Chairman of the Board for 5 years w.e.f. October 1, 2026, until September 30, 2031. Mittal’s current term as the Chairman was due to expire on September 30, 2026. Mittal founded Bharti Group in 1976. The telco’s Board also approved the reappointment of Nisaba Godrej as an Independent Director for a 2<sup>nd</sup> term, for 5 years, from August 4, 2026, to August 3, 2031, subject to members’ approval.&nbsp; <a href=\"https://telecom.economictimes.indiatimes.com/news/industry/bharti-airtel-reappoints-sunil-mittal-as-chairman-until-2031/131080342\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; Sunil Bharti Mittal – reappointed as Chairman of Bharti Airtel for 5 years&nbsp; (from Oct 2026 to Sep&nbsp; 2031)<br><br>•&nbsp; Nisaba Godrej – reappointed as an Independent Director of Bharti Airtel for a 2<sup>nd</sup> term for 5 years<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of Bharti Airtel – New Delhi&nbsp; |&nbsp; MD &amp; CEO – Shashwat Sharma&nbsp; |&nbsp; Chairman – Sunil Bharti Mittal</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">Bharti Airtel has reappointed its founder, Sunil Bharti Mittal, as the Chairman of the Board for 5 years w.e.f. October 1, 2026, until September 30, 2031. Mittal’s current term as the Chairman was due to expire on September 30, 2026. Mittal founded Bharti Group in 1976. The telco’s Board also approved the reappointment of Nisaba Godrej as an Independent Director for a 2<sup>nd</sup> term, for 5 years, from August 4, 2026, to August 3, 2031, subject to members’ approval.&nbsp; <a href=\"https://telecom.economictimes.indiatimes.com/news/industry/bharti-airtel-reappoints-sunil-mittal-as-chairman-until-2031/131080342\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; Sunil Bharti Mittal – reappointed as Chairman of Bharti Airtel for 5 years&nbsp; (from Oct 2026 to Sep&nbsp; 2031)<br><br>•&nbsp; Nisaba Godrej – reappointed as an Independent Director of Bharti Airtel for a 2<sup>nd</sup> term for 5 years<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of Bharti Airtel – New Delhi&nbsp; |&nbsp; MD &amp; CEO – Shashwat Sharma&nbsp; |&nbsp; Chairman – Sunil Bharti Mittal</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>The Union Cabinet approved the “Scheme for Promotion of Surface Coal/Lignite Gasification Projects”. What is the total financial outlay of this scheme?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>केंद्रीय मंत्रिमंडल ने \"सतह कोयला/लिग्नाइट गैसीकरण परियोजनाओं को बढ़ावा देने की योजना\" को मंजूरी दे दी। इस योजना का कुल वित्तीय परिव्यय क्या है?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>₹26,600 Cr</p></span><span class=\"hqt\"><p>₹26,600 करोड़</p></span>",
+      "<span class=\"eqt\"><p>₹18,200 Cr</p></span><span class=\"hqt\"><p>₹18,200 करोड़</p></span>",
+      "<span class=\"eqt\"><p>₹37,500 Cr</p></span><span class=\"hqt\"><p>₹37,500 करोड़</p></span>",
+      "<span class=\"eqt\"><p>₹40,300 Cr</p></span><span class=\"hqt\"><p>₹40,300 करोड़</p></span>",
+      "<span class=\"eqt\"><p>₹48,400 Cr</p></span><span class=\"hqt\"><p>₹48,400 करोड़</p></span>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">The Union Cabinet, chaired by Prime Minister Narendra Modi, approved the “Scheme for Promotion of Surface Coal/Lignite Gasification Projects” with a total financial outlay of ₹37,500 crore, aimed at accelerating India’s coal gasification programme, reducing dependence on imports of critical products and advancing the national target of gasifying 100 million tonnes of coal by 2030. The scheme targets gasification of approximately 75 million tonnes of coal and lignite through new surface gasification projects, with expected investment mobilisation of ₹2.5-3 lakh crore across approximately 25 major projects, particularly in coal-bearing states and industrial regions. Gasification is a process that converts coal or lignite into synthesis gas (syngas) - a versatile feedstock containing carbon monoxide, hydrogen, carbon dioxide, methane and water vapour. It can be used to produce fuels, chemicals, fertilisers, methanol, synthetic natural gas, hydrogen and other downstream products domestically. India’s import bill for key substitutable products including LNG (more than 50% imported), urea (~20% imported), ammonia (~100% imported), methanol (~80-90% imported) and coking coal stood at approximately ₹2.77 lakh crore in FY 2025-26, representing major foreign exchange outflows. The scheme provides financial incentives at a maximum of 20% of the cost of plant and machinery, with selection through transparent competitive bidding and incentives disbursed in four equal instalments linked to project milestones - individual project incentives capped at ₹5,000 crore, per-product incentives (except Synthetic Natural Gas and Urea) at ₹9,000 crore, and per-entity group incentives at ₹12,000 crore across all projects. Coal utilisation is expected to generate ₹6,300 crore annually from 75 million tonnes of gasification. In a complementary reform, the government extended coal linkage tenure up to 30 years under the ‘Production of Syngas leading to Coal Gasification” sub-sector in the Non-Regulated Sector linkage auction framework, providing long-term policy certainty for investor confidence. India possesses approximately 401 billion tonnes of coal reserves and 47 billion tonnes of lignite reserves, with coal accounting for over 55% of the country’s energy mix.&nbsp; <a href=\"https://www.thehindu.com/business/Industry/govt-approves-incentive-for-coal-gasification-projects-with-outlay-of-37500-crore/article70973990.ece\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; Cabinet approved “Scheme for Promotion of Surface Coal/Lignite Gasification Projects” &nbsp;(total outlay - ₹37,500 Cr)<br><br>•&nbsp; It targets gasification of ~75 million tonnes of coal &amp; lignite through new surface gasification projects<br><br>•&nbsp; It expected investment mobilisation ₹2.5-3 lakh Cr across ~25 major projects<br><br>•&nbsp; Financial incentives: max 20% of plant/machinery cost&nbsp; (selection via transparent competitive bidding)<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Incentives is disbursed in 4 equal instalments linked to project milestones; per-project capped at ₹5,000 Cr, per-product at ₹9,000 Cr, per-entity group at ₹12,000 Cr<br><br>•&nbsp; Gasification: a process that converts coal or lignite into synthesis gas (syngas)<br><br>•&nbsp; India’s import bill for key substitutable products (LNG, urea, ammonia, etc) in FY 2025-26 – ~ ₹2.77 lakh Cr<br><br>•&nbsp; Coal utilisation – expected to generate ₹6,300 Cr annually from 75 million tonnes of gasification<br><br>•&nbsp; Govt extended coal linkage tenure up to 30 years under Production of Syngas<br><br>•&nbsp; India – possesses ~401 billion tonnes coal reserves &amp; 47 billion tonnes lignite reserves<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Coal accounts for &gt;55% of energy mix</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">The Union Cabinet, chaired by Prime Minister Narendra Modi, approved the “Scheme for Promotion of Surface Coal/Lignite Gasification Projects” with a total financial outlay of ₹37,500 crore, aimed at accelerating India’s coal gasification programme, reducing dependence on imports of critical products and advancing the national target of gasifying 100 million tonnes of coal by 2030. The scheme targets gasification of approximately 75 million tonnes of coal and lignite through new surface gasification projects, with expected investment mobilisation of ₹2.5-3 lakh crore across approximately 25 major projects, particularly in coal-bearing states and industrial regions. Gasification is a process that converts coal or lignite into synthesis gas (syngas) - a versatile feedstock containing carbon monoxide, hydrogen, carbon dioxide, methane and water vapour. It can be used to produce fuels, chemicals, fertilisers, methanol, synthetic natural gas, hydrogen and other downstream products domestically. India’s import bill for key substitutable products including LNG (more than 50% imported), urea (~20% imported), ammonia (~100% imported), methanol (~80-90% imported) and coking coal stood at approximately ₹2.77 lakh crore in FY 2025-26, representing major foreign exchange outflows. The scheme provides financial incentives at a maximum of 20% of the cost of plant and machinery, with selection through transparent competitive bidding and incentives disbursed in four equal instalments linked to project milestones - individual project incentives capped at ₹5,000 crore, per-product incentives (except Synthetic Natural Gas and Urea) at ₹9,000 crore, and per-entity group incentives at ₹12,000 crore across all projects. Coal utilisation is expected to generate ₹6,300 crore annually from 75 million tonnes of gasification. In a complementary reform, the government extended coal linkage tenure up to 30 years under the ‘Production of Syngas leading to Coal Gasification” sub-sector in the Non-Regulated Sector linkage auction framework, providing long-term policy certainty for investor confidence. India possesses approximately 401 billion tonnes of coal reserves and 47 billion tonnes of lignite reserves, with coal accounting for over 55% of the country’s energy mix.&nbsp; <a href=\"https://www.thehindu.com/business/Industry/govt-approves-incentive-for-coal-gasification-projects-with-outlay-of-37500-crore/article70973990.ece\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; Cabinet approved “Scheme for Promotion of Surface Coal/Lignite Gasification Projects” &nbsp;(total outlay - ₹37,500 Cr)<br><br>•&nbsp; It targets gasification of ~75 million tonnes of coal &amp; lignite through new surface gasification projects<br><br>•&nbsp; It expected investment mobilisation ₹2.5-3 lakh Cr across ~25 major projects<br><br>•&nbsp; Financial incentives: max 20% of plant/machinery cost&nbsp; (selection via transparent competitive bidding)<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Incentives is disbursed in 4 equal instalments linked to project milestones; per-project capped at ₹5,000 Cr, per-product at ₹9,000 Cr, per-entity group at ₹12,000 Cr<br><br>•&nbsp; Gasification: a process that converts coal or lignite into synthesis gas (syngas)<br><br>•&nbsp; India’s import bill for key substitutable products (LNG, urea, ammonia, etc) in FY 2025-26 – ~ ₹2.77 lakh Cr<br><br>•&nbsp; Coal utilisation – expected to generate ₹6,300 Cr annually from 75 million tonnes of gasification<br><br>•&nbsp; Govt extended coal linkage tenure up to 30 years under Production of Syngas<br><br>•&nbsp; India – possesses ~401 billion tonnes coal reserves &amp; 47 billion tonnes lignite reserves<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Coal accounts for &gt;55% of energy mix</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>Consider the following statements regarding the “Viksit Bharat - Guarantee for Rozgar and Ajeevika Mission (Gramin) Act 2025 (VB-G RAM G Act 2025)”:</strong><br><br><strong>P) VB-G RAM G Act 2025 replaces the ‘Mahatma Gandhi National Rural Employment Guarantee Act (MGNREGA) 2005’.</strong><br><br><strong>Q) Under the new VB-G RAM G framework, the wage employment guarantee for rural households has been increased from 100 days to 125 days per financial year.</strong><br><br><strong>R) States have 3 months from the commencement of the Act to operationalize the schemes.</strong><br><br><strong>Which of the above statements is/are correct?</strong></div></span><span class=\"hqt\"><p><strong>\"विकसित भारत - रोज़गार और आजीविका मिशन (ग्रामीण) अधिनियम 2025 (VB-G RAM G अधिनियम 2025)\" के संबंध में निम्नलिखित कथनों पर विचार करें:</strong></p><p><strong>P) VB-G RAM G अधिनियम 2025 'महात्मा गांधी राष्ट्रीय ग्रामीण रोजगार गारंटी अधिनियम (मनरेगा) 2005' की जगह लेता है।</strong></p><p><strong>Q) नए VB-G RAM G ढांचे के तहत, ग्रामीण परिवारों के लिए मजदूरी रोजगार गारंटी प्रति वित्तीय वर्ष 100 दिन से बढ़ाकर 125 दिन कर दी गई है।</strong></p><p><strong>R) राज्यों के पास योजनाओं को क्रियान्वित करने के लिए अधिनियम के प्रारंभ से 3 महीने का समय है।</strong></p><p><strong>उपरोक्त में से कौन सा/से कथन सही है/हैं?</strong></p></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Only P and Q</p></span><span class=\"hqt\"><p>केवल P और Q</p></span>",
+      "<span class=\"eqt\"><p>Only P</p></span><span class=\"hqt\"><p>केवल Q और R</p></span>",
+      "<span class=\"eqt\"><p>Only Q and R</p></span><span class=\"hqt\"><p>केवल Q और R</p></span>",
+      "<span class=\"eqt\"><p>All statements are correct</p></span><span class=\"hqt\"><p>सभी कथन सही हैं</p></span>",
+      "<span class=\"eqt\"><p>Only P and R</p></span><span class=\"hqt\"><p>केवल P और R</p></span>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">The government of India has notified the implementation of the “Viksit Bharat - Guarantee for Rozgar and Ajeevika Mission (Gramin) Act 2025 (VB-G RAM G Act 2025)”. The VB-G RAM G Act 2025 will be rolled out nationwide from July 1, 2026. The VB-G RAM G Act 2025 repealed the ‘Mahatma Gandhi National Rural Employment Guarantee Act (MGNREGA) 2005’. Thus, MGNREGA will cease to exist from July 1, 2026. Under the new VB-G RAM G framework, every rural household whose adult members volunteer to undertake unskilled manual work will be entitled to a guarantee of 125 days of wage employment instead of the 100 days under MGNREGA in every financial year. Unlike the MGNREGS, where the Centre paid 100% of the wage bill, VB G RAM G is a centrally sponsored scheme with a fund-sharing ratio of 60:40 between the Centre and states for all states, 90:10 for Northeast states, Himalayan states, and UTs with a legislature, and 100% central share for UTs without a legislature. Further, ongoing works under MGNREGA as of June 30, 2026, shall be saved and carried over in the new framework. All e-KYC verified MGNREGA Job Cards shall remain valid under VB-G RAM G until Gramin Rozgar Guarantee Cards are issued. Around 91% of the 12 crore active workers have been verified so far. From the commencement of the Act, states will get 6 months thereafter to make their schemes to enable implementation of the law on ground. For the financial year 2026-27, the Central government has made a budgetary allocation of Rs 95,692.31 crore, which it cited was the highest-ever allocation at the budget estimate stage for a rural employment programme. Including the likely contribution of the states, the total programme outlay is estimated to exceed Rs 1.51 lakh crore.&nbsp; <a href=\"https://timesofindia.indiatimes.com/india/centre-notifies-july-1-as-date-for-implementation-of-new-rural-job-framework-vbg-ram-g/articleshow/131023397.cms\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; “Viksit Bharat-Guarantee for Rozgar &amp; Ajeevika Mission (Gramin) Act 2025” – notified for nationwide rollout from July’26<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; ‘VB-G RAM G Act 2025’ replaces ‘MGNREGA 2005’<br><br>•&nbsp; Wage employment guarantee – increased from 100 days to 125 days per financial year for rural households<br><br>•&nbsp; Fund-sharing structure:<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; 60:40 (Centre-States) for all states<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; 90:10 (Centre-Northeast/Himalayan states/UTs with legislature)<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; 100% central share for UTs without legislature<br><br>•&nbsp; e-KYC verified MGNREGA Job Cards – remain valid under VB-G RAM G until Gramin Rozgar Guarantee Cards issued<br><br>•&nbsp; Implementation timeline – states get 6 months from Act commencement to operationalize schemes<br><br>•&nbsp; FY 2026-27 budget allocation – Rs 95,692.31 Cr (highest-ever budget allocation for rural employment programme)<br><br>•&nbsp; Total programme outlay (with state contributions) – estimated to exceed Rs 1.51 lakh Cr</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">The government of India has notified the implementation of the “Viksit Bharat - Guarantee for Rozgar and Ajeevika Mission (Gramin) Act 2025 (VB-G RAM G Act 2025)”. The VB-G RAM G Act 2025 will be rolled out nationwide from July 1, 2026. The VB-G RAM G Act 2025 repealed the ‘Mahatma Gandhi National Rural Employment Guarantee Act (MGNREGA) 2005’. Thus, MGNREGA will cease to exist from July 1, 2026. Under the new VB-G RAM G framework, every rural household whose adult members volunteer to undertake unskilled manual work will be entitled to a guarantee of 125 days of wage employment instead of the 100 days under MGNREGA in every financial year. Unlike the MGNREGS, where the Centre paid 100% of the wage bill, VB G RAM G is a centrally sponsored scheme with a fund-sharing ratio of 60:40 between the Centre and states for all states, 90:10 for Northeast states, Himalayan states, and UTs with a legislature, and 100% central share for UTs without a legislature. Further, ongoing works under MGNREGA as of June 30, 2026, shall be saved and carried over in the new framework. All e-KYC verified MGNREGA Job Cards shall remain valid under VB-G RAM G until Gramin Rozgar Guarantee Cards are issued. Around 91% of the 12 crore active workers have been verified so far. From the commencement of the Act, states will get 6 months thereafter to make their schemes to enable implementation of the law on ground. For the financial year 2026-27, the Central government has made a budgetary allocation of Rs 95,692.31 crore, which it cited was the highest-ever allocation at the budget estimate stage for a rural employment programme. Including the likely contribution of the states, the total programme outlay is estimated to exceed Rs 1.51 lakh crore.&nbsp; <a href=\"https://timesofindia.indiatimes.com/india/centre-notifies-july-1-as-date-for-implementation-of-new-rural-job-framework-vbg-ram-g/articleshow/131023397.cms\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; “Viksit Bharat-Guarantee for Rozgar &amp; Ajeevika Mission (Gramin) Act 2025” – notified for nationwide rollout from July’26<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; ‘VB-G RAM G Act 2025’ replaces ‘MGNREGA 2005’<br><br>•&nbsp; Wage employment guarantee – increased from 100 days to 125 days per financial year for rural households<br><br>•&nbsp; Fund-sharing structure:<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; 60:40 (Centre-States) for all states<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; 90:10 (Centre-Northeast/Himalayan states/UTs with legislature)<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; 100% central share for UTs without legislature<br><br>•&nbsp; e-KYC verified MGNREGA Job Cards – remain valid under VB-G RAM G until Gramin Rozgar Guarantee Cards issued<br><br>•&nbsp; Implementation timeline – states get 6 months from Act commencement to operationalize schemes<br><br>•&nbsp; FY 2026-27 budget allocation – Rs 95,692.31 Cr (highest-ever budget allocation for rural employment programme)<br><br>•&nbsp; Total programme outlay (with state contributions) – estimated to exceed Rs 1.51 lakh Cr</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>The Ministry of Ports, Shipping and Waterways (MoPSW) signed a tripartite MoU with HD Korea Shipbuilding &amp; Offshore Engineering (HD KSOE), National Shipbuilding &amp; Heavy Industries Park, Tamil Nadu Limited (NSHIP-TN), and Sagarmala Finance Corporation Limited (SMFCL) to develop India’s first mega greenfield shipyard at which location in Tamil Nadu?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>बंदरगाह, जहाजरानी और जलमार्ग मंत्रालय (MoPSW) ने तमिलनाडु में किस स्थान पर भारत का पहला मेगा ग्रीनफील्ड शिपयार्ड विकसित करने के लिए HD कोरिया शिपबिल्डिंग एंड ऑफशोर इंजीनियरिंग (HD KSOE), नेशनल शिपबिल्डिंग एंड हेवी इंडस्ट्रीज पार्क, तमिलनाडु लिमिटेड (NSHIP-TN), और सागरमाला फाइनेंस कॉर्पोरेशन लिमिटेड (SMFCL) के साथ एक त्रिपक्षीय समझौता ज्ञापन पर हस्ताक्षर किए?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Chennai</p></span><span class=\"hqt\"><p>चेन्नई</p></span>",
+      "<span class=\"eqt\"><p>Coimbatore</p></span><span class=\"hqt\"><p>कोयंबटूर</p></span>",
+      "<span class=\"eqt\"><p>Kanyakumari</p></span><span class=\"hqt\"><p>कन्याकुमारी</p></span>",
+      "<span class=\"eqt\"><p>Madurai</p></span><span class=\"hqt\"><p>मदुरै</p></span>",
+      "<span class=\"eqt\"><p>Thoothukudi</p></span><span class=\"hqt\"><p>थूथुकुडी</p></span>"
+    ],
+    "correct_option_id": 4,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">Ministry of Ports, Shipping and Waterways (MoPSW) signed a tripartite MoU between HD Korea Shipbuilding &amp; Offshore Engineering (HD KSOE), National Shipbuilding &amp; Heavy Industries Park, Tamil Nadu Limited (NSHIP-TN) and Sagarmala Finance Corporation Limited (SMFCL) to develop India’s first mega greenfield shipyard at Thoothukudi, Tamil Nadu, with an envisaged annual capacity of 2.5 million gross tonnage (GT). The project has been launched under the India-Republic of Korea maritime cooperation framework, ‘VOYAGES (Shared Vision for Operation of Yard Assisted Growth with Efficiency and Scale)’. The project is expected to generate approximately 15,000 direct jobs upon stabilisation of operations. NSHIP-TN, a Special Purpose Vehicle jointly promoted by V.O. Chidambaranar Port Authority (VoCPA) and State Industries Promotion Corporation of Tamil Nadu (SIPCOT), will anchor the broader Thoothukudi Shipbuilding Cluster integrating shipbuilding, ancillary manufacturing, logistics and maritime supply-chain activities. The Techno-Economic Feasibility Report (TEFR) has already been completed, while preparation of the Detailed Project Report (DPR) is currently underway, with NSHIP-TN having received in-principle approval from the National Shipbuilding Mission for the proposed greenfield shipbuilding cluster. The initiative aligns with the ‘Maritime Amrit Kaal Vision 2047’ aiming to place India among the top five shipbuilding nations globally with a targeted output of 4.5 million GT per annum by 2047.&nbsp; <a href=\"https://ddindia.co.in/2026/05/india-signs-landmark-mou-for-first-mega-greenfield-shipyard-in-thoothukudi-under-maritime-vision-2047/\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; MoPSW + (HD KSOE + NSHIP-TN + SMFCL) = an MoU to develop India’s 1<sup>st</sup> mega greenfield shipyard at Thoothukudi, TN<br><br>•&nbsp; Envisaged annual capacity – 2.5 million gross tonnage (GT)<br><br>•&nbsp; The project has been launched under the India-Republic of Korea maritime cooperation framework, ‘VOYAGES’<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; VOYAGES – Shared <strong>V</strong>ision for <strong>O</strong>peration of <strong>Y</strong>ard <strong>A</strong>ssisted <strong>G</strong>rowth with <strong>E</strong>fficiency and <strong>S</strong>cale<br><br>•&nbsp; NSHIP-TN is a SPV jointly promoted by = V.O. Chidambaranar Port Authority (VoCPA) + SIPCOT<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; It will anchor the broader Thoothukudi Shipbuilding Cluster<br><br>•&nbsp; The initiative aims to place India among the Top 5 shipbuilding nations globally<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Targeted output by 2047 – 4.5 million GT per annum</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">Ministry of Ports, Shipping and Waterways (MoPSW) signed a tripartite MoU between HD Korea Shipbuilding &amp; Offshore Engineering (HD KSOE), National Shipbuilding &amp; Heavy Industries Park, Tamil Nadu Limited (NSHIP-TN) and Sagarmala Finance Corporation Limited (SMFCL) to develop India’s first mega greenfield shipyard at Thoothukudi, Tamil Nadu, with an envisaged annual capacity of 2.5 million gross tonnage (GT). The project has been launched under the India-Republic of Korea maritime cooperation framework, ‘VOYAGES (Shared Vision for Operation of Yard Assisted Growth with Efficiency and Scale)’. The project is expected to generate approximately 15,000 direct jobs upon stabilisation of operations. NSHIP-TN, a Special Purpose Vehicle jointly promoted by V.O. Chidambaranar Port Authority (VoCPA) and State Industries Promotion Corporation of Tamil Nadu (SIPCOT), will anchor the broader Thoothukudi Shipbuilding Cluster integrating shipbuilding, ancillary manufacturing, logistics and maritime supply-chain activities. The Techno-Economic Feasibility Report (TEFR) has already been completed, while preparation of the Detailed Project Report (DPR) is currently underway, with NSHIP-TN having received in-principle approval from the National Shipbuilding Mission for the proposed greenfield shipbuilding cluster. The initiative aligns with the ‘Maritime Amrit Kaal Vision 2047’ aiming to place India among the top five shipbuilding nations globally with a targeted output of 4.5 million GT per annum by 2047.&nbsp; <a href=\"https://ddindia.co.in/2026/05/india-signs-landmark-mou-for-first-mega-greenfield-shipyard-in-thoothukudi-under-maritime-vision-2047/\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; MoPSW + (HD KSOE + NSHIP-TN + SMFCL) = an MoU to develop India’s 1<sup>st</sup> mega greenfield shipyard at Thoothukudi, TN<br><br>•&nbsp; Envisaged annual capacity – 2.5 million gross tonnage (GT)<br><br>•&nbsp; The project has been launched under the India-Republic of Korea maritime cooperation framework, ‘VOYAGES’<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; VOYAGES – Shared <strong>V</strong>ision for <strong>O</strong>peration of <strong>Y</strong>ard <strong>A</strong>ssisted <strong>G</strong>rowth with <strong>E</strong>fficiency and <strong>S</strong>cale<br><br>•&nbsp; NSHIP-TN is a SPV jointly promoted by = V.O. Chidambaranar Port Authority (VoCPA) + SIPCOT<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; It will anchor the broader Thoothukudi Shipbuilding Cluster<br><br>•&nbsp; The initiative aims to place India among the Top 5 shipbuilding nations globally<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Targeted output by 2047 – 4.5 million GT per annum</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>Film Producer R. B. Choudary, who passed away in 2026, was the founder of which film production company?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>फ़िल्म निर्माता आर.बी. चौधरी, जिनका 2026 में निधन हो गया, किस फ़िल्म निर्माण कंपनी के संस्थापक थे?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Red Giant Movies</p></span><span class=\"hqt\"><p>Red Giant Movies</p></span>",
+      "<span class=\"eqt\"><p>Lyca Productions</p></span><span class=\"hqt\"><p>Lyca Productions</p></span>",
+      "<span class=\"eqt\"><p>AVM Productions</p></span><span class=\"hqt\"><p>AVM Productions</p></span>",
+      "<span class=\"eqt\"><p>Suresh Productions</p></span><span class=\"hqt\"><p>Suresh Productions</p></span>",
+      "<span class=\"eqt\"><p>Super Good Films</p></span><span class=\"hqt\"><p>Super Good Films</p></span>"
+    ],
+    "correct_option_id": 4,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">R. B. Choudary – Film Producer &amp; Founder of Super Good Films – passed away</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">R. B. Choudary – Film Producer &amp; Founder of Super Good Films – passed away</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  }
+];
+        const sectionsData = null;
+        const marksPerQ = 1.0;
+        const negMarks = 0.25;
+        const totalDuration = 8;
+        
+        class CBTExam {
+            constructor() {
+                this.questions = questions;
+                this.sections = sectionsData;
+                this.currentQuestion = 0;
+                this.answers = new Array(this.questions.length).fill(null);
+                this.markedForReview = new Array(this.questions.length).fill(false);
+                this.timeSpent = new Array(this.questions.length).fill(0);
+                this.isEnglish = true;
+                this.isSubmitted = false;
+                this.startTime = null;
+                this.lastQuestionTime = null;
+                this.mainTimer = null;
+                this.sectionTimer = null;
+                this.currentSection = this.sections ? 0 : null;
+                this.totalTimeLeft = totalDuration * 60;
+                
+                this.initElements();
+                this.setupWelcomeScreen();
+                this.setupBeforeUnload();
+            }
+            
+            initElements() {
+                this.els = {
+                    welcomeScreen: document.getElementById('welcomeScreen'),
+                    examContainer: document.getElementById('examContainer'),
+                    mainTimer: document.getElementById('mainTimer'),
+                    sectionBadge: document.getElementById('sectionBadge'),
+                    sectionName: document.getElementById('sectionName'),
+                    sectionTimer: document.getElementById('sectionTimer'),
+                    questionNum: document.getElementById('questionNum'),
+                    questionMarks: document.getElementById('questionMarks'),
+                    questionText: document.getElementById('questionText'),
+                    comprehension: document.getElementById('comprehension'),
+                    comprehensionText: document.getElementById('comprehensionText'),
+                    optionsList: document.getElementById('optionsList'),
+                    solutionBox: document.getElementById('solutionBox'),
+                    solutionStats: document.getElementById('solutionStats'),
+                    solutionText: document.getElementById('solutionText'),
+                    progressText: document.getElementById('progressText'),
+                    answeredCount: document.getElementById('answeredCount'),
+                    desktopNav: document.getElementById('desktopNav'),
+                    mobileNav: document.getElementById('mobileNav'),
+                    mobileNavGrid: document.getElementById('mobileNavGrid'),
+                    resultModal: document.getElementById('resultModal'),
+                    resultScore: document.getElementById('resultScore'),
+                    correctCount: document.getElementById('correctCount'),
+                    incorrectCount: document.getElementById('incorrectCount'),
+                    unattemptedCount: document.getElementById('unattemptedCount'),
+                    timeTaken: document.getElementById('timeTaken'),
+                    sectionResults: document.getElementById('sectionResults'),
+                    sectionResultsBody: document.getElementById('sectionResultsBody')
+                };
+            }
+            
+            setupWelcomeScreen() {
+                document.getElementById('startBtn').addEventListener('click', () => {
+                    this.els.welcomeScreen.classList.add('hidden');
+                    this.els.examContainer.classList.add('active');
+                    setTimeout(() => this.startExam(), 100);
+                });
+            }
+            
+            setupBeforeUnload() {
+                window.addEventListener('beforeunload', (e) => {
+                    if (!this.isSubmitted) {
+                        e.preventDefault();
+                        e.returnValue = 'Your test is in progress. Are you sure you want to leave?';
+                        return e.returnValue;
+                    }
+                });
+            }
+            
+            startExam() {
+                this.startTime = Date.now();
+                this.lastQuestionTime = this.startTime;
+                this.createNavigator();
+                this.startMainTimer();
+                if (this.sections) {
+                    this.startSectionTimer();
+                    this.updateSectionInfo();
+                }
+                this.loadQuestion(0);
+                this.setupEventListeners();
+            }
+            
+            setupEventListeners() {
+                document.getElementById('engBtn').onclick = () => this.setLanguage(true);
+                document.getElementById('hinBtn').onclick = () => this.setLanguage(false);
+                document.getElementById('prevBtn').onclick = () => this.navigate(-1);
+                document.getElementById('nextBtn').onclick = () => this.navigate(1);
+                document.getElementById('reviewBtn').onclick = () => this.toggleReview();
+                document.getElementById('submitBtn').onclick = () => this.confirmSubmit();
+                document.getElementById('submitBtnDesktop').onclick = () => this.confirmSubmit();
+                document.getElementById('navigatorBtn').onclick = () => this.openMobileNav();
+                document.getElementById('closeNav').onclick = () => this.closeMobileNav();
+                document.getElementById('closeResult').onclick = () => this.closeResultModal();
+                document.getElementById('reviewAnswers').onclick = () => this.reviewAnswers();
+            }
+            
+            createNavigator() {
+                [this.els.desktopNav, this.els.mobileNavGrid].forEach(container => {
+                    container.innerHTML = '';
+                    this.questions.forEach((_, i) => {
+                        const btn = document.createElement('div');
+                        btn.className = 'nav-question';
+                        btn.textContent = i + 1;
+                        btn.onclick = () => this.goToQuestion(i);
+                        container.appendChild(btn);
+                    });
+                });
+            }
+            
+            extractText(html, isEng) {
+                if (!html) return '';
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                
+                const langSpans = temp.querySelectorAll('span.eqt, span.hqt');
+                langSpans.forEach(span => {
+                    if ((isEng && span.classList.contains('hqt')) || 
+                        (!isEng && span.classList.contains('eqt'))) {
+                        span.style.display = 'none';
+                    } else {
+                        span.style.display = '';
+                    }
+                });
+                
+                return temp.innerHTML;
+            }
+            
+            getQuestionMarks(qIdx) {
+                if (!this.sections) return marksPerQ;
+                
+                for (const section of this.sections) {
+                    if (qIdx >= section.start && qIdx <= section.end) {
+                        if (section.subsections) {
+                            for (const subsec of section.subsections) {
+                                if (qIdx >= subsec.start && qIdx <= subsec.end) {
+                                    return subsec.marks_per_q;
+                                }
+                            }
+                        }
+                        return marksPerQ;
+                    }
+                }
+                return marksPerQ;
+            }
+            
+            loadQuestion(idx) {
+                if (this.currentQuestion !== idx) {
+                    const now = Date.now();
+                    this.timeSpent[this.currentQuestion] += (now - this.lastQuestionTime) / 1000;
+                    this.lastQuestionTime = now;
+                }
+                
+                this.currentQuestion = idx;
+                const q = this.questions[idx];
+                const qMarks = this.getQuestionMarks(idx);
+                
+                this.els.questionNum.textContent = `Question ${idx + 1} of ${this.questions.length}`;
+                this.els.questionMarks.textContent = `Marks: ${qMarks}`;
+                this.els.progressText.textContent = `Question ${idx + 1} of ${this.questions.length}`;
+                this.updateAnsweredCount();
+                this.updateNavigator();
+                this.updateNavigationButtons();
+                this.updateReviewButton();
+                
+                if (q.comp) {
+                    this.els.comprehension.style.display = 'block';
+                    this.els.comprehensionText.innerHTML = this.extractText(q.comp, this.isEnglish);
+                } else {
+                    this.els.comprehension.style.display = 'none';
+                }
+                
+                this.els.questionText.innerHTML = this.extractText(q.question, this.isEnglish);
+                this.loadOptions(q, idx);
+                
+                if (this.isSubmitted && q.solution) {
+                    const timeSpent = Math.round(this.timeSpent[idx]);
+                    const mins = Math.floor(timeSpent / 60);
+                    const secs = timeSpent % 60;
+                    const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+                    
+                    this.els.solutionStats.innerHTML = `
+                        <span><i class="fas fa-clock"></i> Time: ${timeStr}</span>
+                        <span><i class="fas fa-check-circle"></i> Correct: ${String.fromCharCode(65 + q.correct_option_id)}</span>
+                    `;
+                    this.els.solutionText.innerHTML = this.extractText(q.solution, this.isEnglish);
+                    this.els.solutionBox.classList.add('show');
+                } else {
+                    this.els.solutionBox.classList.remove('show');
+                }
+                
+                // Render LaTeX in all updated elements
+                renderMath(this.els.questionText);
+                renderMath(this.els.comprehensionText);
+                renderMath(this.els.solutionText);
+            }
+            
+            loadOptions(q, qIdx) {
+                this.els.optionsList.innerHTML = '';
+                const userAnswer = this.answers[qIdx];
+                const correctAnswer = q.correct_option_id;
+                
+                if (!q.options || !Array.isArray(q.options)) return;
+                
+                q.options.forEach((opt, i) => {
+                    const div = document.createElement('div');
+                    let className = 'option';
+                    
+                    if (this.isSubmitted) className += ' submitted';
+                    if (userAnswer === i) className += ' selected';
+                    
+                    if (this.isSubmitted && correctAnswer !== undefined) {
+                        if (i === correctAnswer) {
+                            className += ' correct';
+                        } else if (userAnswer === i && userAnswer !== correctAnswer) {
+                            className += ' wrong';
+                        }
+                    }
+                    
+                    div.className = className;
+                    
+                    let indicator = '';
+                    if (this.isSubmitted && correctAnswer !== undefined) {
+                        if (i === correctAnswer) {
+                            indicator = '✓';
+                        } else if (userAnswer === i) {
+                            indicator = '✗';
+                        }
+                    } else if (userAnswer === i) {
+                        indicator = '✓';
+                    }
+                    
+                    div.innerHTML = `
+                        <div class="option-indicator">${indicator}</div>
+                        <div class="option-text">${this.extractText(opt, this.isEnglish)}</div>
+                    `;
+                    
+                    if (!this.isSubmitted) {
+                        div.onclick = () => this.selectOption(i, qIdx);
+                    }
+                    
+                    this.els.optionsList.appendChild(div);
+                });
+                // Render LaTeX in options
+                renderMath(this.els.optionsList);
+            }
+            
+            selectOption(optIdx, qIdx) {
+                if (this.isSubmitted) return;
+                this.answers[qIdx] = this.answers[qIdx] === optIdx ? null : optIdx;
+                this.loadOptions(this.questions[qIdx], qIdx);
+                this.updateAnsweredCount();
+                this.updateNavigator();
+            }
+            
+            toggleReview() {
+                if (this.isSubmitted) return;
+                this.markedForReview[this.currentQuestion] = !this.markedForReview[this.currentQuestion];
+                this.updateNavigator();
+                this.updateReviewButton();
+            }
+            
+            updateReviewButton() {
+                const btn = document.getElementById('reviewBtn');
+                if (this.markedForReview[this.currentQuestion]) {
+                    btn.classList.add('marked');
+                    btn.innerHTML = '<i class="fas fa-flag"></i> Marked';
+                } else {
+                    btn.classList.remove('marked');
+                    btn.innerHTML = '<i class="fas fa-flag"></i> Mark for Review';
+                }
+            }
+            
+            navigate(dir) {
+                const newIdx = this.currentQuestion + dir;
+                
+                if (this.isSubmitted) {
+                    if (newIdx >= 0 && newIdx < this.questions.length) {
+                        this.loadQuestion(newIdx);
+                    }
+                    return;
+                }
+                
+                if (this.sections) {
+                    const currentSection = this.sections[this.currentSection];
+                    if (newIdx < currentSection.start || newIdx > currentSection.end) {
+                        return;
+                    }
+                }
+                
+                if (newIdx >= 0 && newIdx < this.questions.length) {
+                    this.loadQuestion(newIdx);
+                }
+            }
+            
+            goToQuestion(idx) {
+                if (this.isSubmitted) {
+                    this.loadQuestion(idx);
+                    this.closeMobileNav();
+                    return;
+                }
+                
+                if (this.sections) {
+                    const currentSection = this.sections[this.currentSection];
+                    if (idx < currentSection.start || idx > currentSection.end) {
+                        return;
+                    }
+                }
+                
+                this.loadQuestion(idx);
+                this.closeMobileNav();
+            }
+            
+            updateNavigator() {
+                [this.els.desktopNav, this.els.mobileNavGrid].forEach(container => {
+                    const btns = container.querySelectorAll('.nav-question');
+                    btns.forEach((btn, i) => {
+                        btn.className = 'nav-question';
+                        
+                        if (i === this.currentQuestion) {
+                            btn.classList.add('current');
+                        } else if (this.isSubmitted) {
+                            if (this.answers[i] !== null && this.questions[i].correct_option_id !== undefined) {
+                                if (this.answers[i] === this.questions[i].correct_option_id) {
+                                    btn.classList.add('answered');
+                                } else {
+                                    btn.classList.add('wrong');
+                                }
+                            }
+                        } else {
+                            if (this.markedForReview[i]) {
+                                btn.classList.add('review');
+                            } else if (this.answers[i] !== null) {
+                                btn.classList.add('answered');
+                            }
+                            
+                            if (this.sections) {
+                                const currentSection = this.sections[this.currentSection];
+                                if (i < currentSection.start || i > currentSection.end) {
+                                    btn.classList.add('disabled');
+                                }
+                            }
+                        }
+                    });
+                });
+            }
+            
+            updateNavigationButtons() {
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.getElementById('nextBtn');
+                const reviewBtn = document.getElementById('reviewBtn');
+                
+                prevBtn.disabled = this.currentQuestion === 0;
+                nextBtn.disabled = this.currentQuestion === this.questions.length - 1;
+                
+                if (this.isSubmitted) {
+                    reviewBtn.style.display = 'none';
+                } else {
+                    reviewBtn.style.display = 'inline-flex';
+                }
+                
+                if (this.sections && !this.isSubmitted) {
+                    const currentSection = this.sections[this.currentSection];
+                    prevBtn.disabled = prevBtn.disabled || (this.currentQuestion === currentSection.start);
+                    nextBtn.disabled = nextBtn.disabled || (this.currentQuestion === currentSection.end);
+                }
+            }
+            
+            updateAnsweredCount() {
+                const count = this.answers.filter(a => a !== null).length;
+                this.els.answeredCount.textContent = count;
+            }
+            
+            setLanguage(isEng) {
+                this.isEnglish = isEng;
+                document.getElementById('engBtn').classList.toggle('active', isEng);
+                document.getElementById('hinBtn').classList.toggle('active', !isEng);
+                this.loadQuestion(this.currentQuestion);
+            }
+            
+            startMainTimer() {
+                this.mainTimer = setInterval(() => {
+                    this.totalTimeLeft--;
+                    if (this.totalTimeLeft <= 0) {
+                        clearInterval(this.mainTimer);
+                        this.submitTest();
+                        return;
+                    }
+                    const mins = Math.floor(this.totalTimeLeft / 60);
+                    const secs = this.totalTimeLeft % 60;
+                    this.els.mainTimer.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+                }, 1000);
+            }
+            
+            startSectionTimer() {
+                if (!this.sections) return;
+                
+                if (this.sectionTimer) clearInterval(this.sectionTimer);
+                
+                const section = this.sections[this.currentSection];
+                section.time_left = section.timer;
+                
+                this.sectionTimer = setInterval(() => {
+                    section.time_left--;
+                    const mins = Math.floor(section.time_left / 60);
+                    const secs = section.time_left % 60;
+                    this.els.sectionTimer.textContent = ` | ${mins}:${secs.toString().padStart(2, '0')}`;
+                    
+                    if (section.time_left <= 0) {
+                        clearInterval(this.sectionTimer);
+                        this.submitSection();
+                    }
+                }, 1000);
+            }
+            
+            updateSectionInfo() {
+                if (!this.sections) return;
+                const section = this.sections[this.currentSection];
+                this.els.sectionName.textContent = section.name;
+                this.els.sectionBadge.style.display = 'block';
+            }
+            
+            submitSection() {
+                if (!this.sections) return;
+                
+                const section = this.sections[this.currentSection];
+                section.submitted = true;
+                clearInterval(this.sectionTimer);
+                
+                const nextSectionIdx = this.currentSection + 1;
+                if (nextSectionIdx < this.sections.length) {
+                    this.currentSection = nextSectionIdx;
+                    this.startSectionTimer();
+                    this.updateSectionInfo();
+                    this.loadQuestion(this.sections[nextSectionIdx].start);
+                } else {
+                    this.submitTest();
+                }
+                
+                this.updateNavigator();
+            }
+            
+            confirmSubmit() {
+                if (this.sections) {
+                    const section = this.sections[this.currentSection];
+                    const unanswered = this.answers.slice(section.start, section.end + 1)
+                        .filter(a => a === null).length;
+                    
+                    let msg = unanswered > 0 
+                        ? `You have ${unanswered} unanswered questions in this section. Submit anyway?`
+                        : 'Submit this section?';
+                    
+                    if (confirm(msg)) this.submitSection();
+                } else {
+                    const unanswered = this.answers.filter(a => a === null).length;
+                    let msg = unanswered > 0 
+                        ? `You have ${unanswered} unanswered questions. Submit test?`
+                        : 'Submit test?';
+                    
+                    if (confirm(msg)) this.submitTest();
+                }
+            }
+            
+            submitTest() {
+                if (this.isSubmitted) return;
+                
+                const now = Date.now();
+                this.timeSpent[this.currentQuestion] += (now - this.lastQuestionTime) / 1000;
+                
+                this.isSubmitted = true;
+                clearInterval(this.mainTimer);
+                if (this.sectionTimer) clearInterval(this.sectionTimer);
+                
+                document.getElementById('submitBtn').style.display = 'none';
+                document.getElementById('submitBtnDesktop').style.display = 'none';
+                document.getElementById('reviewBtn').style.display = 'none';
+                
+                if (this.sections) {
+                    this.els.sectionBadge.style.display = 'none';
+                }
+                
+                const results = this.calculateResults();
+                this.showResults(results);
+                this.loadQuestion(this.currentQuestion);
+                this.updateNavigator();
+            }
+            
+            calculateResults() {
+                const timeTaken = Math.round((Date.now() - this.startTime) / 60000);
+                let correct = 0, incorrect = 0, unattempted = 0, score = 0;
+                
+                const sectionResults = [];
+                
+                if (this.sections) {
+                    for (const section of this.sections) {
+                        let secCorrect = 0, secIncorrect = 0, secUnattempted = 0, secScore = 0;
+                        const subsecResults = [];
+                        
+                        if (section.subsections) {
+                            for (const subsec of section.subsections) {
+                                let subCorrect = 0, subIncorrect = 0, subUnattempted = 0, subScore = 0;
+                                
+                                for (let i = subsec.start; i <= subsec.end; i++) {
+                                    const userAns = this.answers[i];
+                                    const correctAns = this.questions[i].correct_option_id;
+                                    
+                                    if (userAns === null) {
+                                        subUnattempted++;
+                                    } else if (correctAns !== undefined && userAns === correctAns) {
+                                        subCorrect++;
+                                        subScore += subsec.marks_per_q;
+                                    } else {
+                                        subIncorrect++;
+                                        subScore -= negMarks;
+                                    }
+                                }
+                                
+                                subsecResults.push({
+                                    name: subsec.name,
+                                    attempted: subCorrect + subIncorrect,
+                                    correct: subCorrect,
+                                    incorrect: subIncorrect,
+                                    unattempted: subUnattempted,
+                                    score: Math.max(0, subScore)
+                                });
+                                
+                                secCorrect += subCorrect;
+                                secIncorrect += subIncorrect;
+                                secUnattempted += subUnattempted;
+                                secScore += subScore;
+                            }
+                        } else {
+                            for (let i = section.start; i <= section.end; i++) {
+                                const userAns = this.answers[i];
+                                const correctAns = this.questions[i].correct_option_id;
+                                
+                                if (userAns === null) {
+                                    secUnattempted++;
+                                } else if (correctAns !== undefined && userAns === correctAns) {
+                                    secCorrect++;
+                                    secScore += marksPerQ;
+                                } else {
+                                    secIncorrect++;
+                                    secScore -= negMarks;
+                                }
+                            }
+                        }
+                        
+                        sectionResults.push({
+                            name: section.name,
+                            attempted: secCorrect + secIncorrect,
+                            correct: secCorrect,
+                            incorrect: secIncorrect,
+                            unattempted: secUnattempted,
+                            score: Math.max(0, secScore),
+                            subsections: subsecResults.length > 0 ? subsecResults : null
+                        });
+                        
+                        correct += secCorrect;
+                        incorrect += secIncorrect;
+                        unattempted += secUnattempted;
+                        score += secScore;
+                    }
+                } else {
+                    this.questions.forEach((q, i) => {
+                        const userAns = this.answers[i];
+                        const correctAns = q.correct_option_id;
+                        
+                        if (userAns === null) {
+                            unattempted++;
+                        } else if (correctAns !== undefined && userAns === correctAns) {
+                            correct++;
+                            score += marksPerQ;
+                        } else {
+                            incorrect++;
+                            score -= negMarks;
+                        }
+                    });
+                }
+                
+                return {
+                    score: Math.max(0, score),
+                    correct,
+                    incorrect,
+                    unattempted,
+                    timeTaken,
+                    sectionResults: sectionResults.length > 0 ? sectionResults : null
+                };
+            }
+            
+            showResults(results) {
+                this.els.resultScore.textContent = `${results.score.toFixed(2)}/${this.questions.length * marksPerQ}`;
+                this.els.correctCount.textContent = results.correct;
+                this.els.incorrectCount.textContent = results.incorrect;
+                this.els.unattemptedCount.textContent = results.unattempted;
+                this.els.timeTaken.textContent = results.timeTaken;
+                
+                if (results.sectionResults) {
+                    this.els.sectionResults.style.display = 'block';
+                    this.els.sectionResultsBody.innerHTML = '';
+                    
+                    results.sectionResults.forEach(section => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td><strong>${section.name}</strong></td>
+                            <td>${section.attempted}</td>
+                            <td>${section.correct}</td>
+                            <td>${section.incorrect}</td>
+                            <td><strong>${section.score.toFixed(2)}</strong></td>
+                        `;
+                        this.els.sectionResultsBody.appendChild(row);
+                        
+                        if (section.subsections) {
+                            section.subsections.forEach(subsec => {
+                                const subRow = document.createElement('tr');
+                                subRow.className = 'subsection-row';
+                                subRow.innerHTML = `
+                                    <td>${subsec.name}</td>
+                                    <td>${subsec.attempted}</td>
+                                    <td>${subsec.correct}</td>
+                                    <td>${subsec.incorrect}</td>
+                                    <td>${subsec.score.toFixed(2)}</td>
+                                `;
+                                this.els.sectionResultsBody.appendChild(subRow);
+                            });
+                        }
+                    });
+                } else {
+                    this.els.sectionResults.style.display = 'none';
+                }
+                
+                this.els.resultModal.classList.add('show');
+            }
+            
+            closeResultModal() {
+                this.els.resultModal.classList.remove('show');
+            }
+            
+            reviewAnswers() {
+                this.closeResultModal();
+                this.loadQuestion(0);
+            }
+            
+            openMobileNav() {
+                this.els.mobileNav.classList.add('open');
+            }
+            
+            closeMobileNav() {
+                this.els.mobileNav.classList.remove('open');
+            }
+        }
+        
+        // ── KaTeX auto-render helper ──────────────────────────────────────
+        // Renders any LaTeX found in an element after innerHTML is set.
+        // Handles: \(...\)  \[...\]  $...$  $$...$$
+        function renderMath(el) {
+            if (!el || typeof renderMathInElement === 'undefined') return;
+            try {
+                renderMathInElement(el, {
+                    delimiters: [
+                        {left: '$$',  right: '$$',  display: true},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '$',   right: '$',   display: false},
+                        {left: '\\(', right: '\\)', display: false},
+                    ],
+                    throwOnError: false,
+                    strict: false,
+                });
+            } catch(e) {}
+        }
+
+        // Initialize the exam
+        document.addEventListener('DOMContentLoaded', () => {
+            new CBTExam();
+        });
+    </script>
+</body>
+</html>

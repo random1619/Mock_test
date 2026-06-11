@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mocks Wallah</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #7209b7;
+            --secondary: #4361ee;
+            --accent: #f72585;
+            --success: #06d6a0;
+            --warning: #ffd166;
+            --danger: #ef476f;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        body {
+            background-color: #f0f2f5;
+            font-size: 16px;
+            padding-bottom: 60px; /* Space for fixed navigation */
+        }
+        .navbar {
+            background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,.1);
+            padding: 0.5rem 1rem;
+        }
+        .navbar-brand {
+            font-size: 1.1rem;
+            margin-right: 0;
+        }
+        .navbar .container-fluid {
+            justify-content: space-between;
+        }
+        .controls-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+        .timer-display {
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: white;
+            border-radius: 50px;
+            box-shadow: 0 3px 8px rgba(0,0,0,.1);
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+        }
+        .nav-btn {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            margin-left: 0.25rem;
+        }
+        .question-nav {
+            position: fixed;
+            top: 56px;
+            right: 0;
+            height: calc(100vh - 56px);
+            width: 280px;
+            transform: translateX(280px);
+            transition: transform .3s;
+            z-index: 100;
+            background: #fff;
+            box-shadow: -5px 0 15px rgba(0,0,0,.1);
+        }
+        .question-nav.show {
+            transform: translateX(0);
+        }
+        .main-content {
+            transition: margin .3s;
+            min-height: calc(100vh - 116px);
+        }
+        .question-text {
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+        .question-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+            gap: 6px;
+        }
+        .q-box {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            border: 1px solid #dee2e6;
+            background: #fff;
+            transition: all .2s;
+        }
+        .q-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 5px rgba(0,0,0,.1);
+        }
+        .q-box.attempted {
+            background-color: var(--secondary);
+            color: white;
+        }
+        .q-box.correct {
+            background-color: var(--success);
+            color: white;
+        }
+        .q-box.incorrect {
+            background-color: var(--danger);
+            color: white;
+        }
+        .q-box.current {
+            border: 2px solid var(--accent) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,.15);
+        }
+        .card {
+            border-radius: 12px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,.08);
+        }
+        .option-label {
+            border-radius: 8px;
+            transition: all .2s;
+            border: 1px solid #dee2e6;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+        }
+        .option-label:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,0,0,.05);
+        }
+        .form-check-input:checked + .option-label {
+            border-color: var(--primary);
+            background-color: rgba(114,9,183,.05);
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Bottom fixed navigation for mobile */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,.1);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 90;
+        }
+        
+        @media (min-width: 992px) {
+            .main-content.with-nav {
+                margin-right: 280px;
+            }
+            .question-nav {
+                transform: translateX(0);
+            }
+            .nav-toggle-btn {
+                display: none;
+            }
+            .bottom-nav {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .question-grid {
+                grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+            }
+            .option-label {
+                padding: 0.625rem 0.875rem;
+                font-size: 0.95rem;
+            }
+            .question-text {
+                font-size: 1rem;
+            }
+            .navbar-brand {
+                font-size: 1rem;
+            }
+            .timer-display {
+                font-size: 0.8125rem;
+                padding: 0.2rem 0.6rem;
+            }
+            .nav-btn {
+                padding: 0.2rem 0.6rem;
+                font-size: 0.8125rem;
+            }
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header navbar -->
+    <nav class="navbar navbar-dark sticky-top">
+        <div class="container-fluid px-2">
+            <a class="navbar-brand fw-bold" href="#"><i class="fas fa-graduation-cap me-1"></i>Mocks Wallah</a>
+            
+            <div class="controls-group">
+                <!-- Timer -->
+                <div class="timer-display me-1 fw-bold" id="timer">
+                    <i class="far fa-clock me-1"></i><span id="timer-display">12:00</span>
+                </div>
+                
+                <!-- Submit button -->
+                <button class="btn btn-light btn-sm nav-btn me-1" id="submit-btn" onclick="confirmSubmit()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+                
+                <!-- Language toggle -->
+                <button class="btn btn-light btn-sm nav-btn me-1" id="lang-btn" onclick="toggleLanguage()">
+                    <span id="lang-text">En</span>
+                </button>
+                
+                <!-- Questions toggle for mobile -->
+                <button class="btn btn-light btn-sm nav-btn nav-toggle-btn" id="nav-toggle" onclick="toggleNav()">
+                    <i class="fas fa-th"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main content -->
+    <div class="main-content" id="main-content">
+        <div class="container py-3">
+            <!-- Question counter -->
+            <div class="fw-bold text-center mb-3" id="question-counter">Question 1 of 25</div>
+            
+            <!-- Questions will be displayed here -->
+            <div id="questions-container"></div>
+        </div>
+    </div>
+    
+    <!-- Bottom navigation for mobile -->
+    <div class="bottom-nav d-lg-none">
+        <button class="btn btn-outline-primary px-3" onclick="prevQuestion()">
+            <i class="fas fa-chevron-left me-1"></i> Previous
+        </button>
+        <button class="btn btn-outline-primary px-3" onclick="nextQuestion()">
+            Next <i class="fas fa-chevron-right ms-1"></i>
+        </button>
+    </div>
+    
+    <!-- Question navigation sidebar -->
+    <div class="question-nav" id="question-nav">
+        <div class="p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="m-0">Questions</h5>
+                <div>
+                    <span class="badge bg-secondary me-1" id="attempted-count">0</span>
+                    <span class="badge bg-secondary" id="total-count">25</span>
+                    <button class="btn btn-sm btn-outline-secondary ms-2 d-lg-none" onclick="toggleNav()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Section selector moved here -->
+            <div class="mb-3">
+                <label for="section-selector" class="form-label small text-muted">Jump to Section</label>
+                <select class="form-select form-select-sm" id="section-selector" onchange="switchSection(this.value)">
+                    <option value="all">All Sections</option>
+                </select>
+            </div>
+            
+            <div class="question-grid" id="question-boxes"></div>
+        </div>
+    </div>
+    
+    <!-- Results modal -->
+    <div class="modal fade" id="results-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0">
+                <div class="modal-header border-0" style="background:linear-gradient(135deg,var(--primary),var(--secondary));color:white">
+                    <h5 class="modal-title">Test Results</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row text-center g-2">
+                        <div class="col-6">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#4361ee,#3a0ca3);color:white">
+                                <h3 id="score-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Score</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#06d6a0,#1b9aaa);color:white">
+                                <h3 id="correct-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Correct</div>
+                            </div>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#ef476f,#f72585);color:white">
+                                <h3 id="incorrect-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Incorrect</div>
+                            </div>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#6c757d,#495057);color:white">
+                                <h3 id="unattempted-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Unattempted</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-primary" onclick="reviewTest()">Review Test</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Questions data
+        const questions = [];
+        const sections = {};
+        let currentLang = "en";
+        let currentQuestion = 0;
+        let answers = {};
+        let submitted = false;
+        let totalTime = 12 * 60;
+        let resultsModal;
+        
+        // Initialize the test
+        window.onload = function() {
+            initializeTest();
+            startTimer();
+            resultsModal = new bootstrap.Modal(document.getElementById('results-modal'));
+            
+            // If on desktop, show the question navigation by default
+            if (window.innerWidth >= 992) {
+                document.getElementById('question-nav').classList.add('show');
+                document.getElementById('main-content').classList.add('with-nav');
+            }
+        };
+        
+        // Initialize test data
+        function initializeTest() {
+            // Add sections and questions
+            
+            sections["7"] = {
+                name: "English",
+                start: 0,
+                end: 23
+            };
+            
+            document.getElementById('section-selector').innerHTML += 
+                `<option value="7">English</option>`;
+            
+            sections["misc"] = {
+                name: "Miscellaneous",
+                start: 24,
+                end: 24
+            };
+            
+            document.getElementById('section-selector').innerHTML += 
+                `<option value="misc">Miscellaneous</option>`;
+            
+            
+                questions.push({
+                    id: "1",
+                    section: "7",
+                    question_en: "<p>1. Select the most appropriate word to fill in the blank.<br>Health should be our first priority and should never be ______.</p>",
+                    question_hi: "<p>1. Select the most appropriate word to fill in the blank.<br>Health should be our first priority and should never be ______.</p>",
+                    options_en: ["<p>discarded</p>", "<p>declined</p>", 
+                                "<p>suspended</p>", "<p>neglected</p>"],
+                    options_hi: ["<p>discarded</p>", "<p>declined</p>",
+                                "<p>suspended</p>", "<p>neglected</p>"],
+                    solution_en: "<p>1.(d) <br><strong>Neglected</strong> - fail to care for properly.<br><strong>Discarded</strong> - get rid of (someone or something) as no longer useful or desirable.<br><strong>Declined</strong> - become smaller, fewer, or less; decrease.<br><strong>Suspended</strong> - temporarily prevent from continuing or being in force or effect.</p>",
+                    solution_hi: "<p>1.(d) <br><strong>Neglected</strong> (उपेक्षित) - fail to care for properly.<br><strong>Discarded</strong> (त्यागना) - get rid of (someone or something) as no longer useful or desirable.<br><strong>Declined</strong> (गिरावट) - become smaller, fewer, or less; decrease.<br><strong>Suspended</strong> (निलंबित) - temporarily prevent from continuing or being in force or effect.</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "2",
+                    section: "7",
+                    question_en: "<p>2. Select the most appropriate word to fill in the blank.<br>A colour blind person is not able to ______between colours.</p>",
+                    question_hi: "<p>2. Select the most appropriate word to fill in the blank.<br>A colour blind person is not able to ______between colours.</p>",
+                    options_en: ["<p>distinguish</p>", "<p>observe</p>", 
+                                "<p>glance</p>", "<p>define</p>"],
+                    options_hi: ["<p>distinguish</p>", "<p>observe</p>",
+                                "<p>glance</p>", "<p>define</p>"],
+                    solution_en: "<p>2.(a) <br><strong>Distinguish</strong> - recognize or treat (someone or something) as different.<br><strong>Observe</strong> - notice or perceive (something) <br><strong>Glance</strong> - take a brief or hurried look.<br><strong>Define</strong> - state the exact meaning of a word or concept.</p>",
+                    solution_hi: "<p>2.(a) <br><strong>Distinguish</strong> (अंतर करना) - recognize or treat (someone or something) as different.<br><strong>Observe</strong> (निरीक्षण करना) - notice or perceive (something) <br><strong>Glance</strong> (सरसरी निगाह डालना) - take a brief or hurried look.<br><strong>Define</strong> (परिभाषित करना) - state the exact meaning of a word or concept.</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "3",
+                    section: "7",
+                    question_en: "<p>3. Select the most appropriate sequence from the given options to make a meaningful paragraph from jumbled sentences.<br>A. There are many gadgets that are operated by a remote control and contain a silicon chip.<br>B. This produces an infra-red beam, made up of electromagnetic waves.<br>C. When a button is pressed on the remote control, the chip sets off an electromagnetic vibration.<br>D. The beam carries a coded signal for operating the systems.</p>",
+                    question_hi: "<p>3. Select the most appropriate sequence from the given options to make a meaningful paragraph from jumbled sentences.<br>A. There are many gadgets that are operated by a remote control and contain a silicon chip.<br>B. This produces an infra-red beam, made up of electromagnetic waves.<br>C. When a button is pressed on the remote control, the chip sets off an electromagnetic vibration.<br>D. The beam carries a coded signal for operating the systems.</p>",
+                    options_en: ["<p>ADCB</p>", "<p>ACDB</p>", 
+                                "<p>ACBD</p>", "<p>BACD</p>"],
+                    options_hi: ["<p>ADCB</p>", "<p>ACDB</p>",
+                                "<p>ACBD</p>", "<p>BACD</p>"],
+                    solution_en: "<p>3.(c) ACBD<br>Sentence A says that &ldquo;there are many gadgets that are operated by a remote control&rdquo; and Sentence C says that &ldquo;when a button is pressed on the remote control&rdquo;, the chip sets off an electromagnetic vibration. C will follow A. Sentence B states that this produces an infra-red beam and Sentence D says that the beam carries a coded signal. Option (c) ACBD is the correct sequence.</p>",
+                    solution_hi: "<p>3.(c) ACBD<br>Sentence A कहता है कि ऐसे कई gadgets हैं जो remote control द्वारा operate होते हैं और Sentence C कहता है कि जब remote control पर एक button दबाया जाता है, तो chip एक electromagnetic vibration उत्पन्न करती है। इसलिए C, A के बाद आएगा। Sentence B कहता है कि यह एक infra-red beam उत्पन्न करता है तथा Sentence D कहता है कि beam एक coded signal ले जाता है। अतः Option (c) ACBD में सही sequence है।</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "4",
+                    section: "7",
+                    question_en: "<p>4. Select the most appropriate option to substitute the underline segment in the given sentence.If there is no need to substitute it, select no improvement.<br>I wish if <span style=\"text-decoration: underline;\">I was</span> the Principal of my school.</p>",
+                    question_hi: "<p>4. Select the most appropriate option to substitute the underline segment in the given sentence.If there is no need to substitute it, select no improvement.<br>I wish if <span style=\"text-decoration: underline;\">I was</span> the Principal of my school.</p>",
+                    options_en: ["<p>no improvement</p>", "<p>I were</p>", 
+                                "<p>If I had been</p>", "<p>that I am</p>"],
+                    options_hi: ["<p>no improvement</p>", "<p>I were</p>",
+                                "<p>If I had been</p>", "<p>that I am</p>"],
+                    solution_en: "<p>4.(b) I were.<br>&ldquo;I were&rdquo; should be used in place of &ldquo;I was&rdquo;. &ldquo;I were&rdquo; is used in the subjunctive mood when it expresses a condition which is doubtful or not factual.</p>",
+                    solution_hi: "<p>4.(b) I were.<br>\"I was\" के स्थान पर &ldquo;I were&rdquo; का प्रयोग किया जाना चाहिए। &ldquo;I were&rdquo; का प्रयोग subjunctive mood में तब किया जाता है, जब यह ऐसी condition को व्यक्त करता है जो doubtful या factual नहीं है।</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "5",
+                    section: "7",
+                    question_en: "<p>5. Identify the segment in the sentence which contains the grammatical error from the given options.<br>Lucy has already cut the cake when we reached the party hall.</p>",
+                    question_hi: "<p>5. Identify the segment in the sentence which contains the grammatical error from the given options.<br>Lucy has already cut the cake when we reached the party hall.</p>",
+                    options_en: ["<p>cut the cake</p>", "<p>the party hall</p>", 
+                                "<p>Lucy has already</p>", "<p>when we reached</p>"],
+                    options_hi: ["<p>cut the cake</p>", "<p>the party hall</p>",
+                                "<p>Lucy has already</p>", "<p>when we reached</p>"],
+                    solution_en: "<p>5.(c) Lucy has already. <br>We use the Past Perfect to show that something started in the past and continued up until another&nbsp;action in the past. In this sentence &ldquo;Lucy had already cut the cake&rdquo; is the first action in the past, and &ldquo;we reached the party hall&rdquo; is the second action.</p>",
+                    solution_hi: "<p>5.(c) Lucy has already. <br>Past Perfect का प्रयोग यह दर्शाने के लिए किया जाता हैं कि past में कोई चीज शुरू हुई तथा past में किसी अन्य action के होने तक जारी रही। इस sentence में &ldquo;Lucy had already cut the cake&rdquo; past की first action है, तथा &ldquo;we reached the party hall&rdquo; second action है।</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "6",
+                    section: "7",
+                    question_en: "<p>6. Select the correct passive form of the given sentence.<br>People claim to have seen the wild and mad elephant in several cities.</p>",
+                    question_hi: "<p>6. Select the correct passive form of the given sentence.<br>People claim to have seen the wild and mad elephant in several cities.</p>",
+                    options_en: ["<p>The wild and mad elephant is being claimed to be seen in several cities.</p>", "<p>The wild and mad elephant was claimed to be seen by people in several cities.</p>", 
+                                "<p>The wild and mad elephant is claimed to have been seen in several cities.</p>", "<p>The wild and mad elephant has been claimed to be seen by the people in several cities.</p>"],
+                    options_hi: ["<p>The wild and mad elephant is being claimed to be seen in several cities.</p>", "<p>The wild and mad elephant was claimed to be seen by people in several cities.</p>",
+                                "<p>The wild and mad elephant is claimed to have been seen in several cities.</p>", "<p>The wild and mad elephant has been claimed to be seen by the people in several cities.</p>"],
+                    solution_en: "<p>6.(c) The wild and mad elephant is claimed to have been seen in several cities. (Correct) <br>(a) The wild and mad elephant <span style=\"text-decoration: underline;\">is being</span> claimed to <span style=\"text-decoration: underline;\">be</span> seen in several cities.(Incorrect Tense) <br>(b) The wild and mad elephant <span style=\"text-decoration: underline;\">was claimed to be seen</span> by people in several cities.(Incorrect Tense) <br>(d) The wild and mad elephant <span style=\"text-decoration: underline;\">has been claimed to be seen</span> by the people in several cities.(Incorrect Tense)</p>",
+                    solution_hi: "<p>6.(c) The wild and mad elephant is claimed to have been seen in several cities. (Correct) <br>(a) The wild and mad elephant <span style=\"text-decoration: underline;\">is being</span> claimed to <span style=\"text-decoration: underline;\">be</span> seen in several cities.(गलत Tense) <br>(b) The wild and mad elephant <span style=\"text-decoration: underline;\">was claimed to be seen</span> by people in several cities.(गलत Tense) <br>(d) The wild and mad elephant <span style=\"text-decoration: underline;\">has been claimed to be seen</span> by the people in several cities.(गलत Tense)</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "7",
+                    section: "7",
+                    question_en: "<p>7. <strong>Cloze Test :</strong><br>Corruption is one of the (7) ______problems of our country. It is an act done with (8) _____ to gain some undue advantages, inconsistent with official duty. Government has (9) ______many schemes for the welfare of the people but corruption seems impossible to be (10) ______ India can become a corruption-free nation only when all the citizens (11) ______rules and regulations with a strong will power and cooperate whole heartedly.<br>Select the most appropriate option for blank no.7</p>",
+                    question_hi: "<p>7. <strong>Cloze Test :</strong><br>Corruption is one of the (7) ______problems of our country. It is an act done with (8) _____ to gain some undue advantages, inconsistent with official duty. Government has (9) ______many schemes for the welfare of the people but corruption seems impossible to be (10) ______ India can become a corruption-free nation only when all the citizens (11) ______rules and regulations with a strong will power and cooperate whole heartedly.<br>Select the most appropriate option for blank no.7</p>",
+                    options_en: ["<p>minor</p>", "<p>major</p>", 
+                                "<p>strong</p>", "<p>powerful</p>"],
+                    options_hi: ["<p>minor</p>", "<p>major</p>",
+                                "<p>strong</p>", "<p>powerful</p>"],
+                    solution_en: "<p>7.(b) major.</p>",
+                    solution_hi: "<p>7.(b) major.</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "8",
+                    section: "7",
+                    question_en: "<p>8. <strong>Cloze Test :</strong><br>Corruption is one of the (7) ______problems of our country. It is an act done with (8) _____ to gain some undue advantages, inconsistent with official duty. Government has (9) ______many schemes for the welfare of the people but corruption seems impossible to be (10) ______ India can become a corruption-free nation only when all the citizens (11) ______rules and regulations with a strong will power and cooperate whole heartedly.<br>Select the most appropriate option for blank no. 8</p>",
+                    question_hi: "<p>8. <strong>Cloze Test :</strong><br>Corruption is one of the (7) ______problems of our country. It is an act done with (8) _____ to gain some undue advantages, inconsistent with official duty. Government has (9) ______many schemes for the welfare of the people but corruption seems impossible to be (10) ______ India can become a corruption-free nation only when all the citizens (11) ______rules and regulations with a strong will power and cooperate whole heartedly.<br>Select the most appropriate option for blank no. 8</p>",
+                    options_en: ["<p>compulsion</p>", "<p>intension</p>", 
+                                "<p>passion</p>", "<p>intuition</p>"],
+                    options_hi: ["<p>compulsion</p>", "<p>intension</p>",
+                                "<p>passion</p>", "<p>intuition</p>"],
+                    solution_en: "<p>8.(b) <br><strong>Intention</strong> - a thing intended; an aim or plan.<br><strong>Compulsion</strong> - forced to do something;<br><strong>Passion</strong> - strong and barely controllable emotion.<br><strong>Intuition</strong> - the ability to understand something instinctively</p>",
+                    solution_hi: "<p>8.(b) <br><strong>Intention</strong> (इरादा) - a thing intended; an aim or plan.<br><strong>Compulsion</strong> (बाध्यता) - forced to do something;<br><strong>Passion</strong> (जुनून) - strong and barely controllable emotion.<br><strong>Intuition</strong> (अंतर्ज्ञान) - the ability to understand something instinctively</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "9",
+                    section: "7",
+                    question_en: "<p>9. <strong>Cloze Test :</strong><br>Corruption is one of the (7) ______problems of our country. It is an act done with (8) _____ to gain some undue advantages, inconsistent with official duty. Government has (9) ______many schemes for the welfare of the people but corruption seems impossible to be (10) ______ India can become a corruption-free nation only when all the citizens (11) ______rules and regulations with a strong will power and cooperate whole heartedly.<br>Select the most appropriate option for blank no.9</p>",
+                    question_hi: "<p>9. <strong>Cloze Test :</strong><br>Corruption is one of the (7) ______problems of our country. It is an act done with (8) _____ to gain some undue advantages, inconsistent with official duty. Government has (9) ______many schemes for the welfare of the people but corruption seems impossible to be (10) ______ India can become a corruption-free nation only when all the citizens (11) ______rules and regulations with a strong will power and cooperate whole heartedly.<br>Select the most appropriate option for blank no.9</p>",
+                    options_en: ["<p>concealed</p>", "<p>written</p>", 
+                                "<p>denounced</p>", "<p>announced</p>"],
+                    options_hi: ["<p>concealed</p>", "<p>written</p>",
+                                "<p>denounced</p>", "<p>announced</p>"],
+                    solution_en: "<p>9.(d)<br><strong>Announced</strong> - make a formal public statement about a fact, occurrence, or intention.<br><strong>Concealed</strong> - kept secret; hidden.<br><strong>Denounced</strong> - publicly declare to be wrong or evil.</p>",
+                    solution_hi: "<p>9.(d)<br><strong>Announced</strong> (घोषणा करना) - make a formal public statement about a fact, occurrence, or intention.<br><strong>Concealed</strong> (छिपाना) - kept secret; hidden.<br><strong>Denounced</strong> (निंदा करना) - publicly declare to be wrong or evil.</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "10",
+                    section: "7",
+                    question_en: "<p>10. <strong>Cloze Test :</strong><br>Corruption is one of the (7) ______problems of our country. It is an act done with (8) _____ to gain some undue advantages, inconsistent with official duty. Government has (9) ______many schemes for the welfare of the people but corruption seems impossible to be (10) ______ India can become a corruption-free nation only when all the citizens (11) ______rules and regulations with a strong will power and cooperate whole heartedly.<br>Select the most appropriate option for blank no.10</p>",
+                    question_hi: "<p>10. <strong>Cloze Test :</strong><br>Corruption is one of the (7) ______problems of our country. It is an act done with (8) _____ to gain some undue advantages, inconsistent with official duty. Government has (9) ______many schemes for the welfare of the people but corruption seems impossible to be (10) ______ India can become a corruption-free nation only when all the citizens (11) ______rules and regulations with a strong will power and cooperate whole heartedly.<br>Select the most appropriate option for blank no.10</p>",
+                    options_en: ["<p>initiated</p>", "<p>created</p>", 
+                                "<p>permitted</p>", "<p>eliminated</p>"],
+                    options_hi: ["<p>initiated</p>", "<p>created</p>",
+                                "<p>permitted</p>", "<p>eliminated</p>"],
+                    solution_en: "<p>10.(d) <br><strong>Eliminated</strong> - get rid of or remove something completely.<br><strong>Initiated</strong> - cause (a process or action) to begin.<br><strong>Permitted</strong> - authorize or allow (something).</p>",
+                    solution_hi: "<p>10.(d) <br><strong>Eliminated</strong> (समाप्त करना) - get rid of or remove something completely<br><strong>Initiated</strong> (आरंभ करना) - cause (a process or action) to begin.<br><strong>Permitted</strong> (स्वीकृति देना) - authorize or allow (something).</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "11",
+                    section: "7",
+                    question_en: "<p>11. <strong>Cloze Test :</strong><br>Corruption is one of the (7) ______problems of our country. It is an act done with (8) _____ to gain some undue advantages, inconsistent with official duty. Government has (9) ______many schemes for the welfare of the people but corruption seems impossible to be (10) ______ India can become a corruption-free nation only when all the citizens (11) ______rules and regulations with a strong will power and cooperate whole heartedly.<br>Select the most appropriate option for blank no.11</p>",
+                    question_hi: "<p>11. <strong>Cloze Test :</strong><br>Corruption is one of the (7) ______problems of our country. It is an act done with (8) _____ to gain some undue advantages, inconsistent with official duty. Government has (9) ______many schemes for the welfare of the people but corruption seems impossible to be (10) ______ India can become a corruption-free nation only when all the citizens (11) ______rules and regulations with a strong will power and cooperate whole heartedly.<br>Select the most appropriate option for blank no.11</p>",
+                    options_en: ["<p>reject</p>", "<p>break</p>", 
+                                "<p>follow</p>", "<p>disobey</p>"],
+                    options_hi: ["<p>reject</p>", "<p>break</p>",
+                                "<p>follow</p>", "<p>disobey</p>"],
+                    solution_en: "<p>11.(c) follow.</p>",
+                    solution_hi: "<p>11.(c) follow.</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "12",
+                    section: "7",
+                    question_en: "<p>12. Select the appropriate antonym of the given word.<br>Sluggish</p>",
+                    question_hi: "<p>12. Select the appropriate antonym of the given word.<br>Sluggish</p>",
+                    options_en: ["<p>Active</p>", "<p>Dull</p>", 
+                                "<p>Sedentary</p>", "<p>Weak</p>"],
+                    options_hi: ["<p>Active</p>", "<p>Dull</p>",
+                                "<p>Sedentary</p>", "<p>Weak</p>"],
+                    solution_en: "<p>12.(a) <br><strong>Active</strong> - engaging or ready to engage in physically energetic pursuits.<br><strong>Sluggish</strong> - slow-moving or inactive.<br><strong>Dull</strong> - lacking excitement or interest<br><strong>Sedentary</strong> - tending to spend much time seated; somewhat inactive.<br><strong>Weak</strong> - lacking physical strength or energy.</p>",
+                    solution_hi: "<p>12.(a) <br><strong>Active</strong> (सक्रिय) - engaging or ready to engage in physically energetic pursuits.<br><strong>Sluggish</strong> (सुस्त) - slow-moving or inactive.<br><strong>Dull</strong> (नीरस) - lacking excitement or interest<br><strong>Sedentary</strong> (गतिहीन) - tending to spend much time seated; somewhat inactive.<br><strong>Weak</strong> (दुर्बल) - lacking physical strength or energy.</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "13",
+                    section: "7",
+                    question_en: "<p>13. Select the most appropriate meaning of the given idiom.<br>Add fuel to the fire</p>",
+                    question_hi: "<p>13. Select the most appropriate meaning of the given idiom.<br>Add fuel to the fire</p>",
+                    options_en: ["<p>Simplify the problem</p>", "<p>Exploit someone</p>", 
+                                "<p>Calm down the situation</p>", "<p>To make a bad situation worse</p>"],
+                    options_hi: ["<p>Simplify the problem</p>", "<p>Exploit someone</p>",
+                                "<p>Calm down the situation</p>", "<p>To make a bad situation worse</p>"],
+                    solution_en: "<p>13.(d) <strong>Add fuel to the fire -</strong> To make a bad situation worse.</p>",
+                    solution_hi: "<p>13.(d) <strong>Add fuel to the fire - </strong>To make a bad situation worse/ बुरी स्थिति को और भी बदतर करना।</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "14",
+                    section: "7",
+                    question_en: "<p>14. Select the most appropriate sequence from the given options to make a meaningful paragraph from jumbled sentences.<br>A. It is called the atmosphere.<br>B. All parts of the earth are surrounded by air.<br>C. Livings beings breathe in and breathe out the air all the time.<br>D. This process is called respiration.</p>",
+                    question_hi: "<p>14. Select the most appropriate sequence from the given options to make a meaningful paragraph from jumbled sentences.<br>A. It is called the atmosphere.<br>B. All parts of the earth are surrounded by air.<br>C. Livings beings breathe in and breathe out the air all the time.<br>D. This process is called respiration.</p>",
+                    options_en: ["<p>CBAD</p>", "<p>ACDB</p>", 
+                                "<p>BACD</p>", "<p>DACB</p>"],
+                    options_hi: ["<p>CBAD</p>", "<p>ACDB</p>",
+                                "<p>BACD</p>", "<p>DACB</p>"],
+                    solution_en: "<p>14.(c) BACD<br>Sentence B says that all parts of the earth are surrounded by air. Sentence A states that it is called the atmosphere. A will follow B. Sentence C says that Living beings breathe in and breathe out the air all the time. Sentence D states that the process is called respiration. D will follow C. Option (c) BACD is the correct sequence.</p>",
+                    solution_hi: "<p>14.(c) BACD<br>Sentence B कहता है कि पृथ्वी के सभी भाग वायु से घिरे हुए हैं। Sentence A कहता है कि इसे atmosphere कहा जाता है। इसलिए, A, B के बाद आएगा। Sentence C कहता है कि सजीव प्राणी हर समय वायु को अंदर और बाहर लेते हैं। Sentence D कहता है कि इस process को respiration कहा जाता है। इसलिए, D, C के बाद आएगा। अतः Option (c) BACD में सही sequence है।</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "15",
+                    section: "7",
+                    question_en: "<p>15. Select the most appropriate words which that means the same as the group of words given.<br>Enclosed area where aircraft are kept and repaired</p>",
+                    question_hi: "<p>15. Select the most appropriate words which that means the same as the group of words given.<br>Enclosed area where aircraft are kept and repaired</p>",
+                    options_en: ["<p>Hanger</p>", "<p>Hangar</p>", 
+                                "<p>Hose</p>", "<p>Harbinger</p>"],
+                    options_hi: ["<p>Hanger</p>", "<p>Hangar</p>",
+                                "<p>Hose</p>", "<p>Harbinger</p>"],
+                    solution_en: "<p>15.(b) <br><strong>Hangar</strong> - Enclosed area where aircraft are kept and repaired<br><strong>Hose</strong> - a flexible tube conveying water, used chiefly for watering plants and in firefighting.<br><strong>Harbinger</strong> - a person or thing that announces or signals the approach of another.</p>",
+                    solution_hi: "<p>15.(b) <br><strong>Hangar</strong> (विमानशाला) - Enclosed area where aircraft are kept and repaired<br><strong>Hose</strong> (पाइप/नली) - a flexible tube conveying water, used chiefly for watering plants and in firefighting.<br><strong>Harbinger</strong> (अग्रदूत) - a person or thing that announces or signals the approach of another.</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "16",
+                    section: "7",
+                    question_en: "<p>16. Select the appropriate antonym of the given word.<br>Hostile</p>",
+                    question_hi: "<p>16. Select the appropriate antonym of the given word.<br>Hostile</p>",
+                    options_en: ["<p>Unfavourable</p>", "<p>Adverse</p>", 
+                                "<p>Amiable</p>", "<p>Violent</p>"],
+                    options_hi: ["<p>Unfavourable</p>", "<p>Adverse</p>",
+                                "<p>Amiable</p>", "<p>Violent</p>"],
+                    solution_en: "<p>16.(c) <br><strong>Amiable</strong> - having or displaying a friendly and pleasant manner.<br><strong>Hostile</strong> - showing or feeling opposition or dislike; unfriendly.<br><strong>Unfavourable</strong> - expressing or showing a lack of approval or support.<br><strong>Adverse</strong> - harmful; unfavourable.<br><strong>Violent</strong> - using or involving physical force intended to hurt, damage, or kill someone or something.</p>",
+                    solution_hi: "<p>16.(c) <br><strong>Amiable</strong> (मैत्रीपूर्ण) - having or displaying a friendly and pleasant manner.<br><strong>Hostile</strong> (शत्रुतापूर्ण) showing or feeling opposition or dislike; unfriendly.<br><strong>Unfavourable</strong> (प्रतिकूल) - expressing or showing a lack of approval or support.<br><strong>Adverse</strong> (विपरीत) - harmful; unfavourable.<br><strong>Violent</strong> (हिंसक) - using or involving physical force intended to hurt, damage, or kill someone or something.</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "17",
+                    section: "7",
+                    question_en: "<p>17. Select the most appropriate meaning of the given idiom.<br>Hobson\'s choice</p>",
+                    question_hi: "<p>17. Select the most appropriate meaning of the given idiom.<br>Hobson\'s choice</p>",
+                    options_en: ["<p>To challenge an unworthy opponent</p>", "<p>An apparently free choice where there is no real alternative</p>", 
+                                "<p>To exercise the choice to surrender before the enemy</p>", "<p>To be in an aggressive mood when facing a challenge</p>"],
+                    options_hi: ["<p>To challenge an unworthy opponent</p>", "<p>An apparently free choice where there is no real alternative</p>",
+                                "<p>To exercise the choice to surrender before the enemy</p>", "<p>To be in an aggressive mood when facing a challenge</p>"],
+                    solution_en: "<p>17.(b) <strong>Hobson\'s choice -</strong> An apparently free choice where there is no real alternative.</p>",
+                    solution_hi: "<p>17.(b) <strong>Hobson\'s choice - </strong>An apparently free choice where there is no real alternative./एक ही विकल्प होना/विकल्पहीनता।</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "18",
+                    section: "7",
+                    question_en: "<p>18. Identify the segment in the sentence which contains the grammatical error from the given options.<br>One of the greatest responsibilities of a scientist is that his discoveries and inventions are utilized to the overall development of the nation.</p>",
+                    question_hi: "<p>18. Identify the segment in the sentence which contains the grammatical error from the given options.<br>One of the greatest responsibilities of a scientist is that his discoveries and inventions are utilized to the overall development of the nation.</p>",
+                    options_en: ["<p>are utilized to the overall</p>", "<p>One of the greatest responsibilities of a scientist</p>", 
+                                "<p>is that his discoveries and inventions</p>", "<p>development of the nation</p>"],
+                    options_hi: ["<p>are utilized to the overall</p>", "<p>One of the greatest responsibilities of a scientist</p>",
+                                "<p>is that his discoveries and inventions</p>", "<p>development of the nation</p>"],
+                    solution_en: "<p>18.(a) are utilized to the overall. <br>&ldquo;are utilized to the overall&rdquo; should be replaced with &ldquo;are utilized for the overall&rdquo;</p>",
+                    solution_hi: "<p>18.(a) are utilized to the overall. <br>&ldquo;are utilized to the overall&rdquo; के स्थान पर &ldquo;are utilized for the overall&rdquo; का प्रयोग होना चाहिए।</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "19",
+                    section: "7",
+                    question_en: "<p>19. Select the appropriate synonym of the given word.<br>Catastrophic</p>",
+                    question_hi: "<p>19. Select the appropriate synonym of the given word.<br>Catastrophic</p>",
+                    options_en: ["<p>Mysterious</p>", "<p>Delicate</p>", 
+                                "<p>Disastrous</p>", "<p>Tough</p>"],
+                    options_hi: ["<p>Mysterious</p>", "<p>Delicate</p>",
+                                "<p>Disastrous</p>", "<p>Tough</p>"],
+                    solution_en: "<p>19.(c) <br><strong>Disastrous</strong> - causing great damage.<br><strong>Catastrophic</strong> - involving or causing sudden great damage or suffering.<br><strong>Mysterious</strong> - difficult or impossible to understand, explain, or identify.<br><strong>Delicate</strong> - very fine in texture or structure<br><strong>Tough</strong> - strong enough to withstand adverse conditions or rough handling.</p>",
+                    solution_hi: "<p>19.(c) <br><strong>Disastrous</strong> (विनाशकारी) - causing great damage.<br><strong>Catastrophic</strong> (भयावह) - involving or causing sudden great damage or suffering.<br><strong>Mysterious</strong> (रहस्यमय) - difficult or impossible to understand, explain, or identify.<br><strong>Delicate</strong> (नाज़ुक) - very fine in texture or structure<br><strong>Tough</strong> (कठोर) - strong enough to withstand adverse conditions or rough handling.</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "20",
+                    section: "7",
+                    question_en: "<p>20. Select the correctly spelt word.</p>",
+                    question_hi: "<p>20. Select the correctly spelt word.</p>",
+                    options_en: ["<p>Definite</p>", "<p>Definiet</p>", 
+                                "<p>Definate</p>", "<p>Definete</p>"],
+                    options_hi: ["<p>Definite</p>", "<p>Definiet</p>",
+                                "<p>Definate</p>", "<p>Definete</p>"],
+                    solution_en: "<p>20.(a) Definite<br>&lsquo;Definite&rsquo; is the correct spelling.</p>",
+                    solution_hi: "<p>20.(a) Definite<br>&lsquo;Definite&rsquo; सही spelling है।</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "21",
+                    section: "7",
+                    question_en: "<p>21. Select the most appropriate option to substitute the underline segment in the given sentence.If there is no need to substitute it, select no improvement.<br>Amit has <span style=\"text-decoration: underline;\">the good command</span> on English as he was born and brought up in England.</p>",
+                    question_hi: "<p>21. Select the most appropriate option to substitute the underline segment in the given sentence.If there is no need to substitute it, select no improvement.<br>Amit has <span style=\"text-decoration: underline;\">the good command</span> on English as he was born and brought up in England.</p>",
+                    options_en: ["<p>a good command over</p>", "<p>the best command in</p>", 
+                                "<p>no improvement</p>", "<p>a better command of</p>"],
+                    options_hi: ["<p>a good command over</p>", "<p>the best command in</p>",
+                                "<p>no improvement</p>", "<p>a better command of</p>"],
+                    solution_en: "<p>21.(a) a good command over.<br>&ldquo;A good command over&rdquo; should be used. Amit has the good command on English as he was born and brought up in England.</p>",
+                    solution_hi: "<p>21.(a) a good command over.<br>&ldquo;A good command over&rdquo; का प्रयोग किया जाना चाहिए। Amit की English पर अच्छी command है, क्योंकि उसका जन्म एवं पालन-पोषण England में ही हुआ था।</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "22",
+                    section: "7",
+                    question_en: "<p>22. Select the appropriate synonym of the given word.<br>Deficiency</p>",
+                    question_hi: "<p>22. Select the appropriate synonym of the given word.<br>Deficiency</p>",
+                    options_en: ["<p>Abundance</p>", "<p>Efficiency</p>", 
+                                "<p>Inadequacy</p>", "<p>Sufficiency</p>"],
+                    options_hi: ["<p>Abundance</p>", "<p>Efficiency</p>",
+                                "<p>Inadequacy</p>", "<p>Sufficiency</p>"],
+                    solution_en: "<p>22.(c) <br><strong>Inadequacy</strong> - lack of the quantity or quality required.<br><strong>Deficiency</strong> - a lack or shortage.<br><strong>Abundance</strong> - a very large quantity of something.<br><strong>Efficiency</strong> - the state or quality of being efficient.<br><strong>Sufficiency</strong> - the condition or quality of being adequate or sufficient.</p>",
+                    solution_hi: "<p>22.(c) <br><strong>Inadequacy</strong> (अपर्याप्तता) - lack of the quantity or quality required.<br><strong>Deficiency</strong> (अभाव) - a lack or shortage.<br><strong>Abundance</strong> (प्रचुरता) - a very large quantity of something.<br><strong>Efficiency</strong> (दक्षता) - the state or quality of being efficient.<br><strong>Sufficiency</strong> (पर्याप्तता) - the condition or quality of being adequate or sufficient.</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "23",
+                    section: "7",
+                    question_en: "<p>23. Select the indirect narration of the given sentence.<br>He said to me,\"What time do the banks open and close ?\"</p>",
+                    question_hi: "<p>23. Select the indirect narration of the given sentence.<br>He said to me,\"What time do the banks open and close ?\"</p>",
+                    options_en: ["<p>He asked me what time the banks opened and closed.</p>", "<p>He asked me what time do the banks open and close.</p>", 
+                                "<p>He said me what time did the banks open and close.</p>", "<p>He wanted to know what time the banks open and close.</p>"],
+                    options_hi: ["<p>He asked me what time the banks opened and closed.</p>", "<p>He asked me what time do the banks open and close.</p>",
+                                "<p>He said me what time did the banks open and close.</p>", "<p>He wanted to know what time the banks open and close.</p>"],
+                    solution_en: "<p>23.(a) He asked me what time the banks opened and closed. (Correct) <br>(b) He asked me what <span style=\"text-decoration: underline;\">time do the</span> banks open and close.(Incorrect Tense)<br>(c) He <span style=\"text-decoration: underline;\">said</span> me <span style=\"text-decoration: underline;\">what time did the banks</span> open and close.(Incorrect Tense)<br>(d) He <span style=\"text-decoration: underline;\">wanted to know</span> what time the banks <span style=\"text-decoration: underline;\">open and close</span>.(Incorrect Tense and Reported Verb)</p>",
+                    solution_hi: "<p>23.(a) He asked me what time the banks opened and closed. (Correct) <br>(b) He asked me what <span style=\"text-decoration: underline;\">time do the</span> banks open and close.(गलत Tense)<br>(c) He <span style=\"text-decoration: underline;\">said</span> me <span style=\"text-decoration: underline;\">what time did the banks</span> open and close.(गलत Tense)<br>(d) He <span style=\"text-decoration: underline;\">wanted to know</span> what time the banks <span style=\"text-decoration: underline;\">open and close</span>.(Tense एवं Reported Verb, गलत)</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "24",
+                    section: "7",
+                    question_en: "<p>24. Select the most appropriate words which that means the same as the group of words given.<br>A short story with a moral, usually with animals as characters.</p>",
+                    question_hi: "<p>24. Select the most appropriate words which that means the same as the group of words given.<br>A short story with a moral, usually with animals as characters.</p>",
+                    options_en: ["<p>Ode</p>", "<p>Fable</p>", 
+                                "<p>Hymn</p>", "<p>Parody</p>"],
+                    options_hi: ["<p>Ode</p>", "<p>Fable</p>",
+                                "<p>Hymn</p>", "<p>Parody</p>"],
+                    solution_en: "<p>24.(b) <br><strong>Fable</strong> - A short story with a moral, usually with animals as characters.<br><strong>Ode</strong> - a lyric poem, typically one in the form of an address to a particular subject, written in varied or irregular metre.<br><strong>Hymn</strong> - a religious song or poem of praise to God or a god.<br><strong>Parody</strong> - mimic humorously.</p>",
+                    solution_hi: "<p>24.(b) <br><strong>Fable</strong> (नीति-कथा) - A short story with a moral, usually with animals as characters.<br><strong>Ode</strong> (प्रशस्ति-काव्य) - a lyric poem, typically one in the form of an address to a particular subject, written in varied or irregular metre.<br><strong>Hymn</strong> (भजन) - a religious song or poem of praise to God or a god.<br><strong>Parody</strong> (हास्यपूर्ण अनुकरण करना) - mimic humorously.</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "25",
+                    section: "misc",
+                    question_en: "<p>25. Select the correctly spelt word.</p>",
+                    question_hi: "<p>25. Select the correctly spelt word.</p>",
+                    options_en: ["<p>Commemorate</p>", "<p>Comemorate</p>", 
+                                "<p>Commemmorate</p>", "<p>Comemmorate</p>"],
+                    options_hi: ["<p>Commemorate</p>", "<p>Comemorate</p>",
+                                "<p>Commemmorate</p>", "<p>Comemmorate</p>"],
+                    solution_en: "<p>25.(a) Commemorate. <br>&lsquo;Commemorate&rsquo; सही spelling है।</p>",
+                    solution_hi: "<p>25.(a) Commemorate. <br>&lsquo;Commemorate&rsquo; is the correct spelling.</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+            
+            // Generate question boxes
+            const boxesContainer = document.getElementById('question-boxes');
+            questions.forEach((q, index) => {
+                const box = document.createElement('div');
+                box.className = 'q-box';
+                box.textContent = index + 1;
+                box.onclick = () => showQuestion(index);
+                box.id = `box-${index}`;
+                boxesContainer.appendChild(box);
+            });
+            
+            // Show first question
+            showQuestion(0);
+            updateProgress();
+        }
+        
+        // Show a specific question
+        function showQuestion(index) {
+            if (index < 0 || index >= questions.length) return;
+            
+            currentQuestion = index;
+            const question = questions[index];
+            
+            // Update question counter
+            document.getElementById('question-counter').textContent = `Question ${index + 1} of ${questions.length}`;
+            
+            // Update question boxes
+            document.querySelectorAll('.q-box').forEach(box => box.classList.remove('current'));
+            document.getElementById(`box-${index}`).classList.add('current');
+            
+            // Generate question HTML - more compact
+            let html = `
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="question-text mb-3">
+                            <div class="en">${question.question_en}</div>
+                            <div class="hi" style="display:none">${question.question_hi}</div>
+                        </div>
+                        <div class="options">`;
+                        
+            // Add options
+            ['a', 'b', 'c', 'd'].forEach((opt, i) => {
+                let optionClass = 'option-label';
+                
+                // When reviewing, highlight user's choice and correct answer
+                if (submitted) {
+                    if (opt === question.correct) {
+                        optionClass += ' border-success bg-success bg-opacity-10';
+                    }
+                    if (answers[question.id] === opt && opt !== question.correct) {
+                        optionClass += ' border-danger bg-danger bg-opacity-10';
+                    }
+                }
+                
+                html += `
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="q${index}" 
+                            id="opt-${index}-${opt}" value="${opt}" 
+                            ${answers[question.id] === opt ? 'checked' : ''}
+                            onclick="selectAnswer('${question.id}', '${opt}')">
+                        <label class="form-check-label w-100 ${optionClass}" for="opt-${index}-${opt}">
+                            ${submitted && opt === question.correct ? '<i class="fas fa-check-circle text-success me-1"></i>' : ''}
+                            <div class="en">${question.options_en[i]}</div>
+                            <div class="hi" style="display:none">${question.options_hi[i]}</div>
+                        </label>
+                    </div>`;
+            });
+            
+            // Add solution if submitted
+            if (submitted) {
+                const isCorrect = answers[question.id] === question.correct;
+                const alertClass = isCorrect ? 'alert-success' : 'alert-danger';
+                const resultText = answers[question.id] ? (isCorrect ? 'Correct!' : 'Incorrect!') : 'Not attempted';
+                
+                html += `
+                    <div class="alert ${alertClass} mt-3 py-2">
+                        <strong>${resultText}</strong>
+                        <div class="mt-1 small">
+                            <strong>Solution:</strong>
+                            <div class="en">${question.solution_en}</div>
+                            <div class="hi" style="display:none">${question.solution_hi}</div>
+                        </div>
+                    </div>`;
+            }
+            
+            html += `</div></div>`;
+            
+            document.getElementById('questions-container').innerHTML = html;
+            
+            // Apply language settings
+            applyLanguage();
+            
+            // If in mobile view, close the menu
+            if (window.innerWidth < 992) {
+                toggleNav(false);
+            }
+        }
+        
+        // Apply current language
+        function applyLanguage() {
+            document.querySelectorAll(`.${currentLang}`).forEach(el => el.style.display = 'block');
+            document.querySelectorAll(`.${currentLang === 'en' ? 'hi' : 'en'}`).forEach(el => el.style.display = 'none');
+        }
+        
+        // Select an answer
+        function selectAnswer(qId, option) {
+            if (submitted) return;
+            
+            answers[qId] = option;
+            updateProgress();
+            
+            // Mark question as attempted in the navigation
+            const index = questions.findIndex(q => q.id === qId);
+            if (index >= 0) {
+                document.getElementById(`box-${index}`).classList.add('attempted');
+            }
+        }
+        
+        // Navigate to previous/next question
+        function prevQuestion() { if (currentQuestion > 0) showQuestion(currentQuestion - 1); }
+        function nextQuestion() { if (currentQuestion < questions.length - 1) showQuestion(currentQuestion + 1); }
+        
+        // Switch section
+        function switchSection(sectionId) {
+            if (sectionId === 'all') {
+                showQuestion(0);
+                return;
+            }
+            
+            const section = sections[sectionId];
+            if (section) showQuestion(section.start);
+        }
+        
+        // Toggle language
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            applyLanguage();
+            
+            // Update button text
+            document.getElementById('lang-text').textContent = currentLang === 'en' ? 'Hi' : 'En';
+        }
+        
+        // Toggle navigation sidebar
+        function toggleNav(show) {
+            const nav = document.getElementById('question-nav');
+            const content = document.getElementById('main-content');
+            
+            if (show === undefined) {
+                show = !nav.classList.contains('show');
+            }
+            
+            if (show) {
+                nav.classList.add('show');
+                if (window.innerWidth >= 992) {
+                    content.classList.add('with-nav');
+                }
+            } else {
+                nav.classList.remove('show');
+                if (window.innerWidth >= 992) {
+                    content.classList.remove('with-nav');
+                }
+            }
+        }
+        
+        // Update progress
+        function updateProgress() {
+            const attempted = Object.keys(answers).length;
+            document.getElementById('attempted-count').textContent = attempted;
+        }
+        
+        // Start timer - compact
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            let timeLeft = totalTime;
+            
+            const timerInterval = setInterval(() => {
+                if (timeLeft <= 0 || submitted) {
+                    clearInterval(timerInterval);
+                    if (!submitted) submitTest();
+                    return;
+                }
+                
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                timeLeft--;
+            }, 1000);
+        }
+        
+        // Confirm before submitting
+        function confirmSubmit() {
+            if (submitted) return;
+            
+            const attempted = Object.keys(answers).length;
+            const remaining = questions.length - attempted;
+            
+            if (confirm(`You have attempted ${attempted} of ${questions.length} questions.
+${remaining} questions are unattempted.
+
+Are you sure you want to submit?`)) {
+                submitTest();
+            }
+        }
+        
+        // Submit test
+        function submitTest() {
+            if (submitted) return;
+            
+            submitted = true;
+            
+            let score = 0;
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let unattemptedCount = 0;
+            
+            questions.forEach((q, index) => {
+                const userAns = answers[q.id];
+                const box = document.getElementById(`box-${index}`);
+                
+                box.classList.remove('attempted');
+                
+                if (!userAns) {
+                    unattemptedCount++;
+                    box.classList.add('bg-secondary', 'text-white');
+                } else if (userAns === q.correct) {
+                    correctCount++;
+                    score += q.pos_marks;
+                    box.classList.add('correct');
+                } else {
+                    incorrectCount++;
+                    score -= q.neg_marks;
+                    box.classList.add('incorrect');
+                }
+            });
+            
+            // Update result values
+            document.getElementById('score-value').textContent = score.toFixed(2);
+            document.getElementById('correct-value').textContent = correctCount;
+            document.getElementById('incorrect-value').textContent = incorrectCount;
+            document.getElementById('unattempted-value').textContent = unattemptedCount;
+            
+            // Show the results modal
+            resultsModal.show();
+            
+            // Disable submit button
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.classList.replace('btn-light', 'btn-success');
+            submitBtn.innerHTML = '<i class="fas fa-check"></i>';
+            
+            // Refresh current question view to show solution
+            showQuestion(currentQuestion);
+        }
+        
+        // Review test
+        function reviewTest() {
+            resultsModal.hide();
+            showQuestion(0);
+        }
+        
+        // Add event listener for window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 992) {
+                if (document.getElementById('question-nav').classList.contains('show')) {
+                    document.getElementById('main-content').classList.add('with-nav');
+                }
+            } else {
+                document.getElementById('main-content').classList.remove('with-nav');
+            }
+        });
+    </script>
+</body>
+</html>

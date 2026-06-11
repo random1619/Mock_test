@@ -1,0 +1,2735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mocks Wallah - Quiz 5 - Mughals 2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+        <style>
+:root {
+    --primary: #4361ee;
+    --primary-light: rgba(67, 97, 238, 0.1);
+    --secondary: #3a0ca3;
+    --success: #2ec4b6;
+    --danger: #e71d36;
+    --warning: #ff9f1c;
+    --dark: #1a1a2e;
+    --darker: #16213e;
+    --light: #f8f9fa;
+    --lighter: #ffffff;
+    --card: rgba(255, 255, 255, 0.95);
+    --card-border: rgba(255, 255, 255, 0.3);
+    --text: #2b2d42;
+    --text-light: #8d99ae;
+    --radius: 12px;
+    --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --glass: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --transition: all 0.2s ease;
+}
+
+[data-theme=dark] {
+    --card: rgba(30, 41, 59, 0.95);
+    --card-border: rgba(30, 41, 59, 0.3);
+    --text: #f8f9fa;
+    --text-light: #94a3b8;
+    --darker: #0f172a;
+    --glass: rgba(15, 23, 42, 0.6);
+    --glass-border: rgba(15, 23, 42, 0.4);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: var(--light);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 1rem;
+    background-image: linear-gradient(135deg, rgba(67, 97, 238, 0.03) 0%, rgba(255, 255, 255, 0.03) 100%);
+    min-height: 100vh;
+}
+
+body[data-theme=dark] {
+    background: var(--darker);
+    background-image: linear-gradient(135deg, rgba(67, 97, 238, 0.03) 0%, rgba(15, 23, 42, 0.03) 100%);
+}
+
+/* Header Styles */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--primary);
+    color: var(--lighter);
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.header-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.timer {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 100px;
+    padding: 0.35rem 1rem;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btn {
+    background: var(--lighter);
+    color: var(--primary);
+    border: none;
+    border-radius: 100px;
+    padding: 0.5rem 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn i {
+    font-size: 0.9em;
+}
+
+/* Main Layout */
+.main-wrapper {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    padding-top: 1rem;
+}
+
+.main-container {
+    flex: 1;
+    padding: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Question Card Styles */
+.q-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    display: none;
+    transition: var(--transition);
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+.q-card.active {
+    display: block;
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.q-header {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background: var(--glass);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.q-num {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--primary);
+    color: var(--lighter);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.75rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.q-section {
+    flex: 1;
+    font-size: 0.95rem;
+    color: var(--text-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.q-marks {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-light);
+    white-space: nowrap;
+    margin-left: 0.5rem;
+}
+
+.q-body {
+    padding: 1.5rem;
+}
+
+.comp-text {
+    background: var(--glass);
+    padding: 1rem;
+    border-radius: var(--radius);
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--glass-border);
+}
+
+.q-text {
+    margin-bottom: 2rem;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.q-text img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    margin: 0.5rem 0;
+}
+
+/* Options Styles */
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.option {
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--glass-border);
+    background: var(--glass);
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.option:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+    border-color: var(--primary);
+}
+
+.option-text {
+    flex: 1;
+}
+
+.option-selector {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    border: 2px solid var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: var(--transition);
+}
+
+.option-circle {
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background: transparent;
+    transition: var(--transition);
+}
+
+.selected .option-selector {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+
+.selected .option-circle {
+    background: var(--primary);
+}
+
+.correct .option-selector {
+    border-color: var(--success);
+    background: rgba(46, 196, 182, 0.1);
+}
+
+.correct .option-circle {
+    background: var(--success);
+}
+
+.incorrect .option-selector {
+    border-color: var(--danger);
+    background: rgba(231, 29, 54, 0.1);
+}
+
+.incorrect .option-circle {
+    background: var(--danger);
+}
+
+/* Solution Styles */
+.solution {
+    display: none;
+    background: rgba(46, 196, 182, 0.05);
+    padding: 1.25rem;
+    border-radius: var(--radius);
+    margin-top: 1.5rem;
+    border: 1px solid rgba(46, 196, 182, 0.2);
+}
+
+.solution-title {
+    font-weight: 600;
+    color: var(--success);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.solution-content {
+    line-height: 1.7;
+}
+
+.solution-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    margin: 0.5rem 0;
+}
+
+/* Navigation Panel */
+.nav-panel {
+    width: 280px;
+    background: var(--card);
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.06);
+    padding: 1rem;
+    border-left: 1px solid var(--glass-border);
+    height: calc(100vh - 110px);
+    position: sticky;
+    top: 60px;
+    overflow-y: auto;
+    display: block;
+    transition: transform 0.2s ease;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.section-select {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--glass-border);
+    margin-bottom: 1rem;
+    background: var(--glass);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.section-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.q-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(2.5rem, 1fr));
+    gap: 0.5rem;
+}
+
+.q-nav-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--glass);
+    color: var(--text);
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.q-nav-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    border-color: var(--primary);
+}
+
+.q-nav-btn.active {
+    background: var(--primary);
+    color: var(--lighter);
+    border-color: var(--primary);
+    box-shadow: 0 2px 6px rgba(67, 97, 238, 0.25);
+}
+
+.q-nav-btn.answered {
+    background: rgba(46, 196, 182, 0.1);
+    border-color: rgba(46, 196, 182, 0.3);
+}
+
+.q-nav-btn.correct {
+    background: rgba(46, 196, 182, 0.2);
+    border-color: var(--success);
+}
+
+.q-nav-btn.incorrect {
+    background: rgba(231, 29, 54, 0.2);
+    border-color: var(--danger);
+}
+
+/* Footer Navigation */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card);
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
+    z-index: 10;
+    border-top: 1px solid var(--glass-border);
+}
+
+.nav-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 100px;
+    background: var(--primary);
+    color: var(--lighter);
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.nav-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Results Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 900;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.results-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    padding: 2rem;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    border: 1px solid var(--glass-border);
+}
+
+.score-display {
+    font-size: 3.5rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--primary), var(--success));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 0.5rem 0;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.stat-box {
+    background: var(--glass);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    text-align: center;
+    transition: var(--transition);
+    border: 1px solid var(--glass-border);
+}
+
+.stat-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.review-btn {
+    background: var(--primary);
+    color: var(--lighter);
+    border: none;
+    border-radius: 100px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.review-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-modal:hover {
+    background: var(--glass);
+    color: var(--text);
+}
+
+/* Mobile Styles */
+.nav-mobile {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--lighter);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.nav-mobile:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 992px) {
+    .nav-panel {
+        display: none;
+        position: fixed;
+        top: 60px;
+        right: -100%;
+        bottom: 60px;
+        width: 280px;
+        z-index: 99;
+        transition: all 0.2s ease;
+    }
+    
+    .nav-panel.active {
+        right: 0;
+        display: block;
+    }
+    
+    .nav-mobile {
+        display: block;
+    }
+    
+    .main-container {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .header-title {
+        font-size: 1.1rem;
+    }
+    
+    .timer {
+        padding: 0.25rem 0.75rem;
+        font-size: 0.9rem;
+    }
+    
+    .btn {
+        padding: 0.4rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .q-body {
+        padding: 1rem;
+    }
+    
+    .footer {
+        padding: 0.5rem 1rem;
+    }
+    
+    .nav-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.95rem;
+    }
+    
+    .option {
+        padding: 0.75rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 1.05rem;
+    }
+    
+    .header {
+        padding: 0.5rem;
+    }
+    
+    .header-title {
+        font-size: 1rem;
+    }
+    
+    .timer {
+        padding: 0.2rem 0.5rem;
+        font-size: 0.85rem;
+    }
+    
+    .btn {
+        padding: 0.3rem 0.75rem;
+        font-size: 0.85rem;
+    }
+    
+    .main-container {
+        padding: 0.75rem;
+    }
+    
+    .q-header {
+        padding: 0.5rem 1rem;
+    }
+    
+    .q-num {
+        width: 1.75rem;
+        height: 1.75rem;
+        font-size: 0.9rem;
+        margin-right: 0.5rem;
+    }
+    
+    .q-section, .q-marks {
+        font-size: 0.85rem;
+    }
+    
+    .q-nav-btn {
+        width: 2rem;
+        height: 2rem;
+        font-size: 0.85rem;
+    }
+    
+    .option {
+        padding: 0.75rem;
+        font-size: 1rem;
+        gap: 0.75rem;
+    }
+    
+    .option-selector {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+    
+    .option-circle {
+        width: 0.6rem;
+        height: 0.6rem;
+    }
+    
+    .score-display {
+        font-size: 2.5rem;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+    }
+    
+    .review-btn {
+        padding: 0.6rem 1.25rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* Simplified pulse animation for selection */
+.selected {
+    animation: pulse 0.15s ease;
+}
+
+@keyframes pulse {
+    50% { transform: scale(1.02); }
+}
+    </style>
+</head>
+<body>
+    <header class="header">
+        <button id="toggle-nav" class="nav-mobile" onclick="toggleNavPanel()">
+            <i class="fas fa-bars"></i>
+        </button>
+        <h1 class="header-title">Mocks Wallah</h1>
+        <div class="header-actions">
+            <div class="timer">
+                <i class="fas fa-clock" style="margin-right: 8px;"></i>
+                <div id="test-timer">00:10:00</div>
+            </div>
+            <button id="theme-toggle" class="btn" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="btn" id="submit-test" onclick="submitTest()">
+                <i class="fas fa-check-circle"></i> Submit
+            </button>
+        </div>
+    </header>
+    
+    <div class="main-wrapper">
+        <div class="main-container">
+            <div id="questions-container">
+                
+                <div class="q-card" id="q682b5b1378a810d40d8c3938" data-qnum="1" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">1</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text">
+<span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span>
+<span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">William
+Hawkins met Emperor Jahangir as a representative of which East India
+Company?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a810d40d8c3938', 0)" ondblclick="clearSelection('682b5b1378a810d40d8c3938')">
+                        <div class="option-text"><p><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Dutch</span></span></p></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a810d40d8c3938', 1)" ondblclick="clearSelection('682b5b1378a810d40d8c3938')">
+                        <div class="option-text"><p><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Portuguese</span></span></p></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a810d40d8c3938', 2)" ondblclick="clearSelection('682b5b1378a810d40d8c3938')">
+                        <div class="option-text"><p><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">French</span></span><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span></p></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a810d40d8c3938', 3)" ondblclick="clearSelection('682b5b1378a810d40d8c3938')">
+                        <div class="option-text"><p><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">English</span></span></p></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a810d40d8c3938">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><ul>
+<li><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">The British East India Company sent Captain William Hawkins to the court of Emperor Jahangir in 1608 to seek permission to establish a factory at Surat.</span></span></li>
+<li><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">He was well versed in Turkish and Jahangir also knew some of it since it was the native tongue of Mughal Emperor Babur.</span></span></li>
+<li><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">He was called ‘English Khan’ by Jahangir.</span></span></li>
+<li><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">William Hawkins was the commander of Hector, the first ship of the British East India Company to anchor at Surat in 1608.</span></span></li>
+</ul></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a81021708c393d" data-qnum="2" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">2</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Sir
+Thomas Roe came as an official ambassador from King James I of
+England to which Mughal emperor's court?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a81021708c393d', 0)" ondblclick="clearSelection('682b5b1378a81021708c393d')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Aurangzeb</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a81021708c393d', 1)" ondblclick="clearSelection('682b5b1378a81021708c393d')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Akbar</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a81021708c393d', 2)" ondblclick="clearSelection('682b5b1378a81021708c393d')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Shah
+Jahan</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a81021708c393d', 3)" ondblclick="clearSelection('682b5b1378a81021708c393d')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Jahangir</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a81021708c393d">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Sir
+Thomas Roe visited the court of Emperor Jahangir in 1615 as an
+ambassador of King James I. He arrived at the Surat port as the
+ambassador of the English King. He was able to get permission for
+trade and establish factories at Agra, Ahmedabad and Broch.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a810f07e8c3942" data-qnum="3" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">3</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Jahangir
+was married to whom?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a810f07e8c3942', 0)" ondblclick="clearSelection('682b5b1378a810f07e8c3942')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Mehr-un-nissa</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a810f07e8c3942', 1)" ondblclick="clearSelection('682b5b1378a810f07e8c3942')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Hazrat
+Mahal</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a810f07e8c3942', 2)" ondblclick="clearSelection('682b5b1378a810f07e8c3942')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Jodha
+Bai</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a810f07e8c3942', 3)" ondblclick="clearSelection('682b5b1378a810f07e8c3942')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">None
+of these</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a810f07e8c3942">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Jahangir
+married the extremely beautiful and intelligent Mehr-un-Nissa [Better
+known by her later title, Nur Jahan] on 25 May, 1611. She was the
+twentieth wife of the Jahangir and was the widow of Sher Afgan. She
+became his indisputable chief consort and favourite immediately after
+their marriage. Jahangir was well known for his innovative policy of
+the 'Chain of Justice'. According to legends, he had placed a long
+golden chain with bells on his Palace wall. Anyone who had been
+subjected to injustice could come to the palace, pull the chain and
+make his or her complaint heard for redressal.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a810e0258c3947" data-qnum="4" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">4</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">In
+which of the following year did Prince Salim ascend the Mughal
+throne?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a810e0258c3947', 0)" ondblclick="clearSelection('682b5b1378a810e0258c3947')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">1558</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a810e0258c3947', 1)" ondblclick="clearSelection('682b5b1378a810e0258c3947')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">1605</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a810e0258c3947', 2)" ondblclick="clearSelection('682b5b1378a810e0258c3947')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">1625</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a810e0258c3947', 3)" ondblclick="clearSelection('682b5b1378a810e0258c3947')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">1572</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a810e0258c3947">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Prince
+Salim succeeded to the throne on Thursday, 3 November, 1605, eight
+days after his father Akbar's death. He ascended to the throne with
+the title of Nur-ud-din Muhammad Jahangir Badshah Ghazi, and thus
+began his 22-year reign at the age of 36.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a81022f68c394c" data-qnum="5" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">5</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+...............has been called the "architect king" as
+during his reign, the world witnessed a unique development of arts
+and culture of the Mughal Empire.</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a81022f68c394c', 0)" ondblclick="clearSelection('682b5b1378a81022f68c394c')">
+                        <div class="option-text"><p><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Shah Jahan</span></span></p></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a81022f68c394c', 1)" ondblclick="clearSelection('682b5b1378a81022f68c394c')">
+                        <div class="option-text"><p><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Jahangir</span></span></p></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a81022f68c394c', 2)" ondblclick="clearSelection('682b5b1378a81022f68c394c')">
+                        <div class="option-text"><p><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Aurangzeb</span></span><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span></p></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a81022f68c394c', 3)" ondblclick="clearSelection('682b5b1378a81022f68c394c')">
+                        <div class="option-text"><p><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Akbar</span></span></p></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a81022f68c394c">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><p><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Shah Jahan was the Mughal King who has been depicted as "architect king". Shah Jahan's reign has been defined as the "golden period of mughal architecture" during his reign the world witnessed a unique development of arts and culture of the Mughal Empire. </span></span></p>
+<p></p>
+<p><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Some of the buildings built during Shahjahan's reign are:-</span></span></p>
+<p></p>
+<p><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">1. Red Fort – Delhi </span></span> <br /><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">2. Jama Masjid – Delhi [largest Masjid in India]. </span></span> <br /><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">3. Taj Mahal – Agra </span></span> <br /><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">4. Shalimar Gardens – Lahore </span></span> <br /><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">5. Moti Masjid – Lahore</span></span></p></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a81031228c3951" data-qnum="6" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">6</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+name of the eldest son of Shah Jahan was–</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a81031228c3951', 0)" ondblclick="clearSelection('682b5b1378a81031228c3951')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Aurangzeb</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a81031228c3951', 1)" ondblclick="clearSelection('682b5b1378a81031228c3951')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Dara
+Shikoh</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a81031228c3951', 2)" ondblclick="clearSelection('682b5b1378a81031228c3951')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Murad
+Bakhsh</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a81031228c3951', 3)" ondblclick="clearSelection('682b5b1378a81031228c3951')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Shah
+Shuja </span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a81031228c3951">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Dara
+Shikoh was the eldest son of Shahjahan. Dara Shikoh was born in 1615.
+He has the title of Mansab of 60,000 and Shah Buland Iqbal. Dara
+Shikoh translated the Bhagavad-Gita, Yoga Vashistha, Upanishad and
+Ramayana into Persian. He translated 52 Upanishads under the name
+Sirr-e-Akbar.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a8104e828c3956" data-qnum="7" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">7</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Who
+among the following had been given the title of 'Sultan Buland Iqbal'
+by Shah Jahan?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a8104e828c3956', 0)" ondblclick="clearSelection('682b5b1378a8104e828c3956')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Murad</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a8104e828c3956', 1)" ondblclick="clearSelection('682b5b1378a8104e828c3956')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Shuja</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a8104e828c3956', 2)" ondblclick="clearSelection('682b5b1378a8104e828c3956')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Dara</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a8104e828c3956', 3)" ondblclick="clearSelection('682b5b1378a8104e828c3956')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Aurangzeb</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a8104e828c3956">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">There
+were four sons of Shah Jahan namely, Dara Shikoh, Shah Suja, Murad
+and Aurangzeb in which Dara Shikoh was the eldest. On 10 September
+1642, Shah Jahan formally confirmed Dara Shikoh as his heir, granting
+him the title of 'Sultan Buland Iqbal' ["Prince of High
+Fortune"]. But in the war of succession, Dara was defeated by
+Aurangzeb and executed in 1659 on his order. Dara was known to be
+intellectual, liberal, and Sufi. Some of his literary works are
+Tariqat-ul-Haqiqat, Iksir-i-Azam, Risala-iHaq Numa, Sirr-e-Akbar etc.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a8103cdd8c395b" data-qnum="8" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">8</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Before
+taking over the Mughal throne, Shah Jahan was called_____.</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a8103cdd8c395b', 0)" ondblclick="clearSelection('682b5b1378a8103cdd8c395b')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Khurram</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a8103cdd8c395b', 1)" ondblclick="clearSelection('682b5b1378a8103cdd8c395b')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Saleem</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a8103cdd8c395b', 2)" ondblclick="clearSelection('682b5b1378a8103cdd8c395b')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Kamran</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a8103cdd8c395b', 3)" ondblclick="clearSelection('682b5b1378a8103cdd8c395b')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Dara
+Shikoh</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a8103cdd8c395b">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Shah
+Jahan was called Khurram before he took the Mughal throne. He was
+born on 5 January, 1592 in Lahore. His father's name was Jahangir and
+mothers name was Jagat Gosai. Architecture was at its peak in Shah
+Jahans Kingdom. Shah Jahan's reign is said to have marked the
+pinnacle of the Mughal dynasty.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a81064a38c3960" data-qnum="9" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">9</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span>
+<span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">For
+which Mughal emperor was the renowned Peacock Throne made?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a81064a38c3960', 0)" ondblclick="clearSelection('682b5b1378a81064a38c3960')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Babur</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a81064a38c3960', 1)" ondblclick="clearSelection('682b5b1378a81064a38c3960')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Akbar</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a81064a38c3960', 2)" ondblclick="clearSelection('682b5b1378a81064a38c3960')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Shahjahan</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a81064a38c3960', 3)" ondblclick="clearSelection('682b5b1378a81064a38c3960')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Jahangir</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a81064a38c3960">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Mughal
+emperor Shahjahan built the throne Takht-e-Taus in Agra. It is also
+called the Peacock Throne. This throne was made of gold, silver and
+other metals. In may 1739, Nadershah took away the famous Peacock
+Throne, the Koh-i-Noor and the Darya-yeNoor diamond with him.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a810c0e38c3965" data-qnum="10" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">10</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">It
+was under the reign of _____that the Mughal Empire reached its peak
+in matter of area.</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a810c0e38c3965', 0)" ondblclick="clearSelection('682b5b1378a810c0e38c3965')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Jahangir</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a810c0e38c3965', 1)" ondblclick="clearSelection('682b5b1378a810c0e38c3965')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Aurangzeb</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a810c0e38c3965', 2)" ondblclick="clearSelection('682b5b1378a810c0e38c3965')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Shah
+Jahan</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a810c0e38c3965', 3)" ondblclick="clearSelection('682b5b1378a810c0e38c3965')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Akbar</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a810c0e38c3965">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">During
+Aurangzeb's reign the Mughal Empire reached its peak in terms of
+Area. Aurangzeb is also known as Alamgir and was the 6th Mughal
+emperor. He was the only Mughal emperor who got coronation twice. </span></span>
+<br/><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">First
+– 31st July, 1658 [Delhi]</span></span><br/><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Second
+– 5th June, 1659 [On the victory of Devrai Battle]</span></span><br/><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Aurangzeb
+was also conferred with the title "Bahadur" by Shahjahan.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a81080cc8c396a" data-qnum="11" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">11</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Aurangzeb,
+the Mughal Emperor died in?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a81080cc8c396a', 0)" ondblclick="clearSelection('682b5b1378a81080cc8c396a')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">1507</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a81080cc8c396a', 1)" ondblclick="clearSelection('682b5b1378a81080cc8c396a')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">1607</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a81080cc8c396a', 2)" ondblclick="clearSelection('682b5b1378a81080cc8c396a')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">1707</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a81080cc8c396a', 3)" ondblclick="clearSelection('682b5b1378a81080cc8c396a')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">1807</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a81080cc8c396a">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Aurangzeb
+was born on 3 November 1618 in Dahod, Gujarat. He was the third son
+of ShahJahan and Mumtaz Mahal. Aurangzeb ascended the throne in 1659
+AD after a long and better struggle with his father and three
+brothers. He died at his military camp in Bhingar near Ahmednagar on
+3 March 1707 at the age of 88. Aurangzeb killed 9th Sikh Guru, Guru
+Teg Bahadur in Delhi for not accepting Islam. Aurangzeb re-enacted
+Jizya in 1679.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a810d8fa8c396f" data-qnum="12" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">12</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Which
+Mughal Prince translated the Upanishads into Persian in 1657?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a810d8fa8c396f', 0)" ondblclick="clearSelection('682b5b1378a810d8fa8c396f')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Sultan
+Luftallah</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a810d8fa8c396f', 1)" ondblclick="clearSelection('682b5b1378a810d8fa8c396f')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Murad
+Mirza</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a810d8fa8c396f', 2)" ondblclick="clearSelection('682b5b1378a810d8fa8c396f')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Dara
+Shikoh</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a810d8fa8c396f', 3)" ondblclick="clearSelection('682b5b1378a810d8fa8c396f')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Shah
+Suja</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a810d8fa8c396f">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Dara
+Shikoh, the eldest son of Shah Jahan translated the Upanishads into
+Persian. The prime objective of doing this was to make the book
+available to read, for Muslim scholars. Dara was designated with the
+title Padshahzada-i-Buzurg Martaba [Prince of High Rank]. In the war
+of succession Dara Shikoh was defeated by his brother Aurangzeb in
+battle of Samugarh.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a8109d478c3974" data-qnum="13" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">13</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+Treaty of purandhar was signed between:</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a8109d478c3974', 0)" ondblclick="clearSelection('682b5b1378a8109d478c3974')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Afghans
+and Portuguese</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a8109d478c3974', 1)" ondblclick="clearSelection('682b5b1378a8109d478c3974')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Mughals
+and Marathas</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a8109d478c3974', 2)" ondblclick="clearSelection('682b5b1378a8109d478c3974')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Eastern
+Gangas and Cholas</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a8109d478c3974', 3)" ondblclick="clearSelection('682b5b1378a8109d478c3974')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Nawab
+of Bengal and Rajputs</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a8109d478c3974">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+Treaty of Purandar was signed on June 11, 1665, between the Rajput
+ruler Jai Singh I, who was commander of the Mughal Empire, and
+Maratha Shivaji. Shivaji was forced to sign the agreement after Jai
+Singh besieged Purandar Fort.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a8105f248c3979" data-qnum="14" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">14</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">What
+was the meaning of the word ‘Bhog’ in the medieval
+period?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a8105f248c3979', 0)" ondblclick="clearSelection('682b5b1378a8105f248c3979')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Donation
+to temples </span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a8105f248c3979', 1)" ondblclick="clearSelection('682b5b1378a8105f248c3979')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Religious
+Ceremony</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a8105f248c3979', 2)" ondblclick="clearSelection('682b5b1378a8105f248c3979')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">A
+festival</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a8105f248c3979', 3)" ondblclick="clearSelection('682b5b1378a8105f248c3979')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Revenue
+Function</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a8105f248c3979">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Bhoga
+was a term used in medieval India to refer to the revenue assignments
+made by the state to its officials and other beneficiaries. </span></span>
+<br/><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">These
+assignments were usually in the form of land or other resources,
+which could be used for agricultural or other purposes. </span></span>
+<br/><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+term bhoga was also used to refer to the income generated from such
+assignments, which could be in the form of taxes, rents, or other
+forms of payment.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a810a5708c397e" data-qnum="15" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">15</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">As
+described in ‘Ain-i-Akbari’ by Abul Fazl-iAllami, ‘gaz’
+[unit of measuring length] was divided into equal parts called
+______.</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a810a5708c397e', 0)" ondblclick="clearSelection('682b5b1378a810a5708c397e')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">tassuj</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a810a5708c397e', 1)" ondblclick="clearSelection('682b5b1378a810a5708c397e')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">liksha</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a810a5708c397e', 2)" ondblclick="clearSelection('682b5b1378a810a5708c397e')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">rajahkan</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a810a5708c397e', 3)" ondblclick="clearSelection('682b5b1378a810a5708c397e')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">angul</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a810a5708c397e">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">'Gaz'
+[unit of measuring length] was divided into equal parts called
+'tassuj' according to Ain-i-Akbari by Abul-fazl-I-Allami.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a81076658c3983" data-qnum="16" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">16</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span>
+<span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">What
+was the name of the silver coin introduced by Sher Shah Suri?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a81076658c3983', 0)" ondblclick="clearSelection('682b5b1378a81076658c3983')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Tankah</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a81076658c3983', 1)" ondblclick="clearSelection('682b5b1378a81076658c3983')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Rupiya
+</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a81076658c3983', 2)" ondblclick="clearSelection('682b5b1378a81076658c3983')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Mohar</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a81076658c3983', 3)" ondblclick="clearSelection('682b5b1378a81076658c3983')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Dinar</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a81076658c3983">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+reign of Sher Shah existed from 1540- 1545. Sher Shah launched
+"Rupiya" of Silver and Dam [380 grain] of Copper. His coins
+contained his name post and concerned mint in Arabian and Devnagari
+Script.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a8100b338c3988" data-qnum="17" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">17</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">In
+the context of Mughal administration, which of the following is the
+most appropriate definition of 'Abwab'?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a8100b338c3988', 0)" ondblclick="clearSelection('682b5b1378a8100b338c3988')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">A
+tax levied on the lands over and above the original rent</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a8100b338c3988', 1)" ondblclick="clearSelection('682b5b1378a8100b338c3988')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">A
+reward for good governance</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a8100b338c3988', 2)" ondblclick="clearSelection('682b5b1378a8100b338c3988')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">A
+court jester</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a8100b338c3988', 3)" ondblclick="clearSelection('682b5b1378a8100b338c3988')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">A
+clerk in the government treasury</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a8100b338c3988">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">In
+Mughal India, all temporary and circumstantial taxes and impositions
+levied by the government over and above regular taxes were called
+Abwabs.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a810eaa78c398d" data-qnum="18" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">18</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">In
+the context of Mughal rule the term 'Seizure' refers to which system?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a810eaa78c398d', 0)" ondblclick="clearSelection('682b5b1378a810eaa78c398d')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Police</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a810eaa78c398d', 1)" ondblclick="clearSelection('682b5b1378a810eaa78c398d')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Military</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a810eaa78c398d', 2)" ondblclick="clearSelection('682b5b1378a810eaa78c398d')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Judicial</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a810eaa78c398d', 3)" ondblclick="clearSelection('682b5b1378a810eaa78c398d')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Revenue</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a810eaa78c398d">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">In
+the context of Mughal rule, the term 'seizure' refers to revenue
+system. Seizure was also known as Ain-e-dahsala. The Dahsala system
+was introduced in 1580 AD under the reign of Akbar. This system was
+introduced by the finance minister of Akbar, Raja Todarmal, who was
+appointed in 1573 AD in Gujarat.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a81070078c3992" data-qnum="19" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">19</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><p><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;"><strong>Match the following:-</strong></span></span></p>
+<p></p>
+<table style="height: 139px;" width="418" cellspacing="0" cellpadding="7">
+<tbody>
+<tr valign="top">
+<td style="border: 1px solid #000000; padding: 0px 0.768px; width: 121.583px; text-align: center;">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;"><strong>Officials</strong></span></span></p>
+</td>
+<td style="border: 1px solid #000000; padding: 0px 0.768px; width: 293.75px; text-align: center;">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;"><strong>Departments</strong></span></span></p>
+</td>
+</tr>
+<tr valign="top">
+<td style="border: 1px solid #000000; padding: 0px 0.768px; text-align: left; width: 121.583px;">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">A. Sadar </span></span></p>
+</td>
+<td style="border: 1px solid #000000; padding: 0px 0.768px; text-align: left; width: 293.75px;">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">1. Military Commanders </span></span></p>
+</td>
+</tr>
+<tr valign="top">
+<td style="border: 1px solid #000000; padding: 0px 0.768px; text-align: left; width: 121.583px;">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">B. Fauzdars </span></span></p>
+</td>
+<td style="border: 1px solid #000000; padding: 0px 0.768px; text-align: left; width: 293.75px;">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">2. Town Police Commanders </span></span></p>
+</td>
+</tr>
+<tr valign="top">
+<td style="border: 1px solid #000000; padding: 0px 0.768px; text-align: left; width: 121.583px;">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">C. Kotwal</span></span></p>
+</td>
+<td style="border: 1px solid #000000; padding: 0px 0.768px; text-align: left; width: 293.75px;">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">3. Minister in charge of religious and charitable</span></span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a81070078c3992', 0)" ondblclick="clearSelection('682b5b1378a81070078c3992')">
+                        <div class="option-text"><p><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">A–1, B–2, C–3</span></span></p></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a81070078c3992', 1)" ondblclick="clearSelection('682b5b1378a81070078c3992')">
+                        <div class="option-text"><p><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">A–1, B–3, C–2</span></span></p></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a81070078c3992', 2)" ondblclick="clearSelection('682b5b1378a81070078c3992')">
+                        <div class="option-text"><p><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">A–3, B–1, C–2</span></span><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span></p></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a81070078c3992', 3)" ondblclick="clearSelection('682b5b1378a81070078c3992')">
+                        <div class="option-text"><p><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">A–2, B–1, C–3</span></span></p></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a81070078c3992">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><p><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">The Emperor of the Mughal Empire was always the central administrative authority. A number of officers in the different governmental departments were appointed for the smooth functioning of transactions involving various affairs. They are as follows:-</span></span></p>
+<p></p>
+<table width="475" cellspacing="0" cellpadding="7">
+<tbody>
+<tr valign="top">
+<td style="border: 1px solid #000000; padding: 0px 0.768px;" width="112" height="48">
+<p align="center"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;"><strong>Officials</strong></span></span></p>
+</td>
+<td style="border: 1px solid #000000; padding: 0px 0.768px;" width="333">
+<p align="center"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;"><strong>Departments</strong></span></span></p>
+</td>
+</tr>
+<tr valign="top">
+<td style="border: 1px solid #000000; padding: 0px 0.768px;" width="112" height="49">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Sadar </span></span></p>
+</td>
+<td style="border: 1px solid #000000; padding: 0px 0.768px;" width="333">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">The head of religious donations and contributions</span></span></p>
+</td>
+</tr>
+<tr valign="top">
+<td style="border: 1px solid #000000; padding: 0px 0.768px;" width="112" height="73">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Fauzdar </span></span></p>
+</td>
+<td style="border: 1px solid #000000; padding: 0px 0.768px;" width="333">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Executive and military officer in each district</span></span></p>
+</td>
+</tr>
+<tr valign="top">
+<td style="border: 1px solid #000000; padding: 0px 0.768px;" width="112" height="49">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Kotwal</span></span></p>
+</td>
+<td style="border: 1px solid #000000; padding: 0px 0.768px;" width="333">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Chief of the city Police</span></span></p>
+</td>
+</tr>
+<tr valign="top">
+<td style="border: 1px solid #000000; padding: 0px 0.768px;" width="112" height="49">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Subedar </span></span></p>
+</td>
+<td style="border: 1px solid #000000; padding: 0px 0.768px;" width="333">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Governor of the Suba [Sipah-Salar]</span></span></p>
+</td>
+</tr>
+<tr valign="top">
+<td style="border: 1px solid #000000; padding: 0px 0.768px;" width="112" height="49">
+<p><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Diwan </span></span></p>
+</td>
+<td style="border: 1px solid #000000; padding: 0px 0.768px;" width="333">
+<p><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Incharge of revenue administration of the province</span></span></p>
+</td>
+</tr>
+<tr valign="top">
+<td style="border: 1px solid #000000; padding: 0px 0.768px;" width="112" height="48">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Quanungo</span></span></p>
+</td>
+<td style="border: 1px solid #000000; padding: 0px 0.768px;" width="333">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Head of village patwaris</span></span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a81019148c3997" data-qnum="20" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">20</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Who
+introduced Mansabdari system in India?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a81019148c3997', 0)" ondblclick="clearSelection('682b5b1378a81019148c3997')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Babur</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a81019148c3997', 1)" ondblclick="clearSelection('682b5b1378a81019148c3997')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Humayun</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a81019148c3997', 2)" ondblclick="clearSelection('682b5b1378a81019148c3997')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Akbar</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a81019148c3997', 3)" ondblclick="clearSelection('682b5b1378a81019148c3997')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Jahangir</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a81019148c3997">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Mansabdari
+was the administrative system implemented by Mughal Emperor Akbar in
+1571. Akbar institutionalized and reformed it on the basis of
+military and civil administration after reforming and introduction of
+two new concepts namely 'Zat' and 'Sawar'. The 'Zat' fixed the rank
+in the army. The salary of a Mansabdar was based on his Zat. The
+'Sawar' referred to cavalary men. Mansabdar also had to keep horses
+ready.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a81076a68c399c" data-qnum="21" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">21</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+term 'Sarkar' in Mughal administration stands for:</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a81076a68c399c', 0)" ondblclick="clearSelection('682b5b1378a81076a68c399c')">
+                        <div class="option-text"><p><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">province</span></span></p></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a81076a68c399c', 1)" ondblclick="clearSelection('682b5b1378a81076a68c399c')">
+                        <div class="option-text"><p><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Village</span></span></p></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a81076a68c399c', 2)" ondblclick="clearSelection('682b5b1378a81076a68c399c')">
+                        <div class="option-text"><p><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Government</span></span><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span></p></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a81076a68c399c', 3)" ondblclick="clearSelection('682b5b1378a81076a68c399c')">
+                        <div class="option-text"><p><span style="color: #000000;"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">    </span></span></span><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">District</span></span></p></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a81076a68c399c">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><p><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;"><strong>Officers of the Mughal Emprie:–</strong></span></span></p>
+<p></p>
+<table width="638" cellspacing="0" cellpadding="7">
+<tbody>
+<tr valign="top">
+<td style="border: 1px solid #000000; padding: 0px 0.768px;" width="136">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;"><strong>District [Sarkar} level officer</strong></span></span></p>
+</td>
+<td style="border: 1px solid #000000; padding: 0px 0.768px;" width="472">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;"><strong>Functions</strong></span></span></p>
+</td>
+</tr>
+<tr valign="top">
+<td style="border: 1px solid #000000; padding: 0px 0.768px; text-align: center;" width="136">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Fauzdar</span></span></p>
+</td>
+<td style="border: 1px solid #000000; padding: 0px 0.768px; text-align: center;" width="472">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Administrative Head </span></span></p>
+</td>
+</tr>
+<tr valign="top">
+<td style="border: 1px solid #000000; padding: 0px 0.768px; text-align: center;" width="136">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Amal/Amalguzar</span></span></p>
+</td>
+<td style="border: 1px solid #000000; padding: 0px 0.768px; text-align: center;" width="472">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Revenue Collection </span></span></p>
+</td>
+</tr>
+<tr valign="top">
+<td style="border: 1px solid #000000; padding: 0px 0.768px; text-align: center;" width="136">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Kotwal</span></span></p>
+</td>
+<td style="border: 1px solid #000000; padding: 0px 0.768px; text-align: center;" width="472">
+<p align="justify"><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Maintenance of law and order; trial of criminal cases; price regulation</span></span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><br /><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Hence the term 'Sarkar' in the Mughal administration stands for 'the district'. It is significant that, the term 'Gram' in the Mughal administration stands for village. The term 'pargana' in the Mughal administration stands for the group of villages. 'Sarkar', 'Pargana' and 'Gram' were part of 'Subas' in Mughal Empire.</span></span></p></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a8106d758c39a1" data-qnum="22" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">22</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">In
+which year did Akbar analyse the state revenue statistics for the
+last 10 years, which contained information on price fluctuations and
+land productivity?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a8106d758c39a1', 0)" ondblclick="clearSelection('682b5b1378a8106d758c39a1')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">1569</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a8106d758c39a1', 1)" ondblclick="clearSelection('682b5b1378a8106d758c39a1')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">1548</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a8106d758c39a1', 2)" ondblclick="clearSelection('682b5b1378a8106d758c39a1')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">1580</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a8106d758c39a1', 3)" ondblclick="clearSelection('682b5b1378a8106d758c39a1')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">1536</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a8106d758c39a1">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Raja
+Todarmal, one of the navratnas & finance minister of Akbar
+started careful survey of crop yields and prices cultivated for a
+period of 10 years. The system came to be known as Dahsala system. It
+was implemented by Akbar in 1580.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a81009aa8c39a6" data-qnum="23" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">23</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Buland
+Darwaza located in Fatehpur Sikri is the entrance gate of which of
+the following mosques?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a81009aa8c39a6', 0)" ondblclick="clearSelection('682b5b1378a81009aa8c39a6')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Jamali
+Kamali</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a81009aa8c39a6', 1)" ondblclick="clearSelection('682b5b1378a81009aa8c39a6')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Jama
+Masjid</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a81009aa8c39a6', 2)" ondblclick="clearSelection('682b5b1378a81009aa8c39a6')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Adhai
+din ka Jhopda</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a81009aa8c39a6', 3)" ondblclick="clearSelection('682b5b1378a81009aa8c39a6')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Moti
+Masjid</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a81009aa8c39a6">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+Buland Darwaza is a fifteen-storied high gateway that acts as the
+southern entrance of the Fatehpur Sikri city and Jama masjid. Buland
+Darwaza Agra popularly known as the ‘Gate of Magnificence’
+was built by the Great Mughal Emperor Akbar to commemorate his
+victory over Gujrat.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a810d4888c39ab" data-qnum="24" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">24</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Francois
+Bernier, a Frenchman was associated with the Mughal court, as a
+physician to Prince Dara Shikoh, the eldest son of Emperor ..........</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a810d4888c39ab', 0)" ondblclick="clearSelection('682b5b1378a810d4888c39ab')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Muhammad
+bin Tughlaq</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a810d4888c39ab', 1)" ondblclick="clearSelection('682b5b1378a810d4888c39ab')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Bahadur
+Shah</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a810d4888c39ab', 2)" ondblclick="clearSelection('682b5b1378a810d4888c39ab')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Shah
+Jahan</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a810d4888c39ab', 3)" ondblclick="clearSelection('682b5b1378a810d4888c39ab')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Humayun</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a810d4888c39ab">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Francois
+Bernier was a Frenchman who was a physician by profession. He came to
+India during the reign of Shah Jahan. Francois Bernier has witnessed
+the succession battle between Dara Shikoh and Aurangzeb. He has
+described the history of the Mughal Empire under the name 'Travels in
+the Mughal Empire'.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682b5b1378a810459b8c39b0" data-qnum="25" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">25</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+terms 'Zat' and 'Sawar' are related to which of the following
+administrative systems?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682b5b1378a810459b8c39b0', 0)" ondblclick="clearSelection('682b5b1378a810459b8c39b0')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Zamindari
+System</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682b5b1378a810459b8c39b0', 1)" ondblclick="clearSelection('682b5b1378a810459b8c39b0')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Iqtadari
+System</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682b5b1378a810459b8c39b0', 2)" ondblclick="clearSelection('682b5b1378a810459b8c39b0')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Mansabdari
+System</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682b5b1378a810459b8c39b0', 3)" ondblclick="clearSelection('682b5b1378a810459b8c39b0')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Jotedari
+System</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682b5b1378a810459b8c39b0">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">'Zat'
+and 'Sawar' were used to indicate ranks of a military official in
+Mansabdari System under Mughals. Akbar introduced the rank of Zat and
+Sawar in Mansabdari system. Zat is a rank conferred on the Mansabdar
+and Sawar was a count of horsemen that had to be maintained.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+        
+        <div class="nav-panel" id="nav-panel">
+            <div class="panel-header">
+                <h3>Question Navigator</h3>
+                <button class="nav-mobile" onclick="toggleNavPanel()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <select class="section-select" id="section-select" onchange="filterBySection()">
+                <option value="all">All Sections</option>
+            </select>
+            
+            <div class="q-grid" id="q-grid">
+                <!-- Question navigation buttons will be added dynamically -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="results-modal">
+        <div class="results-card">
+            <button class="close-modal" onclick="closeResultsModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="score-display" id="score-value">0</div>
+            <p id="score-display">out of 50 marks</p>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="correct-count">0</div>
+                    <div>Correct</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="incorrect-count">0</div>
+                    <div>Incorrect</div>
+                </div>
+            </div>
+            
+            <button class="review-btn" onclick="reviewTest()">
+                <i class="fas fa-eye"></i> Review Test
+            </button>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <button class="nav-btn" id="prev-btn" onclick="navigate(-1)">
+            <i class="fas fa-chevron-left"></i> Previous
+        </button>
+        
+        <button class="nav-btn" id="next-btn" onclick="navigate(1)">
+            Next <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+    
+    <script>
+// Test data
+const test = {
+    questions: 25,
+    marks: 50,
+    timer: 600,
+    timeSpent: 0,
+    current: 1,
+    answers: {},
+    correct: {"682b5b1378a810d40d8c3938": 3, "682b5b1378a81021708c393d": 3, "682b5b1378a810f07e8c3942": 0, "682b5b1378a810e0258c3947": 1, "682b5b1378a81022f68c394c": 0, "682b5b1378a81031228c3951": 1, "682b5b1378a8104e828c3956": 2, "682b5b1378a8103cdd8c395b": 0, "682b5b1378a81064a38c3960": 2, "682b5b1378a810c0e38c3965": 1, "682b5b1378a81080cc8c396a": 2, "682b5b1378a810d8fa8c396f": 2, "682b5b1378a8109d478c3974": 1, "682b5b1378a8105f248c3979": 3, "682b5b1378a810a5708c397e": 0, "682b5b1378a81076658c3983": 1, "682b5b1378a8100b338c3988": 0, "682b5b1378a810eaa78c398d": 3, "682b5b1378a81070078c3992": 2, "682b5b1378a81019148c3997": 2, "682b5b1378a81076a68c399c": 3, "682b5b1378a8106d758c39a1": 2, "682b5b1378a81009aa8c39a6": 1, "682b5b1378a810d4888c39ab": 2, "682b5b1378a810459b8c39b0": 2},
+    marks: {"682b5b1378a810d40d8c3938": {"positive": 2, "negative": 0.5}, "682b5b1378a81021708c393d": {"positive": 2, "negative": 0.5}, "682b5b1378a810f07e8c3942": {"positive": 2, "negative": 0.5}, "682b5b1378a810e0258c3947": {"positive": 2, "negative": 0.5}, "682b5b1378a81022f68c394c": {"positive": 2, "negative": 0.5}, "682b5b1378a81031228c3951": {"positive": 2, "negative": 0.5}, "682b5b1378a8104e828c3956": {"positive": 2, "negative": 0.5}, "682b5b1378a8103cdd8c395b": {"positive": 2, "negative": 0.5}, "682b5b1378a81064a38c3960": {"positive": 2, "negative": 0.5}, "682b5b1378a810c0e38c3965": {"positive": 2, "negative": 0.5}, "682b5b1378a81080cc8c396a": {"positive": 2, "negative": 0.5}, "682b5b1378a810d8fa8c396f": {"positive": 2, "negative": 0.5}, "682b5b1378a8109d478c3974": {"positive": 2, "negative": 0.5}, "682b5b1378a8105f248c3979": {"positive": 2, "negative": 0.5}, "682b5b1378a810a5708c397e": {"positive": 2, "negative": 0.5}, "682b5b1378a81076658c3983": {"positive": 2, "negative": 0.5}, "682b5b1378a8100b338c3988": {"positive": 2, "negative": 0.5}, "682b5b1378a810eaa78c398d": {"positive": 2, "negative": 0.5}, "682b5b1378a81070078c3992": {"positive": 2, "negative": 0.5}, "682b5b1378a81019148c3997": {"positive": 2, "negative": 0.5}, "682b5b1378a81076a68c399c": {"positive": 2, "negative": 0.5}, "682b5b1378a8106d758c39a1": {"positive": 2, "negative": 0.5}, "682b5b1378a81009aa8c39a6": {"positive": 2, "negative": 0.5}, "682b5b1378a810d4888c39ab": {"positive": 2, "negative": 0.5}, "682b5b1378a810459b8c39b0": {"positive": 2, "negative": 0.5}},
+    qMap: {"1": {"id": "682b5b1378a810d40d8c3938", "section": 0}, "2": {"id": "682b5b1378a81021708c393d", "section": 0}, "3": {"id": "682b5b1378a810f07e8c3942", "section": 0}, "4": {"id": "682b5b1378a810e0258c3947", "section": 0}, "5": {"id": "682b5b1378a81022f68c394c", "section": 0}, "6": {"id": "682b5b1378a81031228c3951", "section": 0}, "7": {"id": "682b5b1378a8104e828c3956", "section": 0}, "8": {"id": "682b5b1378a8103cdd8c395b", "section": 0}, "9": {"id": "682b5b1378a81064a38c3960", "section": 0}, "10": {"id": "682b5b1378a810c0e38c3965", "section": 0}, "11": {"id": "682b5b1378a81080cc8c396a", "section": 0}, "12": {"id": "682b5b1378a810d8fa8c396f", "section": 0}, "13": {"id": "682b5b1378a8109d478c3974", "section": 0}, "14": {"id": "682b5b1378a8105f248c3979", "section": 0}, "15": {"id": "682b5b1378a810a5708c397e", "section": 0}, "16": {"id": "682b5b1378a81076658c3983", "section": 0}, "17": {"id": "682b5b1378a8100b338c3988", "section": 0}, "18": {"id": "682b5b1378a810eaa78c398d", "section": 0}, "19": {"id": "682b5b1378a81070078c3992", "section": 0}, "20": {"id": "682b5b1378a81019148c3997", "section": 0}, "21": {"id": "682b5b1378a81076a68c399c", "section": 0}, "22": {"id": "682b5b1378a8106d758c39a1", "section": 0}, "23": {"id": "682b5b1378a81009aa8c39a6", "section": 0}, "24": {"id": "682b5b1378a810d4888c39ab", "section": 0}, "25": {"id": "682b5b1378a810459b8c39b0", "section": 0}},
+    sections: {"0": {"name": "General Awareness", "start_question": 1, "questions": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]}},
+    currentSection: "all",
+    submitted: false
+};
+
+// Initialize test
+document.addEventListener('DOMContentLoaded', () => {
+    // Set up sections dropdown
+    setupSections();
+    
+    // Set up question navigation grid
+    setupNavigation();
+    
+    // Show first question
+    showQuestion(1);
+    
+    // Start timer if configured
+    if (test.timer > 0) startTimer();
+    
+    // Set initial theme based on user preference
+    setInitialTheme();
+});
+
+// Set initial theme based on user preference
+function setInitialTheme() {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (prefersDark) {
+        document.body.setAttribute('data-theme', 'dark');
+        const icon = document.getElementById('theme-toggle').querySelector('i');
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+    }
+}
+
+// Setup section dropdown
+function setupSections() {
+    const select = document.getElementById('section-select');
+    
+    for (const id in test.sections) {
+        const option = document.createElement('option');
+        option.value = id;
+        option.textContent = test.sections[id].name;
+        select.appendChild(option);
+    }
+}
+
+// Filter questions by section
+function filterBySection() {
+    const sectionId = document.getElementById('section-select').value;
+    test.currentSection = sectionId;
+    
+    // Update question grid
+    setupNavigation();
+    
+    // Show first question of section
+    if (sectionId !== 'all') {
+        const firstQuestion = test.sections[sectionId].questions[0];
+        if (firstQuestion) showQuestion(firstQuestion);
+    }
+}
+
+// Setup question navigation grid
+function setupNavigation() {
+    const grid = document.getElementById('q-grid');
+    grid.innerHTML = ''; // Clear existing buttons
+    
+    for (let i = 1; i <= test.questions; i++) {
+        // Skip if filtering by section
+        if (test.currentSection !== 'all') {
+            const sectionId = test.qMap[i].section;
+            if (sectionId != test.currentSection) continue;
+        }
+        
+        const btn = document.createElement('button');
+        btn.className = 'q-nav-btn';
+        btn.textContent = i;
+        btn.onclick = () => {
+            showQuestion(i);
+            if (window.innerWidth <= 992) toggleNavPanel();
+        };
+        
+        updateButtonStatus(btn, i);
+        grid.appendChild(btn);
+    }
+}
+
+// Update button status
+function updateButtonStatus(btn, num) {
+    if (!test.qMap[num]) return;
+    
+    const id = test.qMap[num].id;
+    
+    btn.classList.remove('active', 'answered', 'correct', 'incorrect');
+    
+    if (test.answers[id] !== undefined) {
+        if (test.submitted) {
+            btn.classList.add(test.answers[id] === test.correct[id] ? 'correct' : 'incorrect');
+        } else {
+            btn.classList.add('answered');
+        }
+    }
+    
+    if (num === test.current) {
+        btn.classList.add('active');
+    }
+}
+
+// Show specific question
+function showQuestion(num) {
+    if (num < 1 || num > test.questions || !test.qMap[num]) return;
+    
+    test.current = num;
+    const id = test.qMap[num].id;
+    
+    // Hide all questions
+    document.querySelectorAll('.q-card').forEach(q => {
+        q.style.display = 'none';
+        q.classList.remove('active');
+    });
+    
+    // Show current question
+    const card = document.getElementById(`q${id}`);
+    if (card) {
+        card.style.display = 'block';
+        setTimeout(() => card.classList.add('active'), 10);
+        
+        // Update navigation buttons
+        document.getElementById('prev-btn').disabled = num <= 1;
+        document.getElementById('next-btn').disabled = num >= test.questions;
+        
+        // Update navigation grid
+        document.querySelectorAll('.q-nav-btn').forEach((btn, index) => {
+            const btnNum = parseInt(btn.textContent);
+            updateButtonStatus(btn, btnNum);
+        });
+        
+        // If test is submitted, show solution
+        if (test.submitted) {
+            const solution = card.querySelector('.solution');
+            if (solution) solution.style.display = 'block';
+            
+            // Mark correct/incorrect
+            if (test.answers[id] !== undefined) {
+                const isCorrect = test.answers[id] === test.correct[id];
+                const selected = card.querySelector(`.option[data-option="${test.answers[id]}"]`);
+                if (selected) {
+                    selected.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+                
+                // Highlight correct option if wrong
+                if (!isCorrect) {
+                    const correct = card.querySelector(`.option[data-option="${test.correct[id]}"]`);
+                    if (correct) correct.classList.add('correct');
+                }
+            }
+        }
+        
+        // Process MathJax
+        if (typeof MathJax !== 'undefined' && MathJax.typeset) {
+            MathJax.typeset([card]);
+        }
+    }
+}
+
+// Navigate between questions
+function navigate(direction) {
+    let next = test.current + direction;
+    
+    // Skip questions from other sections if filtering
+    if (test.currentSection !== 'all') {
+        while (next >= 1 && next <= test.questions) {
+            if (!test.qMap[next]) {
+                next += direction;
+                continue;
+            }
+            
+            const section = test.qMap[next].section;
+            if (section == test.currentSection) break;
+            next += direction;
+        }
+    }
+    
+    if (next >= 1 && next <= test.questions && test.qMap[next]) {
+        showQuestion(next);
+    }
+}
+
+// Toggle navigation panel
+function toggleNavPanel() {
+    const panel = document.getElementById('nav-panel');
+    panel.classList.toggle('active');
+    
+    // Add overlay when panel is active
+    if (panel.classList.contains('active')) {
+        const overlay = document.createElement('div');
+        overlay.className = 'nav-overlay';
+        overlay.style.position = 'fixed';
+        overlay.style.top = '60px';
+        overlay.style.left = '0';
+        overlay.style.right = '0';
+        overlay.style.bottom = '60px';
+        overlay.style.background = 'rgba(0,0,0,0.5)';
+        overlay.style.zIndex = '98';
+        overlay.style.backdropFilter = 'blur(2px)';
+        overlay.style.webkitBackdropFilter = 'blur(2px)';
+        overlay.onclick = toggleNavPanel;
+        document.body.appendChild(overlay);
+    } else {
+        const overlay = document.querySelector('.nav-overlay');
+        if (overlay) overlay.remove();
+    }
+}
+
+// Select an option
+function selectOption(element, id, option) {
+    if (test.submitted) return;
+    
+    test.answers[id] = option;
+    
+    // Remove selection from all options
+    element.closest('.q-card').querySelectorAll('.option').forEach(opt => {
+        opt.classList.remove('selected');
+    });
+    
+    // Add selection to clicked option
+    element.classList.add('selected');
+    
+    // Update navigation
+    updateNavigation();
+}
+
+// Clear selection
+function clearSelection(id) {
+    if (test.submitted) return;
+    
+    delete test.answers[id];
+    
+    document.getElementById(`q${id}`).querySelectorAll('.option').forEach(opt => {
+        opt.classList.remove('selected');
+    });
+    
+    updateNavigation();
+}
+
+// Update navigation after selection
+function updateNavigation() {
+    const buttons = document.querySelectorAll('.q-nav-btn');
+    buttons.forEach(btn => {
+        const btnNum = parseInt(btn.textContent);
+        if (btnNum && test.qMap[btnNum]) {
+            updateButtonStatus(btn, btnNum);
+        }
+    });
+}
+
+// Submit test
+function submitTest() {
+    if (test.submitted) return;
+    
+    if (!confirm('Are you sure you want to submit the test?')) return;
+    
+    test.submitted = true;
+    
+    let correct = 0, incorrect = 0, score = 0;
+    
+    for (const id in test.correct) {
+        const marks = test.marks[id];
+        
+        if (test.answers[id] !== undefined) {
+            if (test.answers[id] === test.correct[id]) {
+                correct++;
+                score += marks.positive;
+            } else {
+                incorrect++;
+                score -= marks.negative;
+            }
+        }
+    }
+    
+    score = Math.max(0, score);
+    
+    document.getElementById('score-value').textContent = score.toFixed(2);
+    document.getElementById('correct-count').textContent = correct;
+    document.getElementById('incorrect-count').textContent = incorrect;
+    
+    document.getElementById('results-modal').style.display = 'flex';
+    document.getElementById('submit-test').disabled = true;
+    
+    updateNavigation();
+    showQuestion(test.current);
+}
+
+// Close results modal
+function closeResultsModal() {
+    document.getElementById('results-modal').style.display = 'none';
+}
+
+// Review test
+function reviewTest() {
+    showQuestion(1);
+    document.getElementById('results-modal').style.display = 'none';
+    window.scrollTo(0, 0);
+}
+
+// Toggle theme
+function toggleTheme() {
+    document.body.setAttribute('data-theme', 
+        document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    
+    const icon = document.getElementById('theme-toggle').querySelector('i');
+    icon.classList.toggle('fa-moon');
+    icon.classList.toggle('fa-sun');
+}
+
+// Timer functionality
+function startTimer() {
+    const timer = document.getElementById('test-timer');
+    let timeLeft = test.timer;
+    
+    const interval = setInterval(() => {
+        if (test.submitted) {
+            clearInterval(interval);
+            return;
+        }
+        
+        timeLeft--;
+        test.timeSpent++;
+        
+        if (timeLeft <= 0) {
+            clearInterval(interval);
+            submitTest();
+            return;
+        }
+        
+        const h = Math.floor(timeLeft / 3600);
+        const m = Math.floor((timeLeft % 3600) / 60);
+        const s = timeLeft % 60;
+        
+        timer.textContent = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }, 1000);
+}
+    </script>
+</body>
+</html>

@@ -1,0 +1,2210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBT Exam - sk</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #1e40af;
+            --success: #059669;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --bg: #f3f4f6;
+            --card: #ffffff;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #d1d5db;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+        }
+        
+        /* Welcome Screen Styles */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg);
+            z-index: 1000;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+        
+        .welcome-screen.hidden {
+            display: none;
+        }
+        
+        .welcome-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            margin: 20px auto;
+        }
+        
+        .welcome-header {
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .welcome-header h1 {
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .test-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .detail-item {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .detail-label {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .section-info {
+            margin-bottom: 25px;
+        }
+        
+        .section-info h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .section-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        .section-table th,
+        .section-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+        
+        .section-table th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .subsec-container {
+            margin-top: 8px;
+            padding-left: 15px;
+        }
+        
+        .subsec-row {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+        
+        .welcome-instructions {
+            background: #fef3c7;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+        }
+        
+        .welcome-instructions h3 {
+            color: var(--warning);
+            margin-bottom: 12px;
+        }
+        
+        .welcome-instructions ul {
+            padding-left: 20px;
+        }
+        
+        .welcome-instructions li {
+            margin-bottom: 8px;
+        }
+        
+        .welcome-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .start-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .start-btn:hover {
+            background: #1e3a8a;
+        }
+        
+        .channel-link {
+            color: var(--primary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: 2px solid var(--primary);
+            border-radius: 6px;
+            font-weight: 600;
+        }
+        
+        .channel-link:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* CBT Exam Interface */
+        .exam-container {
+            display: none;
+            height: 100vh;
+            flex-direction: column;
+        }
+        
+        .exam-container.active {
+            display: flex;
+        }
+        
+        /* Top Header */
+        .exam-header {
+            background: var(--primary);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+        }
+        
+        .exam-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .exam-timer {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .timer-box {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        /* Candidate Info Bar */
+        .candidate-bar {
+            background: white;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        
+        .candidate-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .candidate-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 4px;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--text-light);
+            border: 2px solid var(--border);
+        }
+        
+        .candidate-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .candidate-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .candidate-id {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        
+        .section-badge {
+            background: var(--success);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        /* Main Content Area - FIXED LAYOUT */
+        .exam-main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            min-height: 0;
+        }
+        
+        /* Question Area with separate scroll */
+        .question-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg);
+            min-width: 0;
+        }
+        
+        .question-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .question-card {
+            background: white;
+            border-radius: 6px;
+            padding: 25px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--bg);
+        }
+        
+        .question-number {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .question-marks {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+        
+        .lang-toggle {
+            display: flex;
+            gap: 5px;
+            background: var(--bg);
+            padding: 3px;
+            border-radius: 4px;
+        }
+        
+        .lang-btn {
+            padding: 6px 15px;
+            border: none;
+            background: transparent;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .lang-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .comprehension {
+            background: #eff6ff;
+            border-left: 3px solid var(--primary);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .comprehension h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .question-text {
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+        
+        .option:hover:not(.submitted) {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+        
+        .option.selected {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+        
+        .option.correct {
+            border-color: var(--success);
+            background: #d1fae5;
+        }
+        
+        .option.wrong {
+            border-color: var(--danger);
+            background: #fee2e2;
+        }
+        
+        .option-indicator {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            margin-right: 12px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2px;
+        }
+        
+        .option.selected .option-indicator {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+        
+        .option.correct .option-indicator {
+            border-color: var(--success);
+            background: var(--success);
+            color: white;
+        }
+        
+        .option.wrong .option-indicator {
+            border-color: var(--danger);
+            background: var(--danger);
+            color: white;
+        }
+        
+        .option-text {
+            flex: 1;
+            font-size: 14px;
+        }
+        
+        .solution-box {
+            background: #d1fae5;
+            border-left: 3px solid var(--success);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .solution-box.show {
+            display: block;
+        }
+        
+        .solution-header {
+            color: var(--success);
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .solution-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+        
+        /* Navigation Controls - FIXED AT BOTTOM OF QUESTION AREA */
+        .navigation-bar {
+            background: white;
+            padding: 15px 20px;
+            border-top: 2px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-prev {
+            background: var(--bg);
+            color: var(--text);
+        }
+        
+        .btn-next {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-review {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .btn-review.marked {
+            background: #92400e;
+        }
+        
+        .btn-submit {
+            background: var(--success);
+            color: white;
+        }
+        
+        .progress-info {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-light);
+        }
+        
+        /* Question Navigator Sidebar - SEPARATE SCROLL */
+        .navigator-sidebar {
+            width: 300px;
+            background: white;
+            border-left: 1px solid var(--border);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .navigator-header {
+            padding: 15px;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            color: var(--text);
+            flex-shrink: 0;
+        }
+        
+        .navigator-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            padding: 15px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        .nav-question {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            background: white;
+        }
+        
+        .nav-question:hover {
+            background: var(--bg);
+        }
+        
+        .nav-question.current {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .nav-question.answered {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+        
+        .nav-question.review {
+            background: var(--warning);
+            color: white;
+            border-color: var(--warning);
+        }
+        
+        .nav-question.wrong {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+        
+        .nav-question.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .navigator-legend {
+            padding: 15px;
+            border-top: 1px solid var(--border);
+            font-size: 12px;
+            flex-shrink: 0;
+            background: white;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+        
+        /* Mobile Navigator Panel */
+        .mobile-navigator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            z-index: 999;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+            overflow-y: auto;
+        }
+        
+        .mobile-navigator.open {
+            transform: translateY(0);
+        }
+        
+        .mobile-nav-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .close-nav {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* Result Modal */
+        .result-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .result-modal.show {
+            display: flex;
+        }
+        
+        .result-container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .result-header h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .result-score {
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--success);
+        }
+        
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .result-stat {
+            background: var(--bg);
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .result-stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .result-stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        
+        .result-stat.correct .result-stat-value {
+            color: var(--success);
+        }
+        
+        .result-stat.incorrect .result-stat-value {
+            color: var(--danger);
+        }
+        
+        .section-results {
+            margin-bottom: 25px;
+        }
+        
+        .section-results h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .section-results-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .section-results-table th,
+        .section-results-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+        
+        .section-results-table th {
+            background: var(--bg);
+            font-weight: 600;
+        }
+        
+        .section-results-table .subsection-row {
+            background: #f9fafb;
+            font-size: 13px;
+        }
+        
+        .section-results-table .subsection-row td:first-child {
+            padding-left: 30px;
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .result-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btn-close {
+            background: var(--bg);
+            color: var(--text);
+        }
+        
+        .btn-review-ans {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Responsive Design */
+        @media (min-width: 1024px) {
+            .navigator-sidebar {
+                display: flex;
+            }
+            
+            .mobile-only {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 1023px) {
+            .desktop-only {
+                display: none;
+            }
+            
+            .navigation-bar {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .question-scroll {
+                padding: 15px;
+            }
+            
+            .question-card {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .exam-header {
+                padding: 10px 15px;
+            }
+            
+            .exam-title {
+                font-size: 14px;
+            }
+            
+            .timer-box {
+                padding: 6px 10px;
+                font-size: 14px;
+            }
+            
+            .candidate-bar {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+            
+            .nav-btn {
+                padding: 8px 15px;
+                font-size: 13px;
+            }
+            
+            .navigator-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .result-container {
+                padding: 20px;
+            }
+            
+            .section-results-table {
+                font-size: 13px;
+            }
+            
+            .section-results-table th,
+            .section-results-table td {
+                padding: 8px;
+            }
+        }
+        
+        /* Print Styles */
+        @media print {
+            .exam-header,
+            .candidate-bar,
+            .navigation-bar,
+            .navigator-sidebar,
+            .mobile-navigator {
+                display: none !important;
+            }
+            
+            .question-scroll {
+                padding: 0;
+            }
+            
+            .question-card {
+                page-break-inside: avoid;
+                margin-bottom: 30px;
+                border: 1px solid var(--border);
+            }
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        
+        table, th, td {
+            border: 1px solid var(--border);
+        }
+        
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-container">
+            <div class="welcome-header">
+                <h1><i class="fas fa-graduation-cap"></i> sk</h1>
+                <p>Computer Based Test</p>
+            </div>
+            
+            <div class="test-details">
+                <div class="detail-item">
+                    <div class="detail-label">Test ID</div>
+                    <div class="detail-value">0</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Total Questions</div>
+                    <div class="detail-value">20</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Total Marks</div>
+                    <div class="detail-value">20.0</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Duration</div>
+                    <div class="detail-value">8 mins</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Marking Scheme</div>
+                    <div class="detail-value">+1.0 / -0.25</div>
+                </div>
+            </div>
+            
+            
+        <div class="welcome-instructions">
+            <h3>Instructions</h3>
+            <ul>
+                <li>Read each question carefully before answering</li>
+                <li>You can mark questions for review and come back later</li>
+                <li>The timer will automatically submit the test when time is up</li>
+                <li>Negative marking applies for wrong answers</li>
+            </ul>
+        </div>
+        
+            
+            <div class="welcome-actions">
+                <button class="start-btn" id="startBtn">
+                    <i class="fas fa-play"></i> Start Test
+                </button>
+                <a href="https://t.me/mocks_wallah_again" target="_blank" class="channel-link">
+                    <i class="fab fa-telegram"></i> Join Channel
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Exam Interface -->
+    <div class="exam-container" id="examContainer">
+        <!-- Top Header -->
+        <div class="exam-header">
+            <div class="exam-title">sk</div>
+            <div class="exam-timer">
+                <div class="timer-box" id="mainTimer">8:00</div>
+                <button class="nav-btn btn-submit mobile-only" id="submitBtn">Submit</button>
+            </div>
+        </div>
+        
+        <!-- Candidate Info Bar -->
+        <div class="candidate-bar">
+            <div class="candidate-info">
+                <div class="candidate-photo">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="candidate-details">
+                    <div class="candidate-name">Candidate</div>
+                    <div class="candidate-id">Test ID: 0</div>
+                </div>
+            </div>
+            <div class="section-badge" id="sectionBadge">
+                <span id="sectionName"></span>
+                <span id="sectionTimer"></span>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="exam-main">
+            <!-- Question Area -->
+            <div class="question-area">
+                <div class="question-scroll">
+                    <div class="question-card">
+                        <div class="question-header">
+                            <div>
+                                <div class="question-number" id="questionNum">Question 1 of 20</div>
+                                <div class="question-marks" id="questionMarks">Marks: 1.0</div>
+                            </div>
+                            <div class="lang-toggle">
+                                <button class="lang-btn active" id="engBtn">English</button>
+                                <button class="lang-btn" id="hinBtn">हिंदी</button>
+                            </div>
+                        </div>
+                        
+                        <div class="comprehension" id="comprehension" style="display:none;">
+                            <h4><i class="fas fa-book-open"></i> Comprehension</h4>
+                            <div id="comprehensionText"></div>
+                        </div>
+                        
+                        <div class="question-text" id="questionText"></div>
+                        
+                        <div class="options-list" id="optionsList"></div>
+                        
+                        <div class="solution-box" id="solutionBox">
+                            <div class="solution-header">
+                                <i class="fas fa-lightbulb"></i> Solution
+                            </div>
+                            <div class="solution-stats" id="solutionStats"></div>
+                            <div id="solutionText"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation Bar inside Question Area -->
+                <div class="navigation-bar">
+                    <button class="nav-btn btn-prev" id="prevBtn">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    
+                    <div class="progress-info">
+                        <div id="progressText">Question 1 of 20</div>
+                        <div style="font-size:11px;margin-top:4px">
+                            Answered: <span id="answeredCount">0</span> | 
+                            <a href="https://t.me/mocks_wallah_again" style="color:var(--primary)">Mocks Wallah</a>
+                        </div>
+                    </div>
+                    
+                    <button class="nav-btn btn-review" id="reviewBtn">
+                        <i class="fas fa-flag"></i>
+                    </button>
+                    
+                    <button class="nav-btn mobile-only" id="navigatorBtn">
+                        <i class="fas fa-th"></i> Questions
+                    </button>
+                    
+                    <button class="nav-btn btn-submit desktop-only" id="submitBtnDesktop">Submit</button>
+                    
+                    <button class="nav-btn btn-next" id="nextBtn">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Desktop Navigator Sidebar -->
+            <div class="navigator-sidebar desktop-only">
+                <div class="navigator-header">Question Navigator</div>
+                <div class="navigator-grid" id="desktopNav"></div>
+                <div class="navigator-legend">
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--success)"></div>
+                        <span>Answered</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--warning)"></div>
+                        <span>Marked for Review</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--danger)"></div>
+                        <span>Incorrect</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:white;border:2px solid var(--border)"></div>
+                        <span>Not Visited</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Navigator Panel -->
+    <div class="mobile-navigator" id="mobileNav">
+        <div class="mobile-nav-header">
+            <h3>Question Navigator</h3>
+            <button class="close-nav" id="closeNav">&times;</button>
+        </div>
+        <div class="navigator-grid" id="mobileNavGrid"></div>
+        <div class="navigator-legend">
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--success)"></div>
+                <span>Answered</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--warning)"></div>
+                <span>Marked for Review</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--danger)"></div>
+                <span>Incorrect</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:white;border:2px solid var(--border)"></div>
+                <span>Not Visited</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Result Modal -->
+    <div class="result-modal" id="resultModal">
+        <div class="result-container">
+            <div class="result-header">
+                <h2>Test Completed!</h2>
+                <div class="result-score" id="resultScore">0/20.0</div>
+            </div>
+            
+            <div class="result-grid">
+                <div class="result-stat correct">
+                    <div class="result-stat-value" id="correctCount">0</div>
+                    <div class="result-stat-label">Correct</div>
+                </div>
+                <div class="result-stat incorrect">
+                    <div class="result-stat-value" id="incorrectCount">0</div>
+                    <div class="result-stat-label">Incorrect</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="unattemptedCount">0</div>
+                    <div class="result-stat-label">Unattempted</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="timeTaken">0</div>
+                    <div class="result-stat-label">Minutes</div>
+                </div>
+            </div>
+            
+            <div class="section-results" id="sectionResults" style="display:none;">
+                <h3>Section-wise Performance</h3>
+                <table class="section-results-table" id="sectionResultsTable">
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Attempted</th>
+                            <th>Correct</th>
+                            <th>Wrong</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sectionResultsBody"></tbody>
+                </table>
+            </div>
+            
+            <div class="result-actions">
+                <button class="result-btn btn-close" id="closeResult">Close</button>
+                <button class="result-btn btn-review-ans" id="reviewAnswers">Review Answers</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const questions = [
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>The Union Government has notified the creation of a new zonal railway, South Coast Railway, with its headquarters at Visakhapatnam, effective from June 1, 2026. The new zone has been carved out of the existing East Coast Railway (ECoR) and South-Central Railway (SCR) zones under which of the following provisions of the Railways Act, 1989?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>केंद्र सरकार ने विशाखापत्तनम में अपने मुख्यालय के साथ एक नए जोनल रेलवे, साउथ कोस्ट रेलवे के निर्माण को अधिसूचित किया है, जो 1 जून, 2026 से प्रभावी होगा। नए ज़ोन को रेलवे अधिनियम, 1989 के निम्नलिखित प्रावधानों में से किस के तहत मौजूदा ईस्ट कोस्ट रेलवे (ECoR) और साउथ-सेंट्रल रेलवे (SCR) ज़ोन से अलग किया गया है?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Section 3, sub-section (4)</p></span><span class=\"hqt\"><p>धारा 3, उपधारा (4)</p></span>",
+      "<span class=\"eqt\"><p>Section 5, sub-section (2)</p></span><span class=\"hqt\"><p>धारा 5, उपधारा (2)</p></span>",
+      "<span class=\"eqt\"><p>Section 7, sub-section (1)</p></span><span class=\"hqt\"><p>धारा 7, उपधारा (1)</p></span>",
+      "<span class=\"eqt\"><p>Section 10, sub-section (3)</p></span><span class=\"hqt\"><p>धारा 10, उपधारा (3)</p></span>",
+      "<span class=\"eqt\"><p>Section 6, sub-section (5)</p></span><span class=\"hqt\"><p>धारा 6, उपधारा (5)</p></span>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">The Union government has notified the creation of a new zonal railway, South Coast Railway, with headquarters at Visakhapatnam, effective June 1, 2026. The new zone has been carved out of the existing East Coast Railway (ECoR) and South-Central Railway (SCR) zones under sub-section (4) of Section 3 of the Railways Act, 1989. The notification also constitutes a new Rayagada division under East Coast Railway from the same date. As per the reorganisation, South Coast Railway (SCoR) will comprise the existing Guntakal, Guntur, and Vijayawada divisions of SCR and a truncated Waltair division of ECoR, which will be renamed Visakhapatnam division. ECoR, with headquarters at Bhubaneswar, will retain Sambalpur division, the reorganised Khurda Road division, and the newly formed Rayagada division. SCR, headquartered at Secunderabad, will have the existing Hyderabad and Nanded divisions along with a reorganised Secunderabad division. The existing Waltair division of ECoR will be bifurcated. One part will form the new Rayagada division under ECoR, and the remaining portion will be part of SCoR as the Visakhapatnam division. Further, the Central government has also adjusted the jurisdictions of Guntur, Guntakal and Vijayawada divisions of SCoR and Secunderabad division of SCR with the transfer of sections, effective June 1, 2026. The jurisdiction of Khurda Road division of ECoR and Visakhapatnam division of SCoR also been adjusted. The divisional boundaries between the affected divisions of SCoR, ECoR, and SCR will be revised as of June 1, 2026.&nbsp; <a href=\"https://www.newindianexpress.com/states/andhra-pradesh/2026/May/05/union-govt-notifies-south-coast-railway-headquartered-in-visakhapatnam\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; Union govt notified creation of a new zonal railway, South Coast Railway, with HQs at Visakhapatnam, w.e.f. Jun 1, 2026<br><br>•&nbsp; It has been carved out of existing East Coast Railway (ECoR) &amp; South-Central Railway (SCR) zones under sub-section (4) of Section 3 of Railways Act, 1989<br><br>•&nbsp; This notification also constitutes a new Rayagada division under East Coast Railway from same date<br><br>•&nbsp; South Coast Railway (SCoR) will comprise existing Guntakal, Guntur &amp; Vijayawada divisions of SCR &amp; a truncated Waltair division of ECoR<br><br>•&nbsp; ECoR (HQs at Bhubaneswar) – to retain Sambalpur division, reorganised Khurda Road division &amp; Rayagada division<br><br>•&nbsp; SCoR (HQs at Secunderabad) – to retain Hyderabad &amp; Nanded divisions along with Secunderabad division<br><br>•&nbsp; Central Govt also adjusted jurisdictions of Guntur, Guntakal &amp; Vijayawada divisions of SCoR &amp; Secunderabad division of SCR with transfer of sections, w.e.f. Jun 1, 2026</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">The Union government has notified the creation of a new zonal railway, South Coast Railway, with headquarters at Visakhapatnam, effective June 1, 2026. The new zone has been carved out of the existing East Coast Railway (ECoR) and South-Central Railway (SCR) zones under sub-section (4) of Section 3 of the Railways Act, 1989. The notification also constitutes a new Rayagada division under East Coast Railway from the same date. As per the reorganisation, South Coast Railway (SCoR) will comprise the existing Guntakal, Guntur, and Vijayawada divisions of SCR and a truncated Waltair division of ECoR, which will be renamed Visakhapatnam division. ECoR, with headquarters at Bhubaneswar, will retain Sambalpur division, the reorganised Khurda Road division, and the newly formed Rayagada division. SCR, headquartered at Secunderabad, will have the existing Hyderabad and Nanded divisions along with a reorganised Secunderabad division. The existing Waltair division of ECoR will be bifurcated. One part will form the new Rayagada division under ECoR, and the remaining portion will be part of SCoR as the Visakhapatnam division. Further, the Central government has also adjusted the jurisdictions of Guntur, Guntakal and Vijayawada divisions of SCoR and Secunderabad division of SCR with the transfer of sections, effective June 1, 2026. The jurisdiction of Khurda Road division of ECoR and Visakhapatnam division of SCoR also been adjusted. The divisional boundaries between the affected divisions of SCoR, ECoR, and SCR will be revised as of June 1, 2026.&nbsp; <a href=\"https://www.newindianexpress.com/states/andhra-pradesh/2026/May/05/union-govt-notifies-south-coast-railway-headquartered-in-visakhapatnam\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; Union govt notified creation of a new zonal railway, South Coast Railway, with HQs at Visakhapatnam, w.e.f. Jun 1, 2026<br><br>•&nbsp; It has been carved out of existing East Coast Railway (ECoR) &amp; South-Central Railway (SCR) zones under sub-section (4) of Section 3 of Railways Act, 1989<br><br>•&nbsp; This notification also constitutes a new Rayagada division under East Coast Railway from same date<br><br>•&nbsp; South Coast Railway (SCoR) will comprise existing Guntakal, Guntur &amp; Vijayawada divisions of SCR &amp; a truncated Waltair division of ECoR<br><br>•&nbsp; ECoR (HQs at Bhubaneswar) – to retain Sambalpur division, reorganised Khurda Road division &amp; Rayagada division<br><br>•&nbsp; SCoR (HQs at Secunderabad) – to retain Hyderabad &amp; Nanded divisions along with Secunderabad division<br><br>•&nbsp; Central Govt also adjusted jurisdictions of Guntur, Guntakal &amp; Vijayawada divisions of SCoR &amp; Secunderabad division of SCR with transfer of sections, w.e.f. Jun 1, 2026</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>On May 5, 2026, which edition of ‘African World Heritage Day’ was observed by UNESCO under the theme “Celebrating Africa’s Heritage, Mentoring the Leaders of Tomorrow”?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>5 मई, 2026 को UNESCO द्वारा 'अफ्रीकी विश्व विरासत दिवस' का कौन सा संस्करण \"अफ्रीका की विरासत का जश्न मनाना, कल के नेताओं को सलाह देना\" विषय के तहत मनाया गया?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>9<sup>th</sup><br>&nbsp;</p></span><span class=\"hqt\"><p>9वां</p></span>",
+      "<span class=\"eqt\"><p>20<sup>th</sup><br>&nbsp;</p></span><span class=\"hqt\"><p>20वां</p></span>",
+      "<span class=\"eqt\"><p>10<sup>th</sup><br>&nbsp;</p></span><span class=\"hqt\"><p>10वाँ</p></span>",
+      "<span class=\"eqt\"><p>15<sup>th</sup><br>&nbsp;</p></span><span class=\"hqt\"><p>15वां</p></span>",
+      "<span class=\"eqt\"><p>11<sup>th</sup></p></span><span class=\"hqt\"><p>11वां</p></span>"
+    ],
+    "correct_option_id": 4,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">May 5 – 11<sup>th</sup> African World Heritage Day&nbsp; (by UNESCO)<br><br>(Theme - “Celebrating Africa’s Heritage, Mentoring the Leaders of Tomorrow”)</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">May 5 – 11<sup>th</sup> African World Heritage Day&nbsp; (by UNESCO)<br><br>(Theme - “Celebrating Africa’s Heritage, Mentoring the Leaders of Tomorrow”)</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>Ministry of Power has revised the “Make in India” procurement norms for the power sector by introducing a phased roadmap to achieve what minimum percentage of local content (MLC) in High Voltage Direct Current (HVDC) substations of the Line Commutated Converter (LCC) type?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>विद्युत मंत्रालय ने लाइन कम्यूटेटेड कन्वर्टर (LCC) प्रकार के हाई वोल्टेज डायरेक्ट करंट (HVDC) सबस्टेशनों में स्थानीय सामग्री (MLC) का न्यूनतम प्रतिशत प्राप्त करने के लिए एक चरणबद्ध रोडमैप पेश करके बिजली क्षेत्र के लिए \"मेक इन इंडिया\" खरीद मानदंडों को संशोधित किया है?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>50%</p></span><span class=\"hqt\"><p>50%</p></span>",
+      "<span class=\"eqt\"><p>60%</p></span><span class=\"hqt\"><p>60%</p></span>",
+      "<span class=\"eqt\"><p>55%</p></span><span class=\"hqt\"><p>55%</p></span>",
+      "<span class=\"eqt\"><p>45%</p></span><span class=\"hqt\"><p>45%</p></span>",
+      "<span class=\"eqt\"><p>65%</p></span><span class=\"hqt\"><p>65%</p></span>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">The Union Ministry of Power has revised its “Make in India” procurement norms for the power sector, introducing a phased roadmap to achieve 60% minimum local content (MLC) in High Voltage Direct Current (HVDC) Substations (Line Commutated Converter (LCC) type). MLC refers to how much of a project must be sourced/manufactured within India. Under the revised norms, the government has replaced the earlier uniform requirement of 60% local content with a gradual increase over time for engineering, procurement and construction (EPC)/turnkey projects. As per the order, the MLC for HVDC substations (LCC type) will be 30% up to 31<sup>st</sup> March 2028, followed by 40% from 1<sup>st</sup> April 2028 till 31<sup>st</sup> March 2030, then 50% from 1<sup>st</sup> April 2030 till 31<sup>st</sup> March 2032, and finally 60% from 1<sup>st</sup> April 2032 till 31<sup>st</sup> March 2035. The changes fall under the Public Procurement (Preference to Make in India) framework, which provides purchase preference (linked with local content) in respect of the Power Sector. The revised roadmap applies to HVDC substations under the EPC or turnkey project category, which are critical for long-distance power transmission infrastructure.&nbsp; <a href=\"https://energy.economictimes.indiatimes.com/news/power/india-sets-2035-target-for-60-local-content-in-hvdc-projects/130714996\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; MoP revised its “Make in India” procurement norms for power sector<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; It introduces a phased roadmap to achieve 60% minimum local content (MLC) in HVDC Substations<br><br>•&nbsp; MLC – refers to how much of a project must be sourced/manufactured within India<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">Minister of Power: Manohar Lal Khattar &nbsp;| &nbsp;Constituency – Karnal, Haryana</span><br><br><span style=\"color:rgb(31,73,125);\">MoS in Ministry of Power: Shripad Yesso Naik</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">The Union Ministry of Power has revised its “Make in India” procurement norms for the power sector, introducing a phased roadmap to achieve 60% minimum local content (MLC) in High Voltage Direct Current (HVDC) Substations (Line Commutated Converter (LCC) type). MLC refers to how much of a project must be sourced/manufactured within India. Under the revised norms, the government has replaced the earlier uniform requirement of 60% local content with a gradual increase over time for engineering, procurement and construction (EPC)/turnkey projects. As per the order, the MLC for HVDC substations (LCC type) will be 30% up to 31<sup>st</sup> March 2028, followed by 40% from 1<sup>st</sup> April 2028 till 31<sup>st</sup> March 2030, then 50% from 1<sup>st</sup> April 2030 till 31<sup>st</sup> March 2032, and finally 60% from 1<sup>st</sup> April 2032 till 31<sup>st</sup> March 2035. The changes fall under the Public Procurement (Preference to Make in India) framework, which provides purchase preference (linked with local content) in respect of the Power Sector. The revised roadmap applies to HVDC substations under the EPC or turnkey project category, which are critical for long-distance power transmission infrastructure.&nbsp; <a href=\"https://energy.economictimes.indiatimes.com/news/power/india-sets-2035-target-for-60-local-content-in-hvdc-projects/130714996\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; MoP revised its “Make in India” procurement norms for power sector<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; It introduces a phased roadmap to achieve 60% minimum local content (MLC) in HVDC Substations<br><br>•&nbsp; MLC – refers to how much of a project must be sourced/manufactured within India<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">Minister of Power: Manohar Lal Khattar &nbsp;| &nbsp;Constituency – Karnal, Haryana</span><br><br><span style=\"color:rgb(31,73,125);\">MoS in Ministry of Power: Shripad Yesso Naik</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>International No Diet Day, observed annually on May 6, is associated with which of the following symbols?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>6 मई को प्रतिवर्ष मनाया जाने वाला अंतर्राष्ट्रीय नो डाइट दिवस, निम्नलिखित में से किस प्रतीक से जुड़ा है?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Light blue ribbon</p></span><span class=\"hqt\"><p>हल्का नीला रिबन</p></span>",
+      "<span class=\"eqt\"><p>Pink ribbon</p></span><span class=\"hqt\"><p>गुलाबी रिबन</p></span>",
+      "<span class=\"eqt\"><p>Green ribbon</p></span><span class=\"hqt\"><p>हरा रिबन</p></span>",
+      "<span class=\"eqt\"><p>Purple ribbon</p></span><span class=\"hqt\"><p>बैंगनी रिबन</p></span>",
+      "<span class=\"eqt\"><p>White ribbon</p></span><span class=\"hqt\"><p>सफ़ेद रिबन</p></span>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">May 6 – International No Diet Day&nbsp; (since 1992)&nbsp; (symbol - Light blue ribbon)</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">May 6 – International No Diet Day&nbsp; (since 1992)&nbsp; (symbol - Light blue ribbon)</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>In May 2026, which new digital platform was launched by the NITI Aayog to strengthen real-time governance, improve coordination among stakeholders, and accelerate last-mile delivery under the Aspirational Districts and Blocks Programme (ADP/ABP)?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>मई 2026 में, वास्तविक समय शासन को मजबूत करने, हितधारकों के बीच समन्वय में सुधार करने और आकांक्षी जिलों और ब्लॉक कार्यक्रम (ADP/ABP) के तहत अंतिम-मील वितरण में तेजी लाने के लिए नीति आयोग द्वारा कौन सा नया डिजिटल प्लेटफॉर्म लॉन्च किया गया था?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>District Governance Dashboard</p></span><span class=\"hqt\"><p>District Governance Dashboard</p></span>",
+      "<span class=\"eqt\"><p>Aspirational Bharat Portal</p></span><span class=\"hqt\"><p>Aspirational Bharat Portal</p></span>",
+      "<span class=\"eqt\"><p>Pragati Monitoring (PM) System</p></span><span class=\"hqt\"><p>Pragati Monitoring (PM) System</p></span>",
+      "<span class=\"eqt\"><p>Integrated Development Coordination (IDC) Platform</p></span><span class=\"hqt\"><p>Integrated Development Coordination (IDC) Platform</p></span>",
+      "<span class=\"eqt\"><p>Central Prabhari Officer (CPO) Portal</p></span><span class=\"hqt\"><p>Central Prabhari Officer (CPO) Portal</p></span>"
+    ],
+    "correct_option_id": 4,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">NITI Aayog has launched the “Central Prabhari Officer (CPO) Portal”, a new digital platform aimed at strengthening real-time governance, improving coordination among stakeholders, and accelerating last-mile delivery under the ‘Aspirational Districts and Blocks Programme (ADP/ABP)’. The CPO Portal will allow Central Prabhari Officers (CPOs) to submit observations and recommendations directly from the field using mobile devices in real time. Once uploaded, the data goes live, after which the district administrations can review suggestions, take action and accordingly submit their responses. State Planning Secretaries can monitor implementation across departments, and officials from NITI Aayog and line ministries can track progress centrally. The CPO Portal will serve as a unified digital interface connecting field officers, district administrations, state governments, and central ministries.&nbsp; <a href=\"https://egov.eletsonline.com/2026/05/niti-aayog-launches-cpo-portal-to-strengthen-real-time-governance-and-last-mile-delivery/\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; NITI Aayog – launched “Central Prabhari Officer (CPO) Portal”<br><br>•&nbsp; Aim: To strengthen real-time governance, improve coordination among stakeholders &amp; accelerate last-mile delivery under ‘Aspirational Districts and Blocks Programme (ADP/ABP)’<br><br>•&nbsp; CPO Portal – to allow Central Prabhari Officers (CPOs) to submit observations &amp; recommendations directly from field using mobile devices in real time<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of NITI Aayog – New Delhi &nbsp;| &nbsp;CEO – Nidhi Chhibber &nbsp;| &nbsp;Chair – Narendra Modi &nbsp;| &nbsp;VC – Ashok Lahiri</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">NITI Aayog has launched the “Central Prabhari Officer (CPO) Portal”, a new digital platform aimed at strengthening real-time governance, improving coordination among stakeholders, and accelerating last-mile delivery under the ‘Aspirational Districts and Blocks Programme (ADP/ABP)’. The CPO Portal will allow Central Prabhari Officers (CPOs) to submit observations and recommendations directly from the field using mobile devices in real time. Once uploaded, the data goes live, after which the district administrations can review suggestions, take action and accordingly submit their responses. State Planning Secretaries can monitor implementation across departments, and officials from NITI Aayog and line ministries can track progress centrally. The CPO Portal will serve as a unified digital interface connecting field officers, district administrations, state governments, and central ministries.&nbsp; <a href=\"https://egov.eletsonline.com/2026/05/niti-aayog-launches-cpo-portal-to-strengthen-real-time-governance-and-last-mile-delivery/\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; NITI Aayog – launched “Central Prabhari Officer (CPO) Portal”<br><br>•&nbsp; Aim: To strengthen real-time governance, improve coordination among stakeholders &amp; accelerate last-mile delivery under ‘Aspirational Districts and Blocks Programme (ADP/ABP)’<br><br>•&nbsp; CPO Portal – to allow Central Prabhari Officers (CPOs) to submit observations &amp; recommendations directly from field using mobile devices in real time<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of NITI Aayog – New Delhi &nbsp;| &nbsp;CEO – Nidhi Chhibber &nbsp;| &nbsp;Chair – Narendra Modi &nbsp;| &nbsp;VC – Ashok Lahiri</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>In May 2026, the Ministry of Defence signed a Rs 1,476-crore contract with which electronics company for the procurement of 5 Ground-Based Mobile Electronic Systems for the Indian Army?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>मई 2026 में, रक्षा मंत्रालय ने भारतीय सेना के लिए 5 ग्राउंड-आधारित मोबाइल इलेक्ट्रॉनिक सिस्टम की खरीद के लिए किस इलेक्ट्रॉनिक्स कंपनी के साथ 1,476 करोड़ रुपये के अनुबंध पर हस्ताक्षर किए?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Bharat Electronics Limited</p></span><span class=\"hqt\"><p>Bharat Electronics Limited</p></span>",
+      "<span class=\"eqt\"><p>Electronics Corporation of India Limited</p></span><span class=\"hqt\"><p>Electronics Corporation of India Limited</p></span>",
+      "<span class=\"eqt\"><p>Centum Electronics Limited</p></span><span class=\"hqt\"><p>Centum Electronics Limited</p></span>",
+      "<span class=\"eqt\"><p>Alpha Design Technologies Limited</p></span><span class=\"hqt\"><p>Alpha Design Technologies Limited</p></span>",
+      "<span class=\"eqt\"><p>VEM Technologies Private Limited</p></span><span class=\"hqt\"><p>VEM Technologies Private Limited</p></span>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">Ministry of Defence has signed a Rs 1,476-crore contract with Bharat Electronics Limited (BEL), Hyderabad, for the procurement of 5 Ground-Based Mobile Electronic Systems for the Indian Army. The deal was inked under the Buy (Indian-Indigenously Designed, Developed and Manufactured) category. The systems, with a minimum indigenous content of 72%, are expected to significantly enhance the operational capabilities of Army units. In March 2026, the Ministry had signed a ₹1,950-crore capital acquisition contract with BEL for the procurement of 2 Mountain Radars for the Indian Air Force.&nbsp; <a href=\"https://www.thehindu.com/news/national/mod-inks-1476-crore-deal-with-bel-for-mobile-electronic-systems/article70943572.ece\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; MoD + BEL = a Rs 1,476 Cr contract for procurement of 5 Ground-Based Mobile Electronic Systems for Indian Army<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Under – Buy (Indian-Indigenously Designed, Developed and Manufactured) category<br><br>•&nbsp; MoD + BEL = a ₹1,950 Cr capital acquisition contract, in March 2026, for procurement of 2 Mountain Radars for IAF<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of BEL – Bengaluru, Karnataka&nbsp; |&nbsp; CMD – Manoj Jain</span><br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">Minister of Defence: Rajnath Singh &nbsp;| &nbsp;Constituency – Lucknow, Uttar Pradesh</span><br><br><span style=\"color:rgb(31,73,125);\">&nbsp; &nbsp;MoS in Ministry of Defence: Sanjay Seth</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">Ministry of Defence has signed a Rs 1,476-crore contract with Bharat Electronics Limited (BEL), Hyderabad, for the procurement of 5 Ground-Based Mobile Electronic Systems for the Indian Army. The deal was inked under the Buy (Indian-Indigenously Designed, Developed and Manufactured) category. The systems, with a minimum indigenous content of 72%, are expected to significantly enhance the operational capabilities of Army units. In March 2026, the Ministry had signed a ₹1,950-crore capital acquisition contract with BEL for the procurement of 2 Mountain Radars for the Indian Air Force.&nbsp; <a href=\"https://www.thehindu.com/news/national/mod-inks-1476-crore-deal-with-bel-for-mobile-electronic-systems/article70943572.ece\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; MoD + BEL = a Rs 1,476 Cr contract for procurement of 5 Ground-Based Mobile Electronic Systems for Indian Army<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Under – Buy (Indian-Indigenously Designed, Developed and Manufactured) category<br><br>•&nbsp; MoD + BEL = a ₹1,950 Cr capital acquisition contract, in March 2026, for procurement of 2 Mountain Radars for IAF<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of BEL – Bengaluru, Karnataka&nbsp; |&nbsp; CMD – Manoj Jain</span><br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">Minister of Defence: Rajnath Singh &nbsp;| &nbsp;Constituency – Lucknow, Uttar Pradesh</span><br><br><span style=\"color:rgb(31,73,125);\">&nbsp; &nbsp;MoS in Ministry of Defence: Sanjay Seth</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>Which day was observed as World Red Cross Day in 2026 under the theme “United in Humanity: No Matter Where, No Matter When”?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>2026 में \"United in Humanity: No Matter Where, No Matter When\" विषय के तहत किस दिन को विश्व रेड क्रॉस दिवस के रूप में मनाया गया?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>May 1</p></span><span class=\"hqt\"><p>1 मई</p></span>",
+      "<span class=\"eqt\"><p>May 8</p></span><span class=\"hqt\"><p>8 मई</p></span>",
+      "<span class=\"eqt\"><p>May 5</p></span><span class=\"hqt\"><p>5 मई</p></span>",
+      "<span class=\"eqt\"><p>May 3</p></span><span class=\"hqt\"><p>3 मई</p></span>",
+      "<span class=\"eqt\"><p>May 6</p></span><span class=\"hqt\"><p>6 मई</p></span>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">May 8 – World Red Cross Day<br>(Theme - “United in Humanity: No Matter Where, No Matter When”)</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">May 8 – World Red Cross Day<br>(Theme - “United in Humanity: No Matter Where, No Matter When”)</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>The Ministry of Health and Family Welfare has released the “Rashtriya Bal Swasthya Karyakram (RBSK) 2.0 Guidelines”. The updated framework expands the existing ‘4Ds’ approach. Which of the following is NOT included among the 4Ds?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>स्वास्थ्य और परिवार कल्याण मंत्रालय ने \"राष्ट्रीय बाल स्वास्थ्य कार्यक्रम (RBSK) 2.0 दिशानिर्देश\" जारी किए हैं। अद्यतन ढाँचा मौजूदा '4D' दृष्टिकोण का विस्तार करता है। निम्नलिखित में से कौन सा 4D में शामिल नहीं है?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Defects at Birth</p></span><span class=\"hqt\"><p>जन्म के समय दोष</p></span>",
+      "<span class=\"eqt\"><p>Disorders</p></span><span class=\"hqt\"><p>विकार</p></span>",
+      "<span class=\"eqt\"><p>Diseases</p></span><span class=\"hqt\"><p>रोग</p></span>",
+      "<span class=\"eqt\"><p>Deficiencies</p></span><span class=\"hqt\"><p>कमियाँ</p></span>",
+      "<span class=\"eqt\"><p>Developmental Delays</p></span><span class=\"hqt\"><p>विकासात्मक देरी</p></span>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">Ministry of Health and Family Welfare has released the “Rashtriya Bal Swasthya Karyakram (RBSK) 2.0 Guidelines”. The updated framework broadens the established 4Ds approach - Defects at Birth, Diseases, Deficiencies and Developmental Delays. It also incorporated new-age health challenges, including non-communicable diseases, mental health conditions, and behavioural concerns. RBSK 2.0 now takes a more comprehensive, lifecycle-based approach, focusing on the health of children from birth up to 18 years. It emphasizes continuous care at every stage of a child’s growth, rather than isolated interventions. Some of the key improvements include a wider screening programme, stronger referral systems to ensure children receive proper follow-up care, and the introduction of digital health cards. The programme also focuses on real-time data tracking, better use of integrated platforms, and multi-sectoral convergence.&nbsp; <a href=\"https://www.newsonair.gov.in/health-ministry-releases-rbsk-2-0-guidelines-expands-4ds-child-health-framework/\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; MoH&amp;FW – released “Rashtriya Bal Swasthya Karyakram (RBSK) 2.0 Guidelines”<br><br>•&nbsp; It broadens established 4Ds approach – Defects at Birth, Diseases, Deficiencies &amp; Developmental Delays<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">Minister of Health &amp; Family Welfare: Jagat Prakash Nadda &nbsp;| &nbsp;Constituency – Gujarat</span><br><br><span style=\"color:rgb(31,73,125);\">MoS in Ministry of Health &amp; Family Welfare: Jadhav Prataprao Ganpatrao &amp; Anupriya Singh Patel</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">Ministry of Health and Family Welfare has released the “Rashtriya Bal Swasthya Karyakram (RBSK) 2.0 Guidelines”. The updated framework broadens the established 4Ds approach - Defects at Birth, Diseases, Deficiencies and Developmental Delays. It also incorporated new-age health challenges, including non-communicable diseases, mental health conditions, and behavioural concerns. RBSK 2.0 now takes a more comprehensive, lifecycle-based approach, focusing on the health of children from birth up to 18 years. It emphasizes continuous care at every stage of a child’s growth, rather than isolated interventions. Some of the key improvements include a wider screening programme, stronger referral systems to ensure children receive proper follow-up care, and the introduction of digital health cards. The programme also focuses on real-time data tracking, better use of integrated platforms, and multi-sectoral convergence.&nbsp; <a href=\"https://www.newsonair.gov.in/health-ministry-releases-rbsk-2-0-guidelines-expands-4ds-child-health-framework/\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; MoH&amp;FW – released “Rashtriya Bal Swasthya Karyakram (RBSK) 2.0 Guidelines”<br><br>•&nbsp; It broadens established 4Ds approach – Defects at Birth, Diseases, Deficiencies &amp; Developmental Delays<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">Minister of Health &amp; Family Welfare: Jagat Prakash Nadda &nbsp;| &nbsp;Constituency – Gujarat</span><br><br><span style=\"color:rgb(31,73,125);\">MoS in Ministry of Health &amp; Family Welfare: Jadhav Prataprao Ganpatrao &amp; Anupriya Singh Patel</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>Which country’s men’s team won the ‘Thomas Cup 2026’ title by defeating France 3-1 in the final, thereby securing its 13<sup>th</sup> overall title and 2<sup>nd</sup> consecutive championship after winning in 2024?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>किस देश की पुरुष टीम ने फाइनल में फ्रांस को 3-1 से हराकर 'थॉमस कप 2026' का खिताब जीता, जिससे 2024 में जीत के बाद अपना 13वां समग्र खिताब और लगातार दूसरी चैंपियनशिप हासिल की?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>South Korea</p></span><span class=\"hqt\"><p>दक्षिण कोरिया</p></span>",
+      "<span class=\"eqt\"><p>Japan</p></span><span class=\"hqt\"><p>जापान</p></span>",
+      "<span class=\"eqt\"><p>Indonesia</p></span><span class=\"hqt\"><p>इंडोनेशिया</p></span>",
+      "<span class=\"eqt\"><p>China</p></span><span class=\"hqt\"><p>चीन</p></span>",
+      "<span class=\"eqt\"><p>Malaysia</p></span><span class=\"hqt\"><p>मलेशिया</p></span>"
+    ],
+    "correct_option_id": 3,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">China’s men’s team has won the “Thomas Cup 2026” title by defeating France 3-1, marking their 13<sup>th</sup> overall title and 2<sup>nd</sup> win in a row (2024), while the Republic of Korea women’s team won the “Uber Cup 2026” title by defeating China 3-1, securing their 3<sup>rd</sup> title, in Horsens, Denmark. The Republic of Korea now has wins in the Uber Cup in 2010, 2022 and 2026. India secured the bronze medal in the Thomas Cup 2026, while Japan and Indonesia secured bronze medals in the Uber Cup 2026. The Thomas &amp; Uber Cup 2026 is the biennial world team championship in badminton. It was the 34<sup>th</sup> edition of the Thomas Cup (men’s world team championship) and the 31<sup>st</sup> edition of the Uber Cup (women’s world team championship).&nbsp; <a href=\"https://www.olympics.com/en/news/bwf-thomas-uber-cup-2026-republic-of-korea-stops-chinese-women-third-triumph-team-event-men\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; “Thomas Cup 2026” &amp; “Uber Cup 2026” – held in Horsens, Denmark<br><br>•&nbsp; China (13<sup>th</sup> overall title and 2<sup>nd</sup> win in a row) – won “Thomas Cup 2026” title&nbsp; |&nbsp; Defeated – France&nbsp; |&nbsp; Bronze – India<br><br>•&nbsp; South Korea (3<sup>rd</sup> title) – won “Uber Cup 2026” title&nbsp; |&nbsp; Defeated – China&nbsp; |&nbsp; Bronze – Japan &amp; Indonesia<br><br>•&nbsp; Thomas &amp; Uber Cup 2026 – biennial world team championship in badminton<br><br>•&nbsp; It was: 34<sup>th</sup> edition of – Thomas Cup (men’s)&nbsp; | 31<sup>st</sup> edition of – Uber Cup (women’s)</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">China’s men’s team has won the “Thomas Cup 2026” title by defeating France 3-1, marking their 13<sup>th</sup> overall title and 2<sup>nd</sup> win in a row (2024), while the Republic of Korea women’s team won the “Uber Cup 2026” title by defeating China 3-1, securing their 3<sup>rd</sup> title, in Horsens, Denmark. The Republic of Korea now has wins in the Uber Cup in 2010, 2022 and 2026. India secured the bronze medal in the Thomas Cup 2026, while Japan and Indonesia secured bronze medals in the Uber Cup 2026. The Thomas &amp; Uber Cup 2026 is the biennial world team championship in badminton. It was the 34<sup>th</sup> edition of the Thomas Cup (men’s world team championship) and the 31<sup>st</sup> edition of the Uber Cup (women’s world team championship).&nbsp; <a href=\"https://www.olympics.com/en/news/bwf-thomas-uber-cup-2026-republic-of-korea-stops-chinese-women-third-triumph-team-event-men\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; “Thomas Cup 2026” &amp; “Uber Cup 2026” – held in Horsens, Denmark<br><br>•&nbsp; China (13<sup>th</sup> overall title and 2<sup>nd</sup> win in a row) – won “Thomas Cup 2026” title&nbsp; |&nbsp; Defeated – France&nbsp; |&nbsp; Bronze – India<br><br>•&nbsp; South Korea (3<sup>rd</sup> title) – won “Uber Cup 2026” title&nbsp; |&nbsp; Defeated – China&nbsp; |&nbsp; Bronze – Japan &amp; Indonesia<br><br>•&nbsp; Thomas &amp; Uber Cup 2026 – biennial world team championship in badminton<br><br>•&nbsp; It was: 34<sup>th</sup> edition of – Thomas Cup (men’s)&nbsp; | 31<sup>st</sup> edition of – Uber Cup (women’s)</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>What was the theme of ‘World Thalassaemia Day’ observed on May 8, 2026?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>8 मई, 2026 को मनाए गए 'विश्व थैलेसीमिया दिवस' का विषय क्या था?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>“Together for Better Blood Health and Care”</p></span><span class=\"hqt\"><p>“Together for Better Blood Health and Care”</p></span>",
+      "<span class=\"eqt\"><p>“Bridging Gaps in Rare Blood Disorder Awareness”</p></span><span class=\"hqt\"><p>“Bridging Gaps in Rare Blood Disorder Awareness”</p></span>",
+      "<span class=\"eqt\"><p>“Hidden No More: Finding the Undiagnosed. Supporting the Unseen.”</p></span><span class=\"hqt\"><p>“Hidden No More: Finding the Undiagnosed. Supporting the Unseen.”</p></span>",
+      "<span class=\"eqt\"><p>“Uniting Communities for Thalassaemia Prevention”</p></span><span class=\"hqt\"><p>“Uniting Communities for Thalassaemia Prevention”</p></span>",
+      "<span class=\"eqt\"><p>“Strengthening Global Action Against Genetic Blood Disorders”</p></span><span class=\"hqt\"><p>“Strengthening Global Action Against Genetic Blood Disorders”</p></span>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">May 8 – World Thalassaemia Day<br><br>(Theme - “Hidden No More: Finding the Undiagnosed. Supporting the Unseen.”)</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">May 8 – World Thalassaemia Day<br><br>(Theme - “Hidden No More: Finding the Undiagnosed. Supporting the Unseen.”)</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>Under the framework of the India-EU Trade and Technology Council (TTC) Working Group 2 on Green and Clean Energy Technologies, India and the European Union (EU), in May 2026, jointly launched which number of the coordinated call for proposals focused on the recycling of electric vehicle (EV) batteries?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>हरित और स्वच्छ ऊर्जा प्रौद्योगिकियों पर भारत-ईयू व्यापार और प्रौद्योगिकी परिषद (TTC) कार्य समूह 2 के ढांचे के तहत, भारत और यूरोपीय संघ (EU)) ने मई 2026 में संयुक्त रूप से इलेक्ट्रिक वाहन (EV) बैटरियों के पुनर्चक्रण पर केंद्रित प्रस्तावों के लिए किस संख्या में समन्वित कॉल लॉन्च की?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>1<sup>st</sup><br>&nbsp;</p></span><span class=\"hqt\"><p>पहला</p></span>",
+      "<span class=\"eqt\"><div>4<sup>th</sup></div></span><span class=\"hqt\"><div>चौथा</div></span>",
+      "<span class=\"eqt\"><div>5<sup>th</sup></div></span><span class=\"hqt\"><div>पांचवा</div></span>",
+      "<span class=\"eqt\"><div>3<sup>rd</sup></div></span><span class=\"hqt\"><div>तीसरा</div></span>",
+      "<span class=\"eqt\"><p>2<sup>nd</sup></p></span><span class=\"hqt\"><p>दूसरा</p></span>"
+    ],
+    "correct_option_id": 3,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">Under the framework of the India-EU Trade &amp; Technology Council (TTC)- Working Group 2 on Green and Clean Energy Technologies, the government of India and the European Union (EU) announced the launch of a 3<sup>rd</sup> coordinated call for proposals focused on the Recycling of EV Batteries. The submission deadline for the same is 15 September 2026. The call for proposals aims to secure critical raw materials, accelerate the global transition to a circular economy, and strengthen bilateral relations between India and the EU. With a combined funding pool of €15.2 million (~Rs 169 crore), the initiative will be funded through the EU’s ‘Horizon Europe’ programme, while the Ministry of Heavy Industries will support the Indian component. The programme will support the establishment of a joint India-EU pilot line in India to enable real-world validation and industrial deployment, bringing together leading researchers, industries, and startups. It will focus on High Recovery Rates; Mixed Chemistry Handling; Logistics &amp; Inclusion and Safety &amp; Second Life for critical minerals like lithium, graphite, and cobalt.&nbsp; <a href=\"https://www.pib.gov.in/PressReleasePage.aspx?PRID=2258320&amp;reg=3&amp;lang=1\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; Under framework of India-EU Trade &amp; Technology Council-Working Group 2 on Green &amp; Clean Energy Technologies:<br><br>•&nbsp; GoI &amp; EU – announced launch of a 3<sup>rd</sup> coordinated call for proposals focused on Recycling of EV Batteries<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Submission deadline – Sep 15, 2026<br><br>•&nbsp; Aim: To secure critical raw materials, accelerate global transition to a circular economy &amp; strengthen bilateral relations<br><br>•&nbsp; Combined funding pool – €15.2 million&nbsp; |&nbsp; It will be funded through – EU’s ‘Horizon Europe’ programme<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Ministry of Heavy Industries – to support Indian component<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of EU – Brussels, Belgium &nbsp;| &nbsp;Member Countries – 27</span><br><br><span style=\"color:rgb(31,73,125);\">President of European Parliament – Roberta Metsola</span><br><br><span style=\"color:rgb(31,73,125);\">President of European Council – António Costa</span><br><br><span style=\"color:rgb(31,73,125);\">President of European Commission – Ursula von der Leyen</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">Under the framework of the India-EU Trade &amp; Technology Council (TTC)- Working Group 2 on Green and Clean Energy Technologies, the government of India and the European Union (EU) announced the launch of a 3<sup>rd</sup> coordinated call for proposals focused on the Recycling of EV Batteries. The submission deadline for the same is 15 September 2026. The call for proposals aims to secure critical raw materials, accelerate the global transition to a circular economy, and strengthen bilateral relations between India and the EU. With a combined funding pool of €15.2 million (~Rs 169 crore), the initiative will be funded through the EU’s ‘Horizon Europe’ programme, while the Ministry of Heavy Industries will support the Indian component. The programme will support the establishment of a joint India-EU pilot line in India to enable real-world validation and industrial deployment, bringing together leading researchers, industries, and startups. It will focus on High Recovery Rates; Mixed Chemistry Handling; Logistics &amp; Inclusion and Safety &amp; Second Life for critical minerals like lithium, graphite, and cobalt.&nbsp; <a href=\"https://www.pib.gov.in/PressReleasePage.aspx?PRID=2258320&amp;reg=3&amp;lang=1\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; Under framework of India-EU Trade &amp; Technology Council-Working Group 2 on Green &amp; Clean Energy Technologies:<br><br>•&nbsp; GoI &amp; EU – announced launch of a 3<sup>rd</sup> coordinated call for proposals focused on Recycling of EV Batteries<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Submission deadline – Sep 15, 2026<br><br>•&nbsp; Aim: To secure critical raw materials, accelerate global transition to a circular economy &amp; strengthen bilateral relations<br><br>•&nbsp; Combined funding pool – €15.2 million&nbsp; |&nbsp; It will be funded through – EU’s ‘Horizon Europe’ programme<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Ministry of Heavy Industries – to support Indian component<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of EU – Brussels, Belgium &nbsp;| &nbsp;Member Countries – 27</span><br><br><span style=\"color:rgb(31,73,125);\">President of European Parliament – Roberta Metsola</span><br><br><span style=\"color:rgb(31,73,125);\">President of European Council – António Costa</span><br><br><span style=\"color:rgb(31,73,125);\">President of European Commission – Ursula von der Leyen</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>According to the Union Ministry of Finance, Scheduled Commercial Banks (SCBs) recorded robust credit growth of what percentage during the financial year 2025-26?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>केंद्रीय वित्त मंत्रालय के अनुसार, अनुसूचित वाणिज्यिक बैंकों (SCB) ने वित्तीय वर्ष 2025-26 के दौरान कितने प्रतिशत की मजबूत ऋण वृद्धि दर्ज की?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>10.2%</p></span><span class=\"hqt\"><p>10.2%</p></span>",
+      "<span class=\"eqt\"><p>12.5%</p></span><span class=\"hqt\"><p>12.5%</p></span>",
+      "<span class=\"eqt\"><p>15.9%</p></span><span class=\"hqt\"><p>15.9%</p></span>",
+      "<span class=\"eqt\"><p>17.6%</p></span><span class=\"hqt\"><p>17.6%</p></span>",
+      "<span class=\"eqt\"><p>18.1%</p></span><span class=\"hqt\"><p>18.1%</p></span>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">As per the Union Ministry of Finance, Scheduled Commercial Banks (SCBs) have recorded robust credit growth of 15.9% in the 2025-26 fiscal. The aggregate credit outstanding in March 2026 reached Rs 212.9 lakh crore, Rs 29.2 lakh crore higher than the previous year. The credit growth in FY2025-26 has been broad-based, led by the services sector, followed by the personal loan segment, agriculture and allied activities, and industry. During the fiscal year, agriculture and allied sector credit growth accelerated to 15.7% in FY 2025-26, up from 10.4% a year ago. Industrial credit expanded 15% in FY 2025-26 compared to 8.2% in the previous year, driven by strong momentum in MSME lending. Services sector credit, which contributes 28% to the overall credit, recorded a robust expansion of 19% year-on-year (compared to 12% in the last year). The personal loan segment, with a 33% share in overall credit, expanded by 16.2% in FY2025-26, higher than the 11.7% growth registered a year ago. The growth remained steady in the housing segment, while vehicle loans and loans against gold jewellery continued to show strong momentum.&nbsp; <a href=\"https://economictimes.indiatimes.com/industry/banking/finance/banking/banks-record-robust-15-9-credit-growth-in-fy26-finance-minstry/articleshow/130833517.cms?from=mdr\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; As per MoF, Scheduled Commercial Banks (SCBs) have recorded robust credit growth of 15.9% in FY26<br><br>•&nbsp; Aggregate credit outstanding in Mar 2026 reached – Rs 212.9 lakh Cr&nbsp; (Rs 29.2 lakh Cr higher than previous year)<br><br>•&nbsp; During fiscal year, agriculture &amp; allied sector credit growth – accelerated to 15.7% in FY26&nbsp; (from 10.4% a year ago)<br><br>•&nbsp; Industrial credit – expanded 15% in FY26 &nbsp;(from 8.2% in previous year)<br><br>•&nbsp; Services sector credit – contributes 28% to overall credit&nbsp; (expanded 19% y-o-y)<br><br>•&nbsp; Personal loan segment (33% share in overall credit) – expanded by 16.2% in FY26&nbsp; (from 11.7%)<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">Minister of Finance: Nirmala Sitharaman&nbsp; |&nbsp; Constituency – Karnataka</span><br><br><span style=\"color:rgb(31,73,125);\">MoS in Ministry of Finance: Pankaj Chaudhary</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">As per the Union Ministry of Finance, Scheduled Commercial Banks (SCBs) have recorded robust credit growth of 15.9% in the 2025-26 fiscal. The aggregate credit outstanding in March 2026 reached Rs 212.9 lakh crore, Rs 29.2 lakh crore higher than the previous year. The credit growth in FY2025-26 has been broad-based, led by the services sector, followed by the personal loan segment, agriculture and allied activities, and industry. During the fiscal year, agriculture and allied sector credit growth accelerated to 15.7% in FY 2025-26, up from 10.4% a year ago. Industrial credit expanded 15% in FY 2025-26 compared to 8.2% in the previous year, driven by strong momentum in MSME lending. Services sector credit, which contributes 28% to the overall credit, recorded a robust expansion of 19% year-on-year (compared to 12% in the last year). The personal loan segment, with a 33% share in overall credit, expanded by 16.2% in FY2025-26, higher than the 11.7% growth registered a year ago. The growth remained steady in the housing segment, while vehicle loans and loans against gold jewellery continued to show strong momentum.&nbsp; <a href=\"https://economictimes.indiatimes.com/industry/banking/finance/banking/banks-record-robust-15-9-credit-growth-in-fy26-finance-minstry/articleshow/130833517.cms?from=mdr\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; As per MoF, Scheduled Commercial Banks (SCBs) have recorded robust credit growth of 15.9% in FY26<br><br>•&nbsp; Aggregate credit outstanding in Mar 2026 reached – Rs 212.9 lakh Cr&nbsp; (Rs 29.2 lakh Cr higher than previous year)<br><br>•&nbsp; During fiscal year, agriculture &amp; allied sector credit growth – accelerated to 15.7% in FY26&nbsp; (from 10.4% a year ago)<br><br>•&nbsp; Industrial credit – expanded 15% in FY26 &nbsp;(from 8.2% in previous year)<br><br>•&nbsp; Services sector credit – contributes 28% to overall credit&nbsp; (expanded 19% y-o-y)<br><br>•&nbsp; Personal loan segment (33% share in overall credit) – expanded by 16.2% in FY26&nbsp; (from 11.7%)<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">Minister of Finance: Nirmala Sitharaman&nbsp; |&nbsp; Constituency – Karnataka</span><br><br><span style=\"color:rgb(31,73,125);\">MoS in Ministry of Finance: Pankaj Chaudhary</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>In May 2026, which institute established a state-of-the-art “Urban Testbed and Aerosol Observatory” at the SRM Institute of Science and Technology (SRMIST), Ramapuram, Chennai?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>मई 2026 में, किस संस्थान ने एसआरएम इंस्टीट्यूट ऑफ साइंस एंड टेक्नोलॉजी (SRMIST), रामपुरम, चेन्नई में एक अत्याधुनिक \"अर्बन टेस्टबेड और एरोसोल ऑब्जर्वेटरी\" की स्थापना की?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>National Atmospheric Research Laboratory (NARL), Tirupati</p></span><span class=\"hqt\"><p>राष्ट्रीय वायुमंडलीय अनुसंधान प्रयोगशाला (NARL), तिरूपति</p></span>",
+      "<span class=\"eqt\"><p>Indian National Centre for Ocean Information Services (INCOIS), Hyderabad</p></span><span class=\"hqt\"><p>भारतीय राष्ट्रीय महासागर सूचना सेवा केंद्र (INCOIS), हैदराबाद</p></span>",
+      "<span class=\"eqt\"><p>Indian Institute of Tropical Meteorology (IITM), Pune</p></span><span class=\"hqt\"><p>भारतीय उष्णकटिबंधीय मौसम विज्ञान संस्थान (IITM), पुणे</p></span>",
+      "<span class=\"eqt\"><p>Aryabhatta Research Institute of Observational Sciences (ARIES), Nainital</p></span><span class=\"hqt\"><p>आर्यभट्ट प्रेक्षण विज्ञान अनुसंधान संस्थान (ARIES), नैनीताल</p></span>",
+      "<span class=\"eqt\"><p>Indian Institute of Geomagnetism (IIG), Mumbai</p></span><span class=\"hqt\"><p>भारतीय भू-चुंबकत्व संस्थान (IIG), मुंबई</p></span>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">The Indian Institute of Tropical Meteorology (IITM), Pune, operating under the ‘Mission Mausam’ initiative, has established a state-of-the-art “Urban Testbed and Aerosol Observatory” at the SRM Institute of Science and Technology (SRMIST) in Ramapuram, Chennai. Secretary of the Ministry of Earth Sciences Dr M. Ravichandran officially inaugurated the laboratory and the ‘Centre for Atmospheric Science Research and Innovation (CASRI)’. Besides this, an MoU was also signed between IITM and SRMIST. The observatory houses approximately 15 sophisticated instruments valued at more than Rs 60 crore to track nearly 50 types of atmospheric data, including weather patterns, wind flow, aerosol particles, and temperature variations. The integration of this data will lead to much more accurate weather forecasts for the public. In 2024, the government of India approved ‘Mission Mausam’ with an outlay of Rs 2,000 crore over the next 2 years to enhance India’s ability to predict and respond to extreme weather events and the impacts of climate change. The mission is being implemented by the India Meteorological Department (IMD), IITM, and the National Centre for Medium-Range Weather Forecasting - 3 key institutions under the Ministry of Earth Sciences. The mission is further supported by other MoES bodies – Indian National Centre for Ocean Information Services, National Centre for Polar and Ocean Research and National Institute of Ocean Technology.&nbsp; <a href=\"https://www.pib.gov.in/PressReleasePage.aspx?PRID=2258435&amp;reg=3&amp;lang=1\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; IITM Pune (operating under ‘Mission Mausam’) established a state-of-the-art “Urban Testbed and Aerosol Observatory”<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; At SRM Institute of Science and Technology (SRMIST) in Ramapuram, Chennai<br><br>•&nbsp; Dr M. Ravichandran (Secretary of MoES) – inaugurated lab &amp; ‘Centre for Atmospheric Science Research and Innovation<br><br>•&nbsp; Mission Mausam – approved by GoI in 2024&nbsp; |&nbsp; Outlay – Rs 2,000 Cr over next 2 years<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; To enhance India’s ability to predict &amp; respond to extreme weather events &amp; impacts of climate change<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Being implemented by – IMD, IITM &amp; National Centre for Medium-Range Weather Forecasting<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Supported by other MoES bodies – Indian National Centre for Ocean Information Services, NCPOR &amp; NIOT</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">The Indian Institute of Tropical Meteorology (IITM), Pune, operating under the ‘Mission Mausam’ initiative, has established a state-of-the-art “Urban Testbed and Aerosol Observatory” at the SRM Institute of Science and Technology (SRMIST) in Ramapuram, Chennai. Secretary of the Ministry of Earth Sciences Dr M. Ravichandran officially inaugurated the laboratory and the ‘Centre for Atmospheric Science Research and Innovation (CASRI)’. Besides this, an MoU was also signed between IITM and SRMIST. The observatory houses approximately 15 sophisticated instruments valued at more than Rs 60 crore to track nearly 50 types of atmospheric data, including weather patterns, wind flow, aerosol particles, and temperature variations. The integration of this data will lead to much more accurate weather forecasts for the public. In 2024, the government of India approved ‘Mission Mausam’ with an outlay of Rs 2,000 crore over the next 2 years to enhance India’s ability to predict and respond to extreme weather events and the impacts of climate change. The mission is being implemented by the India Meteorological Department (IMD), IITM, and the National Centre for Medium-Range Weather Forecasting - 3 key institutions under the Ministry of Earth Sciences. The mission is further supported by other MoES bodies – Indian National Centre for Ocean Information Services, National Centre for Polar and Ocean Research and National Institute of Ocean Technology.&nbsp; <a href=\"https://www.pib.gov.in/PressReleasePage.aspx?PRID=2258435&amp;reg=3&amp;lang=1\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; IITM Pune (operating under ‘Mission Mausam’) established a state-of-the-art “Urban Testbed and Aerosol Observatory”<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; At SRM Institute of Science and Technology (SRMIST) in Ramapuram, Chennai<br><br>•&nbsp; Dr M. Ravichandran (Secretary of MoES) – inaugurated lab &amp; ‘Centre for Atmospheric Science Research and Innovation<br><br>•&nbsp; Mission Mausam – approved by GoI in 2024&nbsp; |&nbsp; Outlay – Rs 2,000 Cr over next 2 years<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; To enhance India’s ability to predict &amp; respond to extreme weather events &amp; impacts of climate change<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Being implemented by – IMD, IITM &amp; National Centre for Medium-Range Weather Forecasting<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; Supported by other MoES bodies – Indian National Centre for Ocean Information Services, NCPOR &amp; NIOT</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>In May 2026, during a bilateral meeting held in New Delhi, India and which country signed two key agreements to strengthen cooperation in health research and quantum technologies?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>मई 2026 में, नई दिल्ली में आयोजित एक द्विपक्षीय बैठक के दौरान, भारत और किस देश ने स्वास्थ्य अनुसंधान और क्वांटम प्रौद्योगिकियों में सहयोग को मजबूत करने के लिए दो प्रमुख समझौतों पर हस्ताक्षर किए?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Japan</p></span><span class=\"hqt\"><p>जापान</p></span>",
+      "<span class=\"eqt\"><p>South Korea</p></span><span class=\"hqt\"><p>दक्षिण कोरिया</p></span>",
+      "<span class=\"eqt\"><p>Singapore</p></span><span class=\"hqt\"><p>सिंगापुर</p></span>",
+      "<span class=\"eqt\"><p>Germany</p></span><span class=\"hqt\"><p>जर्मनी</p></span>",
+      "<span class=\"eqt\"><p>France</p></span><span class=\"hqt\"><p>फ़्रांस</p></span>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">India and Japan signed two key agreements in New Delhi to strengthen cooperation in health research and quantum technologies, further deepening their strategic partnership in science, technology and innovation. The agreements were exchanged during a high-level bilateral meeting between Union Minister of State (Independent Charge) for Science and Technology Dr Jitendra Singh and Japan’s Minister for Science and Technology Policy and Minister of State for Space Policy, Onoda Kimi, who was on a visit to India with a high-level delegation. A Memorandum of Cooperation (MoC) in the field of health and medical devices was exchanged among the Japan Agency for Medical Research and Development (AMED), the Indian Council of Medical Research (ICMR) and the Department of Science and Technology (DST). A Letter of Intent (LoI) on cooperation in Quantum Science and Technology was signed between the Cabinet Office of Japan and DST, opening new avenues for collaboration in next-generation technologies such as quantum computing and secure communication systems. Both countries discussed strengthening collaboration under India’s “National Quantum Mission (NQM)”. The NQM, approved with a Rs 6003.65 crore budget (2023-2031), aims to develop 50-1,000 qubit quantum computers, satellite-based secure communication, and high-precision quantum sensors/materials.&nbsp; <a href=\"https://aninews.in/news/business/india-japan-sign-agreements-in-quantum-technology-health-research-cooperation20260506182627/\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; India + Japan – signed two key agreements to strengthen cooperation in health research and quantum technologies<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; during bilateral meeting in New Delhi<br><br>•&nbsp; Health Cooperation – MoC exchanged between AMED (Japan), ICMR (India), and DST (India)<br><br>•&nbsp; Quantum Cooperation – LoI signed between Japan’s Cabinet Office and DST<br><br>•&nbsp; Both countries discussed strengthening collaboration under India’s “National Quantum Mission (NQM)”<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; NQM: approved with a Rs 6003.65 Cr budget (2023-2031)<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">Japan – Tokyo – Yen&nbsp; |&nbsp; PM – Sanae Takaichi</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">India and Japan signed two key agreements in New Delhi to strengthen cooperation in health research and quantum technologies, further deepening their strategic partnership in science, technology and innovation. The agreements were exchanged during a high-level bilateral meeting between Union Minister of State (Independent Charge) for Science and Technology Dr Jitendra Singh and Japan’s Minister for Science and Technology Policy and Minister of State for Space Policy, Onoda Kimi, who was on a visit to India with a high-level delegation. A Memorandum of Cooperation (MoC) in the field of health and medical devices was exchanged among the Japan Agency for Medical Research and Development (AMED), the Indian Council of Medical Research (ICMR) and the Department of Science and Technology (DST). A Letter of Intent (LoI) on cooperation in Quantum Science and Technology was signed between the Cabinet Office of Japan and DST, opening new avenues for collaboration in next-generation technologies such as quantum computing and secure communication systems. Both countries discussed strengthening collaboration under India’s “National Quantum Mission (NQM)”. The NQM, approved with a Rs 6003.65 crore budget (2023-2031), aims to develop 50-1,000 qubit quantum computers, satellite-based secure communication, and high-precision quantum sensors/materials.&nbsp; <a href=\"https://aninews.in/news/business/india-japan-sign-agreements-in-quantum-technology-health-research-cooperation20260506182627/\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; India + Japan – signed two key agreements to strengthen cooperation in health research and quantum technologies<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; during bilateral meeting in New Delhi<br><br>•&nbsp; Health Cooperation – MoC exchanged between AMED (Japan), ICMR (India), and DST (India)<br><br>•&nbsp; Quantum Cooperation – LoI signed between Japan’s Cabinet Office and DST<br><br>•&nbsp; Both countries discussed strengthening collaboration under India’s “National Quantum Mission (NQM)”<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; NQM: approved with a Rs 6003.65 Cr budget (2023-2031)<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">Japan – Tokyo – Yen&nbsp; |&nbsp; PM – Sanae Takaichi</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>Robert Edward Turner III, popularly known as Ted Turner, who passed away recently, was best known as the founder of which of the following global news networks?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>रॉबर्ट एडवर्ड टर्नर III, जिन्हें टेड टर्नर के नाम से जाना जाता है, जिनका हाल ही में निधन हो गया, उन्हें निम्नलिखित में से किस वैश्विक समाचार नेटवर्क के संस्थापक के रूप में जाना जाता था?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>BBC World News</p></span><span class=\"hqt\"><p>BBC World News</p></span>",
+      "<span class=\"eqt\"><p>Fox News</p></span><span class=\"hqt\"><p>Fox News</p></span>",
+      "<span class=\"eqt\"><p>Bloomberg Television</p></span><span class=\"hqt\"><p>Bloomberg Television</p></span>",
+      "<span class=\"eqt\"><p>CNN</p></span><span class=\"hqt\"><p>CNN</p></span>",
+      "<span class=\"eqt\"><p>None of these</p></span><span class=\"hqt\"><p>इनमें से कोई नहीं</p></span>"
+    ],
+    "correct_option_id": 3,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">Robert Edward Turner III (Ted Turner) – CNN Founder &amp; Philanthropist – passed away<br><br>(He donated approx $1 billion to United Nations initiatives &amp; founded the UN Foundation.)</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">Robert Edward Turner III (Ted Turner) – CNN Founder &amp; Philanthropist – passed away<br><br>(He donated approx $1 billion to United Nations initiatives &amp; founded the UN Foundation.)</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>Which portal was launched by Union Minister for Health and Family Welfare Jagat Prakash Nadda during the 10<sup>th</sup> ‘National Summit on Innovation and Inclusivity: Best Practices Shaping India’s Health Future’ held in Chandigarh?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>चंडीगढ़ में आयोजित 10वें 'नवाचार और समावेशिता पर राष्ट्रीय शिखर सम्मेलन: भारत के स्वास्थ्य भविष्य को आकार देने वाली सर्वोत्तम प्रथाएं' के दौरान केंद्रीय स्वास्थ्य और परिवार कल्याण मंत्री जगत प्रकाश नड्डा ने कौन सा पोर्टल लॉन्च किया?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Ayushman India Connect Portal</p></span><span class=\"hqt\"><p>Ayushman India Connect Portal</p></span>",
+      "<span class=\"eqt\"><p>Swasth Bharat Portal</p></span><span class=\"hqt\"><p>Swasth Bharat Portal</p></span>",
+      "<span class=\"eqt\"><p>National Health Innovation Portal</p></span><span class=\"hqt\"><p>National Health Innovation Portal</p></span>",
+      "<span class=\"eqt\"><p>Swasthya Setu Portal</p></span><span class=\"hqt\"><p>Swasthya Setu Portal</p></span>",
+      "<span class=\"eqt\"><p>Digital Health Access Portal</p></span><span class=\"hqt\"><p>Digital Health Access Portal</p></span>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">Union Minister for Health and Family Welfare Jagat Prakash Nadda launched the “Swasth Bharat Portal” during the 10<sup>th</sup> ‘National Summit on Innovation and Inclusivity: Best Practices Shaping India’s Health Future’ held in Chandigarh, marking a significant milestone in India’s healthcare digital transformation. Developed by the Ministry of Health and Family Welfare (MoHFW), the portal is a one-stop aggregator platform that integrates multiple digital applications developed under various national health programmes through an API-based federated architecture, addressing the long-standing challenge of siloed systems where multiple programme-specific platforms operated independently, leading to duplication of efforts, fragmented datasets, repeated data entry, and sub-optimal utilisation of resources. The portal brings multiple national health programmes onto a single interface, eliminating the need for multiple logins. The system is compliant with the ‘Ayushman Bharat Digital Mission (ABDM)’ and supports integration with the ‘Ayushman Bharat Health Account (ABHA)’, enabling seamless and secure exchange of patient health records. It is designed to evolve into a comprehensive and interoperable digital health ecosystem, further integrating with national registries such as the Healthcare Professionals Registry (HPR) and Health Facility Registry (HFR).&nbsp; <a href=\"https://health.economictimes.indiatimes.com/news/health-it/swasth-bharat-portal-launched-to-integrate-multiple-digital-health-systems/130876299\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; JP Nadda – launched “Swasth Bharat Portal”<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; during 10<sup>th</sup> ‘National Summit on Innovation &amp; Inclusivity: Best Practices Shaping India’s Health Future’ in Chandigarh<br><br>•&nbsp; Developed by – Ministry of Health and Family Welfare (MoHFW)<br><br>•&nbsp; The portal brings multiple national health programmes onto a single interface, eliminating the need for multiple logins<br><br>•&nbsp; The system is compliant with ‘Ayushman Bharat Digital Mission (ABDM)’ and supports integration with ‘ABHA’<br><br>•&nbsp; It also integrates with national registries such as Healthcare Professionals Registry (HPR) &amp; Health Facility Registry (HFR)<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">Minister of Health &amp; Family Welfare: Jagat Prakash Nadda&nbsp; |&nbsp; Constituency – Gujarat</span><br><br><span style=\"color:rgb(31,73,125);\">MoS in Ministry of Health &amp; Family Welfare: Jadhav Prataprao Ganpatrao &amp; Anupriya Singh Patel</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">Union Minister for Health and Family Welfare Jagat Prakash Nadda launched the “Swasth Bharat Portal” during the 10<sup>th</sup> ‘National Summit on Innovation and Inclusivity: Best Practices Shaping India’s Health Future’ held in Chandigarh, marking a significant milestone in India’s healthcare digital transformation. Developed by the Ministry of Health and Family Welfare (MoHFW), the portal is a one-stop aggregator platform that integrates multiple digital applications developed under various national health programmes through an API-based federated architecture, addressing the long-standing challenge of siloed systems where multiple programme-specific platforms operated independently, leading to duplication of efforts, fragmented datasets, repeated data entry, and sub-optimal utilisation of resources. The portal brings multiple national health programmes onto a single interface, eliminating the need for multiple logins. The system is compliant with the ‘Ayushman Bharat Digital Mission (ABDM)’ and supports integration with the ‘Ayushman Bharat Health Account (ABHA)’, enabling seamless and secure exchange of patient health records. It is designed to evolve into a comprehensive and interoperable digital health ecosystem, further integrating with national registries such as the Healthcare Professionals Registry (HPR) and Health Facility Registry (HFR).&nbsp; <a href=\"https://health.economictimes.indiatimes.com/news/health-it/swasth-bharat-portal-launched-to-integrate-multiple-digital-health-systems/130876299\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; JP Nadda – launched “Swasth Bharat Portal”<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; during 10<sup>th</sup> ‘National Summit on Innovation &amp; Inclusivity: Best Practices Shaping India’s Health Future’ in Chandigarh<br><br>•&nbsp; Developed by – Ministry of Health and Family Welfare (MoHFW)<br><br>•&nbsp; The portal brings multiple national health programmes onto a single interface, eliminating the need for multiple logins<br><br>•&nbsp; The system is compliant with ‘Ayushman Bharat Digital Mission (ABDM)’ and supports integration with ‘ABHA’<br><br>•&nbsp; It also integrates with national registries such as Healthcare Professionals Registry (HPR) &amp; Health Facility Registry (HFR)<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">Minister of Health &amp; Family Welfare: Jagat Prakash Nadda&nbsp; |&nbsp; Constituency – Gujarat</span><br><br><span style=\"color:rgb(31,73,125);\">MoS in Ministry of Health &amp; Family Welfare: Jadhav Prataprao Ganpatrao &amp; Anupriya Singh Patel</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>Which regulatory body issued advisory for regulated financial entities on emerging cybersecurity risks from advanced AI tools like ‘Mythos’ used for vulnerability detection?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>किस नियामक संस्था ने भेद्यता का पता लगाने के लिए उपयोग किए जाने वाले 'माइथोस' जैसे उन्नत AI उपकरणों से उभरते साइबर सुरक्षा जोखिमों पर विनियमित वित्तीय संस्थाओं के लिए सलाह जारी की?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>RBI</p></span><span class=\"hqt\"><p>RBI</p></span>",
+      "<span class=\"eqt\"><p>NABARD</p></span><span class=\"hqt\"><p>NABARD</p></span>",
+      "<span class=\"eqt\"><p>PFRDA</p></span><span class=\"hqt\"><p>PFRDA</p></span>",
+      "<span class=\"eqt\"><p>IRDAI</p></span><span class=\"hqt\"><p>IRDAI</p></span>",
+      "<span class=\"eqt\"><p>SEBI</p></span><span class=\"hqt\"><p>SEBI</p></span>"
+    ],
+    "correct_option_id": 4,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">The Securities and Exchange Board of India (SEBI) has issued an advisory for regulated financial entities about emerging cybersecurity risks arising from advanced AI tools used for vulnerability detection, including systems similar to ‘Mythos’. In addition, SEBI has also constituted a dedicated task force named “cyber-suraksha.ai”, bringing together representatives from market infrastructure institutions, regulated entities, clearing corporations, depositories, stock exchanges, and other stakeholders. The group has been tasked with examining cybersecurity risks linked to AI-based systems, developing uniform mitigation strategies, sharing threat intelligence, and reviewing vulnerabilities and cyber incidents across the securities market ecosystem. It will also assess the cybersecurity posture of third-party vendors and application service providers. Alongside the advisory, SEBI outlined a set of security expectations for regulated entities and their service providers. It also emphasized the importance of real-time monitoring through security operations centers, improved automated response systems, and faster onboarding into centralized market cybersecurity infrastructure operated by exchanges. The advisory further calls for periodic risk assessments that include scenario testing for cyber threats, the adoption of secure system configurations, and the implementation of advanced security architectures such as Zero Trust models. It also requires regulated entities to maintain updated inventories of critical systems and software components.&nbsp; <a href=\"https://www.moneycontrol.com/news/business/markets/sebi-sets-up-task-force-to-tackle-ai-driven-cyber-threats-2-13910458.html\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; SEBI – issued advisory for regulated financial entities on emerging cybersecurity risks from advanced AI tools like ‘Mythos’ used for vulnerability detection<br><br>•&nbsp; “cyber-suraksha.ai” task force is constituted to examine AI-based cybersecurity risks &amp; develop mitigation strategies<br><br>•&nbsp; Key Responsibilities – Develop mitigation strategies, share threat intelligence, review vulnerabilities and cyber incidents, assess third-party vendor cybersecurity posture<br><br>•&nbsp; Security Expectations – Real-time monitoring through security operations centers | Improved automated response systems | Faster onboarding into centralized market cybersecurity infrastructure<br><br>•&nbsp; Periodic Risk Assessments – Scenario testing for cyber threats | Adoption of secure system configurations | Implementation of advanced security architectures (e.g., Zero Trust models)<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of SEBI – Mumbai, Maharashtra&nbsp; |&nbsp; Chairman – Tuhin Kanta Pandey&nbsp; |&nbsp; Established in – 1992</span></div></span><span class=\"hqt\"><div style=\"text-align:justify;\">The Securities and Exchange Board of India (SEBI) has issued an advisory for regulated financial entities about emerging cybersecurity risks arising from advanced AI tools used for vulnerability detection, including systems similar to ‘Mythos’. In addition, SEBI has also constituted a dedicated task force named “cyber-suraksha.ai”, bringing together representatives from market infrastructure institutions, regulated entities, clearing corporations, depositories, stock exchanges, and other stakeholders. The group has been tasked with examining cybersecurity risks linked to AI-based systems, developing uniform mitigation strategies, sharing threat intelligence, and reviewing vulnerabilities and cyber incidents across the securities market ecosystem. It will also assess the cybersecurity posture of third-party vendors and application service providers. Alongside the advisory, SEBI outlined a set of security expectations for regulated entities and their service providers. It also emphasized the importance of real-time monitoring through security operations centers, improved automated response systems, and faster onboarding into centralized market cybersecurity infrastructure operated by exchanges. The advisory further calls for periodic risk assessments that include scenario testing for cyber threats, the adoption of secure system configurations, and the implementation of advanced security architectures such as Zero Trust models. It also requires regulated entities to maintain updated inventories of critical systems and software components.&nbsp; <a href=\"https://www.moneycontrol.com/news/business/markets/sebi-sets-up-task-force-to-tackle-ai-driven-cyber-threats-2-13910458.html\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; SEBI – issued advisory for regulated financial entities on emerging cybersecurity risks from advanced AI tools like ‘Mythos’ used for vulnerability detection<br><br>•&nbsp; “cyber-suraksha.ai” task force is constituted to examine AI-based cybersecurity risks &amp; develop mitigation strategies<br><br>•&nbsp; Key Responsibilities – Develop mitigation strategies, share threat intelligence, review vulnerabilities and cyber incidents, assess third-party vendor cybersecurity posture<br><br>•&nbsp; Security Expectations – Real-time monitoring through security operations centers | Improved automated response systems | Faster onboarding into centralized market cybersecurity infrastructure<br><br>•&nbsp; Periodic Risk Assessments – Scenario testing for cyber threats | Adoption of secure system configurations | Implementation of advanced security architectures (e.g., Zero Trust models)<br><br>•&nbsp; <span style=\"color:rgb(31,73,125);\">HQs of SEBI – Mumbai, Maharashtra&nbsp; |&nbsp; Chairman – Tuhin Kanta Pandey&nbsp; |&nbsp; Established in – 1992</span></div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>The Indian Institute of Technology Madras (IIT Madras) Global Research Foundation (IITM Global) has established its first centre in the United States at Menlo Park, California, in partnership with which company, as announced during the ‘SelectUSA Investment Summit’ held in National Harbor, Maryland?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>नेशनल हार्बर, मैरीलैंड में आयोजित 'सेलेक्टयूएसए इन्वेस्टमेंट समिट' के दौरान घोषणा के अनुसार, भारतीय प्रौद्योगिकी संस्थान मद्रास (IIT&nbsp;मद्रास) ग्लोबल रिसर्च फाउंडेशन (IITM&nbsp;ग्लोबल) ने किस कंपनी के साथ साझेदारी में संयुक्त राज्य अमेरिका में मेनलो पार्क, कैलिफोर्निया में अपना पहला केंद्र स्थापित किया है?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Techstars</p></span><span class=\"hqt\"><p>Techstars</p></span>",
+      "<span class=\"eqt\"><p>Y Combinator</p></span><span class=\"hqt\"><p>Y Combinator</p></span>",
+      "<span class=\"eqt\"><p>500 Global</p></span><span class=\"hqt\"><p>500 Global</p></span>",
+      "<span class=\"eqt\"><p>CA Startups</p></span><span class=\"hqt\"><p>CA Startups</p></span>",
+      "<span class=\"eqt\"><p>Plug and Play Tech Center</p></span><span class=\"hqt\"><p>Plug and Play Tech Center</p></span>"
+    ],
+    "correct_option_id": 3,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">The Indian Institute of Technology Madras (IIT Madras) Global Research Foundation (IITM Global) established its first United States centre in Menlo Park, California, in partnership with CA Startups, announced at the ‘SelectUSA Investment Summit’ in National Harbor, Maryland, marking a pioneering step among Indian Institutes of Technology to take Indian deep-tech research and startups directly into global innovation ecosystems. Strategically positioned near Silicon Valley, the centre is envisioned as a launchpad for Indian deep-tech startups seeking access to global capital, mentorship, markets, and technology partnerships, with a focus on advancing deep-tech research and commercialisation, startup incubation, and international market access. The project involves a total planned investment of $7.5 million, including a $4.5 million greenfield investment from IITM Global for startup incubation and deep-tech research. Prof V. Kamakoti is the Director of IIT Madras and Chairman of IITM Global. &nbsp;<a href=\"https://www.pib.gov.in/PressReleasePage.aspx?PRID=2259046&amp;reg=3&amp;lang=2#:~:text=The%20Indian%20Institute%20of%20Technology,Summit%20on%20May%2006%2C%202026.\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; IIT Madras Global Research Foundation (IITM Global) – established its first US centre in Menlo Park, California<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; in partnership with CA Startups<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; announced at the ‘SelectUSA Investment Summit’ in National Harbor, Maryland<br><br>•&nbsp; The project involves a total planned investment of $7.5 million (including a $4.5 million IITM Global)<br><br>•&nbsp; Prof V. Kamakoti – Director of IIT Madras and Chairman of IITM Global</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">The Indian Institute of Technology Madras (IIT Madras) Global Research Foundation (IITM Global) established its first United States centre in Menlo Park, California, in partnership with CA Startups, announced at the ‘SelectUSA Investment Summit’ in National Harbor, Maryland, marking a pioneering step among Indian Institutes of Technology to take Indian deep-tech research and startups directly into global innovation ecosystems. Strategically positioned near Silicon Valley, the centre is envisioned as a launchpad for Indian deep-tech startups seeking access to global capital, mentorship, markets, and technology partnerships, with a focus on advancing deep-tech research and commercialisation, startup incubation, and international market access. The project involves a total planned investment of $7.5 million, including a $4.5 million greenfield investment from IITM Global for startup incubation and deep-tech research. Prof V. Kamakoti is the Director of IIT Madras and Chairman of IITM Global. &nbsp;<a href=\"https://www.pib.gov.in/PressReleasePage.aspx?PRID=2259046&amp;reg=3&amp;lang=2#:~:text=The%20Indian%20Institute%20of%20Technology,Summit%20on%20May%2006%2C%202026.\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; IIT Madras Global Research Foundation (IITM Global) – established its first US centre in Menlo Park, California<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; in partnership with CA Startups<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; announced at the ‘SelectUSA Investment Summit’ in National Harbor, Maryland<br><br>•&nbsp; The project involves a total planned investment of $7.5 million (including a $4.5 million IITM Global)<br><br>•&nbsp; Prof V. Kamakoti – Director of IIT Madras and Chairman of IITM Global</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>Cape Breton University (CBU), a university based in which country, signed 3 MoUs with Indian institutions during a multi-city outreach programme conducted from April 27 to May 2, 2026?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>केप ब्रेटन यूनिवर्सिटी (CBU), किस देश में स्थित एक विश्वविद्यालय है, ने 27 अप्रैल से 2 मई, 2026 तक आयोजित एक बहु-शहर आउटरीच कार्यक्रम के दौरान भारतीय संस्थानों के साथ 3 समझौता ज्ञापनों पर हस्ताक्षर किए?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>Australia</p></span><span class=\"hqt\"><p>ऑस्ट्रेलिया</p></span>",
+      "<span class=\"eqt\"><p>United Kingdom</p></span><span class=\"hqt\"><p>यूनाइटेड किंगडम</p></span>",
+      "<span class=\"eqt\"><p>Canada</p></span><span class=\"hqt\"><p>कनाडा</p></span>",
+      "<span class=\"eqt\"><p>New Zealand</p></span><span class=\"hqt\"><p>न्यूज़ीलैंड</p></span>",
+      "<span class=\"eqt\"><p>United States</p></span><span class=\"hqt\"><p>संयुक्त राज्य अमेरिका</p></span>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">Cape Breton University (CBU), a publicly funded institution based in Sydney, Nova Scotia, Canada, signed 3 MoUs with Indian institutions during a multi-city outreach programme spanning New Delhi, Gurugram, Noida, Vadodara, Ahmedabad and Hyderabad from April 27 to May 2, 2026, led by President and Vice-Chancellor David C. Dingwall. The first MoU is a 5-year agreement with BML Munjal University’s School of Engineering and Technology aimed at promoting student and faculty exchange programmes, joint research initiatives, and co-creation of international academic conferences. The second MoU designates the National Education Forum (NEF) as CBU’s official convening partner in India, facilitating structured engagement with central and state governments as well as leading academic institutions to advance student mobility, faculty exchange and joint research. The third MoU formalises a partnership with Lok Jagruti Kendra (LJ) University in Gujarat, while exploratory discussions were also held with Parul University, Navrachna University and the State Council of Educational Research and Training (SCERT), Telangana.&nbsp; <a href=\"https://timesofindia.indiatimes.com/education/news/india-is-a-global-powerhouse-of-talent-canadas-cape-breton-university-signs-mous/articleshow/130815755.cms\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; Cape Breton University (Canada) – signed 3 MoUs with Indian institutions during a multi-city outreach programme<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; in New Delhi, Gurugram, Noida, Vadodara, Ahmedabad &amp; Hyderabad<br><br>•&nbsp; MoU 1 – 5-year agreement with BML Munjal University’s School of Engineering &amp; Tech. for student/faculty exchange<br><br>•&nbsp; MoU 2 – National Education Forum (NEF) designated as CBU’s official convening partner in India<br><br>•&nbsp; MoU 3 – Partnership formalised with Lok Jagruti Kendra (LJ) University in Gujarat</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">Cape Breton University (CBU), a publicly funded institution based in Sydney, Nova Scotia, Canada, signed 3 MoUs with Indian institutions during a multi-city outreach programme spanning New Delhi, Gurugram, Noida, Vadodara, Ahmedabad and Hyderabad from April 27 to May 2, 2026, led by President and Vice-Chancellor David C. Dingwall. The first MoU is a 5-year agreement with BML Munjal University’s School of Engineering and Technology aimed at promoting student and faculty exchange programmes, joint research initiatives, and co-creation of international academic conferences. The second MoU designates the National Education Forum (NEF) as CBU’s official convening partner in India, facilitating structured engagement with central and state governments as well as leading academic institutions to advance student mobility, faculty exchange and joint research. The third MoU formalises a partnership with Lok Jagruti Kendra (LJ) University in Gujarat, while exploratory discussions were also held with Parul University, Navrachna University and the State Council of Educational Research and Training (SCERT), Telangana.&nbsp; <a href=\"https://timesofindia.indiatimes.com/education/news/india-is-a-global-powerhouse-of-talent-canadas-cape-breton-university-signs-mous/articleshow/130815755.cms\" target=\"_blank\">{Read more}</a><br><br><strong>Smart Points:</strong><br><br>•&nbsp; Cape Breton University (Canada) – signed 3 MoUs with Indian institutions during a multi-city outreach programme<br><br>&nbsp;&nbsp;&nbsp;–&nbsp; in New Delhi, Gurugram, Noida, Vadodara, Ahmedabad &amp; Hyderabad<br><br>•&nbsp; MoU 1 – 5-year agreement with BML Munjal University’s School of Engineering &amp; Tech. for student/faculty exchange<br><br>•&nbsp; MoU 2 – National Education Forum (NEF) designated as CBU’s official convening partner in India<br><br>•&nbsp; MoU 3 – Partnership formalised with Lok Jagruti Kendra (LJ) University in Gujarat</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  },
+  {
+    "question": "<span class=\"eqt\"><div style=\"text-align:justify;\"><strong>In May 2026, what were the projected GDP growth rates for India for FY26 and FY27, respectively, as per S&amp;P Global?</strong></div></span><span class=\"hqt\"><div style=\"text-align:justify;\"><strong>मई 2026 में, S&amp;P Global के अनुसार, क्रमशः FY26 और FY27 के लिए भारत की अनुमानित GDP वृद्धि दर क्या थी?</strong></div></span>",
+    "comp": "",
+    "options": [
+      "<span class=\"eqt\"><p>7.2% and 6.8%</p></span><span class=\"hqt\"><p>7.2% और 6.8%</p></span>",
+      "<span class=\"eqt\"><p>7.4% and 6.5%</p></span><span class=\"hqt\"><p>7.4% और 6.5%</p></span>",
+      "<span class=\"eqt\"><p>7.8% and 6.9%</p></span><span class=\"hqt\"><p>7.8% और 6.9%</p></span>",
+      "<span class=\"eqt\"><p>7.0% and 6.0%</p></span><span class=\"hqt\"><p>7.0% और 6.0%</p></span>",
+      "<span class=\"eqt\"><p>7.6% and 6.6%</p></span><span class=\"hqt\"><p>7.6% और 6.6%</p></span>"
+    ],
+    "correct_option_id": 4,
+    "solution": "<span class=\"eqt\"><div style=\"text-align:justify;\">India’s GDP predicted by S&amp;P Global – 7.6% for FY26&nbsp; &amp;&nbsp; 6.6% for FY27</div></span><span class=\"hqt\"><div style=\"text-align:justify;\">India’s GDP predicted by S&amp;P Global – 7.6% for FY26&nbsp; &amp;&nbsp; 6.6% for FY27</div></span>",
+    "marks": 1.0,
+    "section": "General Awareness",
+    "series_name": ""
+  }
+];
+        const sectionsData = null;
+        const marksPerQ = 1.0;
+        const negMarks = 0.25;
+        const totalDuration = 8;
+        
+        class CBTExam {
+            constructor() {
+                this.questions = questions;
+                this.sections = sectionsData;
+                this.currentQuestion = 0;
+                this.answers = new Array(this.questions.length).fill(null);
+                this.markedForReview = new Array(this.questions.length).fill(false);
+                this.timeSpent = new Array(this.questions.length).fill(0);
+                this.isEnglish = true;
+                this.isSubmitted = false;
+                this.startTime = null;
+                this.lastQuestionTime = null;
+                this.mainTimer = null;
+                this.sectionTimer = null;
+                this.currentSection = this.sections ? 0 : null;
+                this.totalTimeLeft = totalDuration * 60;
+                
+                this.initElements();
+                this.setupWelcomeScreen();
+                this.setupBeforeUnload();
+            }
+            
+            initElements() {
+                this.els = {
+                    welcomeScreen: document.getElementById('welcomeScreen'),
+                    examContainer: document.getElementById('examContainer'),
+                    mainTimer: document.getElementById('mainTimer'),
+                    sectionBadge: document.getElementById('sectionBadge'),
+                    sectionName: document.getElementById('sectionName'),
+                    sectionTimer: document.getElementById('sectionTimer'),
+                    questionNum: document.getElementById('questionNum'),
+                    questionMarks: document.getElementById('questionMarks'),
+                    questionText: document.getElementById('questionText'),
+                    comprehension: document.getElementById('comprehension'),
+                    comprehensionText: document.getElementById('comprehensionText'),
+                    optionsList: document.getElementById('optionsList'),
+                    solutionBox: document.getElementById('solutionBox'),
+                    solutionStats: document.getElementById('solutionStats'),
+                    solutionText: document.getElementById('solutionText'),
+                    progressText: document.getElementById('progressText'),
+                    answeredCount: document.getElementById('answeredCount'),
+                    desktopNav: document.getElementById('desktopNav'),
+                    mobileNav: document.getElementById('mobileNav'),
+                    mobileNavGrid: document.getElementById('mobileNavGrid'),
+                    resultModal: document.getElementById('resultModal'),
+                    resultScore: document.getElementById('resultScore'),
+                    correctCount: document.getElementById('correctCount'),
+                    incorrectCount: document.getElementById('incorrectCount'),
+                    unattemptedCount: document.getElementById('unattemptedCount'),
+                    timeTaken: document.getElementById('timeTaken'),
+                    sectionResults: document.getElementById('sectionResults'),
+                    sectionResultsBody: document.getElementById('sectionResultsBody')
+                };
+            }
+            
+            setupWelcomeScreen() {
+                document.getElementById('startBtn').addEventListener('click', () => {
+                    this.els.welcomeScreen.classList.add('hidden');
+                    this.els.examContainer.classList.add('active');
+                    setTimeout(() => this.startExam(), 100);
+                });
+            }
+            
+            setupBeforeUnload() {
+                window.addEventListener('beforeunload', (e) => {
+                    if (!this.isSubmitted) {
+                        e.preventDefault();
+                        e.returnValue = 'Your test is in progress. Are you sure you want to leave?';
+                        return e.returnValue;
+                    }
+                });
+            }
+            
+            startExam() {
+                this.startTime = Date.now();
+                this.lastQuestionTime = this.startTime;
+                this.createNavigator();
+                this.startMainTimer();
+                if (this.sections) {
+                    this.startSectionTimer();
+                    this.updateSectionInfo();
+                }
+                this.loadQuestion(0);
+                this.setupEventListeners();
+            }
+            
+            setupEventListeners() {
+                document.getElementById('engBtn').onclick = () => this.setLanguage(true);
+                document.getElementById('hinBtn').onclick = () => this.setLanguage(false);
+                document.getElementById('prevBtn').onclick = () => this.navigate(-1);
+                document.getElementById('nextBtn').onclick = () => this.navigate(1);
+                document.getElementById('reviewBtn').onclick = () => this.toggleReview();
+                document.getElementById('submitBtn').onclick = () => this.confirmSubmit();
+                document.getElementById('submitBtnDesktop').onclick = () => this.confirmSubmit();
+                document.getElementById('navigatorBtn').onclick = () => this.openMobileNav();
+                document.getElementById('closeNav').onclick = () => this.closeMobileNav();
+                document.getElementById('closeResult').onclick = () => this.closeResultModal();
+                document.getElementById('reviewAnswers').onclick = () => this.reviewAnswers();
+            }
+            
+            createNavigator() {
+                [this.els.desktopNav, this.els.mobileNavGrid].forEach(container => {
+                    container.innerHTML = '';
+                    this.questions.forEach((_, i) => {
+                        const btn = document.createElement('div');
+                        btn.className = 'nav-question';
+                        btn.textContent = i + 1;
+                        btn.onclick = () => this.goToQuestion(i);
+                        container.appendChild(btn);
+                    });
+                });
+            }
+            
+            extractText(html, isEng) {
+                if (!html) return '';
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                
+                const langSpans = temp.querySelectorAll('span.eqt, span.hqt');
+                langSpans.forEach(span => {
+                    if ((isEng && span.classList.contains('hqt')) || 
+                        (!isEng && span.classList.contains('eqt'))) {
+                        span.style.display = 'none';
+                    } else {
+                        span.style.display = '';
+                    }
+                });
+                
+                return temp.innerHTML;
+            }
+            
+            getQuestionMarks(qIdx) {
+                if (!this.sections) return marksPerQ;
+                
+                for (const section of this.sections) {
+                    if (qIdx >= section.start && qIdx <= section.end) {
+                        if (section.subsections) {
+                            for (const subsec of section.subsections) {
+                                if (qIdx >= subsec.start && qIdx <= subsec.end) {
+                                    return subsec.marks_per_q;
+                                }
+                            }
+                        }
+                        return marksPerQ;
+                    }
+                }
+                return marksPerQ;
+            }
+            
+            loadQuestion(idx) {
+                if (this.currentQuestion !== idx) {
+                    const now = Date.now();
+                    this.timeSpent[this.currentQuestion] += (now - this.lastQuestionTime) / 1000;
+                    this.lastQuestionTime = now;
+                }
+                
+                this.currentQuestion = idx;
+                const q = this.questions[idx];
+                const qMarks = this.getQuestionMarks(idx);
+                
+                this.els.questionNum.textContent = `Question ${idx + 1} of ${this.questions.length}`;
+                this.els.questionMarks.textContent = `Marks: ${qMarks}`;
+                this.els.progressText.textContent = `Question ${idx + 1} of ${this.questions.length}`;
+                this.updateAnsweredCount();
+                this.updateNavigator();
+                this.updateNavigationButtons();
+                this.updateReviewButton();
+                
+                if (q.comp) {
+                    this.els.comprehension.style.display = 'block';
+                    this.els.comprehensionText.innerHTML = this.extractText(q.comp, this.isEnglish);
+                } else {
+                    this.els.comprehension.style.display = 'none';
+                }
+                
+                this.els.questionText.innerHTML = this.extractText(q.question, this.isEnglish);
+                this.loadOptions(q, idx);
+                
+                if (this.isSubmitted && q.solution) {
+                    const timeSpent = Math.round(this.timeSpent[idx]);
+                    const mins = Math.floor(timeSpent / 60);
+                    const secs = timeSpent % 60;
+                    const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+                    
+                    this.els.solutionStats.innerHTML = `
+                        <span><i class="fas fa-clock"></i> Time: ${timeStr}</span>
+                        <span><i class="fas fa-check-circle"></i> Correct: ${String.fromCharCode(65 + q.correct_option_id)}</span>
+                    `;
+                    this.els.solutionText.innerHTML = this.extractText(q.solution, this.isEnglish);
+                    this.els.solutionBox.classList.add('show');
+                } else {
+                    this.els.solutionBox.classList.remove('show');
+                }
+                
+                // Render LaTeX in all updated elements
+                renderMath(this.els.questionText);
+                renderMath(this.els.comprehensionText);
+                renderMath(this.els.solutionText);
+            }
+            
+            loadOptions(q, qIdx) {
+                this.els.optionsList.innerHTML = '';
+                const userAnswer = this.answers[qIdx];
+                const correctAnswer = q.correct_option_id;
+                
+                if (!q.options || !Array.isArray(q.options)) return;
+                
+                q.options.forEach((opt, i) => {
+                    const div = document.createElement('div');
+                    let className = 'option';
+                    
+                    if (this.isSubmitted) className += ' submitted';
+                    if (userAnswer === i) className += ' selected';
+                    
+                    if (this.isSubmitted && correctAnswer !== undefined) {
+                        if (i === correctAnswer) {
+                            className += ' correct';
+                        } else if (userAnswer === i && userAnswer !== correctAnswer) {
+                            className += ' wrong';
+                        }
+                    }
+                    
+                    div.className = className;
+                    
+                    let indicator = '';
+                    if (this.isSubmitted && correctAnswer !== undefined) {
+                        if (i === correctAnswer) {
+                            indicator = '✓';
+                        } else if (userAnswer === i) {
+                            indicator = '✗';
+                        }
+                    } else if (userAnswer === i) {
+                        indicator = '✓';
+                    }
+                    
+                    div.innerHTML = `
+                        <div class="option-indicator">${indicator}</div>
+                        <div class="option-text">${this.extractText(opt, this.isEnglish)}</div>
+                    `;
+                    
+                    if (!this.isSubmitted) {
+                        div.onclick = () => this.selectOption(i, qIdx);
+                    }
+                    
+                    this.els.optionsList.appendChild(div);
+                });
+                // Render LaTeX in options
+                renderMath(this.els.optionsList);
+            }
+            
+            selectOption(optIdx, qIdx) {
+                if (this.isSubmitted) return;
+                this.answers[qIdx] = this.answers[qIdx] === optIdx ? null : optIdx;
+                this.loadOptions(this.questions[qIdx], qIdx);
+                this.updateAnsweredCount();
+                this.updateNavigator();
+            }
+            
+            toggleReview() {
+                if (this.isSubmitted) return;
+                this.markedForReview[this.currentQuestion] = !this.markedForReview[this.currentQuestion];
+                this.updateNavigator();
+                this.updateReviewButton();
+            }
+            
+            updateReviewButton() {
+                const btn = document.getElementById('reviewBtn');
+                if (this.markedForReview[this.currentQuestion]) {
+                    btn.classList.add('marked');
+                    btn.innerHTML = '<i class="fas fa-flag"></i> Marked';
+                } else {
+                    btn.classList.remove('marked');
+                    btn.innerHTML = '<i class="fas fa-flag"></i> Mark for Review';
+                }
+            }
+            
+            navigate(dir) {
+                const newIdx = this.currentQuestion + dir;
+                
+                if (this.isSubmitted) {
+                    if (newIdx >= 0 && newIdx < this.questions.length) {
+                        this.loadQuestion(newIdx);
+                    }
+                    return;
+                }
+                
+                if (this.sections) {
+                    const currentSection = this.sections[this.currentSection];
+                    if (newIdx < currentSection.start || newIdx > currentSection.end) {
+                        return;
+                    }
+                }
+                
+                if (newIdx >= 0 && newIdx < this.questions.length) {
+                    this.loadQuestion(newIdx);
+                }
+            }
+            
+            goToQuestion(idx) {
+                if (this.isSubmitted) {
+                    this.loadQuestion(idx);
+                    this.closeMobileNav();
+                    return;
+                }
+                
+                if (this.sections) {
+                    const currentSection = this.sections[this.currentSection];
+                    if (idx < currentSection.start || idx > currentSection.end) {
+                        return;
+                    }
+                }
+                
+                this.loadQuestion(idx);
+                this.closeMobileNav();
+            }
+            
+            updateNavigator() {
+                [this.els.desktopNav, this.els.mobileNavGrid].forEach(container => {
+                    const btns = container.querySelectorAll('.nav-question');
+                    btns.forEach((btn, i) => {
+                        btn.className = 'nav-question';
+                        
+                        if (i === this.currentQuestion) {
+                            btn.classList.add('current');
+                        } else if (this.isSubmitted) {
+                            if (this.answers[i] !== null && this.questions[i].correct_option_id !== undefined) {
+                                if (this.answers[i] === this.questions[i].correct_option_id) {
+                                    btn.classList.add('answered');
+                                } else {
+                                    btn.classList.add('wrong');
+                                }
+                            }
+                        } else {
+                            if (this.markedForReview[i]) {
+                                btn.classList.add('review');
+                            } else if (this.answers[i] !== null) {
+                                btn.classList.add('answered');
+                            }
+                            
+                            if (this.sections) {
+                                const currentSection = this.sections[this.currentSection];
+                                if (i < currentSection.start || i > currentSection.end) {
+                                    btn.classList.add('disabled');
+                                }
+                            }
+                        }
+                    });
+                });
+            }
+            
+            updateNavigationButtons() {
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.getElementById('nextBtn');
+                const reviewBtn = document.getElementById('reviewBtn');
+                
+                prevBtn.disabled = this.currentQuestion === 0;
+                nextBtn.disabled = this.currentQuestion === this.questions.length - 1;
+                
+                if (this.isSubmitted) {
+                    reviewBtn.style.display = 'none';
+                } else {
+                    reviewBtn.style.display = 'inline-flex';
+                }
+                
+                if (this.sections && !this.isSubmitted) {
+                    const currentSection = this.sections[this.currentSection];
+                    prevBtn.disabled = prevBtn.disabled || (this.currentQuestion === currentSection.start);
+                    nextBtn.disabled = nextBtn.disabled || (this.currentQuestion === currentSection.end);
+                }
+            }
+            
+            updateAnsweredCount() {
+                const count = this.answers.filter(a => a !== null).length;
+                this.els.answeredCount.textContent = count;
+            }
+            
+            setLanguage(isEng) {
+                this.isEnglish = isEng;
+                document.getElementById('engBtn').classList.toggle('active', isEng);
+                document.getElementById('hinBtn').classList.toggle('active', !isEng);
+                this.loadQuestion(this.currentQuestion);
+            }
+            
+            startMainTimer() {
+                this.mainTimer = setInterval(() => {
+                    this.totalTimeLeft--;
+                    if (this.totalTimeLeft <= 0) {
+                        clearInterval(this.mainTimer);
+                        this.submitTest();
+                        return;
+                    }
+                    const mins = Math.floor(this.totalTimeLeft / 60);
+                    const secs = this.totalTimeLeft % 60;
+                    this.els.mainTimer.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+                }, 1000);
+            }
+            
+            startSectionTimer() {
+                if (!this.sections) return;
+                
+                if (this.sectionTimer) clearInterval(this.sectionTimer);
+                
+                const section = this.sections[this.currentSection];
+                section.time_left = section.timer;
+                
+                this.sectionTimer = setInterval(() => {
+                    section.time_left--;
+                    const mins = Math.floor(section.time_left / 60);
+                    const secs = section.time_left % 60;
+                    this.els.sectionTimer.textContent = ` | ${mins}:${secs.toString().padStart(2, '0')}`;
+                    
+                    if (section.time_left <= 0) {
+                        clearInterval(this.sectionTimer);
+                        this.submitSection();
+                    }
+                }, 1000);
+            }
+            
+            updateSectionInfo() {
+                if (!this.sections) return;
+                const section = this.sections[this.currentSection];
+                this.els.sectionName.textContent = section.name;
+                this.els.sectionBadge.style.display = 'block';
+            }
+            
+            submitSection() {
+                if (!this.sections) return;
+                
+                const section = this.sections[this.currentSection];
+                section.submitted = true;
+                clearInterval(this.sectionTimer);
+                
+                const nextSectionIdx = this.currentSection + 1;
+                if (nextSectionIdx < this.sections.length) {
+                    this.currentSection = nextSectionIdx;
+                    this.startSectionTimer();
+                    this.updateSectionInfo();
+                    this.loadQuestion(this.sections[nextSectionIdx].start);
+                } else {
+                    this.submitTest();
+                }
+                
+                this.updateNavigator();
+            }
+            
+            confirmSubmit() {
+                if (this.sections) {
+                    const section = this.sections[this.currentSection];
+                    const unanswered = this.answers.slice(section.start, section.end + 1)
+                        .filter(a => a === null).length;
+                    
+                    let msg = unanswered > 0 
+                        ? `You have ${unanswered} unanswered questions in this section. Submit anyway?`
+                        : 'Submit this section?';
+                    
+                    if (confirm(msg)) this.submitSection();
+                } else {
+                    const unanswered = this.answers.filter(a => a === null).length;
+                    let msg = unanswered > 0 
+                        ? `You have ${unanswered} unanswered questions. Submit test?`
+                        : 'Submit test?';
+                    
+                    if (confirm(msg)) this.submitTest();
+                }
+            }
+            
+            submitTest() {
+                if (this.isSubmitted) return;
+                
+                const now = Date.now();
+                this.timeSpent[this.currentQuestion] += (now - this.lastQuestionTime) / 1000;
+                
+                this.isSubmitted = true;
+                clearInterval(this.mainTimer);
+                if (this.sectionTimer) clearInterval(this.sectionTimer);
+                
+                document.getElementById('submitBtn').style.display = 'none';
+                document.getElementById('submitBtnDesktop').style.display = 'none';
+                document.getElementById('reviewBtn').style.display = 'none';
+                
+                if (this.sections) {
+                    this.els.sectionBadge.style.display = 'none';
+                }
+                
+                const results = this.calculateResults();
+                this.showResults(results);
+                this.loadQuestion(this.currentQuestion);
+                this.updateNavigator();
+            }
+            
+            calculateResults() {
+                const timeTaken = Math.round((Date.now() - this.startTime) / 60000);
+                let correct = 0, incorrect = 0, unattempted = 0, score = 0;
+                
+                const sectionResults = [];
+                
+                if (this.sections) {
+                    for (const section of this.sections) {
+                        let secCorrect = 0, secIncorrect = 0, secUnattempted = 0, secScore = 0;
+                        const subsecResults = [];
+                        
+                        if (section.subsections) {
+                            for (const subsec of section.subsections) {
+                                let subCorrect = 0, subIncorrect = 0, subUnattempted = 0, subScore = 0;
+                                
+                                for (let i = subsec.start; i <= subsec.end; i++) {
+                                    const userAns = this.answers[i];
+                                    const correctAns = this.questions[i].correct_option_id;
+                                    
+                                    if (userAns === null) {
+                                        subUnattempted++;
+                                    } else if (correctAns !== undefined && userAns === correctAns) {
+                                        subCorrect++;
+                                        subScore += subsec.marks_per_q;
+                                    } else {
+                                        subIncorrect++;
+                                        subScore -= negMarks;
+                                    }
+                                }
+                                
+                                subsecResults.push({
+                                    name: subsec.name,
+                                    attempted: subCorrect + subIncorrect,
+                                    correct: subCorrect,
+                                    incorrect: subIncorrect,
+                                    unattempted: subUnattempted,
+                                    score: Math.max(0, subScore)
+                                });
+                                
+                                secCorrect += subCorrect;
+                                secIncorrect += subIncorrect;
+                                secUnattempted += subUnattempted;
+                                secScore += subScore;
+                            }
+                        } else {
+                            for (let i = section.start; i <= section.end; i++) {
+                                const userAns = this.answers[i];
+                                const correctAns = this.questions[i].correct_option_id;
+                                
+                                if (userAns === null) {
+                                    secUnattempted++;
+                                } else if (correctAns !== undefined && userAns === correctAns) {
+                                    secCorrect++;
+                                    secScore += marksPerQ;
+                                } else {
+                                    secIncorrect++;
+                                    secScore -= negMarks;
+                                }
+                            }
+                        }
+                        
+                        sectionResults.push({
+                            name: section.name,
+                            attempted: secCorrect + secIncorrect,
+                            correct: secCorrect,
+                            incorrect: secIncorrect,
+                            unattempted: secUnattempted,
+                            score: Math.max(0, secScore),
+                            subsections: subsecResults.length > 0 ? subsecResults : null
+                        });
+                        
+                        correct += secCorrect;
+                        incorrect += secIncorrect;
+                        unattempted += secUnattempted;
+                        score += secScore;
+                    }
+                } else {
+                    this.questions.forEach((q, i) => {
+                        const userAns = this.answers[i];
+                        const correctAns = q.correct_option_id;
+                        
+                        if (userAns === null) {
+                            unattempted++;
+                        } else if (correctAns !== undefined && userAns === correctAns) {
+                            correct++;
+                            score += marksPerQ;
+                        } else {
+                            incorrect++;
+                            score -= negMarks;
+                        }
+                    });
+                }
+                
+                return {
+                    score: Math.max(0, score),
+                    correct,
+                    incorrect,
+                    unattempted,
+                    timeTaken,
+                    sectionResults: sectionResults.length > 0 ? sectionResults : null
+                };
+            }
+            
+            showResults(results) {
+                this.els.resultScore.textContent = `${results.score.toFixed(2)}/${this.questions.length * marksPerQ}`;
+                this.els.correctCount.textContent = results.correct;
+                this.els.incorrectCount.textContent = results.incorrect;
+                this.els.unattemptedCount.textContent = results.unattempted;
+                this.els.timeTaken.textContent = results.timeTaken;
+                
+                if (results.sectionResults) {
+                    this.els.sectionResults.style.display = 'block';
+                    this.els.sectionResultsBody.innerHTML = '';
+                    
+                    results.sectionResults.forEach(section => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td><strong>${section.name}</strong></td>
+                            <td>${section.attempted}</td>
+                            <td>${section.correct}</td>
+                            <td>${section.incorrect}</td>
+                            <td><strong>${section.score.toFixed(2)}</strong></td>
+                        `;
+                        this.els.sectionResultsBody.appendChild(row);
+                        
+                        if (section.subsections) {
+                            section.subsections.forEach(subsec => {
+                                const subRow = document.createElement('tr');
+                                subRow.className = 'subsection-row';
+                                subRow.innerHTML = `
+                                    <td>${subsec.name}</td>
+                                    <td>${subsec.attempted}</td>
+                                    <td>${subsec.correct}</td>
+                                    <td>${subsec.incorrect}</td>
+                                    <td>${subsec.score.toFixed(2)}</td>
+                                `;
+                                this.els.sectionResultsBody.appendChild(subRow);
+                            });
+                        }
+                    });
+                } else {
+                    this.els.sectionResults.style.display = 'none';
+                }
+                
+                this.els.resultModal.classList.add('show');
+            }
+            
+            closeResultModal() {
+                this.els.resultModal.classList.remove('show');
+            }
+            
+            reviewAnswers() {
+                this.closeResultModal();
+                this.loadQuestion(0);
+            }
+            
+            openMobileNav() {
+                this.els.mobileNav.classList.add('open');
+            }
+            
+            closeMobileNav() {
+                this.els.mobileNav.classList.remove('open');
+            }
+        }
+        
+        // ── KaTeX auto-render helper ──────────────────────────────────────
+        // Renders any LaTeX found in an element after innerHTML is set.
+        // Handles: \(...\)  \[...\]  $...$  $$...$$
+        function renderMath(el) {
+            if (!el || typeof renderMathInElement === 'undefined') return;
+            try {
+                renderMathInElement(el, {
+                    delimiters: [
+                        {left: '$$',  right: '$$',  display: true},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '$',   right: '$',   display: false},
+                        {left: '\\(', right: '\\)', display: false},
+                    ],
+                    throwOnError: false,
+                    strict: false,
+                });
+            } catch(e) {}
+        }
+
+        // Initialize the exam
+        document.addEventListener('DOMContentLoaded', () => {
+            new CBTExam();
+        });
+    </script>
+</body>
+</html>

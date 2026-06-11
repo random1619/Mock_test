@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#6366f1">
+    <title>devgagan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --info: #06b6d4;
+            
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.8); 
+            --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 8px 24px rgba(0, 0, 0, 0.15);
+            
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        [data-theme="light"] {
+            --bg: #ffffff;  /* Changed from gradient to solid white */
+            --card-bg: #ffffff;  /* Changed from transparent to solid white */
+            --text: #1a202c;
+            --text-secondary: #4a5568;
+            --border: rgba(0, 0, 0, 0.1);  /* Changed to darker border for contrast */
+            --nav-bg: #ffffff; 
+        }
+        
+        [data-theme="dark"] {
+            --bg: #1a1a2e;  /* Changed from gradient to solid dark */
+            --card-bg: #16213e;  /* Changed from transparent to solid dark */
+            --text: #f7fafc;
+            --text-secondary: #a0aec0;
+            --border: rgba(255, 255, 255, 0.1);
+            --nav-bg: #0c0c0c;  /* Changed from transparent to solid dark */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg);
+            z-index: -1;
+        }
+        
+        [data-theme="dark"] .logo {
+            background: none;
+            -webkit-text-fill-color: white; /* White text in dark mode */
+            color: white; /* Fallback */
+            }
+        
+        /* Floating particles animation */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 6s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.3; }
+        }
+        
+        /* Header with glassmorphism */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 20px;
+            z-index: 100;
+            transition: var(--transition);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .menu-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            font-size: 18px;
+        }
+        
+        .menu-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .menu-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .logo {
+            font-weight: 800;
+            font-size: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            font-size: 20px;
+        }
+        
+        
+        .menu-btn, .theme-toggle, .nav-btn.prev, .action-btn.flag {
+            background: var(--card-bg);  /* Solid background */
+            backdrop-filter: none;  /* Remove blur */
+        }
+        .sidebar {
+            background: var(--card-bg);  /* Solid background */
+            backdrop-filter: none;  /* Remove blur */
+        }
+        
+        .theme-toggle:hover {
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: var(--shadow-light);
+        }
+        
+        /* Advanced Timer */
+        .timer-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .timer {
+            background: linear-gradient(135deg, var(--error), #dc2626);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-family: 'Inter', monospace;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: var(--shadow-light);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .timer.warning {
+            animation: pulse 1s infinite;
+        }
+        
+        .timer.critical {
+            animation: shake 0.5s infinite;
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
+        
+        .progress-ring {
+            width: 40px;
+            height: 40px;
+            transform: rotate(-90deg);
+        }
+        
+        .progress-circle {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.3);
+            stroke-width: 3;
+        }
+        
+        .progress-circle.progress {
+            stroke: var(--primary);
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.3s ease;
+        }
+        
+        /* Main Content */
+        .main {
+            margin: 80px 0 100px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .question-container {
+            background: var(--card-bg);  /* Now uses solid color */
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: var(--shadow-heavy);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        .question-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--info));
+            background-size: 200% 100%;
+            animation: gradient-flow 3s linear infinite;
+        }
+        
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .question-number {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 20px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: var(--shadow-light);
+            position: relative;
+        }
+        
+        .question-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+        
+        .question-progress {
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .question-marks {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        
+        .question-text {
+            font-size: 18px;
+            line-height: 1.7;
+            margin-bottom: 32px;
+            color: var(--text);
+            font-weight: 500;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .option {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 20px 24px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text);
+            overflow: hidden;
+        }
+        
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .option:hover::before {
+            left: 100%;
+        }
+        
+        .option:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .option:active {
+            transform: scale(0.98);
+        }
+        
+        .option.selected {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .option.correct {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: var(--success);
+            color: var(--success);
+        }
+        
+        .option.incorrect {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--error);
+            color: var(--error);
+        }
+        
+        .option.disabled {
+            background: rgba(160, 174, 192, 0.1);
+            border-color: var(--text-secondary);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+        }
+        
+        .option-indicator {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        .option.selected .option-indicator {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .option.correct .option-indicator {
+            background: var(--success);
+            color: white;
+        }
+        
+        .option.incorrect .option-indicator {
+            background: var(--error);
+            color: white;
+        }
+        
+        .option:not(.selected):not(.correct):not(.incorrect) .option-indicator {
+            border: 2px solid var(--border);
+        }
+        
+        /* Solution Panel */
+        .solution-panel {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 20px;
+            padding: 24px;
+            margin-top: 24px;
+            backdrop-filter: blur(10px);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .solution-panel.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .solution-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            color: var(--warning);
+            font-weight: 700;
+        }
+        
+        .solution-content {
+            color: var(--text);
+            line-height: 1.6;
+            font-size: 15px;
+        }
+        
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            padding: 16px 20px;
+            z-index: 90;
+        }
+        
+        .nav-content {
+            display: flex;
+            gap: 12px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .nav-btn {
+            flex: 1;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+        
+        .nav-btn:hover::before {
+            left: 100%;
+        }
+        
+        .nav-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .nav-btn.prev {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-btn.next {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .nav-btn:disabled::before {
+            display: none;
+        }
+        
+        /* Question Panel Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-left: 1px solid var(--border);
+            z-index: 200;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-heavy);
+        }
+        
+        .sidebar.open {
+            right: 0;
+        }
+        
+        .sidebar-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .sidebar-title {
+            font-weight: 800;
+            font-size: 20px;
+        }
+        
+        .close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        
+        .sidebar-body {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+        
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+        
+        .question-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        
+        .question-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .question-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .question-btn.current {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .question-btn.answered {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            border-color: var(--success);
+        }
+        
+        .question-btn.correct {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+        
+        .question-btn.incorrect {
+            background: var(--error);
+            color: white;
+            border-color: var(--error);
+        }
+        
+        .question-btn.flagged::after {
+            content: '🚩';
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            font-size: 10px;
+        }
+        
+        /* Legend */
+        .legend {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .legend-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        
+        .legend-dot.current { background: var(--primary); }
+        .legend-dot.answered { background: var(--success); }
+        .legend-dot.unattempted { background: var(--text-secondary); }
+        .legend-dot.flagged { background: var(--warning); }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .action-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+        
+        .action-btn.flag {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        
+        .action-btn.submit {
+            background: linear-gradient(135deg, var(--error), #dc2626);
+            color: white;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-heavy);
+        }
+        
+        .action-btn:active {
+            transform: scale(0.98);
+        }
+        
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 150;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+        
+        .overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Result Modal */
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            max-width: 90vw;
+            width: 480px;
+            z-index: 300;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow-heavy);
+            overflow: hidden;
+        }
+        
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 40px 32px;
+            text-align: center;
+        }
+        
+        .modal-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        
+        .modal-subtitle {
+            opacity: 0.9;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .modal-body {
+            padding: 32px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 20px 16px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            color: var(--text);
+            font-size: 24px;
+            font-weight: 800;
+        }
+        
+        .final-score {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .score-text {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        
+        .percentage-text {
+            opacity: 0.9;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .modal-btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+        
+        .modal-btn.primary {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        
+        .modal-btn.success {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+        }
+        
+        /* Auto-save indicator */
+        .auto-save {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            transform: translateX(100px);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 90;
+        }
+        
+        .auto-save.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 4px;
+            }
+            
+            .main {
+                padding: 16px;
+                margin: 70px 0 90px;
+            }
+            
+            .question-container {
+                padding: 24px 20px;
+            }
+            
+            .question-text {
+                font-size: 16px;
+            }
+            
+            .option {
+                padding: 16px 20px;
+                font-size: 15px;
+            }
+            
+            .nav-content {
+                padding: 0 4px;
+            }
+            
+            .nav-btn {
+                padding: 14px 20px;
+                font-size: 15px;
+            }
+            
+            .modal {
+                width: 95vw;
+                margin: 0 16px;
+            }
+            
+            .questions-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+            }
+            
+            .question-btn {
+                width: 44px;
+                height: 44px;
+            }
+        }
+        
+        /* Touch interactions */
+        @media (hover: none) and (pointer: coarse) {
+            .option:hover {
+                transform: none;
+            }
+            
+            .nav-btn:hover {
+                transform: none;
+            }
+            
+            .question-btn:hover {
+                transform: none;
+            }
+        }
+        
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Focus styles for accessibility */
+        .option:focus,
+        .nav-btn:focus,
+        .question-btn:focus,
+        .menu-btn:focus,
+        .theme-toggle:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <!-- Floating particles background -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Auto-save indicator -->
+    <div class="auto-save" id="autoSave">
+        ✓ Auto-saved
+    </div>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <button class="menu-btn" onclick="toggleSidebar()">
+                    ☰
+                </button>
+                <div class="logo">Mocks Wallah</div>
+            </div>
+            <div class="header-right">
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" aria-label="Toggle theme">
+                    🌙
+                </button>
+                <div class="timer" id="timer">10:00</div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="main">
+        <div class="question-container" id="questionContainer">
+            <div class="question-header">
+                <div class="question-number" id="questionNumber">Q1</div>
+                <div class="question-info">
+                    <div class="question-progress" id="questionProgress">1 of 10</div>
+                    <div class="question-marks">+2.0 / -0.5</div>
+                </div>
+            </div>
+            <div class="question-text" id="questionText"></div>
+            <div class="options-container" id="optionsContainer"></div>
+            <div class="solution-panel" id="solutionPanel">
+                <div class="solution-header">
+                    <span>💡</span>
+                    <span>Solution</span>
+                </div>
+                <div class="solution-content" id="solutionContent"></div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Navigation -->
+    <nav class="navigation">
+        <div class="nav-content">
+            <button class="nav-btn prev" id="prevBtn" onclick="previousQuestion()" disabled>
+                ← Previous
+            </button>
+            <button class="nav-btn next" id="nextBtn" onclick="nextQuestion()">
+                Next →
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">Question Panel</div>
+            <button class="close-btn" onclick="closeSidebar()" aria-label="Close panel">×</button>
+        </div>
+        <div class="sidebar-body">
+            <div class="questions-grid" id="questionsGrid"></div>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-dot current"></div>
+                    <span>Current</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot answered"></div>
+                    <span>Answered</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot unattempted"></div>
+                    <span>Unattempted</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot flagged"></div>
+                    <span>Flagged</span>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn flag" onclick="toggleFlag()" id="flagBtn">
+                    🚩 Flag Question
+                </button>
+                <button class="action-btn submit" onclick="submitTest()">
+                    Submit Test
+                </button>
+            </div>
+        </div>
+    </aside>
+    
+    <!-- Overlay -->
+    <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+    
+    <!-- Result Modal -->
+    <div class="modal" id="resultModal">
+        <div class="modal-header">
+            <div class="modal-title" id="resultTitle">Test Completed!</div>
+            <div class="modal-subtitle" id="resultSubtitle">Great job on completing the test</div>
+        </div>
+        <div class="modal-body">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Correct</div>
+                    <div class="stat-value" id="correctCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Wrong</div>
+                    <div class="stat-value" id="wrongCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Skipped</div>
+                    <div class="stat-value" id="skippedCount">0</div>
+                </div>
+            </div>
+            <div class="final-score">
+                <div class="score-text" id="finalScore">0 Marks</div>
+                <div class="percentage-text" id="finalPercentage">0%</div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn primary" onclick="viewSolutions()">
+                    View Solutions
+                </button>
+                <button class="modal-btn success" onclick="retakeTest()">
+                    Retake Test
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Core Variables
+        const questions = [{"id": "113738", "question": "<strong>Sentences of a paragraph are given below in jumbled order. Arrange the sentences in the correct order to form a meaningful and coherent paragraph.</strong></p> <p>A. The patient who died had been left unattended for days with a broken thigh bone.</p> <p>B. The appalling case at Ludhiana Civil Hospital, where a patient was forced to share a bed with a corpse for over half an hour due to administrative negligence, sheds light on the dire state of healthcare in Punjab.</p> <p>C. The incident underscores the urgent need for comprehensive reforms and increased investment in the health sector.</p> <p>D. Such cases not only compromise patient safety and dignity but also erode public trust in the healthcare system. It is imperative that those responsible for the lapses are held accountable to prevent a repeat of such incidents.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> BDAC", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> CABD", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> BCAD", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> DABC"], "correct_answer": 2, "solution": "C) BCAD\n\n<strong>B:</strong> Sentence B introduces the specific incident and context — an appalling case at Ludhiana Civil Hospital. This sentence serves as an effective introductory statement as it sets the scene and topic about the healthcare situation in Punjab.<br> <strong>C:</strong> Following the introduction of the incident, Sentence C comments on its implications, suggesting the \"urgent need for comprehensive reforms and increased investment in the health sector.\" This logically follows the introduction of a problem, moving the narrative from a specific incident to a general discussion about necessary actions.<br> <strong>A:</strong> Sentence A provides another specific example of negligence, illustrating the severity and type of issues present within the healthcare system described initially.<br> <strong>D:</strong> Finally, Sentence D concludes the paragraph by discussing the broader impacts of such cases on patient safety and public trust, and it calls for accountability."}, {"id": "113739", "question": "<strong>Direction: Each of the following items in this section consists of a sentence, parts of which have been jumbled. These parts have been labelled as P, Q, R and S. Given below each sentence has four sequences, namely (A), (B), (C) and (D). You are required to re-arrange the Jumbled parts of the sentence and mark your response accordingly.</strong></p> <p>China has released a list of 30 ‘standardised’ names of places (P)/ weeks after Prime Minister Narendra Modi dedicated (Q)/ the strategically important Sela tunnel to the nation, (R)/ in the Indian state of Arunachal Pradesh(S)", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> RQPS", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> QPSR", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> PQRS", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> QRPS"], "correct_answer": 3, "solution": "D) QRPS\n\nQ comes first because it introduces the action that led to China's response. The sentence begins with mentioning Prime Minister Narendra Modi dedicating the Sela tunnel to the nation, which is an event that presumably prompted China's reaction.\n\nR follows Q because it provides additional information about the event mentioned in Q. It specifies that the tunnel is strategically important, adding context to why China might have reacted.\n\nP comes after R because it describes China's response to the event mentioned in Q and R. It tells us that China released a list of standardized names of places, which is a direct action following the event.\n\nS comes last because it provides further detail about where China's response was targeted. It specifies that the names released by China are for places in the Indian state of Arunachal Pradesh, which is relevant to the context of the Sela tunnel mentioned earlier."}, {"id": "113740", "question": "<strong>Direction: Each of the following items in this section consists of a sentence, parts of which have been jumbled. These parts have been labelled as P, Q, R and S. Given below each sentence has four sequences, namely (A), (B), (C) and (D). You are required to re-arrange the Jumbled parts of the sentence and mark your response accordingly.</strong></p> <p>the Supreme Court that it would refrain from initiating coercive steps (P)/ the Centre has given an undertaking to (Q)/ of more than Rs 3,500 crore till July (R)/ to recover the Congress’ tax dues (S)", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> PQRS", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> QPSR", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> RQPS", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> QRPS"], "correct_answer": 1, "solution": "B) QPSR\n\nQ is first because it introduces the subject of the sentence, which is \"the Centre.\"\n\nP comes after Q because it provides additional information about the undertaking given by the Centre to the Supreme Court.\n\nS comes after P because it specifies what the coercive steps are related to, which is the recovery of the Congress' tax dues.\n\nR comes after S because it adds further detail about the amount of tax dues and the time frame till which the Centre will refrain from recovering the dues."}, {"id": "113741", "question": "<strong>Sentences of a paragraph are given below in jumbled order. Arrange the sentences in the correct order to form a meaningful and coherent paragraph.</strong></p> <p>P. At stake, in particular, are India’s strategic interests amid China’s aggressive outreach to smaller nations.</p> <p>Q. The results of the parliamentary elections in the Maldives are making waves in the Indian Ocean Region.</p> <p>R. The resounding victory of President Mohamed Muizzu’s People’s National Congress has implications for the Maldives’ international alliances, notably with China.</p> <p>S. The shift towards China aligns with Muizzu’s anti-India rhetoric and his administration’s endeavours to bolster economic cooperation with Beijing, exemplified by major infrastructure projects awarded to Chinese companies.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> RSPQ", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> QPRS", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> QRPS", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> RQPS"], "correct_answer": 1, "solution": "B) QPRS\n\nQ: Q will come first because it introduces the main topic of the paragraph, which is the parliamentary elections in the Maldives.\n\nP: P follows Q because it expands on the general implications mentioned in Q by specifying what is at stake for India in relation to these election results.<br> R: R comes after P because it provides specific information about the outcome of the elections mentioned in Q. It identifies the winner, President Mohamed Muizzu and his party, and notes the broader implications for the Maldives' international alliances, particularly with China.<br> S: Finally, S follows R as it gives concrete examples of how President Muizzu's administration is moving closer to China, aligning with the information in R about the implications of his party's victory."}, {"id": "113742", "question": "<strong>Sentences of a paragraph are given below in jumbled order. Select the option that gives their correct logical sequence.</strong></p> <p>A. In the world of chess, where strategy and intellect reign supreme, D Gukesh has etched his name in history.</p> <p>B. At 17, this prodigious talent hailing from Chennai stunned the world on Sunday by emerging victorious in the FIDE Candidates tournament in Toronto, securing his place as the youngest-ever winner of this prestigious event.</p> <p>C. Facing off against top-ranked players — from Hikaru Nakamura to Fabiano Caruana and Ian Nepomniachtchi — Gukesh stood tall.</p> <p>D. Through 14 rounds of gruelling classical chess, Gukesh remained unfazed against seasoned opponents, showcasing a blend of tenacity and brilliance.</p> <p>E. His journey to the summit of chess excellence has been nothing short of remarkable. Defying the odds and surpassing the expectations of many, he exhibited a level of composure and maturity far beyond his years.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> DECAB", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> BDEAC", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> ABEDC", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> CBEDA"], "correct_answer": 2, "solution": "C)</strong> <strong>ABEDC\n\nA: This sentence introduces the subject, D Gukesh, and sets the topic around his achievements in chess.\n\nB: Following the introduction of Gukesh, this sentence delves into a specific achievement, giving context to how he has made history.\n\nE: After mentioning his recent achievement, this sentence expands on Gukesh's overall journey and character, providing a broader view of his career and personal qualities, which supports the specifics provided in sentence B.\n\nD: This sentence provides further details about the nature of the competition described in sentence B, explaining the conditions under which Gukesh won and emphasizing his resilience and skill\n\nC: The final sentence elaborates on the specific challenges faced by Gukesh, naming prominent opponents to highlight the level of competition and his remarkable performance."}, {"id": "113743", "question": "<strong>Sentences of a paragraph are given below in jumbled order. Arrange the sentences in the correct order to form a meaningful and coherent paragraph.</strong></p> <p>A. They have also been restrained from rejecting claims based on pre-existing conditions.</p> <p>B. In an effort to make the healthcare ecosystem more inclusive and accessible, the Insurance Regulatory and Development Authority of India (IRDAI) has done away with the age limit of 65 years for persons buying health insurance policies</p> <p>C. The insurers cannot refuse to issue policies to persons with severe medical conditions like cancer, heart or renal failure and AIDS.</p> <p>D. In a recent gazette notification, the insurance regulator has directed insurers to ensure that they offer health insurance products catering to all age groups.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> BDAC", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> CABD", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> BCAD", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> ABCD"], "correct_answer": 0, "solution": "A) BDAC\n\nB: B is the starting point as it introduces a key action taken by the Insurance Regulatory and Development Authority of India (IRDAI) to make healthcare more inclusive by removing the age limit for purchasing health insurance.\n\nD: D follows B logically as it provides additional information about the directive from the insurance regulator.<br> A: A comes after D because it continues to detail the restrictions placed on insurers by the IRDAI.<br> C: C is placed last as it deepens the explanation of the inclusivity by highlighting that insurers cannot refuse policies even to those with severe medical conditions, which is a specific application of the principles described in sentences B, D, and A."}, {"id": "113744", "question": "<strong>Sentences of a paragraph are given below in jumbled order. Arrange the sentences in the correct order to form a meaningful and coherent paragraph.</strong></p> <p>P. These figures throw an unflattering light on the government’s commitment to strengthen school education as well as provide regular employment to the educated youth.</p> <p>Q. And, not surprisingly, the most backward district of Nuh accounts for the maximum — 4,353 — out of the 25,192 unfilled posts.</p> <p>R. Underscoring the dismal state of affairs in the school education sector of Haryana, more than 20 per cent of the total posts of teacher in government schools across the state are lying vacant.</p> <p>S. That nearly 12,000 posts are filled by guest teachers and over 1,200 by teachers appointed by Haryana Kaushal Rozgar Nigam Limited on a contractual basis is another indicator reflecting poorly on the Khattar government’s report card.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> QPRS", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> RQSP", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> QSPR", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> RPQS"], "correct_answer": 1, "solution": "B) RQSP\n\nR: R begins the paragraph effectively by establishing the context of the issue—it underscores the poor state of school education in Haryana by stating a significant problem: a large percentage of teacher posts are vacant<br> Q: It details the distribution of these vacancies, highlighting the most affected area, Nuh.<br> S: S builds on the information in Q by elaborating on the kinds of employment that are filling these vacancies, namely guest teachers and contractual appointments.<br> P: P concludes the paragraph by reflecting on the broader implications of the details in the previous sentences."}, {"id": "113745", "question": "<strong>For the four-sentence (S1 to S4) paragraph below, sentences S1 and S4 are given. From the options P, Q, R and S select the appropriate sentences for S2 and S3, respectively.</strong></p> <p><strong>S1</strong>: The Union Cabinet has cleared the decks for the introduction of the Digital Personal Data Protection Bill in the monsoon session of Parliament.</p> <p><strong>S4:</strong> It took the panel two years to submit its report, in which it recommended that the clause empowering the Centre to ‘exempt the processing of personal data by a government agency from the application of any or all provisions’ of the Bill should prescribe adequate safeguards to prevent misuse.</p> <p><br> <strong>P:</strong> Not only for compliance with India’s new digital privacy law and sectoral requirements but also to ensure the business maintains its competitive edge.</p> <p><strong>Q</strong>: Regulated Entities must have documented clarity from the SP about the level of access to its customer data that the SP will maintain.</p> <p><strong>R</strong>: The draft Bill has been approved after consultations with organisations both within and outside the government.</p> <p><strong>S: </strong>The proposed legislation has witnessed many twists and turns. It was introduced by the Centre in the Lok Sabha as the Personal Data Protection Bill in December 2019 and promptly referred to a joint parliamentary committee.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> P and Q", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> R and S", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> P and S", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Q and S"], "correct_answer": 1, "solution": "B) R and S.\n\nSentence R effectively connects S1 and S4 by explaining the process between the introduction of the bill and the recommendation after a two-year period by the panel.\n\nSentence S provides additional background about the legislative journey of the bill, filling the gap between its introduction and the final recommendations made by the panel, thus appropriately fitting before S4.\n\nOptions P and Q are unrelated to the specific legislative process or timeline described in the paragraph and therefore do not fit logically as S2 or S3."}, {"id": "113751", "question": "<strong>Sentences of a paragraph are given below in jumbled order. Arrange the sentences in the correct order to form a meaningful and coherent paragraph.</strong></p> <p>P. One such major service disruption occurred on April 15.</p> <p>Q. The RBI has noted with concern that in the absence of ‘a robust IT infrastructure and IT risk management framework, the bank’s core banking system and its online and digital banking channels have suffered frequent outages in the past two years… resulting in serious customer inconvenience’.</p> <p>R. In a significant development having implications for the entire banking sector, the Reserve Bank of India (RBI) has directed Kotak Mahindra Bank Limited to stop the onboarding of new customers through online and mobile banking with immediate effect and also barred it from issuing credit cards henceforth.</p> <p>S. The bank was found deficient in building operational resilience, even as the RBI clarified that there were no curbs on providing services to existing customers, including those using credit cards.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> RSPQ", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> QPRS", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> QRPS", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> RQPS"], "correct_answer": 3, "solution": "D) RQPS\n\nR: Sentence R introduces the main action by the Reserve Bank of India (RBI) affecting Kotak Mahindra Bank, setting a context for regulatory intervention in the banking sector.\n\nQ: After introducing the RBI's directive in sentence R, sentence Q explains the reasons behind this action. It highlights the deficiencies in the bank’s IT infrastructure and risk management, which have led to frequent service disruptions.\n\nP: Sentence P mentions a specific instance of service disruption on April 15, which exemplifies the ongoing issues described in sentence Q. Placing this after Q makes sense because it gives a concrete example of the problems that have been occurring, making the RBI's concern more tangible and justified.\n\nS: Finally, sentence S concludes the paragraph by detailing the scope of the RBI's restrictions, clarifying that existing customers can continue to use their services, including credit cards. This wraps up the discussion by addressing the immediate effects on the bank’s operations and customer relations following the RBI's directive."}, {"id": "113752", "question": "<strong>Sentences of a paragraph are given below in jumbled order. Select the option that gives their correct logical sequence.</strong></p> <p>A. As per the latest findings, 19 government schools in the state are without students, while a staggering 3,148 schools have less than 50 each.</p> <p>B. Also, 811 schools are being run by a lone teacher.</p> <p>C. Over the past year, a series of reports in The Tribune has shed light on the dire state of government schools in Haryana.</p> <p>D. These deficiencies raise serious questions about access to education for children across the state.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> DCAB", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> CBDA", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> CABD", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> CDAB"], "correct_answer": 2, "solution": "C) CABD\n\nC is the introductory statement. It provides context by mentioning the series of reports highlighting the poor state of government schools in Haryana.\n\nA follows, as it presents concrete data and specific examples of the issues first introduced in Sentence C. It mentions the number of schools affected by student shortages and those operating with minimal student counts, directly elaborating on the \"dire state\" referenced in Sentence C.\n\nB adds further detail to the narrative established by Sentence A by illustrating another significant problem—schools with only one teacher.\n\nD concludes the sequence as it summarizes the impact of the issues presented in Sentences A and B."}];
+        const examConfig = {
+            id: '5719',
+            duration: 10,
+            positiveMarks: 2.0,
+            negativeMarks: 0.5
+        };
+        
+        let currentQuestionIndex = 0;
+        let userAnswers = {};
+        let flaggedQuestions = new Set();
+        let timeLeft = examConfig.duration * 60;
+        let timerInterval;
+        let isTestFinished = false;
+        let solutionMode = false;
+        let touchStartX = 0;
+        let touchStartY = 0;
+        
+        // Initialize app
+        function initializeApp() {
+            createParticles();
+            generateQuestionsGrid();
+            loadQuestion();
+            startTimer();
+            setupTouchGestures();
+            setupAutoSave();
+            
+            // Prevent accidental page leave
+            window.addEventListener('beforeunload', (e) => {
+                if (!isTestFinished) {
+                    e.preventDefault();
+                    e.returnValue = 'Test in progress. Are you sure you want to leave?';
+                }
+            });
+        }
+        
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = window.innerWidth < 768 ? 20 : 40;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Load current question
+        function loadQuestion() {
+            const question = questions[currentQuestionIndex];
+            
+            // Update question info
+            document.getElementById('questionNumber').textContent = `Q${currentQuestionIndex + 1}`;
+            document.getElementById('questionProgress').textContent = 
+                `${currentQuestionIndex + 1} of ${questions.length}`;
+            document.getElementById('questionText').innerHTML = question.question;
+            
+            // Load options
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.innerHTML = option;
+                
+                const indicator = document.createElement('div');
+                indicator.className = 'option-indicator';
+                optionElement.appendChild(indicator);
+                
+                if (solutionMode) {
+                    // Show solution mode styling
+                    if (index === question.correct_answer) {
+                        optionElement.classList.add('correct');
+                        indicator.textContent = '✓';
+                    } else if (userAnswers[currentQuestionIndex] === index) {
+                        optionElement.classList.add('incorrect');
+                        indicator.textContent = '✗';
+                    } else {
+                        optionElement.classList.add('disabled');
+                    }
+                    optionElement.style.pointerEvents = 'none';
+                } else {
+                    // Normal mode
+                    if (userAnswers[currentQuestionIndex] === index) {
+                        optionElement.classList.add('selected');
+                        indicator.textContent = '✓';
+                    }
+                    
+                    optionElement.onclick = () => selectOption(index);
+                    optionElement.onkeydown = (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            selectOption(index);
+                        }
+                    };
+                    optionElement.tabIndex = 0;
+                }
+                
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Handle solution panel
+            const solutionPanel = document.getElementById('solutionPanel');
+            if (solutionMode && question.solution) {
+                document.getElementById('solutionContent').innerHTML = question.solution;
+                solutionPanel.classList.add('show');
+            } else {
+                solutionPanel.classList.remove('show');
+            }
+            
+            // Update navigation
+            updateNavigation();
+            updateQuestionsGrid();
+            updateFlagButton();
+            
+            // Add entrance animation
+            const container = document.getElementById('questionContainer');
+            container.style.transform = 'translateY(20px)';
+            container.style.opacity = '0';
+            setTimeout(() => {
+                container.style.transform = 'translateY(0)';
+                container.style.opacity = '1';
+            }, 100);
+        }
+        
+        // Select an option
+        function selectOption(index) {
+            if (solutionMode) return;
+            
+            const currentAnswer = userAnswers[currentQuestionIndex];
+            
+            if (currentAnswer === index) {
+                // Deselect if clicking the same option
+                delete userAnswers[currentQuestionIndex];
+            } else {
+                // Select new option
+                userAnswers[currentQuestionIndex] = index;
+            }
+            
+            // Update UI
+            const options = document.querySelectorAll('.option');
+            options.forEach((option, i) => {
+                const indicator = option.querySelector('.option-indicator');
+                if (userAnswers[currentQuestionIndex] === i) {
+                    option.classList.add('selected');
+                    indicator.textContent = '✓';
+                } else {
+                    option.classList.remove('selected');
+                    indicator.textContent = '';
+                }
+            });
+            
+            updateQuestionsGrid();
+            showAutoSave();
+        }
+        
+        // Generate questions grid
+        function generateQuestionsGrid() {
+            const grid = document.getElementById('questionsGrid');
+            grid.innerHTML = '';
+            
+            questions.forEach((_, index) => {
+                const button = document.createElement('button');
+                button.className = 'question-btn';
+                button.textContent = index + 1;
+                button.onclick = () => goToQuestion(index);
+                button.setAttribute('aria-label', `Go to question ${index + 1}`);
+                grid.appendChild(button);
+            });
+        }
+        
+        // Update questions grid styling
+        function updateQuestionsGrid() {
+            const buttons = document.querySelectorAll('.question-btn');
+            buttons.forEach((button, index) => {
+                button.className = 'question-btn';
+                
+                if (index === currentQuestionIndex) {
+                    button.classList.add('current');
+                } else if (solutionMode) {
+                    if (userAnswers[index] === questions[index].correct_answer) {
+                        button.classList.add('correct');
+                    } else if (userAnswers[index] !== undefined) {
+                        button.classList.add('incorrect');
+                    }
+                } else if (userAnswers[index] !== undefined) {
+                    button.classList.add('answered');
+                }
+                
+                if (flaggedQuestions.has(index)) {
+                    button.classList.add('flagged');
+                }
+            });
+        }
+        
+        // Navigation functions
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+        
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else if (!solutionMode) {
+                submitTest();
+            }
+        }
+        
+        function goToQuestion(index) {
+            currentQuestionIndex = index;
+            loadQuestion();
+            closeSidebar();
+        }
+        
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.disabled = currentQuestionIndex === 0;
+            
+            if (solutionMode) {
+                nextBtn.textContent = currentQuestionIndex === questions.length - 1 ? 
+                    'Finish Review' : 'Next →';
+                nextBtn.onclick = currentQuestionIndex === questions.length - 1 ? 
+                    finishReview : nextQuestion;
+            } else {
+                nextBtn.textContent = currentQuestionIndex === questions.length - 1 ? 
+                    'Submit Test' : 'Next →';
+                nextBtn.onclick = currentQuestionIndex === questions.length - 1 ? 
+                    submitTest : nextQuestion;
+            }
+        }
+        
+        // Timer functions
+        function startTimer() {
+            const timerElement = document.getElementById('timer');
+            const progressCircle = document.getElementById('progressCircle');
+            const circumference = 2 * Math.PI * 18;
+            const totalTime = examConfig.duration * 60;
+            
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    submitTest();
+                    return;
+                }
+                
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Update progress circle
+                const progress = (totalTime - timeLeft) / totalTime;
+                const offset = circumference * progress;
+                progressCircle.style.strokeDashoffset = offset;
+                
+                // Add warning effects
+                if (timeLeft <= 300) { // 5 minutes
+                    timerElement.classList.add('warning');
+                }
+                if (timeLeft <= 60) { // 1 minute
+                    timerElement.classList.add('critical');
+                }
+            }, 1000);
+        }
+        
+        // Toggle question flag
+        function toggleFlag() {
+            if (flaggedQuestions.has(currentQuestionIndex)) {
+                flaggedQuestions.delete(currentQuestionIndex);
+            } else {
+                flaggedQuestions.add(currentQuestionIndex);
+            }
+            updateFlagButton();
+            updateQuestionsGrid();
+        }
+        
+        function updateFlagButton() {
+            const flagBtn = document.getElementById('flagBtn');
+            if (flaggedQuestions.has(currentQuestionIndex)) {
+                flagBtn.textContent = '🏴 Unflag Question';
+                flagBtn.style.background = 'rgba(239, 68, 68, 0.2)';
+                flagBtn.style.color = 'var(--error)';
+            } else {
+                flagBtn.textContent = '🚩 Flag Question';
+                flagBtn.style.background = 'rgba(245, 158, 11, 0.2)';
+                flagBtn.style.color = 'var(--warning)';
+            }
+        }
+        
+        // Theme toggle
+        function toggleTheme() {
+            const body = document.body;
+            const themeBtn = document.getElementById('themeBtn');
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            body.setAttribute('data-theme', newTheme);
+            themeBtn.textContent = newTheme === 'light' ? '🌙' : '☀️';
+            
+            // Save preference
+            localStorage.setItem('theme', newTheme);
+        }
+        
+        // Sidebar functions
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+        
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+        }
+        
+        // Touch gesture support
+        function setupTouchGestures() {
+            const main = document.querySelector('.main');
+            
+            main.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            });
+            
+            main.addEventListener('touchend', (e) => {
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndY = e.changedTouches[0].clientY;
+                const deltaX = touchEndX - touchStartX;
+                const deltaY = touchEndY - touchStartY;
+                
+                // Only trigger if horizontal swipe is dominant
+                if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+                    if (deltaX > 0 && currentQuestionIndex > 0) {
+                        // Swipe right - previous question
+                        previousQuestion();
+                    } else if (deltaX < 0 && currentQuestionIndex < questions.length - 1) {
+                        // Swipe left - next question
+                        nextQuestion();
+                    }
+                }
+            });
+        }
+        
+        // Auto-save functionality
+        function setupAutoSave() {
+            // Save answers periodically
+            setInterval(() => {
+                if (!isTestFinished) {
+                    saveProgress();
+                }
+            }, 30000); // Every 30 seconds
+        }
+        
+        function saveProgress() {
+            const progress = {
+                answers: userAnswers,
+                flagged: Array.from(flaggedQuestions),
+                currentQuestion: currentQuestionIndex,
+                timeLeft: timeLeft
+            };
+            
+            // In a real implementation, this would save to a server
+            console.log('Progress saved:', progress);
+        }
+        
+        function showAutoSave() {
+            const autoSave = document.getElementById('autoSave');
+            autoSave.classList.add('show');
+            setTimeout(() => {
+                autoSave.classList.remove('show');
+            }, 2000);
+        }
+        
+        // Submit test
+        function submitTest() {
+            if (isTestFinished) return;
+            
+            isTestFinished = true;
+            clearInterval(timerInterval);
+            
+            // Calculate results
+            let correct = 0, wrong = 0, skipped = 0, totalMarks = 0;
+            
+            questions.forEach((question, index) => {
+                if (userAnswers[index] === undefined) {
+                    skipped++;
+                } else if (userAnswers[index] === question.correct_answer) {
+                    correct++;
+                    totalMarks += examConfig.positiveMarks;
+                } else {
+                    wrong++;
+                    totalMarks -= examConfig.negativeMarks;
+                }
+            });
+            
+            const maxMarks = questions.length * examConfig.positiveMarks;
+            const percentage = Math.max(0, Math.round((totalMarks / maxMarks) * 100));
+            
+            // Show results
+            document.getElementById('resultTitle').textContent = 
+                `${correct}/${questions.length} Correct`;
+            document.getElementById('resultSubtitle').textContent = 
+                `You scored ${totalMarks} out of ${maxMarks} marks`;
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('wrongCount').textContent = wrong;
+            document.getElementById('skippedCount').textContent = skipped;
+            document.getElementById('finalScore').textContent = `${totalMarks} Marks`;
+            document.getElementById('finalPercentage').textContent = `${percentage}%`;
+            
+            document.getElementById('resultModal').classList.add('show');
+            closeSidebar();
+        }
+        
+        // View solutions
+        function viewSolutions() {
+            document.getElementById('resultModal').classList.remove('show');
+            solutionMode = true;
+            currentQuestionIndex = 0;
+            loadQuestion();
+        }
+        
+        // Finish review
+        function finishReview() {
+            solutionMode = false;
+            currentQuestionIndex = 0;
+            loadQuestion();
+        }
+        
+        // Retake test
+        function retakeTest() {
+            if (confirm('Are you sure you want to retake the test? All progress will be lost.')) {
+                location.reload();
+            }
+        }
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (solutionMode) return;
+            
+            switch(e.key) {
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    previousQuestion();
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    nextQuestion();
+                    break;
+                case 'f':
+                case 'F':
+                    if (e.ctrlKey || e.metaKey) {
+                        e.preventDefault();
+                        toggleFlag();
+                    }
+                    break;
+                case 'm':
+                case 'M':
+                    if (e.ctrlKey || e.metaKey) {
+                        e.preventDefault();
+                        toggleSidebar();
+                    }
+                    break;
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                    if (!e.ctrlKey && !e.metaKey) {
+                        e.preventDefault();
+                        const optionIndex = parseInt(e.key) - 1;
+                        if (optionIndex < questions[currentQuestionIndex].options.length) {
+                            selectOption(optionIndex);
+                        }
+                    }
+                    break;
+            }
+        });
+        
+        // Initialize when DOM is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
+        
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.body.setAttribute('data-theme', savedTheme);
+            document.getElementById('themeBtn').textContent = savedTheme === 'light' ? '🌙' : '☀️';
+        }
+    </script>
+</body>
+</html>

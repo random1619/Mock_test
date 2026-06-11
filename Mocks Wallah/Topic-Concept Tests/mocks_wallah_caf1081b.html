@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mocks Wallah</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #7209b7;
+            --secondary: #4361ee;
+            --accent: #f72585;
+            --success: #06d6a0;
+            --warning: #ffd166;
+            --danger: #ef476f;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        body {
+            background-color: #f0f2f5;
+            font-size: 16px;
+            padding-bottom: 60px; /* Space for fixed navigation */
+        }
+        .navbar {
+            background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,.1);
+            padding: 0.5rem 1rem;
+        }
+        .navbar-brand {
+            font-size: 1.1rem;
+            margin-right: 0;
+        }
+        .navbar .container-fluid {
+            justify-content: space-between;
+        }
+        .controls-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+        .timer-display {
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: white;
+            border-radius: 50px;
+            box-shadow: 0 3px 8px rgba(0,0,0,.1);
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+        }
+        .nav-btn {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            margin-left: 0.25rem;
+        }
+        .question-nav {
+            position: fixed;
+            top: 56px;
+            right: 0;
+            height: calc(100vh - 56px);
+            width: 280px;
+            transform: translateX(280px);
+            transition: transform .3s;
+            z-index: 100;
+            background: #fff;
+            box-shadow: -5px 0 15px rgba(0,0,0,.1);
+        }
+        .question-nav.show {
+            transform: translateX(0);
+        }
+        .main-content {
+            transition: margin .3s;
+            min-height: calc(100vh - 116px);
+        }
+        .question-text {
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+        .question-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+            gap: 6px;
+        }
+        .q-box {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            border: 1px solid #dee2e6;
+            background: #fff;
+            transition: all .2s;
+        }
+        .q-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 5px rgba(0,0,0,.1);
+        }
+        .q-box.attempted {
+            background-color: var(--secondary);
+            color: white;
+        }
+        .q-box.correct {
+            background-color: var(--success);
+            color: white;
+        }
+        .q-box.incorrect {
+            background-color: var(--danger);
+            color: white;
+        }
+        .q-box.current {
+            border: 2px solid var(--accent) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,.15);
+        }
+        .card {
+            border-radius: 12px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,.08);
+        }
+        .option-label {
+            border-radius: 8px;
+            transition: all .2s;
+            border: 1px solid #dee2e6;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+        }
+        .option-label:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,0,0,.05);
+        }
+        .form-check-input:checked + .option-label {
+            border-color: var(--primary);
+            background-color: rgba(114,9,183,.05);
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Bottom fixed navigation for mobile */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,.1);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 90;
+        }
+        
+        @media (min-width: 992px) {
+            .main-content.with-nav {
+                margin-right: 280px;
+            }
+            .question-nav {
+                transform: translateX(0);
+            }
+            .nav-toggle-btn {
+                display: none;
+            }
+            .bottom-nav {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .question-grid {
+                grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+            }
+            .option-label {
+                padding: 0.625rem 0.875rem;
+                font-size: 0.95rem;
+            }
+            .question-text {
+                font-size: 1rem;
+            }
+            .navbar-brand {
+                font-size: 1rem;
+            }
+            .timer-display {
+                font-size: 0.8125rem;
+                padding: 0.2rem 0.6rem;
+            }
+            .nav-btn {
+                padding: 0.2rem 0.6rem;
+                font-size: 0.8125rem;
+            }
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header navbar -->
+    <nav class="navbar navbar-dark sticky-top">
+        <div class="container-fluid px-2">
+            <a class="navbar-brand fw-bold" href="#"><i class="fas fa-graduation-cap me-1"></i>Mocks Wallah</a>
+            
+            <div class="controls-group">
+                <!-- Timer -->
+                <div class="timer-display me-1 fw-bold" id="timer">
+                    <i class="far fa-clock me-1"></i><span id="timer-display">22:00</span>
+                </div>
+                
+                <!-- Submit button -->
+                <button class="btn btn-light btn-sm nav-btn me-1" id="submit-btn" onclick="confirmSubmit()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+                
+                <!-- Language toggle -->
+                <button class="btn btn-light btn-sm nav-btn me-1" id="lang-btn" onclick="toggleLanguage()">
+                    <span id="lang-text">En</span>
+                </button>
+                
+                <!-- Questions toggle for mobile -->
+                <button class="btn btn-light btn-sm nav-btn nav-toggle-btn" id="nav-toggle" onclick="toggleNav()">
+                    <i class="fas fa-th"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main content -->
+    <div class="main-content" id="main-content">
+        <div class="container py-3">
+            <!-- Question counter -->
+            <div class="fw-bold text-center mb-3" id="question-counter">Question 1 of 25</div>
+            
+            <!-- Questions will be displayed here -->
+            <div id="questions-container"></div>
+        </div>
+    </div>
+    
+    <!-- Bottom navigation for mobile -->
+    <div class="bottom-nav d-lg-none">
+        <button class="btn btn-outline-primary px-3" onclick="prevQuestion()">
+            <i class="fas fa-chevron-left me-1"></i> Previous
+        </button>
+        <button class="btn btn-outline-primary px-3" onclick="nextQuestion()">
+            Next <i class="fas fa-chevron-right ms-1"></i>
+        </button>
+    </div>
+    
+    <!-- Question navigation sidebar -->
+    <div class="question-nav" id="question-nav">
+        <div class="p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="m-0">Questions</h5>
+                <div>
+                    <span class="badge bg-secondary me-1" id="attempted-count">0</span>
+                    <span class="badge bg-secondary" id="total-count">25</span>
+                    <button class="btn btn-sm btn-outline-secondary ms-2 d-lg-none" onclick="toggleNav()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Section selector moved here -->
+            <div class="mb-3">
+                <label for="section-selector" class="form-label small text-muted">Jump to Section</label>
+                <select class="form-select form-select-sm" id="section-selector" onchange="switchSection(this.value)">
+                    <option value="all">All Sections</option>
+                </select>
+            </div>
+            
+            <div class="question-grid" id="question-boxes"></div>
+        </div>
+    </div>
+    
+    <!-- Results modal -->
+    <div class="modal fade" id="results-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0">
+                <div class="modal-header border-0" style="background:linear-gradient(135deg,var(--primary),var(--secondary));color:white">
+                    <h5 class="modal-title">Test Results</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row text-center g-2">
+                        <div class="col-6">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#4361ee,#3a0ca3);color:white">
+                                <h3 id="score-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Score</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#06d6a0,#1b9aaa);color:white">
+                                <h3 id="correct-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Correct</div>
+                            </div>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#ef476f,#f72585);color:white">
+                                <h3 id="incorrect-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Incorrect</div>
+                            </div>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#6c757d,#495057);color:white">
+                                <h3 id="unattempted-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Unattempted</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-primary" onclick="reviewTest()">Review Test</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Questions data
+        const questions = [];
+        const sections = {};
+        let currentLang = "en";
+        let currentQuestion = 0;
+        let answers = {};
+        let submitted = false;
+        let totalTime = 22 * 60;
+        let resultsModal;
+        
+        // Initialize the test
+        window.onload = function() {
+            initializeTest();
+            startTimer();
+            resultsModal = new bootstrap.Modal(document.getElementById('results-modal'));
+            
+            // If on desktop, show the question navigation by default
+            if (window.innerWidth >= 992) {
+                document.getElementById('question-nav').classList.add('show');
+                document.getElementById('main-content').classList.add('with-nav');
+            }
+        };
+        
+        // Initialize test data
+        function initializeTest() {
+            // Add sections and questions
+            
+            sections["17"] = {
+                name: "Quantitative Aptitude",
+                start: 0,
+                end: 23
+            };
+            
+            document.getElementById('section-selector').innerHTML += 
+                `<option value="17">Quantitative Aptitude</option>`;
+            
+            sections["misc"] = {
+                name: "Miscellaneous",
+                start: 24,
+                end: 24
+            };
+            
+            document.getElementById('section-selector').innerHTML += 
+                `<option value="misc">Miscellaneous</option>`;
+            
+            
+                questions.push({
+                    id: "1",
+                    section: "17",
+                    question_en: "<p>1. <span style=\"font-family: Times New Roman;\">How many numbers are there from 200 to 650 that are&nbsp; completely divisible by both 5 and 7? </span></p>",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">1. 200 से 650 तक ऐसी कितनी संख्याएँ हैं जो 5 और 7 से पूर्णतः विभाजित हैं ? </span></p>",
+                    options_en: ["<p>10</p>", "<p>13</p>", 
+                                "<p>8</p>", "<p>15</p>"],
+                    options_hi: ["<p>10</p>", "<p>13</p>",
+                                "<p>8</p>", "<p>15</p>"],
+                    solution_en: "<p><span style=\"font-family: Times New Roman;\">(b) Numbers divisible by both 5 and 7 = Numbers divisible by 35</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Between 200 and 650, the least number divisible by 35 is 210 and the largest number is 630.</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">No of terms =(last term - 1st term)/difference +1= (630-210)/35 +1= 420/35+1= 12+1=13.</span></p>",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(b) 5 और 7 दोनों से विभाज्य संख्याएँ = 35 से विभाज्य संख्याएँ</span></p>\r\n<p>200 और 650 के बीच, 35 से विभाज्य सबसे छोटी संख्या 210 है और सबसे बड़ी संख्या 630 है।</p>\r\n<p><span style=\"font-family: Times New Roman;\">पदों की संख्या =(अंतिम पद - पहला पद)/अंतर&nbsp; + 1= (630-210)/35 +1= 420/35+1= 12+1=13.</span></p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "2",
+                    section: "17",
+                    question_en: " <p>2. Pawan, Sameer and Varun can complete a work in 12 days, 18 days and 15 days, respectively. If they do the same work together and the total wages paid to them is Rs. 4070, then find the share of Sameer. ",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">2. पवन, समीर और वरुण किसी कार्य को क्रमशः 12, 18 और 15 दिनों में पूरा कर सकते हैं | यदि वे इस कार्य को एक साथ करते हैं तथा उन्हें भुगतान की जाने वाली कुल मजदूरी 4070 रुपये है, तो समीर का हिस्सा ज्ञात करें | </span></p>",
+                    options_en: [" <p> 1620               </span></p>", " <p> 1800                 </span></p>", 
+                                " <p> 1100              </span></p>", " <p> 1560</span></p>"],
+                    options_hi: ["<p><span style=\"font-family: Times New Roman;\">1620 </span></p>", "<p><span style=\"font-family: Times New Roman;\">1800 </span></p>",
+                                "<p><span style=\"font-family: Times New Roman;\">1100 </span></p>", "<p><span style=\"font-family: Times New Roman;\">1560</span></p>"],
+                    solution_en: " <p><span style=\"font-family:Times New Roman\">(c) Let the total work = 180 units</span></p> <p><img src=\"https://ssccglpinnacle.com/admin/resources/qdocs/test-1-EN-1/1626668102/word/media/image1.png\"/></p> <p><span style=\"font-family:Times New Roman\">The ratio of the efficiencies of Pawan, Sameer and Varun = 15:10:12</span></p> <p><span style=\"font-family:Times New Roman\">Therefore, The share of Sameer = 4070 × (10/37) = Rs. 1100</span></p>",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(c) माना कुल कार्य = 180 इकाई</span></p>\r\n<p><img src=\"https://ssccglpinnacle.com/admin/resources/qdocs/test-1-EN-1/1626668102/word/media/image1.png\" /></p>\r\n<p><span style=\"font-family: Times New Roman;\">पवन, समीर और वरुण की क्षमता का अनुपात= 15:10:12</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">इसलिए, समीर का हिस्सा= 4070 &times; (10/37) = Rs. 1100</span></p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "3",
+                    section: "17",
+                    question_en: "<p>3. The radius of a spherical metal ball is 21 cm, it is cut into two equal halves, <span style=\"font-family: Times New Roman;\">find</span><span style=\"font-family: Times New Roman;\"> the total surface area of one such hemispherical piece. </span></p>",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">3. धातु की एक गोलाकार गेंद की त्रिज्या 21 सेमी है | इसे दो बराबर भागों में काटा जाता है | ऐसे एक अर्ध्गोलीय टुकड़े का कुल पृष्ठ क्षेत्रफल ज्ञात करें | </span></p>",
+                    options_en: ["<p>4148</p>", "<p>4258</p>", 
+                                "<p>4158</p>", "<p>4458</p>"],
+                    options_hi: ["<p><span style=\"font-family: Times New Roman;\">4148 </span></p>", "<p><span style=\"font-family: Times New Roman;\">4258 </span></p>",
+                                "<p><span style=\"font-family: Times New Roman;\">4158 </span></p>", "<p><span style=\"font-family: Times New Roman;\">4458</span></p>"],
+                    solution_en: "<p><span style=\"font-family: Times New Roman;\">(c) </span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Suface area of one such hemisphere =&nbsp;<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>2</mn><mi>&#960;</mi><msup><mi>r</mi><mn>2</mn></msup><mo>&#160;</mo><mo>+</mo><mo>&#160;</mo><mi>&#960;</mi><msup><mi>r</mi><mn>2</mn></msup><mo>=</mo><mo>&#160;</mo><mn>3</mn><mi>&#960;</mi><msup><mi>r</mi><mn>2</mn></msup><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>3</mn><mo>&#215;</mo><mfrac><mn>22</mn><mn>7</mn></mfrac><mo>&#215;</mo><msup><mn>21</mn><mn>2</mn></msup><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>4158</mn><mo>&#160;</mo><mi>c</mi><msup><mi>m</mi><mn>2</mn></msup></math></span></p>",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(c) </span></p>\r\n<p><span style=\"font-family: Times New Roman;\">ऐसे ही एक गोलार्द्ध का सतही क्षेत्रफल = <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>2</mn><mi>&#960;</mi><msup><mi>r</mi><mn>2</mn></msup><mo>&#160;</mo><mo>+</mo><mo>&#160;</mo><mi>&#960;</mi><msup><mi>r</mi><mn>2</mn></msup><mo>=</mo><mo>&#160;</mo><mn>3</mn><mi>&#960;</mi><msup><mi>r</mi><mn>2</mn></msup><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>3</mn><mo>&#215;</mo><mfrac><mn>22</mn><mn>7</mn></mfrac><mo>&#215;</mo><msup><mn>21</mn><mn>2</mn></msup><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>4158</mn><mo>&#160;</mo><mi>c</mi><msup><mi>m</mi><mn>2</mn></msup></math></span></p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "4",
+                    section: "17",
+                    question_en: " <p>4. Rs. 2400 has to be divided among A, B and C in the ratio 5:3:8, respectively. Find the difference between the share of ‘A’ and that of ‘B’ & ‘C’ combined’. ",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">4. 2400 रुपये का विभाजन A, B और C में 5: 3 : 8 के अनुपात में किया जाना है | A के हिस्से और B तथा C के संयुक्त हिस्से में क्या अंतर है ? </span></p>",
+                    options_en: [" <p> 510              </span></p>", " <p> 760                </span></p>", 
+                                " <p> 900                      </span></p>", " <p> 450</span></p>"],
+                    options_hi: ["<p><span style=\"font-family: Times New Roman;\">510 </span></p>", "<p><span style=\"font-family: Times New Roman;\">760 </span></p>",
+                                "<p><span style=\"font-family: Times New Roman;\">900 </span></p>", "<p><span style=\"font-family: Times New Roman;\">450</span></p>"],
+                    solution_en: " <p><span style=\"font-family:Times New Roman\">(c) Let the amount received by ‘A’, ‘B’ and ‘C’ be Rs. 5x, Rs. 3x and Rs. 8x, respectively</span></p> <p><span style=\"font-family:Times New Roman\">According to the question,</span></p> <p><span style=\"font-family:Times New Roman\">5x + 3x + 8x = 2400</span></p> <p><span style=\"font-family:Times New Roman\">Or, x = 2400/16 = Rs. 150</span></p> <p><span style=\"font-family:Times New Roman\">Required difference = 11x – 5x = 6x = Rs. 900</span></p>",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(c)माना \'A\', \'B\' और \'C\' द्वारा प्राप्त राशि क्रमशः 5x,&nbsp; 3x और&nbsp; 8x, है</span></p>\r\n<p>प्रश्न के अनुसार,</p>\r\n<p><span style=\"font-family: Times New Roman;\">5x + 3x + 8x = 2400</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">या&nbsp;, x = 2400/16 = Rs. 150</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">आवश्यक अंतर = 11x &ndash; 5x = 6x = Rs. 900</span></p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "5",
+                    section: "17",
+                    question_en: " <p>5. The average age of a family of 5 members is 43.2 years. If the present age of the youngest member is 4 years, then what was the average age of the family at the time of his birth. ",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">5. 5 सदस्यों वाले परिवार की औसत उम्र 43.2 वर्ष है | यदि सबसे छोटे सदस्य की वर्तमान उम्र 4 वर्ष है, तो उसके जन्म के समय परिवार की औसत उम्र कितनी थी ? </span></p>",
+                    options_en: [" <p> 45</span><span style=\"font-family:Times New Roman\"> </span></p>", " <p> 49</span><span style=\"font-family:Times New Roman\"> </span></p>", 
+                                " <p> 42</span><span style=\"font-family:Times New Roman\">  </span></p>", " <p> 46</span></p>"],
+                    options_hi: ["<p><span style=\"font-family: Times New Roman;\">45</span></p>", "<p><span style=\"font-family: Times New Roman;\">49</span></p>",
+                                "<p><span style=\"font-family: Times New Roman;\">42</span></p>", "<p><span style=\"font-family: Times New Roman;\">46</span></p>"],
+                    solution_en: " <p><span style=\"font-family:Times New Roman\">(b) Sum of the present ages of all the five members = 43.2 × 5 = 216 years</span></p> <p><span style=\"font-family:Times New Roman\">Required average = (216 – 4 × 5)/4 = 49 years</span></p>",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(b) सभी पांच सदस्यों की वर्तमान आयु का योग = 43.2 &times; 5 = 216 वर्ष</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">आवश्यक औसत = (216 &ndash; 4 &times; 5)/4 = 49 years</span></p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "6",
+                    section: "17",
+                    question_en: "<p>6. <span style=\"font-weight: 400;\">When the price of a cup is decreased by 20%, a person can buy 2 cups more for Rs. 160. Find the number of cups that can be bought with the original price.</span></p>",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">6. <span style=\"font-weight: 400;\">जब किसी कप की कीमत 20% से कम हो जाती है, तो एक व्यक्ति 160 रुपये में दो कप अधिक ख़रीद पाता है | आरंभिक कीमत पर वह कितने कप खरीद पाता था ? </span></span></p>",
+                    options_en: ["<p>12</p>", "<p>8</p>", 
+                                "<p>6<span style=\"font-family: Times New Roman;\"> </span></p>", "<p>10</p>"],
+                    options_hi: ["<p><span style=\"font-family: Times New Roman;\">12</span></p>", "<p><span style=\"font-family: Times New Roman;\">8</span></p>",
+                                "<p><span style=\"font-family: Times New Roman;\">6</span></p>", "<p><span style=\"font-family: Times New Roman;\">10</span></p>"],
+                    solution_en: "<p><span style=\"font-weight: 400;\">(b)</span><span style=\"font-weight: 400;\"> Let the original price of each cup be Rs. &lsquo;x&rsquo;</span></p>\r\n<p><span style=\"font-weight: 400;\">According to the question,</span></p>\r\n<p><span style=\"font-weight: 400;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>160</mn><mrow><mn>0</mn><mo>.</mo><mn>8</mn><mi>x</mi></mrow></mfrac><mo>-</mo><mfrac><mn>160</mn><mi>x</mi></mfrac><mo>&#160;</mo><mo>=</mo><mn>2</mn></math>&nbsp;</span></p>\r\n<p><span style=\"font-weight: 400;\">Or, x = Rs. 20.</span></p>\r\n<p dir=\"ltr\"><span style=\"font-weight: 400;\">Required number of cups =<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>160</mn><mn>20</mn></mfrac></math> = 8</span></p>",
+                    solution_hi: "<p><span style=\"font-weight: 400;\">(b)</span><span style=\"font-weight: 400;\"> माना प्रत्येक कप का मूल मूल्य . \'X\' रु</span></p>\r\n<p><span style=\"font-weight: 400;\">प्रश्न के अनुसार,</span></p>\r\n<p><span style=\"font-weight: 400;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>160</mn><mrow><mn>0</mn><mo>.</mo><mn>8</mn><mi>x</mi></mrow></mfrac><mo>-</mo><mfrac><mn>160</mn><mi>x</mi></mfrac><mo>&#160;</mo><mo>=</mo><mn>2</mn></math>&nbsp;</span></p>\r\n<p><span style=\"font-weight: 400;\">&nbsp;x = Rs. 20.</span></p>\r\n<p dir=\"ltr\"><span style=\"font-weight: 400;\">कप की आवश्यक संख्या =<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>160</mn><mn>20</mn></mfrac></math> = 8</span></p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "7",
+                    section: "17",
+                    question_en: "<p>7. After deducting 10% from a number and then deducting 25% from the remainder, 1620 is left. Find the number.</p>",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">7. किसी संख्या में से 10% घटाने के बाद तथा फिर शेषफल में से 25% घटाने के बाद 1620 बचता है | यह संख्या कौन सी है ? </span></p>",
+                    options_en: ["<p>3660</p>", "<p>4200</p>", 
+                                "<p>3600</p>", "<p>2400</p>"],
+                    options_hi: ["<p><span style=\"font-family: Times New Roman;\">3660</span></p>", "<p><span style=\"font-family: Times New Roman;\">4200</span></p>",
+                                "<p><span style=\"font-family: Times New Roman;\">3600</span></p>", "<p><span style=\"font-family: Times New Roman;\">2400</span></p>"],
+                    solution_en: "<p><span style=\"font-family: Times New Roman;\">(d) Let the number be &lsquo;x&rsquo;</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">According to the question,</span></p>\r\n<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>x</mi><mo>&#215;</mo><mfrac><mn>90</mn><mn>100</mn></mfrac><mo>&#215;</mo><mfrac><mn>75</mn><mn>100</mn></mfrac><mo>=</mo><mn>1620</mn><mspace linebreak=\"newline\"/></math></p>\r\n<p><span style=\"font-family: Times New Roman;\">Or, x =<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>1620</mn><mrow><mn>0</mn><mo>.</mo><mn>9</mn><mo>&#215;</mo><mn>0</mn><mo>.</mo><mn>75</mn></mrow></mfrac></math>= </span><span style=\"font-family: Times New Roman;\"> Rs. 2400</span></p>",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(d) माना संख्या \'x\' है</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">&rsquo;प्रश्न के अनुसार\',</span></p>\r\n<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>x</mi><mo>&#215;</mo><mfrac><mn>90</mn><mn>100</mn></mfrac><mo>&#215;</mo><mfrac><mn>75</mn><mn>100</mn></mfrac><mo>=</mo><mn>1620</mn><mspace linebreak=\"newline\"></mspace></math></p>\r\n<p><span style=\"font-family: Times New Roman;\">&nbsp;x =<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>1620</mn><mrow><mn>0</mn><mo>.</mo><mn>9</mn><mo>&#215;</mo><mn>0</mn><mo>.</mo><mn>75</mn></mrow></mfrac></math>= </span><span style=\"font-family: Times New Roman;\"> Rs. 2400</span></p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "8",
+                    section: "17",
+                    question_en: "<p>8. The speed of a car is 50% more than that of a bike. Both of them start off from point &lsquo;A&rsquo; at the same time and reach point &lsquo;B&rsquo; which is 240 km apart from &lsquo;A&rsquo; together. In between the two points if the car stops for 60 minutes, then find the speed of the bike.</p>",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">8. एक कार की चाल बाइक की चाल से 50% अधिक है | दोनों एक ही समय में बिंदु A से चलना शुरू करते हैं और एक साथ बिंदु B पर पहुँचते हैं जो A से 240 किमी दूर है | इन दोनों बिंदुओं के बीच यदि कार 60 मिनट के लिए रूकती है, तो बाइक की चाल ज्ञात करें | </span></p>",
+                    options_en: ["<p>80 km/hr</p>", "<p>75 km/hr</p>", 
+                                "<p>85 km/hr</p>", "<p>90 km/hr</p>"],
+                    options_hi: ["<p><span style=\"font-family: Times New Roman;\">80 km/hr</span></p>", "<p><span style=\"font-family: Times New Roman;\">75 km/hr</span></p>",
+                                "<p><span style=\"font-family: Times New Roman;\">85 km/hr</span></p>", "<p><span style=\"font-family: Times New Roman;\">90 km/hr</span></p>"],
+                    solution_en: "<p>(a)<span style=\"font-family: Times New Roman;\"> Let the speed of the bike be &lsquo;x&rsquo; km/hr</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Therefore, speed of the car = 1.5x km/hr</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">According to the question,</span></p>\r\n<p><span style=\"font-family: Times New Roman;\"><span style=\"font-weight: 400;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfenced><mfrac><mn>240</mn><mi mathvariant=\"normal\">x</mi></mfrac></mfenced><mo>-</mo><mfenced><mfrac><mn>240</mn><mrow><mn>1</mn><mo>.</mo><mn>5</mn><mi mathvariant=\"normal\">x</mi></mrow></mfrac></mfenced><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>1</mn><mo>&#160;</mo><mo>&#160;</mo><mo>.</mo><mo>.</mo><mo>(</mo><mn>1</mn><mi>hr</mi><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>60</mn><mo>&#160;</mo><mi>min</mi><mo>)</mo></math>&nbsp;</span></span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Or, x = 80 km/hr</span></p>",
+                    solution_hi: "<p>(a)माना बाइक की गति \'x\' किमी/घंटा है</p>\r\n<p><span style=\"font-family: Times New Roman;\">इसलिए, कार की गति= 1.5x km/hr</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">प्रश्न के अनुसार,</span></p>\r\n<p><span style=\"font-family: Times New Roman;\"><span style=\"font-weight: 400;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfenced><mfrac><mn>240</mn><mi mathvariant=\"normal\">x</mi></mfrac></mfenced><mo>-</mo><mfenced><mfrac><mn>240</mn><mrow><mn>1</mn><mo>.</mo><mn>5</mn><mi mathvariant=\"normal\">x</mi></mrow></mfrac></mfenced><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>1</mn><mo>&#160;</mo><mo>&#160;</mo><mo>.</mo><mo>.</mo><mo>(</mo><mn>1</mn><mi>hr</mi><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>60</mn><mo>&#160;</mo><mi>min</mi><mo>)</mo></math>&nbsp;</span></span></p>\r\n<p><span style=\"font-family: Times New Roman;\">&nbsp;x = 80 km/hr</span></p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "9",
+                    section: "17",
+                    question_en: "<p>9. A certain sum of money gives interest twice of the sum, in 4 years at simple interest. In how much time will it give an interest equals 5 times of the sum?</p>",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">9. किसी निश्चित धन राशि से साधारण ब्याज पर 4 वर्षों में इस राशि से दोगुना ब्याज प्राप्त होता है | इस राशि के 5 गुना बराबर ब्याज कितने समय में प्राप्त होगा ? </span></p>",
+                    options_en: ["<p>12 Years</p>", "<p>10 Years</p>", 
+                                "<p>15 Years</p>", "<p>8 Years</p>"],
+                    options_hi: ["<p><span style=\"font-family: Times New Roman;\">12 Years</span></p>", "<p><span style=\"font-family: Times New Roman;\">10 Years</span></p>",
+                                "<p><span style=\"font-family: Times New Roman;\">15 Years</span></p>", "<p><span style=\"font-family: Times New Roman;\">8 Years</span></p>"],
+                    solution_en: "<p><span style=\"font-family: Times New Roman;\">(b) Let the sum invested be Rs. x and the rate of investment be r% p.a.</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">According to the question,</span></p>\r\n<p><span style=\"font-weight: 400;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mfenced><mrow><mi mathvariant=\"normal\">x</mi><mo>&#215;</mo><mn>4</mn><mo>&#215;</mo><mi mathvariant=\"normal\">r</mi></mrow></mfenced><mn>100</mn></mfrac><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>2</mn><mi mathvariant=\"normal\">x</mi></math></span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Or, r = 50%</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Let the time be &lsquo;t&rsquo; years in which the sum gives interest equals to 5 times the sum invested.</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">According to the question,</span></p>\r\n<p><span style=\"font-weight: 400;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mfenced><mrow><mi mathvariant=\"normal\">x</mi><mo>&#215;</mo><mn>50</mn><mo>&#215;</mo><mi mathvariant=\"normal\">t</mi></mrow></mfenced><mn>100</mn></mfrac><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>5</mn><mi mathvariant=\"normal\">x</mi></math></span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Or, t = 10 years</span></p>\r\n<p><span style=\"font-family: Times New Roman;\"> Alternate :</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Interest becomes 2 times in = 4 years</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Interest becomes 1 time in = 2 years</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Interest becomes 5 time in = 2 x 5 = 10 years</span></p>",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(b) मान लीजिए निवेश की गई राशि रु. x और निवेश की दर r% प्रति वर्ष हो।</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">प्रश्न के अनुसार</span><span style=\"font-family: \'Times New Roman\';\">,</span></p>\r\n<p><span style=\"font-weight: 400;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mfenced><mrow><mi mathvariant=\"normal\">x</mi><mo>&#215;</mo><mn>4</mn><mo>&#215;</mo><mi mathvariant=\"normal\">r</mi></mrow></mfenced><mn>100</mn></mfrac><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>2</mn><mi mathvariant=\"normal\">x</mi></math></span></p>\r\n<p><span style=\"font-family: Times New Roman;\">&nbsp;r = 50%</span></p>\r\n<p>मान लीजिए कि वह समय \'t\' वर्ष है जिसमें राशि निवेश की गई राशि के 5 गुना के बराबर ब्याज देती है।</p>\r\n<p><span style=\"font-family: Times New Roman;\">प्रश्न के अनुसार,</span></p>\r\n<p><span style=\"font-weight: 400;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mfenced><mrow><mi mathvariant=\"normal\">x</mi><mo>&#215;</mo><mn>50</mn><mo>&#215;</mo><mi mathvariant=\"normal\">t</mi></mrow></mfenced><mn>100</mn></mfrac><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>5</mn><mi mathvariant=\"normal\">x</mi></math></span></p>\r\n<p><span style=\"font-family: Times New Roman;\">या, t = 10 years</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">वैकल्पिक :</span></p>\r\n<p>ब्याज = 4 वर्ष में 2 गुना हो जाता है</p>\r\n<p>ब्याज = 2 वर्ष में 1 गुना हो जाता है</p>\r\n<p>ब्याज = 2 x 5 = 10 वर्ष में 5 गुना हो जाता है</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "10",
+                    section: "17",
+                    question_en: " <p>Directions(10-13): The given pie-chart shows the percentage distribution of the number of cars sold of five different brands. </span></p> <p><span style=\"font-family:Times New Roman\">The total number of cars of all the five brands sold is 25000.</span></p> <p><img src=\"https://ssccglpinnacle.com/admin/resources/qdocs/test-1-EN-1/1626668102/word/media/image6.png\"/></p> <p><span style=\"font-family:Times New Roman\">Q10. Find the difference between the number of Maruti’s cars sold and Mahindra’s cars sold. ",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">दिशा निर्देश(10-13): दिया गया वृत्त-आरेख पाँच अलग-अलग ब्रांड द्वारा बेचीं गयी कारों के प्रतिशत वितरण को दर्शाता है |</span></p>\r\n<p><span style=\"font-family: Baloo;\">सभी पाँच ब्रांड के द्वारा बेची </span><span style=\"font-family: Baloo;\">गयी</span><span style=\"font-family: Baloo;\"> कारों की कुल संख्या 25000 है | </span></p>\r\n<p><img src=\"https://ssccglpinnacle.com/admin/resources/qdocs/test-1-EN-1/1626668102/word/media/image6.png\" /></p>\r\n<p><span style=\"font-family: Baloo;\">10. मारुति के द्वारा और महिंद्रा के द्वारा बेची </span><span style=\"font-family: Baloo;\">गयी</span><span style=\"font-family: Baloo;\"> कारों की संख्या में अंतर ज्ञात करें | </span></p>",
+                    options_en: [" <p> 2460</span></p>", " <p> 2000</span></p>", 
+                                " <p> 1500 </span></p>", " <p> 1420</span></p>"],
+                    options_hi: ["<p><span style=\"font-family: Times New Roman;\">2460</span></p>", "<p><span style=\"font-family: Times New Roman;\">2000</span></p>",
+                                "<p><span style=\"font-family: Times New Roman;\">1500 </span></p>", "<p><span style=\"font-family: Times New Roman;\">1420</span></p>"],
+                    solution_en: " <p><span style=\"font-family:Times New Roman\">(b) Required difference = (21 – 13)% of 25000 = 2000</span></p>",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(b) आवश्यक अंतर = (21 &ndash; 13)% of 25000 = 2000</span></p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "11",
+                    section: "17",
+                    question_en: "<p>Directions(10-13): The given pie-chart shows the percentage distribution of the number of cars sold of five different brands.</p>\r\n<p><span style=\"font-family: Times New Roman;\">The total number of cars of all the five brands sold is 25000.</span></p>\r\n<p><img src=\"https://ssccglpinnacle.com/admin/resources/qdocs/test-1-EN-1/1626668102/word/media/image6.png\" /></p>\r\n<p><span style=\"font-family: Times New Roman;\">Q11. The difference between the number of Hyundai&rsquo;s car sold and Kila&rsquo;s cars sold is same as the difference of number of cars sold of </span></p>",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">दिशा निर्देश(10-13): दिया गया वृत्त-आरेख पाँच अलग-अलग ब्रांड द्वारा बेचीं गयी कारों के प्रतिशत वितरण को दर्शाता है |</span></p>\r\n<p><span style=\"font-family: Baloo;\">सभी पाँच ब्रांड के द्वारा बेची </span><span style=\"font-family: Baloo;\">गयी</span><span style=\"font-family: Baloo;\"> कारों की कुल संख्या 25000 है | </span></p>\r\n<p><img src=\"https://ssccglpinnacle.com/admin/resources/qdocs/test-1-EN-1/1626668102/word/media/image6.png\" /></p>\r\n<p><span style=\"font-family: Times New Roman;\">11</span><span style=\"font-family: Baloo;\">. हुंडई और किला के द्वारा बेची </span><span style=\"font-family: Baloo;\">गयी</span><span style=\"font-family: Baloo;\"> कारों की संख्या में अंतर किन दो कंपनियों के द्वारा बेची </span><span style=\"font-family: Baloo;\">गयी</span><span style=\"font-family: Baloo;\"> कारों की संख्या में अंतर के बराबर है ? </span></p>",
+                    options_en: ["<p>Maruti and Mahindra</p>", "<p>Hyundai and Tata</p>", 
+                                "<p>Kila and Maruti</p>", "<p>Tata and Mahindra</p>"],
+                    options_hi: ["<p><span style=\"font-family: Baloo;\">मारुति और महिंद्रा</span></p>", "<p><span style=\"font-family: Baloo;\">हुंडई और टाटा</span></p>",
+                                "<p><span style=\"font-family: Baloo;\">किला और मारुति</span></p>", "<p><span style=\"font-family: Baloo;\">टाटा और महिंद्रा</span></p>"],
+                    solution_en: "<p><span style=\"font-family: Times New Roman;\">(c) Difference between the number of Kila&rsquo;s cars sold and Hyundai&rsquo;s cars sold = (23 &ndash; 18)% of 25000 = 1250</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Difference between the number of Kila&rsquo;s cars sold and Maruti&rsquo;s cars sold = (18 &ndash; 13)% of 25000 = 1250</span></p>",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(c) किला की बेची गई कारों और हुंडई की बेची गई कारों की संख्या के बीच अंतर = (23 &ndash; 18)% of 25000 = 1250</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">किला की बेची गई कारों और मारुति की बेची गई कारों की संख्या के बीच अंतर= (18 &ndash; 13)% of 25000 = 1250</span></p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "12",
+                    section: "17",
+                    question_en: "<p>Directions(10-13): The given pie-chart shows the percentage distribution of the number of cars sold of five different brands.</p>\r\n<p><span style=\"font-family: Times New Roman;\">The total number of cars of all the five brands sold is 25000.</span></p>\r\n<p><img src=\"https://ssccglpinnacle.com/admin/resources/qdocs/test-1-EN-1/1626668102/word/media/image6.png\" /></p>\r\n<p><span style=\"font-family: Times New Roman;\">[Q12. The number of Mahindra&rsquo;s cars sold is how much percent more/less than that of Kila&rsquo;s cars? </span></p>",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">दिशा निर्देश(10-13): दिया गया वृत्त-आरेख पाँच अलग-अलग ब्रांड द्वारा बेचीं गयी कारों के प्रतिशत वितरण को दर्शाता है |</span></p>\r\n<p><span style=\"font-family: Baloo;\">सभी पाँच ब्रांड के द्वारा बेची </span><span style=\"font-family: Baloo;\">गयी</span><span style=\"font-family: Baloo;\"> कारों की कुल संख्या 25000 है | </span></p>\r\n<p><img src=\"https://ssccglpinnacle.com/admin/resources/qdocs/test-1-EN-1/1626668102/word/media/image6.png\" /></p>\r\n<p><span style=\"font-family: Baloo;\">12. महिंद्रा के द्वारा बेची </span><span style=\"font-family: Baloo;\">गयी</span><span style=\"font-family: Baloo;\"> कारों की संख्या किला के द्वारा बेची </span><span style=\"font-family: Baloo;\">गयी</span><span style=\"font-family: Baloo;\"> कारों की संख्या से कितना प्रतिशत अधिक/कम है ? </span></p>",
+                    options_en: ["<p>16.66%</p>", "<p>8.33%</p>", 
+                                "<p>14.24%</p>", "<p>12.33%</p>"],
+                    options_hi: ["<p><span style=\"font-family: Times New Roman;\">16.66%</span></p>", "<p><span style=\"font-family: Times New Roman;\">8.33%</span></p>",
+                                "<p><span style=\"font-family: Times New Roman;\">14.24%</span></p>", "<p><span style=\"font-family: Times New Roman;\">12.33%</span></p>"],
+                    solution_en: "<p>(a)<span style=\"font-family: Times New Roman;\"> Required percentage = <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mrow><mo>(</mo><mn>21</mn><mo>-</mo><mn>18</mn><mo>)</mo></mrow><mn>18</mn></mfrac></math>&nbsp;&times; 100 </span><span style=\"font-family: Times New Roman;\">= 16.66%</span></p>",
+                    solution_hi: "<p>(a)<span style=\"font-family: Times New Roman;\"> आवश्यक प्रतिशत = <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mrow><mo>(</mo><mn>21</mn><mo>-</mo><mn>18</mn><mo>)</mo></mrow><mn>18</mn></mfrac></math>&nbsp;&times; 100 </span><span style=\"font-family: Times New Roman;\">= 16.66%</span></p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "13",
+                    section: "17",
+                    question_en: "<p>Directions(10-13): The given pie-chart shows the percentage distribution of the number of cars sold of five different brands.</p>\r\n<p><span style=\"font-family: Times New Roman;\">The total number of cars of all the five brands sold is 25000.</span></p>\r\n<p><img src=\"https://ssccglpinnacle.com/admin/resources/qdocs/test-1-EN-1/1626668102/word/media/image6.png\" /></p>\r\n<p><span style=\"font-family: Times New Roman;\">Q13. Find the sum of the number of Tata&rsquo;s cars sold and Mahindra&rsquo;s cars sold. </span></p>",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">दिशा निर्देश(10-13): दिया गया वृत्त-आरेख पाँच अलग-अलग ब्रांड द्वारा बेचीं गयी कारों के प्रतिशत वितरण को दर्शाता है |</span></p>\r\n<p><span style=\"font-family: Baloo;\">सभी पाँच ब्रांड के द्वारा बेची </span><span style=\"font-family: Baloo;\">गयी</span><span style=\"font-family: Baloo;\"> कारों की कुल संख्या 25000 है | </span></p>\r\n<p><img src=\"https://ssccglpinnacle.com/admin/resources/qdocs/test-1-EN-1/1626668102/word/media/image6.png\" /></p>\r\n<p><span style=\"font-family: Baloo;\">13. टाटा एवं महिंद्रा के द्वारा बेची गयी कारों की संख्या का जोड़ ज्ञात करें | </span></p>",
+                    options_en: ["<p>10150</p>", "<p>13050</p>", 
+                                "<p>12040</p>", "<p>11500</p>"],
+                    options_hi: ["<p><span style=\"font-family: Times New Roman;\">10150 </span></p>", "<p><span style=\"font-family: Times New Roman;\">13050 </span></p>",
+                                "<p><span style=\"font-family: Times New Roman;\">12040 </span></p>", "<p><span style=\"font-family: Times New Roman;\">11500</span></p>"],
+                    solution_en: "<p><span style=\"font-family: Times New Roman;\">(d) <span style=\"font-weight: 400;\">&nbsp;Required sum = (0.25 &times; 25000) + (0.21 &times; 25000) = 6250 + 5250 = 11500</span></span></p>",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(d) <span style=\"font-weight: 400;\">&nbsp;आवश्यक राशि = (0.25 &times; 25000) + (0.21 &times; 25000) = 6250 + 5250 = 11500</span></span></p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "14",
+                    section: "17",
+                    question_en: "<p>14. If <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>x</mi><mo>=</mo><mn>5</mn><mo>+</mo><mn>2</mn><msqrt><mn>6</mn></msqrt></math>, then find the value of <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msqrt><mi>x</mi></msqrt><mo>+</mo><mfrac><mn>1</mn><msqrt><mi>x</mi></msqrt></mfrac></math>.</p>",
+                    question_hi: "<p><span style=\"font-family: \'times new roman\', times, serif;\">14. यदि <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>x</mi><mo>=</mo><mn>5</mn><mo>+</mo><mn>2</mn><msqrt><mn>6</mn></msqrt></math> है, तो <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msqrt><mi>x</mi></msqrt><mo>+</mo><mfrac><mn>1</mn><msqrt><mi>x</mi></msqrt></mfrac></math> का मान ज्ञात करें | </span></p>",
+                    options_en: ["<p>2<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msqrt><mn>3</mn></msqrt></math><span style=\"font-family: Times New Roman;\"> </span></p>", "<p>3<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msqrt><mn>2</mn></msqrt></math><span style=\"font-family: Times New Roman;\"> </span></p>", 
+                                "<p>1</p>", "<p>2<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msqrt><mn>2</mn></msqrt></math></p>"],
+                    options_hi: ["<p><span style=\"font-family: Times New Roman;\">2<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msqrt><mn>3</mn></msqrt></math></span></p>", "<p><span style=\"font-family: Times New Roman;\">3<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msqrt><mn>2</mn></msqrt></math></span></p>",
+                                "<p>1</p>", "<p><span style=\"font-family: Times New Roman;\">2<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msqrt><mn>2</mn></msqrt></math></span></p>"],
+                    solution_en: "<p>(a)<span style=\"font-family: Gungsuh;\"> Given, x = 5 + 2&radic;6</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Or, x =&nbsp;<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msup><mrow><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mn>2</mn><mo>&#215;</mo><msqrt><mn>2</mn></msqrt><mo>&#215;</mo><msqrt><mn>3</mn></msqrt><mo>+</mo><msup><mrow><mo>(</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup></math></span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Or,&nbsp;<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>x</mi><mo>=</mo><msup><mrow><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>+</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup></math></span></p>\r\n<p><span style=\"font-family: Gungsuh;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msqrt><mi>x</mi></msqrt><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>&#160;</mo><mo>+</mo><mo>&#160;</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></math>&nbsp;</span></p>\r\n<p><span style=\"font-family: Gungsuh;\">Therefore, <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msqrt><mi>x</mi></msqrt><mo>+</mo><mfrac><mn>1</mn><msqrt><mi>x</mi></msqrt></mfrac><mo>=</mo><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>+</mo><msqrt><mn>3</mn><mo>)</mo></msqrt><mo>+</mo><mfrac><mn>1</mn><mrow><msqrt><mn>2</mn></msqrt><mo>+</mo><msqrt><mn>3</mn></msqrt></mrow></mfrac><mo>=</mo><mn>2</mn><msqrt><mn>3</mn></msqrt></math></span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Alternate :-</span></p>\r\n<p><span style=\"font-family: Gungsuh;\">Given, <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi mathvariant=\"normal\">x</mi><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>5</mn><mo>&#160;</mo><mo>+</mo><mo>&#160;</mo><mn>2</mn><msqrt><mn>3</mn></msqrt></math></span></p>\r\n<p><span style=\"font-family: Times New Roman;\">So , <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>1</mn><mi>x</mi></mfrac></math></span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>=</mo><mo>&#160;</mo><mn>5</mn><mo>-</mo><mn>2</mn><msqrt><mn>6</mn></msqrt></math></p>\r\n<p><span style=\"font-family: Times New Roman;\">&nbsp;<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>x</mi><mo>+</mo><mfrac><mn>1</mn><mi>x</mi></mfrac></math> </span><span style=\"font-family: Times New Roman;\">= </span><span style=\"font-family: Times New Roman;\">10 </span></p>\r\n<p><span style=\"font-family: Gungsuh;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msqrt><mi>x</mi></msqrt><mo>+</mo><mfrac><mn>1</mn><msqrt><mi>x</mi></msqrt></mfrac><mo>=</mo><msqrt><mo>(</mo><mn>10</mn><mo>+</mo><mn>2</mn><mo>)</mo></msqrt><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>2</mn><msqrt><mn>3</mn></msqrt></math></span></p>",
+                    solution_hi: "<p>(a)दिया है&nbsp;<span style=\"font-family: Gungsuh;\">, x = 5 + 2&radic;6</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">या, x = <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msup><mrow><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mn>2</mn><mo>&#215;</mo><msqrt><mn>2</mn></msqrt><mo>&#215;</mo><msqrt><mn>3</mn></msqrt><mo>+</mo><msup><mrow><mo>(</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup></math></span></p>\r\n<p><span style=\"font-family: Times New Roman;\">या, <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>x</mi><mo>=</mo><msup><mrow><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>+</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup></math></span></p>\r\n<p><span style=\"font-family: Gungsuh;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msqrt><mi>x</mi></msqrt><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>&#160;</mo><mo>+</mo><mo>&#160;</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></math>&nbsp;</span></p>\r\n<p><span style=\"font-family: Gungsuh;\">इसलिए, <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msqrt><mi>x</mi></msqrt><mo>+</mo><mfrac><mn>1</mn><msqrt><mi>x</mi></msqrt></mfrac><mo>=</mo><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>+</mo><msqrt><mn>3</mn><mo>)</mo></msqrt><mo>+</mo><mfrac><mn>1</mn><mrow><msqrt><mn>2</mn></msqrt><mo>+</mo><msqrt><mn>3</mn></msqrt></mrow></mfrac><mo>=</mo><mn>2</mn><msqrt><mn>3</mn></msqrt></math></span></p>\r\n<p><span style=\"font-family: Times New Roman;\">वैकल्पिक:-</span></p>\r\n<p><span style=\"font-family: Gungsuh;\">दिया है ,, <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi mathvariant=\"normal\">x</mi><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>5</mn><mo>&#160;</mo><mo>+</mo><mo>&#160;</mo><mn>2</mn><msqrt><mn>3</mn></msqrt></math></span></p>\r\n<p><span style=\"font-family: Times New Roman;\">इसलिए, <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>1</mn><mi>x</mi></mfrac></math></span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>=</mo><mo>&#160;</mo><mn>5</mn><mo>-</mo><mn>2</mn><msqrt><mn>6</mn></msqrt></math></p>\r\n<p><span style=\"font-family: Times New Roman;\">&nbsp;<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>x</mi><mo>+</mo><mfrac><mn>1</mn><mi>x</mi></mfrac></math> </span><span style=\"font-family: Times New Roman;\">= </span><span style=\"font-family: Times New Roman;\">10 </span></p>\r\n<p><span style=\"font-family: Gungsuh;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msqrt><mi>x</mi></msqrt><mo>+</mo><mfrac><mn>1</mn><msqrt><mi>x</mi></msqrt></mfrac><mo>=</mo><msqrt><mo>(</mo><mn>10</mn><mo>+</mo><mn>2</mn><mo>)</mo></msqrt><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>2</mn><msqrt><mn>3</mn></msqrt></math></span></p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "15",
+                    section: "17",
+                    question_en: "<p dir=\"ltr\">15. In triangle ABC, AD is the median and AD is half of BC. If <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math>ABD=50&deg;, find <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math>DAC?</p>\r\n<p><img src=\"https://ssccglpinnacle.com/admin/resources/qdocs/test-1-EN-1/1626668102/word/media/image5.png\"><span style=\"font-family: Times New Roman;\"> </span></p>\n",
+                    question_hi: "<p><span style=\"font-family: Arial Unicode MS;\">15. &#2340;&#2381;&#2352;&#2367;&#2349;&#2369;&#2332; ABC &#2350;&#2375;&#2306;, AD &#2350;&#2366;&#2343;&#2381;&#2351;&#2367;&#2325;&#2366; &#2361;&#2376; &#2324;&#2352; AD, BC &#2360;&#2375; &#2310;&#2343;&#2366; &#2361;&#2376; | &#2351;&#2342;&#2367; <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math>ABD=50&deg; &#2361;&#2376;, &#2340;&#2379; &#2325;&#2379;&#2339; DAC &#2332;&#2381;&#2334;&#2366;&#2340; &#2325;&#2352;&#2375;&#2306; | </span></p>\r\n<p><img src=\"https://ssccglpinnacle.com/admin/resources/qdocs/test-1-EN-1/1626668102/word/media/image5.png\"></p>\n",
+                    options_en: ["<p>25</p>\n", "<p>50</p>\n", 
+                                "<p>40</p>\n", "<p>45</p>\n"],
+                    options_hi: ["<p>25</p>\n", "<p>50</p>\n",
+                                "<p>40</p>\n", "<p>45</p>\n"],
+                    solution_en: "<p><span style=\"font-family: Times New Roman;\">(c) Given, AD is median and AD =<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mrow><mi>B</mi><mi>C</mi></mrow><mn>2</mn></mfrac></math> </span></p>\r\n<p><span style=\"font-family: Times New Roman;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&rArr;</mo></math>BD=DC=AD</span></p>\r\n<p><span style=\"font-family: Arial Unicode MS;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&rArr;</mo></math><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math>ABD=<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math></span><span style=\"font-family: Arial Unicode MS;\">BAD = 50&deg;</span><span style=\"font-family: Arial Unicode MS;\">&hellip;&hellip;..(AD=BD)</span></p>\r\n<p><span style=\"font-family: Arial Unicode MS;\">Now, </span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: Arial Unicode MS;\">ADC = </span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: Arial Unicode MS;\">ABD</span><span style=\"font-family: Arial Unicode MS;\"> +</span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: Arial Unicode MS;\">BAD </span><span style=\"font-family: Arial Unicode MS;\">.&hellip;(External opposite angle)</span></p>\r\n<p><span style=\"font-family: Times New Roman;\"> = 50&deg; + 50&deg; = 100&deg;</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">In</span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&#8710;</mo><mi>A</mi><mi>D</mi><mi>C</mi></math></p>\r\n<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: \'Arial Unicode MS\';\">ADC +</span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: \'Arial Unicode MS\';\">CAD +</span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: \'Arial Unicode MS\';\">ACD = 180&deg;</span></p>\r\n<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: \'Arial Unicode MS\';\">CAD +</span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: \'Arial Unicode MS\';\">ACD = 180&deg;-100&deg; = 80&deg;</span></p>\r\n<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: Arial Unicode MS;\">CAD =</span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: Arial Unicode MS;\">ACD =<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mrow><mn>80</mn><mo>&deg;</mo></mrow><mn>2</mn></mfrac></math></span><span style=\"font-family: Times New Roman;\">= 40&deg;</span><span style=\"font-family: Times New Roman;\">...&hellip;&hellip;..(AD=CD)</span></p>\r\n<p><img src=\"https://ssccglpinnacle.com/images/mceu_45636955011627101358383.png\"></p>\n",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(c) &#2342;&#2367;&#2351;&#2366; &#2361;&#2376; ,AD &#2350;&#2366;&#2343;&#2381;&#2351;&#2367;&#2325;&#2366; &#2361;&#2376; &#2324;&#2352; AD=<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mrow><mi>B</mi><mi>C</mi></mrow><mn>2</mn></mfrac></math> </span></p>\r\n<p><span style=\"font-family: Times New Roman;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&rArr;</mo></math>BD=DC=AD</span></p>\r\n<p><span style=\"font-family: Arial Unicode MS;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&rArr;</mo></math><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math>ABD=<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math></span><span style=\"font-family: Arial Unicode MS;\">BAD = 50&deg;</span><span style=\"font-family: Arial Unicode MS;\">&hellip;&hellip;..(AD=BD)</span></p>\r\n<p><span style=\"font-family: Arial Unicode MS;\">&#2309;&#2348;, </span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: Arial Unicode MS;\">ADC = </span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: Arial Unicode MS;\">ABD</span><span style=\"font-family: Arial Unicode MS;\"> +</span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: Arial Unicode MS;\">BAD </span><span style=\"font-family: Arial Unicode MS;\">.&hellip;(&#2348;&#2366;&#2361;&#2381;&#2351; &nbsp;&#2357;&#2367;&#2346;&#2352;&#2368;&#2340; &#2325;&#2379;&#2339;)</span></p>\r\n<p><span style=\"font-family: Times New Roman;\"> = 50&deg; + 50&deg; = 100&deg;</span></p>\r\n<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&#8710;</mo><mi>A</mi><mi>D</mi><mi>C</mi></math> &#2350;&#2375;&#2306;&nbsp;</p>\r\n<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: \'Arial Unicode MS\';\">ADC +</span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: \'Arial Unicode MS\';\">CAD +</span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: \'Arial Unicode MS\';\">ACD = 180&deg;</span></p>\r\n<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: \'Arial Unicode MS\';\">CAD +</span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: \'Arial Unicode MS\';\">ACD = 180&deg;-100&deg; = 80&deg;</span></p>\r\n<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: Arial Unicode MS;\">CAD =</span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&ang;</mo></math><span style=\"font-family: Arial Unicode MS;\">ACD =<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mrow><mn>80</mn><mo>&deg;</mo></mrow><mn>2</mn></mfrac></math></span><span style=\"font-family: Times New Roman;\">= 40&deg;</span><span style=\"font-family: Times New Roman;\">...&hellip;&hellip;..(AD=CD)</span></p>\r\n<p><img src=\"https://ssccglpinnacle.com/images/mceu_45636955011627101358383.png\"></p>\n",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "16",
+                    section: "17",
+                    question_en: "<p><span style=\"font-weight: 400;\">16.Three spheres having radius equals to 3 cm, 4 cm and 5 cm respectively are melted and re-casted into one solid sphere. Find the surface area of the sphere thus formed.</span></p>",
+                    question_hi: "<p><span style=\"font-weight: 400;\">16. तीन गोले जिनकी त्रिज्या क्रमशः&nbsp; 3 सेमी, 4 सेमी और 5 सेमी है, को पिघलाया जाता है और एक ठोस गोला बनाया जाता है | इस प्रकार निर्मित गोले का पृष्ठ क्षेत्रफल ज्ञात करें |</span></p>",
+                    options_en: ["<p><span style=\"font-weight: 400;\">132&pi;&nbsp; </span></p>", "<p><span style=\"font-weight: 400;\">214&pi;</span></p>", 
+                                "<p><span style=\"font-weight: 400;\">144&pi;</span></p>", "<p><span style=\"font-weight: 400;\">202&pi; </span></p>"],
+                    options_hi: ["<p><span style=\"font-weight: 400;\">132&pi;&nbsp; </span></p>", "<p><span style=\"font-weight: 400;\">214&pi;</span></p>",
+                                "<p><span style=\"font-weight: 400;\">144&pi;</span></p>", "<p><span style=\"font-weight: 400;\">202&pi; </span></p>"],
+                    solution_en: "<p><span style=\"font-weight: 400;\">(c) Volume of the bigger sphere =&nbsp;<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfenced open=\"{\" close=\"}\"><mrow><mfrac><mn>4</mn><mn>3</mn></mfrac><mi mathvariant=\"normal\">&#960;</mi><mfenced><mrow><msup><mn>3</mn><mn>3</mn></msup><mo>+</mo><msup><mn>4</mn><mn>3</mn></msup><mo>+</mo><msup><mn>5</mn><mn>3</mn></msup></mrow></mfenced></mrow></mfenced></math></span></p>\r\n<p><span style=\"font-weight: 400;\">Or, volume of the bigger sphere =&nbsp;<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfenced><mfrac><mrow><mn>4</mn><mi mathvariant=\"normal\">&#960;</mi></mrow><mn>3</mn></mfrac></mfenced><mo>&#160;</mo><mo>&#215;</mo><mo>&#160;</mo><mn>216</mn><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mfenced><mfrac><mrow><mn>4</mn><mi mathvariant=\"normal\">&#960;</mi></mrow><mn>3</mn></mfrac></mfenced><mo>&#160;</mo><mo>&#215;</mo><mo>&#160;</mo><msup><mn>6</mn><mn>3</mn></msup></math></span></p>\r\n<p><span style=\"font-weight: 400;\">Therefore, radius of the bigger sphere = 6 cm</span></p>\r\n<p><span style=\"font-weight: 400;\">Surface area of the bigger sphere = 4&pi;</span><span style=\"font-weight: 400;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msup><mi>r</mi><mn>2</mn></msup></math></span><span style=\"font-weight: 400;\"> = 144&pi; </span><span style=\"font-weight: 400;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>c</mi><msup><mi>m</mi><mn>2</mn></msup></math></span></p>",
+                    solution_hi: "<p><span style=\"font-weight: 400;\">(c) बड़े गोले का आयतन = <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfenced open=\"{\" close=\"}\"><mrow><mfrac><mn>4</mn><mn>3</mn></mfrac><mi mathvariant=\"normal\">&#960;</mi><mfenced><mrow><msup><mn>3</mn><mn>3</mn></msup><mo>+</mo><msup><mn>4</mn><mn>3</mn></msup><mo>+</mo><msup><mn>5</mn><mn>3</mn></msup></mrow></mfenced></mrow></mfenced></math></span></p>\r\n<p><span style=\"font-weight: 400;\">या, बड़े गोले का आयतन = <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfenced><mfrac><mrow><mn>4</mn><mi mathvariant=\"normal\">&#960;</mi></mrow><mn>3</mn></mfrac></mfenced><mo>&#160;</mo><mo>&#215;</mo><mo>&#160;</mo><mn>216</mn><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mfenced><mfrac><mrow><mn>4</mn><mi mathvariant=\"normal\">&#960;</mi></mrow><mn>3</mn></mfrac></mfenced><mo>&#160;</mo><mo>&#215;</mo><mo>&#160;</mo><msup><mn>6</mn><mn>3</mn></msup></math></span></p>\r\n<p><span style=\"font-weight: 400;\">अत: बड़े गोले की त्रिज्या= 6 cm</span></p>\r\n<p><span style=\"font-weight: 400;\">बड़े गोले का पृष्ठीय क्षेत्रफल = 4&pi;</span><span style=\"font-weight: 400;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msup><mi>r</mi><mn>2</mn></msup></math></span><span style=\"font-weight: 400;\"> = 144&pi; </span><span style=\"font-weight: 400;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>c</mi><msup><mi>m</mi><mn>2</mn></msup></math></span></p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "17",
+                    section: "17",
+                    question_en: "<p><span style=\"font-weight: 400;\">17. Vinay, Sarthak and Sunil invested some amount in the ratio 2:3:4, respectively at the rates of 15%, 20% and 25% per annum compound interest compounded annually. Find the ratio of the amounts received by them after one year.</span></p>",
+                    question_hi: "<p><span style=\"font-weight: 400;\">17. विनय, सार्थक और सुनील ने क्रमशः 2 : 3 : 4 के अनुपात में प्रति वर्ष 15%, 20% और 25% वार्षिक चक्रवृद्धि ब्याज की दर से कुछ राशि निवेश की | एक वर्ष के बाद उनके द्वारा प्राप्त मिश्रधन में क्या अनुपात है ? </span></p>",
+                    options_en: ["<p><span style=\"font-weight: 400;\">14:17:40</span></p>", "<p><span style=\"font-weight: 400;\">23:36:50</span></p>", 
+                                "<p><span style=\"font-weight: 400;\">21:42:20</span></p>", "<p><span style=\"font-weight: 400;\">None of these</span></p>"],
+                    options_hi: ["<p><span style=\"font-weight: 400;\">14:17:40</span></p>", "<p><span style=\"font-weight: 400;\">23:36:50</span></p>",
+                                "<p><span style=\"font-weight: 400;\">21:42:20</span></p>", "<p>इनमें से कोई नहीं</p>"],
+                    solution_en: "<p><span style=\"font-weight: 400;\">(b) Let the amounts invested be Rs. 2x, Rs. 3x and Rs. 4x</span></p>\r\n<p><span style=\"font-weight: 400;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>2</mn><mi mathvariant=\"normal\">x</mi><mfenced><mrow><mn>1</mn><mo>+</mo><mfrac><mn>15</mn><mn>100</mn></mfrac></mrow></mfenced><mo>&#160;</mo><mo>:</mo><mo>&#160;</mo><mn>3</mn><mi mathvariant=\"normal\">x</mi><mfenced><mrow><mn>1</mn><mo>+</mo><mfrac><mn>20</mn><mn>100</mn></mfrac></mrow></mfenced><mo>&#160;</mo><mo>:</mo><mo>&#160;</mo><mn>4</mn><mi mathvariant=\"normal\">x</mi><mfenced><mrow><mn>1</mn><mo>+</mo><mfrac><mn>25</mn><mn>100</mn></mfrac></mrow></mfenced></math>&nbsp;= 23:36:50</span></p>",
+                    solution_hi: "<p><span style=\"font-weight: 400;\">(b) मान लें कि निवेश की गई राशि रु 2x, रु 3x और रु 4 x, है&nbsp;</span></p>\r\n<p><span style=\"font-weight: 400;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>2</mn><mi mathvariant=\"normal\">x</mi><mfenced><mrow><mn>1</mn><mo>+</mo><mfrac><mn>15</mn><mn>100</mn></mfrac></mrow></mfenced><mo>&#160;</mo><mo>:</mo><mo>&#160;</mo><mn>3</mn><mi mathvariant=\"normal\">x</mi><mfenced><mrow><mn>1</mn><mo>+</mo><mfrac><mn>20</mn><mn>100</mn></mfrac></mrow></mfenced><mo>&#160;</mo><mo>:</mo><mo>&#160;</mo><mn>4</mn><mi mathvariant=\"normal\">x</mi><mfenced><mrow><mn>1</mn><mo>+</mo><mfrac><mn>25</mn><mn>100</mn></mfrac></mrow></mfenced></math>&nbsp;= 23:36:50</span></p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "18",
+                    section: "17",
+                    question_en: "<p>18. If (x &ndash; 3) and (x + 5) are the factors of the equation <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msub><mi>k</mi><mn>1</mn></msub><mi>x</mi><mo>+</mo><msub><mi>k</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo></math> <span style=\"font-family: Times New Roman;\">then find the value of <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>2</mn><msub><mi>k</mi><mn>1</mn></msub><mo>+</mo><msub><mi>k</mi><mn>2</mn></msub></math>.</span></p>",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">18. यदि (x &ndash; 3) और (x + 5) समीकरण <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msub><mi>k</mi><mn>1</mn></msub><mi>x</mi><mo>+</mo><msub><mi>k</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo></math></span><span style=\"font-family: Baloo;\"> के गुणक हैं, तो </span><span style=\"font-family: Times New Roman;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>2</mn><msub><mi>k</mi><mn>1</mn></msub><mo>+</mo><msub><mi>k</mi><mn>2</mn></msub></math> </span><span style=\"font-family: Baloo;\"> का मान ज्ञात करें | </span></p>",
+                    options_en: ["<p>15</p>", "<p>-11</p>", 
+                                "<p>18</p>", "<p>-10</p>"],
+                    options_hi: ["<p>15</p>", "<p><span style=\"font-family: Times New Roman;\">-11</span></p>",
+                                "<p><span style=\"font-family: Times New Roman;\">18</span></p>", "<p><span style=\"font-family: Times New Roman;\">-10</span></p>"],
+                    solution_en: "<p><span style=\"font-family: Times New Roman;\">(b) Putting x = 3 and x = -5 in the given equation, we get</span></p>\r\n<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>(</mo><mn>3</mn><msub><mi mathvariant=\"normal\">k</mi><mn>1</mn></msub><mo>+</mo><msub><mi mathvariant=\"normal\">k</mi><mn>2</mn></msub><mo>)</mo><mo>=</mo><mo>-</mo><mn>9</mn><mo>&#8230;</mo><mo>.</mo><mo>.</mo><mo>(</mo><mn>1</mn><mo>)</mo><mspace linebreak=\"newline\"/><mo>(</mo><mo>-</mo><mn>5</mn><msub><mi mathvariant=\"normal\">k</mi><mn>1</mn></msub><mo>+</mo><msub><mi mathvariant=\"normal\">k</mi><mn>2</mn></msub><mo>)</mo><mo>=</mo><mo>-</mo><mn>25</mn><mo>&#8230;</mo><mo>&#8230;</mo><mo>(</mo><mn>2</mn><mo>)</mo><mspace linebreak=\"newline\"/><mi>On</mi><mo>&#160;</mo><mi>solving</mi><mo>&#160;</mo><mi>equations</mi><mo>&#160;</mo><mo>(</mo><mn>1</mn><mo>)</mo><mo>&#160;</mo><mi>and</mi><mo>&#160;</mo><mo>(</mo><mn>2</mn><mo>)</mo><mo>,</mo><mo>&#160;</mo><mi>we</mi><mo>&#160;</mo><mi>get</mi><mspace linebreak=\"newline\"/><msub><mi mathvariant=\"normal\">k</mi><mn>1</mn></msub><mo>=</mo><mn>2</mn><mo>&#160;</mo><mi>and</mi><mo>&#160;</mo><msub><mi mathvariant=\"normal\">k</mi><mn>2</mn></msub><mo>=</mo><mo>-</mo><mn>15</mn><mspace linebreak=\"newline\"/><mi>Therefore</mi><mo>,</mo><mo>&#160;</mo><mn>2</mn><msub><mi mathvariant=\"normal\">k</mi><mn>1</mn></msub><mo>+</mo><msub><mi mathvariant=\"normal\">k</mi><mn>2</mn></msub><mo>=</mo><mo>-</mo><mn>11</mn></math></p>",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(b)दिए गए समीकरण में x = 3 और x = -5 रखने पर, हमें प्राप्त होता है</span></p>\r\n<p><math style=\"font-family:Verdana\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>(</mo><mn>3</mn><msub><mi mathvariant=\"normal\">k</mi><mn>1</mn></msub><mo>+</mo><msub><mi mathvariant=\"normal\">k</mi><mn>2</mn></msub><mo>)</mo><mo>=</mo><mo>-</mo><mn>9</mn><mo>&#8230;</mo><mo>.</mo><mo>.</mo><mo>(</mo><mn>1</mn><mo>)</mo><mspace linebreak=\"newline\"/><mo>(</mo><mo>-</mo><mn>5</mn><msub><mi mathvariant=\"normal\">k</mi><mn>1</mn></msub><mo>+</mo><msub><mi mathvariant=\"normal\">k</mi><mn>2</mn></msub><mo>)</mo><mo>=</mo><mo>-</mo><mn>25</mn><mo>&#8230;</mo><mo>&#8230;</mo><mo>(</mo><mn>2</mn><mo>)</mo><mspace linebreak=\"newline\"/><mi>&#2360;&#2350;&#2368;&#2325;&#2352;&#2339;</mi><mo>&#160;</mo><mo>(</mo><mn>1</mn><mo>)</mo><mo>&#160;</mo><mi>&#2324;&#2352;</mi><mo>&#160;</mo><mo>(</mo><mn>2</mn><mo>)</mo><mo>&#160;</mo><mi>&#2325;&#2379;</mi><mo>&#160;</mo><mi>&#2361;&#2354;</mi><mo>&#160;</mo><mi>&#2325;&#2352;&#2344;&#2375;</mi><mo>&#160;</mo><mi>&#2346;&#2352;</mi><mo>&#160;</mo><mi>&#2361;&#2350;</mi><mo>&#160;</mo><mi>&#2346;&#2366;&#2340;&#2375;</mi><mo>&#160;</mo><mi>&#2361;&#2376;&#2306;</mi><mspace linebreak=\"newline\"/><msub><mi mathvariant=\"normal\">k</mi><mn>1</mn></msub><mo>=</mo><mn>2</mn><mo>&#160;</mo><mi>&#2324;&#2352;</mi><mo>&#160;</mo><mo>&#160;</mo><msub><mi mathvariant=\"normal\">k</mi><mn>2</mn></msub><mo>=</mo><mo>-</mo><mn>15</mn><mspace linebreak=\"newline\"/><mi>&#2311;&#2360;&#2354;&#2367;&#2319;</mi><mo>,</mo><mo>&#160;</mo><mn>2</mn><msub><mi mathvariant=\"normal\">k</mi><mn>1</mn></msub><mo>+</mo><msub><mi mathvariant=\"normal\">k</mi><mn>2</mn></msub><mo>=</mo><mo>-</mo><mn>11</mn></math></p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "19",
+                    section: "17",
+                    question_en: " <p>19.  If a 10-digit number 985586y7x2 is divisible by 36, then what is the value of ( x -2y ), for the possible greatest value of y?  ",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">19. यदि 10 अंकों की एक संख्या 985586y7x2 , 36 से विभाजित है, तो y के सबसे बड़े संभव मान को लेते हुए (x - 2y ) का मान ज्ञात करें | </span></p>",
+                    options_en: [" <p> 3</span></p>", " <p> 5</span><span style=\"font-family:Times New Roman\">  </span></p>", 
+                                " <p> 1</span></p>", " <p> 2</span></p>"],
+                    options_hi: ["<p>3</p>", "<p>5</p>",
+                                "<p>1</p>", "<p>2</p>"],
+                    solution_en: "<p><span style=\"font-family: Times New Roman;\">(c) Since the number is divisible by 36 it must be divisible by 9 and 4. </span></p>\r\n<p><span style=\"font-family: Times New Roman;\">This number to be divisible by 9<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&#8658;</mo></math></span><span style=\"font-family: Times New Roman;\">(9+8+5+5+8+6+y+7+x+2) must be divisible by 9. So, 50+x+y should be divisible by 9.</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">For this x+y = 4 or x+y = 13, as x and y both are single digit numbers.</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Case 1:</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">For the sum = 4</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">x,y</span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&#8658;</mo></math><span style=\"font-family: \'Times New Roman\';\">(0,4) , (1,3), (2,2), (3,1), (4,0)</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">The number to be divisible by 4 also last two digits must be divisible by 4. </span></p>\r\n<p><span style=\"font-family: Times New Roman;\">For x =4,2,0 </span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Last two digits are not divisible by 4.</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">For x = 1 or 3</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Last two digits are divisible by 4</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Clearly, y = 3 or 1</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">x-2y = 1-2(3) = -5 (which is not in the given options)</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Or, it is 3-2(1)=1 i.e, (c) option.</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Case 2:</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">For the sum = 13</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">So, x and y must be (4,9),(5,8),(6,7),(7,6),(8,5) and (9,4)</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">The number to be divisible by 4 also last two digits must be divisible by 4 this is only possible when x = 5, 7 and 9</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">When x =5, y =8</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">x-2y = (5)-2(8) = -11</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">When x=9, y = 4</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">x-2y = 9-2(4) = 1</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">When x=7, y=6, so x-2y=-5.</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Clearly option c is the right answer. </span></p>",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(c)चूंकि संख्या 36 से विभाज्य है इसलिए इसे 9 और 4 से विभाज्य होना चाहिए।</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">यह संख्या&nbsp; 9&nbsp; से विभाज्य होगी&nbsp; <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&#8658;</mo></math></span><span style=\"font-family: Times New Roman;\">(9+8+5+5+8+6+y+7+x+2) 9 से विभाज्य होना चाहिए। इसलिए, 50 + x&nbsp; + y , 9 से विभाज्य होना चाहिए।</span></p>\r\n<p>इसके लिए x + y = 4 या x +y = 13, क्योंकि x और y दोनों एक अंकीय संख्याएँ हैं।</p>\r\n<p>मामला 1:</p>\r\n<p><span style=\"font-family: Times New Roman;\">राशि के लिए = 4</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">x,y</span><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>&#8658;</mo></math><span style=\"font-family: \'Times New Roman\';\">(0,4) , (1,3), (2,2), (3,1), (4,0)</span></p>\r\n<p>4 से विभाज्य होने वाली संख्या भी अंतिम दो अंक 4 से विभाज्य होनी चाहिए।</p>\r\n<p><span style=\"font-family: Times New Roman;\">&nbsp;x =4,2,0,के लिए&nbsp;</span></p>\r\n<p>अंतिम दो अंक 4 से विभाज्य नहीं हैं।</p>\r\n<p><span style=\"font-family: Times New Roman;\">&nbsp;x = 1 or 3,के लिए&nbsp;</span></p>\r\n<p>अंतिम दो अंक 4 &nbsp;से विभाज्य हैं</p>\r\n<p><span style=\"font-family: Times New Roman;\">स्पष्ट रूप से, y = 3 or 1</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">x-2y = 1-2(3) = -5 (जो दिए गए विकल्पों में नहीं है)</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">तो यह है&nbsp; 3-2(1)=1 i.e, (c) विकल्प&nbsp;</span></p>\r\n<p>मामला 2:</p>\r\n<p><span style=\"font-family: Times New Roman;\">राशि के लिए = 13</span></p>\r\n<p>तो, x और y होना चाहिए (4,9),(5,8),(6,7),(7,6),(8,5) और (9,4)</p>\r\n<p>4 से विभाज्य होने वाली संख्या भी अंतिम दो अंक 4 से विभाज्य होना चाहिए यह तभी संभव है जब x = 5, 7 और 9</p>\r\n<p><span style=\"font-family: Times New Roman;\">जब&nbsp; x =5, y =8</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">x-2y = (5)-2(8) = -11</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">जब&nbsp; x=9, y = 4</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">x-2y = 9-2(4) = 1</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">जब&nbsp; x=7, y=6, so x-2y=-5.</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">स्पष्ट रूप से विकल्प c सही उत्तर है. </span></p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "20",
+                    section: "17",
+                    question_en: "<p>20. &lsquo;A&rsquo; can complete a work in 10 days while &lsquo;B&rsquo; can complete the same work in 15 days. If &lsquo;A&rsquo; works with 1/3rd of his efficiency along with &lsquo;B&rsquo;, then find the number of days taken by them to complete the work.</p>",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">20. A किसी कार्य को 10 दिनों में पूरा कर सकता है जबकि B इसी कार्य को 15 दिनों में पूरा कर सकता है | यदि A, B के साथ अपनी एक तिहाई कार्य क्षमता से कार्य करता है, तो उन दोनों के द्वारा कार्य पूरा होने में कितने दिन लगेंगे ? </span></p>",
+                    options_en: ["<p>12 days</p>", "<p>15 days</p>", 
+                                "<p>10 days</p>", "<p>9 days</p>"],
+                    options_hi: ["<p>12 <span style=\"font-family: Baloo;\">दिन</span></p>", "<p>15 <span style=\"font-family: Baloo;\">दिन</span></p>",
+                                "<p>10 <span style=\"font-family: Baloo;\">दिन</span></p>", "<p>9 <span style=\"font-family: Baloo;\">दिन</span></p>"],
+                    solution_en: "<p><span style=\"font-family: Times New Roman;\">(c)</span></p>\r\n<p><img src=\"https://ssccglpinnacle.com/admin/resources/qdocs/test-1-EN-1/1626668102/word/media/image3.png\" /></p>\r\n<p><span style=\"font-family: Times New Roman;\">Let the total work = 30 units</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Efficiency of &lsquo;A&rsquo; = 3 units/day</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Efficiency of &lsquo;B&rsquo; = 2 units/day</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Efficiency with which &lsquo;A&rsquo; worked = <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>3</mn><mn>3</mn></mfrac></math>= 1 units/day</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Required time taken = <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>30</mn><mfenced><mrow><mn>1</mn><mo>+</mo><mn>2</mn></mrow></mfenced></mfrac></math>= 10 days</span></p>",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(c)</span></p>\r\n<p><img src=\"https://ssccglpinnacle.com/admin/resources/qdocs/test-1-EN-1/1626668102/word/media/image3.png\" /></p>\r\n<p>माना कुल कार्य = 30 इकाई</p>\r\n<p>\'A\' की क्षमता = 3 यूनिट/दिन</p>\r\n<p>\'B\' की क्षमता = 2 यूनिट/दिन</p>\r\n<p><span style=\"font-family: Times New Roman;\">दक्षता जिसके साथ \'A\' ने काम किया = <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>3</mn><mn>3</mn></mfrac></math>= 1यूनिट/दिन</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">आवश्यक समय लिया गया &nbsp;समय = <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>30</mn><mfenced><mrow><mn>1</mn><mo>+</mo><mn>2</mn></mrow></mfenced></mfrac></math>= 10 दिन</span></p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "21",
+                    section: "17",
+                    question_en: "<p>21. 85% of a number exceeds 40% of the same number by 90. Find the number.</p>\n",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">21. &#2325;&#2367;&#2360;&#2368; &#2360;&#2306;&#2326;&#2381;&#2351;&#2366; &#2325;&#2366; 85% &#2311;&#2360;&#2368; &#2360;&#2306;&#2326;&#2381;&#2351;&#2366; &#2325;&#2375; 40% &#2360;&#2375; 90 &#2309;&#2343;&#2367;&#2325; &#2361;&#2376; | &#2351;&#2361; &#2360;&#2306;&#2326;&#2381;&#2351;&#2366; &#2325;&#2380;&#2344; &#2360;&#2368; &#2361;&#2376; ? </span></p>\n",
+                    options_en: ["<p>250<span style=\"font-family: Times New Roman;\"> </span></p>\n", "<p>150<span style=\"font-family: Times New Roman;\"> </span></p>\n", 
+                                "<p>120<span style=\"font-family: Times New Roman;\"> </span></p>\n", "<p>200</p>\n"],
+                    options_hi: ["<p><span style=\"font-family: Times New Roman;\">250</span></p>\n", "<p><span style=\"font-family: Times New Roman;\">150</span></p>\n",
+                                "<p><span style=\"font-family: Times New Roman;\">120</span></p>\n", "<p><span style=\"font-family: Times New Roman;\">200</span></p>\n"],
+                    solution_en: "<p><span style=\"font-family: Times New Roman;\">(d) Let the number be &lsquo;x&rsquo;</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">According to the question,</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">x &times; (0.85) - x &times; (0.40) =90</span></p>\r\n<p>0.45x = 90</p>\r\n<p><span style=\"font-family: Times New Roman;\">&rArr;&nbsp; x = <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>90</mn><mrow><mn>0</mn><mo>.</mo><mn>45</mn></mrow></mfrac></math> = 200</span></p>\n",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(d) &#2350;&#2366;&#2344;&#2366; &#2360;&#2306;&#2326;&#2381;&#2351;&#2366; \'x\' &#2361;&#2376;</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">&#2346;&#2381;&#2352;&#2358;&#2381;&#2344; &#2325;&#2375; &#2309;&#2344;&#2369;&#2360;&#2366;&#2352;,</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">x &times; (0.85) - x &times; (0.40) =90</span></p>\r\n<p>0.45x = 90</p>\r\n<p><span style=\"font-family: Times New Roman;\">&rArr; x = <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>90</mn><mrow><mn>0</mn><mo>.</mo><mn>45</mn></mrow></mfrac></math> = 200</span></p>\n",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "22",
+                    section: "17",
+                    question_en: " <p>22. The </span><span style=\"font-family:Times New Roman\">average of present</span><span style=\"font-family:Times New Roman\"> </span><span style=\"font-family:Times New Roman\">ages</span><span style=\"font-family:Times New Roman\"> of Rajesh, Ravi and Amit is 44 years. The present age of Ravi is 40% more than that of Rajesh. If the present age of Amit is 72 years, then find the sum of the present ages of Rajesh and Amit. ",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">22. राजेश, रवि और अमित की वर्तमान उम्र का औसत 44 वर्ष है | रवि की वर्तमान उम्र राजेश की वर्तमान उम्र से 40% अधिक है | यदि अमित की वर्तमान उम्र 72 वर्ष है, तो राजेश और अमित की वर्तमान उम्र का जोड़ ज्ञात करें | </span></p>",
+                    options_en: [" <p>  105               </span></p>", " <p> 97                    </span></p>", 
+                                " <p> 84                       </span></p>", " <p> 90</span></p>"],
+                    options_hi: ["<p><span style=\"font-family: Times New Roman;\">105 </span></p>", "<p>97</p>",
+                                "<p>84</p>", "<p>90</p>"],
+                    solution_en: "<p><span style=\"font-family: Times New Roman;\">(b) Let the present age Rajesh be &lsquo;x&rsquo; years</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Therefore, present age of Ravi = &lsquo;1.4x&rsquo; years</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">According to the question,</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">1.4x + x = (3 &times; 44) &ndash; 72</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Or, x =<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>60</mn><mrow><mn>2</mn><mo>.</mo><mn>4</mn></mrow></mfrac></math> = 25 years</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Required sum = 25 + 72 = 97 years</span></p>",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(b) माना राजेश की वर्तमान आयु \'x\' वर्ष है</span></p>\r\n<p>अत: रवि की वर्तमान आयु = \'1.4x\' वर्ष</p>\r\n<p><span style=\"font-family: Times New Roman;\">प्रश्न के अनुसार,</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">1.4x + x = (3 &times; 44) &ndash; 72</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Or, x =<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>60</mn><mrow><mn>2</mn><mo>.</mo><mn>4</mn></mrow></mfrac></math> = 25 years</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">आवश्यक राशि = 25 + 72 = 97 &nbsp;वर्ष&nbsp;</span></p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "23",
+                    section: "17",
+                    question_en: "<p>23. An article is marked up by 20% above its cost price. If after allowing a discount of Rs.100, the seller gains 12%, then find the selling price of the article.</p>",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">23. एक वस्तु की कीमत </span><span style=\"font-family: Baloo;\">इसके</span><span style=\"font-family: Baloo;\"> क्रय मूल्य से 20% अधिक रखी जाती है | यदि 100 रुपये की छूट देने के बाद, विक्रेता को 12% का लाभ होता है, तो इस वस्तु का विक्रय मूल्य ज्ञात करें | </span></p>",
+                    options_en: ["<p>1280</p>", "<p>1450</p>", 
+                                "<p>1320</p>", "<p>1400</p>"],
+                    options_hi: ["<p><span style=\"font-family: Times New Roman;\">1280 </span></p>", "<p><span style=\"font-family: Times New Roman;\">1450 </span></p>",
+                                "<p><span style=\"font-family: Times New Roman;\">1320 </span></p>", "<p><span style=\"font-family: Times New Roman;\">1400</span></p>"],
+                    solution_en: "<p><span style=\"font-family: Times New Roman;\">(d) Let the cost price of the article be Rs. x</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">According to the question, </span></p>\r\n<p><span style=\"font-family: Times New Roman;\">1.2x &ndash; 1.12x = 100</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Or, x = <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>100</mn><mrow><mn>0</mn><mo>.</mo><mn>08</mn></mrow></mfrac></math>= Rs. 1250</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Required selling price = 1.12x = Rs. 1400</span></p>",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(d)माना वस्तु का क्रय मूल्य रु. X &nbsp;है&nbsp;</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">हम जानते हैं&nbsp;, </span></p>\r\n<p><span style=\"font-family: Times New Roman;\">1.2x &ndash; 1.12x = 100</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Or, x = <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>100</mn><mrow><mn>0</mn><mo>.</mo><mn>08</mn></mrow></mfrac></math>= Rs. 1250</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">आवश्यक&nbsp; बिक्री&nbsp; मूल्य = 1.12x = Rs. 1400</span></p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "24",
+                    section: "17",
+                    question_en: "<p>24. An alloy contains 40% Zinc and rest Iron. When 12 kg of Zinc and 28 kg of Iron is added to it, the new ratio of Zinc to Iron becomes 3:5. Find the initial quantity of the alloy.</p>",
+                    question_hi: "<p><span style=\"font-family: Baloo;\">24. किसी मिश्रधातु में 40% जस्ता और शेष लोहा है | जब इसमें 12 किलो ग्राम जस्ता और 28 किलो ग्राम लोहा मिलाया जाता है, तो जस्ता और लोहे का नया अनुपात 3 : 5 हो जाता है | इस मिश्रधातु की आरंभिक मात्रा ज्ञात करें | </span></p>",
+                    options_en: ["<p>180<span style=\"font-family: Times New Roman;\"> </span></p>", "<p>150<span style=\"font-family: Times New Roman;\"> </span></p>", 
+                                "<p>120<span style=\"font-family: Times New Roman;\"> </span></p>", "<p>80</p>"],
+                    options_hi: ["<p><span style=\"font-family: Times New Roman;\">180</span></p>", "<p><span style=\"font-family: Times New Roman;\">150</span></p>",
+                                "<p><span style=\"font-family: Times New Roman;\">120</span></p>", "<p><span style=\"font-family: Times New Roman;\">80</span></p>"],
+                    solution_en: "<p><span style=\"font-family: Times New Roman;\">(c) Let the initial quantity of Zinc and Iron in the alloy be 2x kg and 3x kg, respectively.</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">According to the question, </span></p>\r\n<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mrow><mn>2</mn><mi mathvariant=\"normal\">x</mi><mo>+</mo><mn>12</mn></mrow><mrow><mn>3</mn><mi mathvariant=\"normal\">x</mi><mo>+</mo><mn>28</mn></mrow></mfrac><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mfrac><mn>3</mn><mn>5</mn></mfrac></math></p>\r\n<p><span style=\"font-family: Times New Roman;\">Or, 10x + 60 = 9x + 84</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Or, x = 24 kg</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">Therefore, initial quantity of alloy = 2x + 3x = 5x = 120 kg</span></p>",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(c)माना मिश्रधातु में जिंक और आयरन की प्रारंभिक मात्रा क्रमशः 2x किग्रा और 3x किग्रा है.</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">प्रश्न के अनुसार, </span></p>\r\n<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mrow><mn>2</mn><mi mathvariant=\"normal\">x</mi><mo>+</mo><mn>12</mn></mrow><mrow><mn>3</mn><mi mathvariant=\"normal\">x</mi><mo>+</mo><mn>28</mn></mrow></mfrac><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mfrac><mn>3</mn><mn>5</mn></mfrac></math></p>\r\n<p><span style=\"font-family: Times New Roman;\">या&nbsp;, 10x + 60 = 9x + 84</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">या&nbsp;, x = 24 kg</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">अत: मिश्रधातु की प्रारंभिक मात्रा = 2x + 3x = 5x = 120 kg</span></p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "25",
+                    section: "misc",
+                    question_en: "<p>25. <span style=\"font-family: Times New Roman;\">What is the simplified value of&nbsp; <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msup><mi>sec</mi><mn>6</mn></msup><mi mathvariant=\"normal\">A</mi><mo>-</mo><msup><mi>tan</mi><mn>6</mn></msup><mi mathvariant=\"normal\">A</mi><mo>-</mo><mn>3</mn><msup><mi>sec</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>.</mo><msup><mi>tan</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi></math></span><span style=\"font-family: Times New Roman;\">&nbsp;</span><span style=\"font-family: Times New Roman;\">? </span></p>",
+                    question_hi: "<p><span style=\"font-family: Times New Roman;\">2</span><span style=\"font-family: Times New Roman;\">5. <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msup><mi>sec</mi><mn>6</mn></msup><mi mathvariant=\"normal\">A</mi><mo>-</mo><msup><mi>tan</mi><mn>6</mn></msup><mi mathvariant=\"normal\">A</mi><mo>-</mo><mn>3</mn><msup><mi>sec</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>.</mo><msup><mi>tan</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi></math></span><span style=\"font-family: Times New Roman;\">&nbsp;</span><span style=\"font-family: Baloo;\">&#2325;&#2366; &#2360;&#2352;&#2354;&#2368;&#2325;&#2371;&#2340; &#2350;&#2366;&#2344; &#2325;&#2381;&#2351;&#2366; &#2361;&#2376; ? </span><span style=\"font-family: Times New Roman;\"> </span></p>\n",
+                    options_en: ["<p>-1</p>", "<p>0</p>", 
+                                "<p>1<span style=\"font-family: Times New Roman;\"> </span></p>", "<p>secA.tanA</p>"],
+                    options_hi: ["<p>-1</p>\n", "<p>0</p>\n",
+                                "<p>1</p>\n", "<p>secA.tanA</p>\n"],
+                    solution_en: "<p><span style=\"font-family: Times New Roman;\">(c) Put A = 0 </span></p>\r\n<p><span style=\"font-family: Times New Roman;\">And we know that sec (0) = 1 and tan (0) = 0 </span></p>\r\n<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msup><mi>sec</mi><mn>6</mn></msup><mi mathvariant=\"normal\">A</mi><mo>-</mo><msup><mi>tan</mi><mn>6</mn></msup><mi mathvariant=\"normal\">A</mi><mo>-</mo><mn>3</mn><msup><mi>sec</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>.</mo><msup><mi>tan</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>1</mn><mo>-</mo><mn>0</mn><mo>-</mo><mn>3</mn><mo>&#215;</mo><mn>1</mn><mo>&#215;</mo><mn>0</mn><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>1</mn><mspace linebreak=\"newline\"></mspace><mi>The</mi><mo>&#160;</mo><mi>required</mi><mo>&#160;</mo><mi>value</mi><mo>&#160;</mo><mn>1</mn></math></p>\r\n<p>&nbsp;</p>",
+                    solution_hi: "<p><span style=\"font-family: Times New Roman;\">(c)&nbsp;</span></p>\r\n<p><span style=\"font-family: Times New Roman;\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msup><mi>sec</mi><mn>6</mn></msup><mi mathvariant=\"normal\">A</mi><mo>-</mo><msup><mi>tan</mi><mn>6</mn></msup><mi mathvariant=\"normal\">A</mi><mo>-</mo><mn>3</mn><msup><mi>sec</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>.</mo><msup><mi>tan</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>&nbsp;</mo><mspace linebreak=\"newline\"></mspace><mo>=</mo><msup><mrow><mo>(</mo><mi>s</mi><mi>e</mi><msup><mi>c</mi><mn>2</mn></msup><mi>A</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>-</mo><msup><mrow><mo>(</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>A</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>-</mo><mn>3</mn><mo>(</mo><msup><mi>sec</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>)</mo><mo>.</mo><mo>(</mo><msup><mi>tan</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>)</mo><mspace linebreak=\"newline\"></mspace><mo>=</mo><mo>(</mo><msup><mi>sec</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>&nbsp;</mo><mo>-</mo><mo>&nbsp;</mo><msup><mi>tan</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>)</mo><mo>&nbsp;</mo><mo>[</mo><msup><mrow><mo>(</mo><msup><mi>sec</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mo>(</mo><msup><mi>sec</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>)</mo><mo>.</mo><mo>(</mo><msup><mi>tan</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>)</mo><mo>+</mo><msup><mrow><mo>(</mo><msup><mi>tan</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>]</mo><mo>-</mo><mn>3</mn><mo>(</mo><msup><mi>sec</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>)</mo><mo>.</mo><mo>(</mo><msup><mi>tan</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>)</mo><mspace linebreak=\"newline\"></mspace><mo>=</mo><mn>1</mn><mo>[</mo><msup><mrow><mo>(</mo><msup><mi>sec</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>&nbsp;</mo><mo>-</mo><mo>&nbsp;</mo><msup><mi>tan</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mn>3</mn><mo>(</mo><msup><mi>sec</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>)</mo><mo>.</mo><mo>(</mo><msup><mi>tan</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>)</mo><mo>]</mo><mo>-</mo><mn>3</mn><mo>(</mo><msup><mi>sec</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>)</mo><mo>.</mo><mo>(</mo><msup><mi>tan</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>)</mo><mspace linebreak=\"newline\"></mspace><mo>=</mo><mn>1</mn><mo>+</mo><mn>3</mn><mo>(</mo><msup><mi>sec</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>)</mo><mo>.</mo><mo>(</mo><msup><mi>tan</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>)</mo><mo>-</mo><mn>3</mn><mo>(</mo><msup><mi>sec</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>)</mo><mo>.</mo><mo>(</mo><msup><mi>tan</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>)</mo><mspace linebreak=\"newline\"></mspace><mo>=</mo><mn>1</mn></math></span></p>\r\n<p><span style=\"font-family: Times New Roman;\"><strong>Alternate soln:</strong></span></p>\r\n<p><span style=\"font-family: Times New Roman;\">A = 0 &#2352;&#2326;&#2344;&#2375; ,</span></p>\r\n<p><span style=\"font-family: Times New Roman;\">&nbsp;&#2361;&#2350; &#2332;&#2366;&#2344;&#2340;&#2375; &#2361;&#2376;&#2306; &#2325;&#2367;&nbsp; sec (0) = 1 &#2324;&#2352; tan (0) = 0 </span></p>\r\n<p><math style=\"font-family: Verdana;\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><msup><mi>sec</mi><mn>6</mn></msup><mi mathvariant=\"normal\">A</mi><mo>-</mo><msup><mi>tan</mi><mn>6</mn></msup><mi mathvariant=\"normal\">A</mi><mo>-</mo><mn>3</mn><msup><mi>sec</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>.</mo><msup><mi>tan</mi><mn>2</mn></msup><mi mathvariant=\"normal\">A</mi><mo>&nbsp;</mo><mo>=</mo><mo>&nbsp;</mo><mn>1</mn><mo>-</mo><mn>0</mn><mo>-</mo><mn>3</mn><mo>&times;</mo><mn>1</mn><mo>&times;</mo><mn>0</mn><mo>&nbsp;</mo><mo>=</mo><mo>&nbsp;</mo><mn>1</mn><mspace linebreak=\"newline\"></mspace><mi>&#2310;&#2357;&#2358;&#2381;&#2351;&#2325;</mi><mo>&nbsp;</mo><mo>&nbsp;</mo><mi>&#2350;&#2366;&#2344;</mi><mo>&nbsp;</mo><mo>&nbsp;</mo><mo>=</mo><mo>&nbsp;</mo><mn>1</mn></math></p>\r\n<p>&nbsp;</p>\n",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+            
+            // Generate question boxes
+            const boxesContainer = document.getElementById('question-boxes');
+            questions.forEach((q, index) => {
+                const box = document.createElement('div');
+                box.className = 'q-box';
+                box.textContent = index + 1;
+                box.onclick = () => showQuestion(index);
+                box.id = `box-${index}`;
+                boxesContainer.appendChild(box);
+            });
+            
+            // Show first question
+            showQuestion(0);
+            updateProgress();
+        }
+        
+        // Show a specific question
+        function showQuestion(index) {
+            if (index < 0 || index >= questions.length) return;
+            
+            currentQuestion = index;
+            const question = questions[index];
+            
+            // Update question counter
+            document.getElementById('question-counter').textContent = `Question ${index + 1} of ${questions.length}`;
+            
+            // Update question boxes
+            document.querySelectorAll('.q-box').forEach(box => box.classList.remove('current'));
+            document.getElementById(`box-${index}`).classList.add('current');
+            
+            // Generate question HTML - more compact
+            let html = `
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="question-text mb-3">
+                            <div class="en">${question.question_en}</div>
+                            <div class="hi" style="display:none">${question.question_hi}</div>
+                        </div>
+                        <div class="options">`;
+                        
+            // Add options
+            ['a', 'b', 'c', 'd'].forEach((opt, i) => {
+                let optionClass = 'option-label';
+                
+                // When reviewing, highlight user's choice and correct answer
+                if (submitted) {
+                    if (opt === question.correct) {
+                        optionClass += ' border-success bg-success bg-opacity-10';
+                    }
+                    if (answers[question.id] === opt && opt !== question.correct) {
+                        optionClass += ' border-danger bg-danger bg-opacity-10';
+                    }
+                }
+                
+                html += `
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="q${index}" 
+                            id="opt-${index}-${opt}" value="${opt}" 
+                            ${answers[question.id] === opt ? 'checked' : ''}
+                            onclick="selectAnswer('${question.id}', '${opt}')">
+                        <label class="form-check-label w-100 ${optionClass}" for="opt-${index}-${opt}">
+                            ${submitted && opt === question.correct ? '<i class="fas fa-check-circle text-success me-1"></i>' : ''}
+                            <div class="en">${question.options_en[i]}</div>
+                            <div class="hi" style="display:none">${question.options_hi[i]}</div>
+                        </label>
+                    </div>`;
+            });
+            
+            // Add solution if submitted
+            if (submitted) {
+                const isCorrect = answers[question.id] === question.correct;
+                const alertClass = isCorrect ? 'alert-success' : 'alert-danger';
+                const resultText = answers[question.id] ? (isCorrect ? 'Correct!' : 'Incorrect!') : 'Not attempted';
+                
+                html += `
+                    <div class="alert ${alertClass} mt-3 py-2">
+                        <strong>${resultText}</strong>
+                        <div class="mt-1 small">
+                            <strong>Solution:</strong>
+                            <div class="en">${question.solution_en}</div>
+                            <div class="hi" style="display:none">${question.solution_hi}</div>
+                        </div>
+                    </div>`;
+            }
+            
+            html += `</div></div>`;
+            
+            document.getElementById('questions-container').innerHTML = html;
+            
+            // Apply language settings
+            applyLanguage();
+            
+            // If in mobile view, close the menu
+            if (window.innerWidth < 992) {
+                toggleNav(false);
+            }
+        }
+        
+        // Apply current language
+        function applyLanguage() {
+            document.querySelectorAll(`.${currentLang}`).forEach(el => el.style.display = 'block');
+            document.querySelectorAll(`.${currentLang === 'en' ? 'hi' : 'en'}`).forEach(el => el.style.display = 'none');
+        }
+        
+        // Select an answer
+        function selectAnswer(qId, option) {
+            if (submitted) return;
+            
+            answers[qId] = option;
+            updateProgress();
+            
+            // Mark question as attempted in the navigation
+            const index = questions.findIndex(q => q.id === qId);
+            if (index >= 0) {
+                document.getElementById(`box-${index}`).classList.add('attempted');
+            }
+        }
+        
+        // Navigate to previous/next question
+        function prevQuestion() { if (currentQuestion > 0) showQuestion(currentQuestion - 1); }
+        function nextQuestion() { if (currentQuestion < questions.length - 1) showQuestion(currentQuestion + 1); }
+        
+        // Switch section
+        function switchSection(sectionId) {
+            if (sectionId === 'all') {
+                showQuestion(0);
+                return;
+            }
+            
+            const section = sections[sectionId];
+            if (section) showQuestion(section.start);
+        }
+        
+        // Toggle language
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            applyLanguage();
+            
+            // Update button text
+            document.getElementById('lang-text').textContent = currentLang === 'en' ? 'Hi' : 'En';
+        }
+        
+        // Toggle navigation sidebar
+        function toggleNav(show) {
+            const nav = document.getElementById('question-nav');
+            const content = document.getElementById('main-content');
+            
+            if (show === undefined) {
+                show = !nav.classList.contains('show');
+            }
+            
+            if (show) {
+                nav.classList.add('show');
+                if (window.innerWidth >= 992) {
+                    content.classList.add('with-nav');
+                }
+            } else {
+                nav.classList.remove('show');
+                if (window.innerWidth >= 992) {
+                    content.classList.remove('with-nav');
+                }
+            }
+        }
+        
+        // Update progress
+        function updateProgress() {
+            const attempted = Object.keys(answers).length;
+            document.getElementById('attempted-count').textContent = attempted;
+        }
+        
+        // Start timer - compact
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            let timeLeft = totalTime;
+            
+            const timerInterval = setInterval(() => {
+                if (timeLeft <= 0 || submitted) {
+                    clearInterval(timerInterval);
+                    if (!submitted) submitTest();
+                    return;
+                }
+                
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                timeLeft--;
+            }, 1000);
+        }
+        
+        // Confirm before submitting
+        function confirmSubmit() {
+            if (submitted) return;
+            
+            const attempted = Object.keys(answers).length;
+            const remaining = questions.length - attempted;
+            
+            if (confirm(`You have attempted ${attempted} of ${questions.length} questions.
+${remaining} questions are unattempted.
+
+Are you sure you want to submit?`)) {
+                submitTest();
+            }
+        }
+        
+        // Submit test
+        function submitTest() {
+            if (submitted) return;
+            
+            submitted = true;
+            
+            let score = 0;
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let unattemptedCount = 0;
+            
+            questions.forEach((q, index) => {
+                const userAns = answers[q.id];
+                const box = document.getElementById(`box-${index}`);
+                
+                box.classList.remove('attempted');
+                
+                if (!userAns) {
+                    unattemptedCount++;
+                    box.classList.add('bg-secondary', 'text-white');
+                } else if (userAns === q.correct) {
+                    correctCount++;
+                    score += q.pos_marks;
+                    box.classList.add('correct');
+                } else {
+                    incorrectCount++;
+                    score -= q.neg_marks;
+                    box.classList.add('incorrect');
+                }
+            });
+            
+            // Update result values
+            document.getElementById('score-value').textContent = score.toFixed(2);
+            document.getElementById('correct-value').textContent = correctCount;
+            document.getElementById('incorrect-value').textContent = incorrectCount;
+            document.getElementById('unattempted-value').textContent = unattemptedCount;
+            
+            // Show the results modal
+            resultsModal.show();
+            
+            // Disable submit button
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.classList.replace('btn-light', 'btn-success');
+            submitBtn.innerHTML = '<i class="fas fa-check"></i>';
+            
+            // Refresh current question view to show solution
+            showQuestion(currentQuestion);
+        }
+        
+        // Review test
+        function reviewTest() {
+            resultsModal.hide();
+            showQuestion(0);
+        }
+        
+        // Add event listener for window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 992) {
+                if (document.getElementById('question-nav').classList.contains('show')) {
+                    document.getElementById('main-content').classList.add('with-nav');
+                }
+            } else {
+                document.getElementById('main-content').classList.remove('with-nav');
+            }
+        });
+    </script>
+</body>
+</html>

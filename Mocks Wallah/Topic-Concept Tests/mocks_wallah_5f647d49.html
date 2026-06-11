@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mocks Wallah</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #7209b7;
+            --secondary: #4361ee;
+            --accent: #f72585;
+            --success: #06d6a0;
+            --warning: #ffd166;
+            --danger: #ef476f;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        body {
+            background-color: #f0f2f5;
+            font-size: 16px;
+            padding-bottom: 60px; /* Space for fixed navigation */
+        }
+        .navbar {
+            background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,.1);
+            padding: 0.5rem 1rem;
+        }
+        .navbar-brand {
+            font-size: 1.1rem;
+            margin-right: 0;
+        }
+        .navbar .container-fluid {
+            justify-content: space-between;
+        }
+        .controls-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+        .timer-display {
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: white;
+            border-radius: 50px;
+            box-shadow: 0 3px 8px rgba(0,0,0,.1);
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+        }
+        .nav-btn {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            margin-left: 0.25rem;
+        }
+        .question-nav {
+            position: fixed;
+            top: 56px;
+            right: 0;
+            height: calc(100vh - 56px);
+            width: 280px;
+            transform: translateX(280px);
+            transition: transform .3s;
+            z-index: 100;
+            background: #fff;
+            box-shadow: -5px 0 15px rgba(0,0,0,.1);
+        }
+        .question-nav.show {
+            transform: translateX(0);
+        }
+        .main-content {
+            transition: margin .3s;
+            min-height: calc(100vh - 116px);
+        }
+        .question-text {
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+        .question-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+            gap: 6px;
+        }
+        .q-box {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            border: 1px solid #dee2e6;
+            background: #fff;
+            transition: all .2s;
+        }
+        .q-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 5px rgba(0,0,0,.1);
+        }
+        .q-box.attempted {
+            background-color: var(--secondary);
+            color: white;
+        }
+        .q-box.correct {
+            background-color: var(--success);
+            color: white;
+        }
+        .q-box.incorrect {
+            background-color: var(--danger);
+            color: white;
+        }
+        .q-box.current {
+            border: 2px solid var(--accent) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,.15);
+        }
+        .card {
+            border-radius: 12px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,.08);
+        }
+        .option-label {
+            border-radius: 8px;
+            transition: all .2s;
+            border: 1px solid #dee2e6;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+        }
+        .option-label:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,0,0,.05);
+        }
+        .form-check-input:checked + .option-label {
+            border-color: var(--primary);
+            background-color: rgba(114,9,183,.05);
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Bottom fixed navigation for mobile */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,.1);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 90;
+        }
+        
+        @media (min-width: 992px) {
+            .main-content.with-nav {
+                margin-right: 280px;
+            }
+            .question-nav {
+                transform: translateX(0);
+            }
+            .nav-toggle-btn {
+                display: none;
+            }
+            .bottom-nav {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .question-grid {
+                grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+            }
+            .option-label {
+                padding: 0.625rem 0.875rem;
+                font-size: 0.95rem;
+            }
+            .question-text {
+                font-size: 1rem;
+            }
+            .navbar-brand {
+                font-size: 1rem;
+            }
+            .timer-display {
+                font-size: 0.8125rem;
+                padding: 0.2rem 0.6rem;
+            }
+            .nav-btn {
+                padding: 0.2rem 0.6rem;
+                font-size: 0.8125rem;
+            }
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header navbar -->
+    <nav class="navbar navbar-dark sticky-top">
+        <div class="container-fluid px-2">
+            <a class="navbar-brand fw-bold" href="#"><i class="fas fa-graduation-cap me-1"></i>Mocks Wallah</a>
+            
+            <div class="controls-group">
+                <!-- Timer -->
+                <div class="timer-display me-1 fw-bold" id="timer">
+                    <i class="far fa-clock me-1"></i><span id="timer-display">12:00</span>
+                </div>
+                
+                <!-- Submit button -->
+                <button class="btn btn-light btn-sm nav-btn me-1" id="submit-btn" onclick="confirmSubmit()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+                
+                <!-- Language toggle -->
+                <button class="btn btn-light btn-sm nav-btn me-1" id="lang-btn" onclick="toggleLanguage()">
+                    <span id="lang-text">En</span>
+                </button>
+                
+                <!-- Questions toggle for mobile -->
+                <button class="btn btn-light btn-sm nav-btn nav-toggle-btn" id="nav-toggle" onclick="toggleNav()">
+                    <i class="fas fa-th"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main content -->
+    <div class="main-content" id="main-content">
+        <div class="container py-3">
+            <!-- Question counter -->
+            <div class="fw-bold text-center mb-3" id="question-counter">Question 1 of 25</div>
+            
+            <!-- Questions will be displayed here -->
+            <div id="questions-container"></div>
+        </div>
+    </div>
+    
+    <!-- Bottom navigation for mobile -->
+    <div class="bottom-nav d-lg-none">
+        <button class="btn btn-outline-primary px-3" onclick="prevQuestion()">
+            <i class="fas fa-chevron-left me-1"></i> Previous
+        </button>
+        <button class="btn btn-outline-primary px-3" onclick="nextQuestion()">
+            Next <i class="fas fa-chevron-right ms-1"></i>
+        </button>
+    </div>
+    
+    <!-- Question navigation sidebar -->
+    <div class="question-nav" id="question-nav">
+        <div class="p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="m-0">Questions</h5>
+                <div>
+                    <span class="badge bg-secondary me-1" id="attempted-count">0</span>
+                    <span class="badge bg-secondary" id="total-count">25</span>
+                    <button class="btn btn-sm btn-outline-secondary ms-2 d-lg-none" onclick="toggleNav()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Section selector moved here -->
+            <div class="mb-3">
+                <label for="section-selector" class="form-label small text-muted">Jump to Section</label>
+                <select class="form-select form-select-sm" id="section-selector" onchange="switchSection(this.value)">
+                    <option value="all">All Sections</option>
+                </select>
+            </div>
+            
+            <div class="question-grid" id="question-boxes"></div>
+        </div>
+    </div>
+    
+    <!-- Results modal -->
+    <div class="modal fade" id="results-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0">
+                <div class="modal-header border-0" style="background:linear-gradient(135deg,var(--primary),var(--secondary));color:white">
+                    <h5 class="modal-title">Test Results</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row text-center g-2">
+                        <div class="col-6">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#4361ee,#3a0ca3);color:white">
+                                <h3 id="score-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Score</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#06d6a0,#1b9aaa);color:white">
+                                <h3 id="correct-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Correct</div>
+                            </div>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#ef476f,#f72585);color:white">
+                                <h3 id="incorrect-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Incorrect</div>
+                            </div>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#6c757d,#495057);color:white">
+                                <h3 id="unattempted-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Unattempted</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-primary" onclick="reviewTest()">Review Test</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Questions data
+        const questions = [];
+        const sections = {};
+        let currentLang = "en";
+        let currentQuestion = 0;
+        let answers = {};
+        let submitted = false;
+        let totalTime = 12 * 60;
+        let resultsModal;
+        
+        // Initialize the test
+        window.onload = function() {
+            initializeTest();
+            startTimer();
+            resultsModal = new bootstrap.Modal(document.getElementById('results-modal'));
+            
+            // If on desktop, show the question navigation by default
+            if (window.innerWidth >= 992) {
+                document.getElementById('question-nav').classList.add('show');
+                document.getElementById('main-content').classList.add('with-nav');
+            }
+        };
+        
+        // Initialize test data
+        function initializeTest() {
+            // Add sections and questions
+            
+            sections["7"] = {
+                name: "English",
+                start: 0,
+                end: 23
+            };
+            
+            document.getElementById('section-selector').innerHTML += 
+                `<option value="7">English</option>`;
+            
+            sections["misc"] = {
+                name: "Miscellaneous",
+                start: 24,
+                end: 24
+            };
+            
+            document.getElementById('section-selector').innerHTML += 
+                `<option value="misc">Miscellaneous</option>`;
+            
+            
+                questions.push({
+                    id: "1",
+                    section: "7",
+                    question_en: "<p>1. Select the most appropriate meaning of the given idiom.<br>To take the bull by the horns</p>",
+                    question_hi: "<p>1. Select the most appropriate meaning of the given idiom.<br>To take the bull by the horns</p>",
+                    options_en: ["<p>To handle difficulties</p>", "<p>To speak arrogantly</p>", 
+                                "<p>To surrender to the enemy</p>", "<p>To murder someone</p>"],
+                    options_hi: ["<p>To handle difficulties</p>", "<p>To speak arrogantly</p>",
+                                "<p>To surrender to the enemy</p>", "<p>To murder someone</p>"],
+                    solution_en: "<p>1.(a) To take the bull by the horns - To handle difficulties.</p>",
+                    solution_hi: "<p>1.(a) To take the bull by the horns - To handle difficulties./ मुश्किलों का सामना करना।</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "2",
+                    section: "7",
+                    question_en: "<p>2. Select the correctly spelt word</p>",
+                    question_hi: "<p>2. Select the correctly spelt word</p>",
+                    options_en: ["<p>Recrutment</p>", "<p>Surveliance</p>", 
+                                "<p>Beaureacracy</p>", "<p>Reimbursement</p>"],
+                    options_hi: ["<p>Recrutment</p>", "<p>Surveliance</p>",
+                                "<p>Beaureacracy</p>", "<p>Reimbursement</p>"],
+                    solution_en: "<p>2.(d) Reimbursement.<br>Reimbursement is the correct spelling.</p>",
+                    solution_hi: "<p>2.(d) Reimbursement.<br>Reimbursement सही spelling है।</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "3",
+                    section: "7",
+                    question_en: "<p>3. Select the correctly spelt word</p>",
+                    question_hi: "<p>3. Select the correctly spelt word</p>",
+                    options_en: ["<p>Competiter</p>", "<p>Proliferete</p>", 
+                                "<p>Beneficiery</p>", "<p>Definition</p>"],
+                    options_hi: ["<p>Competiter</p>", "<p>Proliferete</p>",
+                                "<p>Beneficiery</p>", "<p>Definition</p>"],
+                    solution_en: "<p>3.(d) Definition.<br>Definition is the correct spelling.</p>",
+                    solution_hi: "<p>3.(d) Definition.<br>Definition सही spelling है।</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "4",
+                    section: "7",
+                    question_en: "<p>4. Select the correct passive form of the given sentence.<br>They are constructing a residential youth hostel.</p>",
+                    question_hi: "<p>4. Select the correct passive form of the given sentence.<br>They are constructing a residential youth hostel.</p>",
+                    options_en: ["<p>A residential youth hostel is being constructed by them.</p>", "<p>A residential youth hostel has been constructed by them.</p>", 
+                                "<p>A residential youth hostel was constructed by them.</p>", "<p>A residential youth hostel is constructed by them.</p>"],
+                    options_hi: ["<p>A residential youth hostel is being constructed by them.</p>", "<p>A residential youth hostel has been constructed by them.</p>",
+                                "<p>A residential youth hostel was constructed by them.</p>", "<p>A residential youth hostel is constructed by them.</p>"],
+                    solution_en: "<p>4.(a) A residential youth hostel is being constructed by them. (Correct) <br>(b) A residential youth hostel has been constructed by them.(Incorrect Tense) <br>(c) A residential youth hostel was constructed by them.(Incorrect Tense) <br>(d) A residential youth hostel is constructed by them.(Incorrect Tense)</p>",
+                    solution_hi: "<p>4.(a) A residential youth hostel is being constructed by them. (Correct) <br>(b) A residential youth hostel has been constructed by them.(गलत Tense) <br>(c) A residential youth hostel was constructed by them.(गलत Tense) <br>(d) A residential youth hostel is constructed by them.(गलत Tense)</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "5",
+                    section: "7",
+                    question_en: "<p>5. Select the most appropriate sequence from the given options to make a meaningful paragraph from jumbled sentences.<br>A. Although I had a fear of water, I thought it was an important skill I should learn.<br>B. However, what I didn\'t realize was that it would also make me a more confident person.<br>C. I also thought it would be a good exercise that would make me physically stronger.<br>D. One of the hardest things I\'ve had to do was to learn how to swim.</p>",
+                    question_hi: "<p>5. Select the most appropriate sequence from the given options to make a meaningful paragraph from jumbled sentences.<br>A. Although I had a fear of water, I thought it was an important skill I should learn.<br>B. However, what I didn\'t realize was that it would also make me a more confident person.<br>C. I also thought it would be a good exercise that would make me physically stronger.<br>D. One of the hardest things I\'ve had to do was to learn how to swim.</p>",
+                    options_en: ["<p>ACDB</p>", "<p>DCBA</p>", 
+                                "<p>DACB</p>", "<p>BADC</p>"],
+                    options_hi: ["<p>ACDB</p>", "<p>DCBA</p>",
+                                "<p>DACB</p>", "<p>BADC</p>"],
+                    solution_en: "<p>5.(c) DACB. <br>Sentence D says that one of the hardest things I\'ve had to do was to learn how to swim and Sentence A states that I thought it was an important skill I should learn. A will follow D. Sentence C says that I also thought it would be a good exercise. So, C will follow A. Option (c) DACB is the correct sequence.</p>",
+                    solution_hi: "<p>5.(c) DACB. <br>Sentence D कहता है कि सबसे कठिन चीजों में से एक जो मुझे करनी पड़ी वह swimming सीखना था और Sentence A कहता है कि मैंने सोचा कि यह एक महत्वपूर्ण कौशल है जिसे मुझे सीखना चाहिए। इसलिए A, D के बाद आएगा। Sentence C कहता है कि मैंने यह भी सोचा कि यह एक अच्छा व्यायाम होगा। इसलिए, C, A के बाद आएगा। अतः, option (c) DACB में सही sequence है।</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "6",
+                    section: "7",
+                    question_en: "<p>6. Select the appropriate synonym of the given word.<br>Erudite</p>",
+                    question_hi: "<p>6. Select the appropriate synonym of the given word.<br>Erudite</p>",
+                    options_en: ["<p>Fashionable</p>", "<p>Illiterate</p>", 
+                                "<p>Strong</p>", "<p>Learned</p>"],
+                    options_hi: ["<p>Fashionable</p>", "<p>Illiterate</p>",
+                                "<p>Strong</p>", "<p>Learned</p>"],
+                    solution_en: "<p>6.(d) <br><strong>Erudite</strong> - having or showing great knowledge or learning.<br><strong>Fashionable</strong> - characteristic of, influenced by, or representing a current popular style.<br><strong>Illiterate</strong> - unable to read or write.<br><strong>Strong</strong> - having the power to move heavy weights or perform other physically demanding tasks.<br><strong>Learned</strong> - (of a person) having acquired much knowledge through study.</p>",
+                    solution_hi: "<p>6.(d) <br><strong>Erudite</strong> (विद्वान) - having or showing great knowledge or learning.<br><strong>Fashionable</strong> (शौक़ीन मिजाज़) - characteristic of, influenced by, or representing a current popular style.<br><strong>Illiterate</strong> (निरक्षर) - unable to read or write.<br><strong>Strong</strong> (शक्तिशाली) - having the power to move heavy weights or perform other physically demanding tasks.<br><strong>Learned</strong> (ज्ञानी) - (of a person) having acquired much knowledge through study.</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "7",
+                    section: "7",
+                    question_en: "<p>7. <strong>Cloze Test :</strong><br>Drug addiction is the continued use of a particular drug (7) _____harmful consequences.<br>Drug addiction not only affects an individual\'s health and relationship, but also (8) _____the society and the environment. Prevention of a particular list of drugs can be possible by (9) _____their sale without a prescription. Drug addicts should be given proper medical treatment and (10) _____facilities. Motivational and awareness camps should be organized to scale down the consumption (11) ______drugs.<br>Select the most appropriate option for blank no.7</p>",
+                    question_hi: "<p>7. <strong>Cloze Test :</strong><br>Drug addiction is the continued use of a particular drug (7) _____harmful consequences.<br>Drug addiction not only affects an individual\'s health and relationship, but also (8) _____the society and the environment. Prevention of a particular list of drugs can be possible by (9) _____their sale without a prescription. Drug addicts should be given proper medical treatment and (10) _____facilities. Motivational and awareness camps should be organized to scale down the consumption (11) ______drugs.<br>Select the most appropriate option for blank no.7</p>",
+                    options_en: ["<p>though</p>", "<p>despite</p>", 
+                                "<p>in spite</p>", "<p>despite of</p>"],
+                    options_hi: ["<p>though</p>", "<p>despite</p>",
+                                "<p>in spite</p>", "<p>despite of</p>"],
+                    solution_en: "<p>7.(b) despite. <br>&lsquo;Despite&rsquo; means without being affected by the thing mentioned. &lsquo;Despite&rsquo; doesn&rsquo;t take the preposition &lsquo;of&rsquo;.</p>",
+                    solution_hi: "<p>7.(b) despite. <br>&lsquo;Despite&rsquo; का अर्थ है उल्लिखित चीज़ से प्रभावित हुए बिना। &lsquo;Despite&rsquo; के साथ preposition &lsquo;of&rsquo; का प्रयोग नही होता है।</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "8",
+                    section: "7",
+                    question_en: "<p>8. <strong>Cloze Test :</strong><br>Drug addiction is the continued use of a particular drug (7) _____harmful consequences.<br>Drug addiction not only affects an individual\'s health and relationship, but also (8) _____the society and the environment. Prevention of a particular list of drugs can be possible by (9) _____their sale without a prescription. Drug addicts should be given proper medical treatment and (10) _____facilities. Motivational and awareness camps should be organized to scale down the consumption (11) ______drugs.<br>Select the most appropriate option for blank no.8</p>",
+                    question_hi: "<p>8. <strong>Cloze Test :</strong><br>Drug addiction is the continued use of a particular drug (7) _____harmful consequences.<br>Drug addiction not only affects an individual\'s health and relationship, but also (8) _____the society and the environment. Prevention of a particular list of drugs can be possible by (9) _____their sale without a prescription. Drug addicts should be given proper medical treatment and (10) _____facilities. Motivational and awareness camps should be organized to scale down the consumption (11) ______drugs.<br>Select the most appropriate option for blank no.8</p>",
+                    options_en: ["<p>reflects</p>", "<p>impacts</p>", 
+                                "<p>imparts</p>", "<p>reduces</p>"],
+                    options_hi: ["<p>reflects</p>", "<p>impacts</p>",
+                                "<p>imparts</p>", "<p>reduces</p>"],
+                    solution_en: "<p>8.(b) <br><strong>Impacts</strong> - a marked effect or influence.<br><strong>Reflects</strong> - embody or represent (something) in a faithful or appropriate way.<br><strong>Imparts</strong> - make (information) known.<br><strong>Reduces</strong> - make smaller or less in amount, degree, or size.</p>",
+                    solution_hi: "<p>8.(b) <br><strong>Impacts</strong> (प्रभाव) - a marked effect or influence.<br><strong>Reflects</strong> (प्रतिबिंबित) - embody or represent (something) in a faithful or appropriate way.<br><strong>Imparts</strong> (प्रदान करना) - make (information) known.<br><strong>Reduces</strong> (कम करना) - make smaller or less in amount, degree, or size.</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "9",
+                    section: "7",
+                    question_en: "<p>9. <strong>Cloze Test :</strong><br>Drug addiction is the continued use of a particular drug (7) _____harmful consequences.<br>Drug addiction not only affects an individual\'s health and relationship, but also (8) _____the society and the environment. Prevention of a particular list of drugs can be possible by (9) _____their sale without a prescription. Drug addicts should be given proper medical treatment and (10) _____facilities. Motivational and awareness camps should be organized to scale down the consumption (11) ______drugs.<br>Select the most appropriate option for blank no.9</p>",
+                    question_hi: "<p>9. <strong>Cloze Test :</strong><br>Drug addiction is the continued use of a particular drug (7) _____harmful consequences.<br>Drug addiction not only affects an individual\'s health and relationship, but also (8) _____the society and the environment. Prevention of a particular list of drugs can be possible by (9) _____their sale without a prescription. Drug addicts should be given proper medical treatment and (10) _____facilities. Motivational and awareness camps should be organized to scale down the consumption (11) ______drugs.<br>Select the most appropriate option for blank no.9</p>",
+                    options_en: ["<p>restricting</p>", "<p>promoting</p>", 
+                                "<p>performing</p>", "<p>conducting</p>"],
+                    options_hi: ["<p>restricting</p>", "<p>promoting</p>",
+                                "<p>performing</p>", "<p>conducting</p>"],
+                    solution_en: "<p>9.(a) <br><strong>Restricting</strong> - put a limit on; keep under control.<br><strong>Promoting</strong> - give publicity to (a product, organization, or venture) so as to increase sales or public awareness.<br><strong>Conducting</strong> - organize and carry out.</p>",
+                    solution_hi: "<p>9.(a) <br><strong>Restricting</strong> (सीमित करना) - put a limit on; keep under control.<br><strong>Promoting</strong> (बढ़ावा देना) - give publicity to (a product, organization, or venture) so as to increase sales or public awareness.<br><strong>Conducting</strong> (संचालन करना) - organize and carry out.</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "10",
+                    section: "7",
+                    question_en: "<p>10. <strong>Cloze Test :</strong><br>Drug addiction is the continued use of a particular drug (7) _____harmful consequences.<br>Drug addiction not only affects an individual\'s health and relationship, but also (8) _____the society and the environment. Prevention of a particular list of drugs can be possible by (9) _____their sale without a prescription. Drug addicts should be given proper medical treatment and (10) _____facilities. Motivational and awareness camps should be organized to scale down the consumption (11) ______drugs.<br>Select the most appropriate option for blank no.10</p>",
+                    question_hi: "<p>10. <strong>Cloze Test :</strong><br>Drug addiction is the continued use of a particular drug (7) _____harmful consequences.<br>Drug addiction not only affects an individual\'s health and relationship, but also (8) _____the society and the environment. Prevention of a particular list of drugs can be possible by (9) _____their sale without a prescription. Drug addicts should be given proper medical treatment and (10) _____facilities. Motivational and awareness camps should be organized to scale down the consumption (11) ______drugs.<br>Select the most appropriate option for blank no.10</p>",
+                    options_en: ["<p>regression</p>", "<p>resignation</p>", 
+                                "<p>regeneration</p>", "<p>rehabilitation</p>"],
+                    options_hi: ["<p>regression</p>", "<p>resignation</p>",
+                                "<p>regeneration</p>", "<p>rehabilitation</p>"],
+                    solution_en: "<p>10.(d) <br><strong>Rehabilitation</strong> - the action of restoring someone to health or normal life through training and therapy after imprisonment, addiction, or illness.<br><strong>Regression</strong> - a return to a former or less developed state.<br><strong>Resignation</strong> - an act of resigning from a job or office.<br><strong>Regeneration</strong> - the action or process of regenerating or being regenerated.</p>",
+                    solution_hi: "<p>10.(d) <br><strong>Rehabilitation</strong> (पुनर्वास) - the action of restoring someone to health or normal life through training and therapy after imprisonment, addiction, or illness.<br><strong>Regression</strong> (प्रतिगमन ) - a return to a former or less developed state.<br><strong>Resignation</strong> (इस्तीफा) - an act of resigning from a job or office.<br><strong>Regeneration</strong> (पुनर्जन्म) - the action or process of regenerating or being regenerated.</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "11",
+                    section: "7",
+                    question_en: "<p>11. <strong>Cloze Test :</strong><br>Drug addiction is the continued use of a particular drug (7) _____harmful consequences.<br>Drug addiction not only affects an individual\'s health and relationship, but also (8) _____the society and the environment. Prevention of a particular list of drugs can be possible by (9) _____their sale without a prescription. Drug addicts should be given proper medical treatment and (10) _____facilities. Motivational and awareness camps should be organized to scale down the consumption (11) ______drugs.<br>Select the most appropriate option for blank no.11</p>",
+                    question_hi: "<p>11. <strong>Cloze Test :</strong><br>Drug addiction is the continued use of a particular drug (7) _____harmful consequences.<br>Drug addiction not only affects an individual\'s health and relationship, but also (8) _____the society and the environment. Prevention of a particular list of drugs can be possible by (9) _____their sale without a prescription. Drug addicts should be given proper medical treatment and (10) _____facilities. Motivational and awareness camps should be organized to scale down the consumption (11) ______drugs.<br>Select the most appropriate option for blank no.11</p>",
+                    options_en: ["<p>of</p>", "<p>for</p>", 
+                                "<p>by</p>", "<p>from</p>"],
+                    options_hi: ["<p>of</p>", "<p>for</p>",
+                                "<p>by</p>", "<p>from</p>"],
+                    solution_en: "<p>11.(a) of.</p>",
+                    solution_hi: "<p>11.(a) of.</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "12",
+                    section: "7",
+                    question_en: "<p>12. Select the correct indirect form of the given sentence.<br>\"Hello\", he said to his friend.\"What can I do for you?\"</p>",
+                    question_hi: "<p>12. Select the correct indirect form of the given sentence.<br>\"Hello\", he said to his friend.\"What can I do for you?\"</p>",
+                    options_en: ["<p>He asked and greeted his friend that what he can do for him.</p>", "<p>He told hello and asked his friend what he could do for him.</p>", 
+                                "<p>He greeted his friend and asked what he could do for him.</p>", "<p>He said hello and asked his friend what can do for him.</p>"],
+                    options_hi: ["<p>He asked and greeted his friend that what he can do for him.</p>", "<p>He told hello and asked his friend what he could do for him.</p>",
+                                "<p>He greeted his friend and asked what he could do for him.</p>", "<p>He said hello and asked his friend what can do for him.</p>"],
+                    solution_en: "<p>12.(c) He greeted his friend and asked what he could do for him.(Correct) <br>(a) He <span style=\"text-decoration: underline;\">asked and greeted</span> his friend <span style=\"text-decoration: underline;\">that what</span> he <span style=\"text-decoration: underline;\">can</span> do for him.(Incorrect Reported Verb, Tense)<br>(b) He <span style=\"text-decoration: underline;\">told hello</span> and <span style=\"text-decoration: underline;\">asked</span> his friend what he could do for him.(Incorrect Reported Verb)<br>(d) He <span style=\"text-decoration: underline;\">said hello</span> and <span style=\"text-decoration: underline;\">asked his friend what can do</span> for him.(Incorrect Reported Verb, Tense)</p>",
+                    solution_hi: "<p>12.(c) He greeted his friend and asked what he could do for him.(Correct) <br>(a) He <span style=\"text-decoration: underline;\">asked and greeted</span> his friend <span style=\"text-decoration: underline;\">that what</span> he <span style=\"text-decoration: underline;\">can</span> do for him.(गलत Reported Verb, Tense)<br>(b) He <span style=\"text-decoration: underline;\">told hello</span> and <span style=\"text-decoration: underline;\">asked</span> his friend what he could do for him.(गलत Reported Verb)<br>(d) He <span style=\"text-decoration: underline;\">said hello</span> and <span style=\"text-decoration: underline;\">asked his friend what can do</span> for him.(गलत Reported Verb, Tense)</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "13",
+                    section: "7",
+                    question_en: "<p>13. Select the most appropriate meaning of the given idiom.<br>To flog a dead horse</p>",
+                    question_hi: "<p>13. Select the most appropriate meaning of the given idiom.<br>To flog a dead horse</p>",
+                    options_en: ["<p>To accept the challenge</p>", "<p>To waste the efforts</p>", 
+                                "<p>To make the best use of resources</p>", "<p>To complete the work</p>"],
+                    options_hi: ["<p>To accept the challenge</p>", "<p>To waste the efforts</p>",
+                                "<p>To make the best use of resources</p>", "<p>To complete the work</p>"],
+                    solution_en: "<p>13.(b) <strong>To flog a dead horse -</strong> To waste the efforts.</p>",
+                    solution_hi: "<p>13.(b) <strong>To flog a dead horse - </strong>To waste the efforts./प्रयासों को व्यर्थ करना।</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "14",
+                    section: "7",
+                    question_en: "<p>14. Identify the segment in the sentence which contains the grammatical error from the given options.<br>No least than fifty participants were present for the singing competition.</p>",
+                    question_hi: "<p>14. Identify the segment in the sentence which contains the grammatical error from the given options.<br>No least than fifty participants were present for the singing competition.</p>",
+                    options_en: ["<p>the singing competition</p>", "<p>present for</p>", 
+                                "<p>No least than</p>", "<p>fifty participants</p>"],
+                    options_hi: ["<p>the singing competition</p>", "<p>present for</p>",
+                                "<p>No least than</p>", "<p>fifty participants</p>"],
+                    solution_en: "<p>14.(c) <strong>No least than.</strong> <br>&ldquo;No less than&rdquo; should be used instead of &ldquo;No least than&rdquo;. The given sentence states that \"No less than fifty participants were present for the singing competition\".</p>",
+                    solution_hi: "<p>14.(c) <strong>No least than.</strong> <br>&ldquo;No least than&rdquo; के स्थान पर &ldquo;No less than&rdquo; का प्रयोग किया जाना चाहिए। दिए गए sentence में कहा गया है कि, &ldquo;गायन प्रतियोगिता के लिए पचास से कम प्रतिभागी उपस्थित नहीं थे&rdquo;।</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "15",
+                    section: "7",
+                    question_en: "<p>15. Select the appropriate antonym of the given word.<br>Allure</p>",
+                    question_hi: "<p>15. Select the appropriate antonym of the given word.<br>Allure</p>",
+                    options_en: ["<p>Attract</p>", "<p>Repulse</p>", 
+                                "<p>Revive</p>", "<p>Rewind</p>"],
+                    options_hi: ["<p>Attract</p>", "<p>Repulse</p>",
+                                "<p>Revive</p>", "<p>Rewind</p>"],
+                    solution_en: "<p>15.(b) <br><strong>Allure</strong> - the quality of being powerfully and mysteriously attractive or fascinating.<br><strong>Attract</strong> - cause to come to a place or participate in a venture by offering something of interest or advantage.<br><strong>Repulse</strong> - drive back (an attack or attacker) by force. <br><strong>Revive</strong> - restore to life or consciousness.<br><strong>Rewind</strong> - (with reference to a film or tape) wind or be wound back to the beginning.</p>",
+                    solution_hi: "<p>15.(b) <br><strong>Allure</strong> (आकर्षण) - the quality of being powerfully and mysteriously attractive or fascinating.<br><strong>Attract</strong> (आकर्षित करना) - cause to come to a place or participate in a venture by offering something of interest or advantage.<br><strong>Repulse</strong> (पीछे हटाना ) - drive back (an attack or attacker) by force. <br><strong>Revive</strong> (पुनर्जीवित करना) - restore to life or consciousness.<br><strong>Rewind</strong> (वापस करना) - (with reference to a film or tape) wind or be wound back to the beginning.</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "16",
+                    section: "7",
+                    question_en: "<p>16. Select the most appropriate option to substitute the underline segment in the given sentence.If there is no need to substitute it, select no improvement.<br>When I was working in a software company, it was mandatory to <span style=\"text-decoration: underline;\">register my</span> <span style=\"text-decoration: underline;\">legally</span> as an authorized software developer.</p>",
+                    question_hi: "<p>16. Select the most appropriate option to substitute the underline segment in the given sentence.If there is no need to substitute it, select no improvement.<br><br>When I was working in a software company, it was mandatory to <span style=\"text-decoration: underline;\">register my legally</span> as an authorized software developer.</p>",
+                    options_en: ["<p>register myself legally</p>", "<p>register me legal</p>", 
+                                "<p>register mine legally</p>", "<p>no improvement</p>"],
+                    options_hi: ["<p>register myself legally</p>", "<p>register me legal</p>",
+                                "<p>register mine legally</p>", "<p>no improvement</p>"],
+                    solution_en: "<p>16.(a) register myself legally. <br>&ldquo;Register my legally&rdquo; should be replaced with &ldquo;register legally&rdquo;. The given sentence states that &lsquo;When I was working in a software company, it was mandatory to register myself legally as an authorized software developer&rsquo;.</p>",
+                    solution_hi: "<p>16.(a) register myself legally. <br>&ldquo;Register my legally&rdquo; के स्थान पर &ldquo;register legally&rdquo; का प्रयोग जाना चाहिए। दिए गए sentence में कहा गया है कि &lsquo;जब मैं एक software company में काम करता था, तो मेरे लिए खुद को legally एक अधिकृत software developer के रूप में register कराना अनिवार्य था&rsquo;।</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "17",
+                    section: "7",
+                    question_en: "<p>17. Select the words which means the same as the groups of words given.<br>A long and aggressive speech</p>",
+                    question_hi: "<p>17. Select the words which means the same as the groups of words given.<br>A long and aggressive speech</p>",
+                    options_en: ["<p>Harangue</p>", "<p>Prologue</p>", 
+                                "<p>Eloquence</p>", "<p>Discussion</p>"],
+                    options_hi: ["<p>Harangue</p>", "<p>Prologue</p>",
+                                "<p>Eloquence</p>", "<p>Discussion</p>"],
+                    solution_en: "<p>17.(a) <br><strong>Harangue</strong> - A long and aggressive speech. <br><strong>Prologue</strong> - a separate introductory section.<br><strong>Eloquence</strong> - fluent or persuasive speaking or writing.<br><strong>Discussion</strong> - a conversation or debate about a specific topic.</p>",
+                    solution_hi: "<p>17.(a) <br><strong>Harangue</strong> (प्रभावशाली भाषण) - A long and aggressive speech.<br><strong>Prologue</strong> (प्रस्तावना) - a separate introductory section.<br><strong>Eloquence</strong> (वाक्पटुता ) - fluent or persuasive speaking or writing.<br><strong>Discussion</strong> (चर्चा) - a conversation or debate about a specific topic.</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "18",
+                    section: "7",
+                    question_en: "<p>18. Select the appropriate antonym of the given word.<br>Bizarre</p>",
+                    question_hi: "<p>18. Select the appropriate antonym of the given word.<br>Bizarre</p>",
+                    options_en: ["<p>Usual</p>", "<p>Weird</p>", 
+                                "<p>Strange</p>", "<p>Happy</p>"],
+                    options_hi: ["<p>Usual</p>", "<p>Weird</p>",
+                                "<p>Strange</p>", "<p>Happy</p>"],
+                    solution_en: "<p>18.(a) <br><strong>Bizarre</strong> - very strange or unusual.<br><strong>Usual</strong> - habitually or typically occurring or done; customary.<br><strong>Weird</strong> - suggesting something supernatural; unearthly.<br><strong>Strange</strong> - unusual or surprising; difficult to understand or explain.<br><strong>Happy</strong> - feeling or showing pleasure or contentment.</p>",
+                    solution_hi: "<p>18.(a) <br><strong>Usual</strong> (सामान्य) - habitually or typically occurring or done; customary.<br><strong>Bizarre</strong> (विचित्र ) - very strange or unusual.<br><strong>Weird</strong> (विचित्र) - suggesting something supernatural; unearthly.<br><strong>Strange</strong> (अजीब) - unusual or surprising; difficult to understand or explain.<br><strong>Happy</strong> (प्रसन्न) - feeling or showing pleasure or contentment.</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "19",
+                    section: "7",
+                    question_en: "<p>19. Identify the segment in the sentence which contains the grammatical error from the given options.<br>The old man did not wanted to eat any food.</p>",
+                    question_hi: "<p>19. Identify the segment in the sentence which contains the grammatical error from the given options.<br>The old man did not wanted to eat any food.</p>",
+                    options_en: ["<p>The old man</p>", "<p>any food</p>", 
+                                "<p>did not wanted</p>", "<p>to eat</p>"],
+                    options_hi: ["<p>The old man</p>", "<p>any food</p>",
+                                "<p>did not wanted</p>", "<p>to eat</p>"],
+                    solution_en: "<p>19.(c) did not wanted. <br>With \'Do/Does/Did\', the first form of the verb is used. Therefore, \'wanted\' will be replaced with \'want\'. Hence, \'did not want(V<sub>1</sub>)\' is the most appropriate answer.</p>",
+                    solution_hi: "<p>19.(c) did not wanted. <br>\'Do/Does/Did\' के साथ verb की first form का प्रयोग किया जाता है। इसलिए, \'wanted\' के स्थान पर \'want\' का प्रयोग होगा। अतः, \'did not want(V<sub>1</sub>)\' सबसे उपयुक्त उत्तर है।</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "20",
+                    section: "7",
+                    question_en: "<p>20. Select the most appropriate word to fill in the blank.<br>All students should express their _______ views in the group discussion without any fear.</p>",
+                    question_hi: "<p>20. Select the most appropriate word to fill in the blank.<br>All students should express their _______ views in the group discussion without any fear.</p>",
+                    options_en: ["<p>secluded</p>", "<p>candid</p>", 
+                                "<p>guarded</p>", "<p>outspoken</p>"],
+                    options_hi: ["<p>secluded</p>", "<p>candid</p>",
+                                "<p>guarded</p>", "<p>outspoken</p>"],
+                    solution_en: "<p>20.(b) <br><strong>Candid</strong> - truthful and straightforward; frank.<br><strong>Secluded</strong> - not seen or visited by many people; sheltered and private.<br><strong>Guarded</strong> - cautious and having possible reservations.<br><strong>Outspoken</strong> - frank in stating one\'s opinions.</p>",
+                    solution_hi: "<p>20.(b) <br><strong>Candid</strong> (स्पष्टवादी) - truthful and straightforward; frank.<br><strong>Secluded</strong> (एकांत) - not seen or visited by many people; sheltered and private.<br><strong>Guarded</strong> (पहरा) - cautious and having possible reservations.<br><strong>Outspoken</strong> (मुखर) - frank in stating one\'s opinions.</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "21",
+                    section: "7",
+                    question_en: "<p>21. Select the most appropriate word to fill in the blank.<br>All his endeavour to win his teacher\'s favour proved ______ and did not bring the desired results.</p>",
+                    question_hi: "<p>21. Select the most appropriate word to fill in the blank.<br>All his endeavour to win his teacher\'s favour proved ______and did not bring the desired results.</p>",
+                    options_en: ["<p>apparent</p>", "<p>futile</p>", 
+                                "<p>perpetual</p>", "<p>prosperous</p>"],
+                    options_hi: ["<p>apparent</p>", "<p>futile</p>",
+                                "<p>perpetual</p>", "<p>prosperous</p>"],
+                    solution_en: "<p>21.(b) <br><strong>Futile</strong> - pointless.<br><strong>Apparent</strong> - clearly visible or understood; obvious.<br><strong>Perpetual</strong> - never ending or changing.<br><strong>Prosperous</strong> - successful in material terms; flourishing financially.</p>",
+                    solution_hi: "<p>21.(b) <br><strong>Futile</strong> (निरर्थक) - pointless-<br><strong>Apparent</strong> (स्पष्ट) - clearly visible or understood; obvious.<br><strong>Perpetual</strong> (शाश्वत) - never ending or changing.<br><strong>Prosperous</strong> (समृद्ध) - successful in material terms; flourishing financially.</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "22",
+                    section: "7",
+                    question_en: "<p>22. Select the words which means the same as the groups of words given.<br>The school or college in which one has been educated.</p>",
+                    question_hi: "<p>22. Select the words which means the same as the groups of words given.<br>The school or college in which one has been educated.</p>",
+                    options_en: ["<p>Graduate</p>", "<p>Alumni</p>", 
+                                "<p>Mentor</p>", "<p>Alma mater</p>"],
+                    options_hi: ["<p>Graduate</p>", "<p>Alumni</p>",
+                                "<p>Mentor</p>", "<p>Alma mater</p>"],
+                    solution_en: "<p>22.(d) <br><strong>Alma mater - </strong>The school or college in which one has been educated. <br><strong>Graduate</strong> - Someone who has completed their college education, or received a degree.<br><strong>Alumni</strong> - a former pupil or student, especially a male one, of a particular school, college, or university.<br><strong>Mentor</strong> - an experienced and trusted adviser.</p>",
+                    solution_hi: "<p>22.(d) <br><strong>Alma mater</strong> (मातृसंस्था) - The school or college in which one has been educated. <br><strong>Graduate</strong> (स्नातक) - Someone who has completed their college education, or received a degree.<br><strong>Alumni</strong> (पूर्व छात्र) - a former pupil or student, especially a male one, of a particular school, college, or university.<br><strong>Mentor</strong> (गुरु) - an experienced and trusted adviser.</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "23",
+                    section: "7",
+                    question_en: "<p>23. Select the appropriate synonym of the given word.<br>Violent</p>",
+                    question_hi: "<p>23. Select the appropriate synonym of the given word.<br>Violent</p>",
+                    options_en: ["<p>Kind</p>", "<p>Calm</p>", 
+                                "<p>Mild</p>", "<p>Aggressive</p>"],
+                    options_hi: ["<p>Kind</p>", "<p>Calm</p>",
+                                "<p>Mild</p>", "<p>Aggressive</p>"],
+                    solution_en: "<p>23.(d) <br><strong>Aggressive</strong> - ready or likely to attack or confront; characterized by or resulting from aggression.<br><strong>Violent</strong> - using or involving physical force intended to hurt, damage, or kill someone or something.<br><strong>Kind</strong> - a group of people or things having similar characteristics.<br><strong>Calm</strong> - not showing or feeling nervousness, anger, or other strong emotions.<br><strong>Mild</strong> - not severe, serious, or harsh.</p>",
+                    solution_hi: "<p>23.(d) <br><strong>Aggressive</strong> (उत्तेजित) - ready or likely to attack or confront; characterized by or resulting from aggression.<br><strong>Violent</strong> (हिंसक) - using or involving physical force intended to hurt, damage, or kill someone or something.<br><strong>Kind</strong> (दयालु) - a group of people or things having similar characteristics.<br><strong>Calm</strong> (शांत) - not showing or feeling nervousness, anger, or other strong emotions.<br><strong>Mild</strong> (सौम्य) - not severe, serious, or harsh.</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "24",
+                    section: "7",
+                    question_en: "<p>24. Select the most appropriate option to substitute the underline segment in the given sentence.If there is no need to substitute it, select no improvement.<br><span style=\"text-decoration: underline;\">Many a students</span> were not shortlisted for the personal interview.</p>",
+                    question_hi: "<p>24. Select the most appropriate option to substitute the underline segment in the given sentence.If there is no need to substitute it, select no improvement.<br><span style=\"text-decoration: underline;\">Many a students</span> were not shortlisted for the personal interview.</p>",
+                    options_en: ["<p>Many students</p>", "<p>no improvement</p>", 
+                                "<p>The many student</p>", "<p>Many of students</p>"],
+                    options_hi: ["<p>Many students</p>", "<p>no improvement</p>",
+                                "<p>The many student</p>", "<p>Many of students</p>"],
+                    solution_en: "<p>24.(a) Many students. <br>&ldquo;Many students&rdquo; should be used in place of &ldquo;Many a students&rdquo;.</p>",
+                    solution_hi: "<p>24.(a) Many students. <br>&ldquo;Many a students&rdquo; के स्थान पर &ldquo;Many students&rdquo; का प्रयोग किया जाना चाहिए।</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "25",
+                    section: "misc",
+                    question_en: "<p>25. Select the most appropriate sequence from the given options to make a meaningful paragraph from jumbled sentences.<br>A. During the celebration, many people display a set of ornamental dolls known as \'Hina\' dolls.<br>B. Hinamatsuri is a celebration of the girls in Japan wishing them a bright future.<br>C. These royal-looking dolls are dressed in the clothing of the Heian period.<br>D. These dolls represent the Emperor, Empress and royal representatives.</p>",
+                    question_hi: "<p>25. Select the most appropriate sequence from the given options to make a meaningful paragraph from jumbled sentences.<br>A. During the celebration, many people display a set of ornamental dolls known as \'Hina\' dolls.<br>B. Hinamatsuri is a celebration of the girls in Japan wishing them a bright future.<br>C. These royal-looking dolls are dressed in the clothing of the Heian period.<br>D. These dolls represent the Emperor, Empress and royal representatives.</p>",
+                    options_en: ["<p>ACBD</p>", "<p>CDBA</p>", 
+                                "<p>DBAC</p>", "<p>BADC</p>"],
+                    options_hi: ["<p>ACBD</p>", "<p>CDBA</p>",
+                                "<p>DBAC</p>", "<p>BADC</p>"],
+                    solution_en: "<p>25.(d) BADC. <br>Sentence B says that Hinamatsuri is a celebration of the girls and sentence A states that During the celebration, many people display \'Hina\' dolls. A will follow B. Sentence D says that these dolls represent royal representatives and sentence C states that these royal-looking dolls are dressed in the clothing of the Heian period. So C will follow D. Option (d) BADC is the correct sequence.</p>",
+                    solution_hi: "<p>25.(d) BADC. <br>Sentence B कहता है कि Hinamatsuri लड़कियों का उत्सव है और sentence A कहता है कि उत्सव के दौरान, कई लोग \'Hina\' dolls प्रदर्शित करते हैं। इसलिए A, B के बाद आएगा। Sentence D कहता है कि ये doll, royal representatives को represent करती हैं तथा sentence C कहता है कि ये royal-looking doll, Heian period के कपड़ों में सजी होती हैं। इसलिए C, D के बाद आएगा। अतः, option (d) BADC में सही sequence है।</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+            
+            // Generate question boxes
+            const boxesContainer = document.getElementById('question-boxes');
+            questions.forEach((q, index) => {
+                const box = document.createElement('div');
+                box.className = 'q-box';
+                box.textContent = index + 1;
+                box.onclick = () => showQuestion(index);
+                box.id = `box-${index}`;
+                boxesContainer.appendChild(box);
+            });
+            
+            // Show first question
+            showQuestion(0);
+            updateProgress();
+        }
+        
+        // Show a specific question
+        function showQuestion(index) {
+            if (index < 0 || index >= questions.length) return;
+            
+            currentQuestion = index;
+            const question = questions[index];
+            
+            // Update question counter
+            document.getElementById('question-counter').textContent = `Question ${index + 1} of ${questions.length}`;
+            
+            // Update question boxes
+            document.querySelectorAll('.q-box').forEach(box => box.classList.remove('current'));
+            document.getElementById(`box-${index}`).classList.add('current');
+            
+            // Generate question HTML - more compact
+            let html = `
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="question-text mb-3">
+                            <div class="en">${question.question_en}</div>
+                            <div class="hi" style="display:none">${question.question_hi}</div>
+                        </div>
+                        <div class="options">`;
+                        
+            // Add options
+            ['a', 'b', 'c', 'd'].forEach((opt, i) => {
+                let optionClass = 'option-label';
+                
+                // When reviewing, highlight user's choice and correct answer
+                if (submitted) {
+                    if (opt === question.correct) {
+                        optionClass += ' border-success bg-success bg-opacity-10';
+                    }
+                    if (answers[question.id] === opt && opt !== question.correct) {
+                        optionClass += ' border-danger bg-danger bg-opacity-10';
+                    }
+                }
+                
+                html += `
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="q${index}" 
+                            id="opt-${index}-${opt}" value="${opt}" 
+                            ${answers[question.id] === opt ? 'checked' : ''}
+                            onclick="selectAnswer('${question.id}', '${opt}')">
+                        <label class="form-check-label w-100 ${optionClass}" for="opt-${index}-${opt}">
+                            ${submitted && opt === question.correct ? '<i class="fas fa-check-circle text-success me-1"></i>' : ''}
+                            <div class="en">${question.options_en[i]}</div>
+                            <div class="hi" style="display:none">${question.options_hi[i]}</div>
+                        </label>
+                    </div>`;
+            });
+            
+            // Add solution if submitted
+            if (submitted) {
+                const isCorrect = answers[question.id] === question.correct;
+                const alertClass = isCorrect ? 'alert-success' : 'alert-danger';
+                const resultText = answers[question.id] ? (isCorrect ? 'Correct!' : 'Incorrect!') : 'Not attempted';
+                
+                html += `
+                    <div class="alert ${alertClass} mt-3 py-2">
+                        <strong>${resultText}</strong>
+                        <div class="mt-1 small">
+                            <strong>Solution:</strong>
+                            <div class="en">${question.solution_en}</div>
+                            <div class="hi" style="display:none">${question.solution_hi}</div>
+                        </div>
+                    </div>`;
+            }
+            
+            html += `</div></div>`;
+            
+            document.getElementById('questions-container').innerHTML = html;
+            
+            // Apply language settings
+            applyLanguage();
+            
+            // If in mobile view, close the menu
+            if (window.innerWidth < 992) {
+                toggleNav(false);
+            }
+        }
+        
+        // Apply current language
+        function applyLanguage() {
+            document.querySelectorAll(`.${currentLang}`).forEach(el => el.style.display = 'block');
+            document.querySelectorAll(`.${currentLang === 'en' ? 'hi' : 'en'}`).forEach(el => el.style.display = 'none');
+        }
+        
+        // Select an answer
+        function selectAnswer(qId, option) {
+            if (submitted) return;
+            
+            answers[qId] = option;
+            updateProgress();
+            
+            // Mark question as attempted in the navigation
+            const index = questions.findIndex(q => q.id === qId);
+            if (index >= 0) {
+                document.getElementById(`box-${index}`).classList.add('attempted');
+            }
+        }
+        
+        // Navigate to previous/next question
+        function prevQuestion() { if (currentQuestion > 0) showQuestion(currentQuestion - 1); }
+        function nextQuestion() { if (currentQuestion < questions.length - 1) showQuestion(currentQuestion + 1); }
+        
+        // Switch section
+        function switchSection(sectionId) {
+            if (sectionId === 'all') {
+                showQuestion(0);
+                return;
+            }
+            
+            const section = sections[sectionId];
+            if (section) showQuestion(section.start);
+        }
+        
+        // Toggle language
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            applyLanguage();
+            
+            // Update button text
+            document.getElementById('lang-text').textContent = currentLang === 'en' ? 'Hi' : 'En';
+        }
+        
+        // Toggle navigation sidebar
+        function toggleNav(show) {
+            const nav = document.getElementById('question-nav');
+            const content = document.getElementById('main-content');
+            
+            if (show === undefined) {
+                show = !nav.classList.contains('show');
+            }
+            
+            if (show) {
+                nav.classList.add('show');
+                if (window.innerWidth >= 992) {
+                    content.classList.add('with-nav');
+                }
+            } else {
+                nav.classList.remove('show');
+                if (window.innerWidth >= 992) {
+                    content.classList.remove('with-nav');
+                }
+            }
+        }
+        
+        // Update progress
+        function updateProgress() {
+            const attempted = Object.keys(answers).length;
+            document.getElementById('attempted-count').textContent = attempted;
+        }
+        
+        // Start timer - compact
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            let timeLeft = totalTime;
+            
+            const timerInterval = setInterval(() => {
+                if (timeLeft <= 0 || submitted) {
+                    clearInterval(timerInterval);
+                    if (!submitted) submitTest();
+                    return;
+                }
+                
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                timeLeft--;
+            }, 1000);
+        }
+        
+        // Confirm before submitting
+        function confirmSubmit() {
+            if (submitted) return;
+            
+            const attempted = Object.keys(answers).length;
+            const remaining = questions.length - attempted;
+            
+            if (confirm(`You have attempted ${attempted} of ${questions.length} questions.
+${remaining} questions are unattempted.
+
+Are you sure you want to submit?`)) {
+                submitTest();
+            }
+        }
+        
+        // Submit test
+        function submitTest() {
+            if (submitted) return;
+            
+            submitted = true;
+            
+            let score = 0;
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let unattemptedCount = 0;
+            
+            questions.forEach((q, index) => {
+                const userAns = answers[q.id];
+                const box = document.getElementById(`box-${index}`);
+                
+                box.classList.remove('attempted');
+                
+                if (!userAns) {
+                    unattemptedCount++;
+                    box.classList.add('bg-secondary', 'text-white');
+                } else if (userAns === q.correct) {
+                    correctCount++;
+                    score += q.pos_marks;
+                    box.classList.add('correct');
+                } else {
+                    incorrectCount++;
+                    score -= q.neg_marks;
+                    box.classList.add('incorrect');
+                }
+            });
+            
+            // Update result values
+            document.getElementById('score-value').textContent = score.toFixed(2);
+            document.getElementById('correct-value').textContent = correctCount;
+            document.getElementById('incorrect-value').textContent = incorrectCount;
+            document.getElementById('unattempted-value').textContent = unattemptedCount;
+            
+            // Show the results modal
+            resultsModal.show();
+            
+            // Disable submit button
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.classList.replace('btn-light', 'btn-success');
+            submitBtn.innerHTML = '<i class="fas fa-check"></i>';
+            
+            // Refresh current question view to show solution
+            showQuestion(currentQuestion);
+        }
+        
+        // Review test
+        function reviewTest() {
+            resultsModal.hide();
+            showQuestion(0);
+        }
+        
+        // Add event listener for window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 992) {
+                if (document.getElementById('question-nav').classList.contains('show')) {
+                    document.getElementById('main-content').classList.add('with-nav');
+                }
+            } else {
+                document.getElementById('main-content').classList.remove('with-nav');
+            }
+        });
+    </script>
+</body>
+</html>

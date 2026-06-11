@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOCAB BLACKBOOK DAY 1</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);min-height:100vh;padding-bottom:50px}
+        .quiz-container {max-width:800px;margin:20px auto;background:white;border-radius:15px;box-shadow:0 15px 40px rgba(0,0,0,0.12);overflow:hidden;animation:fadeIn 0.5s;touch-action:pan-y}
+        @keyframes fadeIn {from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes slideIn {from{transform:translateX(20px);opacity:0}to{transform:translateX(0);opacity:1}}
+        .quiz-header {position:sticky;top:0;z-index:1000;background:white;padding:20px;border-bottom:1px solid rgba(0,0,0,0.08)}
+        .timer {font-size:22px;font-weight:600;color:#4361ee}
+        .question-card {border:none;box-shadow:0 5px 20px rgba(0,0,0,0.06);margin-bottom:25px;border-radius:15px;overflow:hidden;transition:all 0.4s ease;animation:slideIn 0.4s}
+        .question-reference {background-color:#f0f7ff;border-left:5px solid #4361ee;padding:15px;margin-bottom:15px;border-radius:5px}
+        .option-btn {text-align:left;padding:16px 20px;margin-bottom:12px;border-radius:12px;transition:all 0.3s ease;position:relative;overflow:hidden;border:1px solid #e6e6e6}
+        .option-btn:hover {background-color:#f8f9fa;transform:translateX(5px);box-shadow:0 3px 10px rgba(0,0,0,0.05)}
+        .option-btn.selected {background-color:#e9f3ff;border-color:#4361ee;font-weight:500;box-shadow:0 5px 15px rgba(67,97,238,0.15)}
+        .option-btn.correct {background-color:#d4edda;border-color:#28a745}
+        .option-btn.incorrect {background-color:#f8d7da;border-color:#dc3545}
+        .progress {height:8px;border-radius:4px;overflow:hidden}
+        .progress-bar {transition:width 1s linear}
+        .result-card {display:none;animation:fadeIn 0.5s}
+        .score-highlight {font-size:48px;font-weight:700;color:#4361ee;text-align:center;margin:20px 0}
+        .quiz-pagination {display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:15px 0;padding:10px 0}
+        .quiz-pagination .page-box {width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-weight:600;background-color:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;transition:all 0.3s ease}
+        .quiz-pagination .page-box.active {background-color:#4361ee;border-color:#4361ee;color:white}
+        .quiz-pagination .page-box:hover {transform:scale(1.1)}
+        .quiz-pagination .page-box.correct {background-color:#28a745;border-color:#28a745;color:white}
+        .quiz-pagination .page-box.incorrect {background-color:#dc3545;border-color:#dc3545;color:white}
+        .explanation {background-color:#f8f9fa;padding:15px;border-radius:8px;margin-top:15px;border-left:3px solid #4361ee}
+        .analysis-panel {background-color:#f8f9fa;border-radius:10px;padding:15px;margin-top:20px;box-shadow:0 3px 10px rgba(0,0,0,0.05);border:1px solid #e6e6e6}
+        .analysis-item {display:flex;align-items:center;margin-bottom:10px}
+        .analysis-icon {width:24px;height:24px;margin-right:10px;display:flex;align-items:center;justify-content:center;border-radius:50%;color:white}
+        .btn-primary {background-color:#4361ee;border-color:#4361ee;border-radius:30px;padding:10px 25px;transition:all 0.3s ease}
+        .btn-primary:hover {background-color:#3a56d4;border-color:#3a56d4;transform:translateY(-3px);box-shadow:0 5px 15px rgba(67,97,238,0.2)}
+        .confetti {position:fixed;width:10px;height:10px;background-color:#f00;position:absolute;top:0;z-index:9999}
+        .chart-container {height:220px}
+        .time-bar {height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden;margin-top:5px}
+        .time-fill {height:100%;background:linear-gradient(90deg,#4361ee 0%,#7e96ff 100%);border-radius:4px;transition:width 0.5s}
+        .badge-avg {background-color:#e9f3ff;color:#4361ee;font-weight:500;padding:5px 10px;border-radius:20px}
+        .badge-fast {background-color:#d4edda;color:#28a745;font-weight:500;padding:5px 10px;border-radius:20px}
+        .badge-slow {background-color:#f8d7da;color:#dc3545;font-weight:500;padding:5px 10px;border-radius:20px}
+    </style>
+</head>
+<body>
+    <!-- Hidden audio elements for sound effects -->
+    <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/269/269.wav" preload="auto"></audio>
+    <audio id="swipeSound" src="https://assets.mixkit.co/active_storage/sfx/1897/1897.wav" preload="auto"></audio>
+    <audio id="correctSound" src="https://assets.mixkit.co/active_storage/sfx/2870/2870.wav" preload="auto"></audio>
+    <audio id="wrongSound" src="https://assets.mixkit.co/active_storage/sfx/2964/2964.wav" preload="auto"></audio>
+    
+    <div class="container my-4">
+        <div class="quiz-container" id="quizContainer">
+            <div class="quiz-header shadow-sm">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="m-0 fw-bold">Mock Test</h2>
+                    <div id="timer" class="timer">
+                        <i class="fas fa-clock me-2"></i>
+                        <span id="minutes">00</span>:<span id="seconds">00</span>
+                    </div>
+                </div>
+                <div class="mt-2 mb-2">
+                    <h5 class="m-0">VOCAB BLACKBOOK DAY 1</h5>
+                </div>
+                <div class="progress mt-3">
+                  <div id="timeProgress" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width:100%"></div>
+                </div>
+            </div>
+            
+            <div class="p-4">
+                <div id="questionContainer"></div>
+                <div class="quiz-pagination" id="questionNav"></div>
+                <div class="d-flex justify-content-center my-4">
+                    <button id="submitBtn" class="btn btn-primary btn-lg px-5 py-2 rounded-pill shadow">
+                        <i class="fas fa-paper-plane me-2"></i>Submit Test
+                    </button>
+                </div>
+            </div>
+            
+            <div id="resultContainer" class="result-card p-4">
+                <h3 class="text-center fw-bold mb-4">Quiz Results</h3>
+                <div class="score-highlight" id="scoreDisplay"></div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">Score Summary</h5>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <div>Total Questions:</div>
+                                    <div id="totalQuestions" class="fw-bold">60</div>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <div>Correct Answers:</div>
+                                    <div id="correctAnswers" class="fw-bold text-success">0</div>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <div>Incorrect Answers:</div>
+                                    <div id="incorrectAnswers" class="fw-bold text-danger">0</div>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <div>Unattempted:</div>
+                                    <div id="unattempted" class="fw-bold text-warning">0</div>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <div>Negative Marking:</div>
+                                    <div id="negativeMarks" class="fw-bold text-danger">-0.00</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">Performance</h5>
+                                <div class="chart-container">
+                                    <canvas id="performanceChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">Time Analysis</h5>
+                                <div class="chart-container">
+                                    <canvas id="timeAnalysisChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center mt-4">
+                    <button id="reviewBtn" class="btn btn-primary btn-lg px-5 py-2 rounded-pill shadow">
+                        <i class="fas fa-search me-2"></i>View Solution
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Quiz data and state
+        const quizData = { questions: [{
+            id: 0,
+            text: "OWS : To reduce to a shorter form intended to stand for the whole",
+            reference: "",
+            options: ["Extend", "Protract", "Abbreviate", "Shrink"],  // Using json.dumps for proper escaping
+            correctIndex: 2,
+            explanation: "Abbreviate (छोटा करना): shorten into an abbreviation. Etymology: ab- in Latin means \"away from,\" brevis \"short,\" translating to making something shorter."
+        },{
+            id: 1,
+            text: "OWS : To give up the throne",
+            reference: "",
+            options: ["Abdicate", "Bequeath", "Usurp", "Consign"],  // Using json.dumps for proper escaping
+            correctIndex: 0,
+            explanation: "Abdicate (सिंहासन छोड़ना): formally relinquish sovereign power. Etymology: ab- \"away,\" dicare \"to proclaim,\" conveying the act of relinquishing power."
+        },{
+            id: 2,
+            text: "OWS : Deviation from the right course",
+            reference: "",
+            options: ["Aberration", "Absurd", "Lucidity", "Normalcy"],  // Using json.dumps for proper escaping
+            correctIndex: 0,
+            explanation: "Aberration (विचलन): departure from what is normal. Etymology: ab- \"away,\" errare \"to wander,\" referring to a deviation from the expected course."
+        },{
+            id: 3,
+            text: "OWS : The act of washing oneself",
+            reference: "",
+            options: ["solutions", "Bathing", "Steaming", "Ablution"],  // Using json.dumps for proper escaping
+            correctIndex: 3,
+            explanation: "Ablution (प्रक्षालन): washing oneself, often in a religious rite. Etymology: ab- \"away,\" luere \"wash,\" referring to the act of washing oneself."
+        },{
+            id: 4,
+            text: "OWS : Original inhabitants of a country",
+            reference: "",
+            options: ["Villagers", "Aborigines", "Original", "Correlative"],  // Using json.dumps for proper escaping
+            correctIndex: 1,
+            explanation: "Aborigines (आदिवासी): original inhabitants of a region. Etymology: ab origine in Latin, meaning \"from the beginning.\""
+        },{
+            id: 5,
+            text: "OWS : A shortened version of a larger work",
+            reference: "",
+            options: ["Shorts", "Precis", "Abridgement", "Summary"],  // Using json.dumps for proper escaping
+            correctIndex: 2,
+            explanation: "Abridgement (संक्षिप्त रूप): condensed form retaining essential content. Etymology: ab- \"away,\" brevis \"short,\" meaning a shortened form of a longer work."
+        },{
+            id: 6,
+            text: "OWS : Any award, honour or laudatory notice",
+            reference: "",
+            options: ["Complement", "Statute", "Accolade", "Deal"],  // Using json.dumps for proper escaping
+            correctIndex: 2,
+            explanation: "Accolade (सम्मान): award, honor, or praise for achievements. Etymology: Originally referred to the gesture used in knighting ceremonies."
+        },{
+            id: 7,
+            text: "OWS : A partner in crime",
+            reference: "",
+            options: ["Accomplice", "Agent", "Alibi", "Amateur"],  // Using json.dumps for proper escaping
+            correctIndex: 0,
+            explanation: "Accomplice (साथी): partner in crime. Etymology: Latin complicare \"to fold together,\" closely associated with complicity."
+        },{
+            id: 8,
+            text: "OWS : The scientific study of sound",
+            reference: "",
+            options: ["Cardio", "Visage", "Acoustics", "Acrophobia"],  // Using json.dumps for proper escaping
+            correctIndex: 2,
+            explanation: "Acoustics (ध्वनि विज्ञान): scientific study of sound. Etymology: From Greek akoustikos \"of or for hearing,\" akouein \"to hear.\""
+        },{
+            id: 9,
+            text: "OWS : A word formed from the initial letters of other words and pronounced as a word",
+            reference: "",
+            options: ["Acronym", "Ellipsis", "Precise", "Epitome"],  // Using json.dumps for proper escaping
+            correctIndex: 0,
+            explanation: "Acronym (अक्षर संक्षेप): word formed from initial letters. Etymology: From Greek akros \"at the end, tip, top,\" onyma \"name.\""
+        },{
+            id: 10,
+            text: "OWS : Fear of great height",
+            reference: "",
+            options: ["Pyrophobia", "Acrophobia", "Hydrophobia", "Agrophobia"],  // Using json.dumps for proper escaping
+            correctIndex: 1,
+            explanation: "Acrophobia (ऊंचाई का डर): intense fear of heights. Etymology: From Greek akron \"peak, summit, edge,\" phobia \"fear.\""
+        },{
+            id: 11,
+            text: "OWS : Concerned with beauty or the appreciation of beauty",
+            reference: "",
+            options: ["Gross", "Foul", "Hideous", "Aesthetic"],  // Using json.dumps for proper escaping
+            correctIndex: 3,
+            explanation: "Aesthetic (सौंदर्य बोध): concerned with beauty or its appreciation. Etymology: From Greek aisthetikos \"sensitive, perceptive,\" aisthanesthai \"to perceive, to feel.\""
+        },{
+            id: 12,
+            text: "OWS : To increase the importance, position or wealth",
+            reference: "",
+            options: ["Aggressive", "Aggrandize", "Recuperate", "Escalate"],  // Using json.dumps for proper escaping
+            correctIndex: 1,
+            explanation: "Aggrandize (बढ़ाना): increase importance or wealth. Etymology: From French agrandir \"to enlarge,\" composed of a- \"to,\" grandir \"to increase,\" grand \"great.\""
+        },{
+            id: 13,
+            text: "OWS : One who is not sure about God\'s existence.",
+            reference: "",
+            options: ["Apostate", "Atheist", "Arsonist", "Agnostic"],  // Using json.dumps for proper escaping
+            correctIndex: 3,
+            explanation: "Agnostic (अज्ञेयवादी): one uncertain about God\'s existence. Etymology: From Greek agnostos \"unknown, unknowable,\" a- \"not,\" gnostos \"known.\""
+        },{
+            id: 14,
+            text: "OWS : A publication containing astronomical or meteorological information",
+            reference: "",
+            options: ["Conscription", "Bane", "Almanac", "Allegory"],  // Using json.dumps for proper escaping
+            correctIndex: 2,
+            explanation: "Almanac (पंचांग): publication with astronomical or meteorological data. Etymology: From Greek almenichiakon, which came to Middle Latin as almanach."
+        },{
+            id: 15,
+            text: "Idiom : A bird in the hand is worth two in the bush",
+            reference: "",
+            options: ["It is better to keep something that you have than to risk losing it by trying to get much more.", "Not to be important or practical.", "To be aware of problems.", "To prepare for the worst in future life."],  // Using json.dumps for proper escaping
+            correctIndex: 0,
+            explanation: "\"A bird in hand\": better to keep what you have than risk losing it for more. Origin: medieval falconry, where a trained falcon is more valuable than potential prey."
+        },{
+            id: 16,
+            text: "Idiom : A bolt from the blue",
+            reference: "",
+            options: ["a strange dream that wakes one up suddenly", "something unexpected and unpleasant", "something that is hotly debated", "something causing a head injury"],  // Using json.dumps for proper escaping
+            correctIndex: 1,
+            explanation: "\"A bolt from the blue\": something unexpected with significant impact. Origin: derived from the suddenness of lightning from a clear blue sky."
+        },{
+            id: 17,
+            text: "Idiom : A carrot and stick approach",
+            reference: "",
+            options: ["Happy and unhappy", "Rewards and punishments that influence someone's behavior", "Do-undo", "Help and guidance"],  // Using json.dumps for proper escaping
+            correctIndex: 1,
+            explanation: "\"Carrot and stick\": motivational strategy using rewards and penalties. Origin: from how donkeys were made to move with a carrot in front and a stick behind."
+        },{
+            id: 18,
+            text: "Idiom : A close-fisted person",
+            reference: "",
+            options: ["A miserly person", "A strong person", "A kind person", "A cruel person"],  // Using json.dumps for proper escaping
+            correctIndex: 0,
+            explanation: "\"A closed fist\": describes a person reluctant to spend money. Origin: reflects the belief that character is shown in how one handles wealth."
+        },{
+            id: 19,
+            text: "Idiom : A cuckoo in the nest",
+            reference: "",
+            options: ["To be coward", "An unwelcome intruder", "Some who raises early", "To wake up early"],  // Using json.dumps for proper escaping
+            correctIndex: 1,
+            explanation: "\"A cuckoo in the nest\": an unwelcome intruder. Origin: based on cuckoo birds laying eggs in other nests, exploiting the care of other birds."
+        },{
+            id: 20,
+            text: "Idiom : Dark horse",
+            reference: "",
+            options: ["A slow runner", "An honest fellow", "A mean person", "An unexpected winner"],  // Using json.dumps for proper escaping
+            correctIndex: 3,
+            explanation: "\"Dark horse\": someone who emerges to prominence unexpectedly. Origin: from horse racing, referring to a little-known horse that surprises by winning."
+        },{
+            id: 21,
+            text: "Idiom : A dime a dozen",
+            reference: "",
+            options: ["Very common", "Uncommon", "Expensive", "Phenomenal"],  // Using json.dumps for proper escaping
+            correctIndex: 0,
+            explanation: "\"A dime a dozen\": something very common and of low value. Origin: reflects early 20th-century American context where dimes were plentiful."
+        },{
+            id: 22,
+            text: "Idiom : Fish out of water",
+            reference: "",
+            options: ["To be uncomfortable", "To be depressed", "To shift to a new place", "In a new job"],  // Using json.dumps for proper escaping
+            correctIndex: 0,
+            explanation: "\"A fish out of water\": someone uncomfortable in unfamiliar surroundings. Origin: uses the plight of a fish out of water to illustrate discomfort."
+        },{
+            id: 23,
+            text: "Idiom : A fool\'s paradise",
+            reference: "",
+            options: ["A state of happiness based on a person's ignorance about potential trouble", "An average person appears smart in company of fools", "Pretending that everything is going fine when actually all is being lost", "A paradise is ruined when fools enter it"],  // Using json.dumps for proper escaping
+            correctIndex: 0,
+            explanation: "\"Fool\'s paradise\": happiness based on false beliefs or ignorance. Origin: medieval term implying misguided joy that ignores reality."
+        },{
+            id: 24,
+            text: "Idiom : A good samaritan",
+            reference: "",
+            options: ["an honest politcian", "a clever person", "a priest", "a genuinely helpful person"],  // Using json.dumps for proper escaping
+            correctIndex: 3,
+            explanation: "\"Good Samaritan\": person who helps others selflessly. Origin: from Biblical parable of a Samaritan helping an injured man whom others ignored."
+        },{
+            id: 25,
+            text: "Idiom : A greenhorn",
+            reference: "",
+            options: ["Inexperienced person", "Uneducated person", "Skilled person", "Clever person"],  // Using json.dumps for proper escaping
+            correctIndex: 0,
+            explanation: "\"Greenhorn\": an inexperienced, naive, or untrained person. Origin: refers to a young animal with undeveloped horns, transferred to human novices."
+        },{
+            id: 26,
+            text: "Idiom : A hair in the butter",
+            reference: "",
+            options: ["A challenging situation", "Easy to handle", "Sinking in debt", "A slippery road"],  // Using json.dumps for proper escaping
+            correctIndex: 0,
+            explanation: "\"Hair in the soup\": a small, irritating issue in a smooth situation. Origin: derived from the unpleasantness of finding a hair in food."
+        },{
+            id: 27,
+            text: "Idiom : A hard nut to crack",
+            reference: "",
+            options: ["Easily encouraged", "A difficult problem", "Easily disappointed", "Not restrained"],  // Using json.dumps for proper escaping
+            correctIndex: 1,
+            explanation: "\"Hard nut to crack\": a problem that is difficult to solve. Origin: comes from the literal difficulty of cracking a hard shell nut."
+        },{
+            id: 28,
+            text: "Idiom : A kick in the teeth.",
+            reference: "",
+            options: ["Extraction of a tooth", "Great disappointment", "Toothache", "Alcohol consumption"],  // Using json.dumps for proper escaping
+            correctIndex: 1,
+            explanation: "\"Kick in the teeth\": a severe setback or disappointment. Origin: implies the pain and shock of being kicked in the teeth."
+        },{
+            id: 29,
+            text: "Idiom : A laughing stock",
+            reference: "",
+            options: ["a stock of high value", "an object of desire", "an object of laughter", "a storehouse of jokes"],  // Using json.dumps for proper escaping
+            correctIndex: 2,
+            explanation: "\"Laughing stock\": someone who has become the subject of public ridicule. Origin: from the old practice of stocks as a form of public punishment and mockery."
+        },{
+            id: 30,
+            text: "Syno : ABANDON",
+            reference: "",
+            options: ["Possess", "Keep with", "Union", "Forsake"],  // Using json.dumps for proper escaping
+            correctIndex: 3,
+            explanation: "Abandon (त्यागना): leave completely and finally. Etymology: From Old French abandoner, from a- \"to\" + bandon \"power, control.\""
+        },{
+            id: 31,
+            text: "Syno : Abbreviate",
+            reference: "",
+            options: ["Long", "Huge", "Shorten", "Large"],  // Using json.dumps for proper escaping
+            correctIndex: 2,
+            explanation: "Abbreviate (संक्षेप करना): shorten into an abbreviated form. Etymology: From Latin abbreviare, from ab- \"away\" + breviare \"to shorten.\""
+        },{
+            id: 32,
+            text: "Syno : ABJURE",
+            reference: "",
+            options: ["Renounce", "Pronounce", "Denounce", "Announce"],  // Using json.dumps for proper escaping
+            correctIndex: 0,
+            explanation: "Abjure (त्यागना): solemnly renounce or abandon. Etymology: From Latin abiurare, from ab- \"away\" + iurare \"to swear.\""
+        },{
+            id: 33,
+            text: "Syno : Abound",
+            reference: "",
+            options: ["Increase", "Flourish", "Adequate", "Succeed"],  // Using json.dumps for proper escaping
+            correctIndex: 1,
+            explanation: "Abound (प्रचुर मात्रा में होना): exist in large numbers or amounts. Etymology: From Latin abundare, from ab- \"away\" + undare \"to flow in waves.\""
+        },{
+            id: 34,
+            text: "Syno : ABSOLVED",
+            reference: "",
+            options: ["Punished", "Pardoned", "Scolded", "Boycotted"],  // Using json.dumps for proper escaping
+            correctIndex: 1,
+            explanation: "Absolved (मुक्त): set or declare free from blame, guilt, or responsibility. Etymology: From Latin absolvere, from ab- \"away\" + solvere \"to loosen.\""
+        },{
+            id: 35,
+            text: "Syno : ABUNDANT",
+            reference: "",
+            options: ["Scanty", "Lacking", "Inadequate", "Plentiful"],  // Using json.dumps for proper escaping
+            correctIndex: 3,
+            explanation: "Abundant (प्रचुर): existing or available in large quantities. Etymology: From Latin abundantem, present participle of abundare \"to overflow.\""
+        },{
+            id: 36,
+            text: "Syno : Accolade",
+            reference: "",
+            options: ["Lowliness", "Laurels", "Silence", "Mediocrity"],  // Using json.dumps for proper escaping
+            correctIndex: 1,
+            explanation: "Accolade (प्रशंसा): award, honor, or praise for achievement. Etymology: From Old French acolee \"embrace around the neck,\" from Latin ad- \"to\" + collum \"neck.\""
+        },{
+            id: 37,
+            text: "Syno : ACCOMPLISH",
+            reference: "",
+            options: ["Achieve", "Hinder", "Lose", "Fail"],  // Using json.dumps for proper escaping
+            correctIndex: 0,
+            explanation: "Accomplish (संपन्न करना): achieve or complete successfully. Etymology: From Old French acomplir, from Latin ad- \"to\" + complere \"to fill up, complete.\""
+        },{
+            id: 38,
+            text: "Syno : Advent",
+            reference: "",
+            options: ["Turn", "Departure", "Purpose", "Arrival"],  // Using json.dumps for proper escaping
+            correctIndex: 3,
+            explanation: "Advent (आगमन): arrival of a notable person or event. Etymology: From Latin adventus \"arrival,\" from advenire \"to come to.\""
+        },{
+            id: 39,
+            text: "Syno : affable",
+            reference: "",
+            options: ["Timid", "Hostile", "Friendly", "Fearful"],  // Using json.dumps for proper escaping
+            correctIndex: 2,
+            explanation: "Affable (मिलनसार): friendly, good-natured, and easy to talk to. Etymology: From Latin affabilis, from affari \"to speak to,\" from ad- \"to\" + fari \"to speak.\""
+        },{
+            id: 40,
+            text: "Syno : AFFLUENCE",
+            reference: "",
+            options: ["Bankruptcy", "Hardship", "Wealth", "Poverty"],  // Using json.dumps for proper escaping
+            correctIndex: 2,
+            explanation: "Affluence (समृद्धि): abundance of money, property, and other material goods. Etymology: From Latin affluentia, from affluere \"to flow abundantly,\" from ad- \"to\" + fluere \"to flow.\""
+        },{
+            id: 41,
+            text: "Syno : Alacrity",
+            reference: "",
+            options: ["Pleasure", "Mediocrity", "Capriciousness", "Willingness"],  // Using json.dumps for proper escaping
+            correctIndex: 3,
+            explanation: "Alacrity (उत्साह): cheerful readiness or promptness. Etymology: From Latin alacritas, from alacer \"lively, cheerful.\""
+        },{
+            id: 42,
+            text: "Syno : Amass",
+            reference: "",
+            options: ["Scatter", "Spread", "Gather", "Divide"],  // Using json.dumps for proper escaping
+            correctIndex: 2,
+            explanation: "Amass (संचित करना): gather together or accumulate a large amount. Etymology: From Old French amasser, from à \"to\" + masse \"mass, heap.\""
+        },{
+            id: 43,
+            text: "Syno : Amateur",
+            reference: "",
+            options: ["Dispirited", "Beginner", "Timid", "Weary"],  // Using json.dumps for proper escaping
+            correctIndex: 1,
+            explanation: "Amateur (शौकिया): engaging in an activity for pleasure rather than profit. Etymology: From Latin amator \"lover,\" from amare \"to love.\""
+        },{
+            id: 44,
+            text: "Syno : Ameliorate",
+            reference: "",
+            options: ["Aggravate", "Worsen", "Mediate", "Improve"],  // Using json.dumps for proper escaping
+            correctIndex: 3,
+            explanation: "Ameliorate (सुधारना): make better or more satisfactory. Etymology: From French améliorer, from Old French ameillorer, from a- \"to\" + meillorer \"to make better.\""
+        },{
+            id: 45,
+            text: "Anto : Abduct",
+            reference: "",
+            options: ["Sociable", "Hijack", "Impress", "Redeem"],  // Using json.dumps for proper escaping
+            correctIndex: 3,
+            explanation: "Abduct (अपहरण करना): take someone away illegally by force or deception. Etymology: From Latin abductus, past participle of abducere \"to lead away,\" from ab- \"away\" + ducere \"to lead.\""
+        },{
+            id: 46,
+            text: "Anto : Abeyance",
+            reference: "",
+            options: ["Continuation", "Latency", "Layoff", "Moratorium"],  // Using json.dumps for proper escaping
+            correctIndex: 0,
+            explanation: "Abeyance (स्थगन): state of temporary disuse or suspension. Etymology: From Old French abeance \"aspiration,\" from abaer \"to aspire to.\""
+        },{
+            id: 47,
+            text: "Anto : Abominable",
+            reference: "",
+            options: ["Admirable", "Worthy", "Detestable", "Delectable"],  // Using json.dumps for proper escaping
+            correctIndex: 0,
+            explanation: "Abominable (घृणित): causing disgust or hatred. Etymology: From Latin abominabilis, from ab- \"away from\" + omen \"omen.\""
+        },{
+            id: 48,
+            text: "Anto : ABSURD",
+            reference: "",
+            options: ["Illogical", "Reasonable", "Funny", "Decrease"],  // Using json.dumps for proper escaping
+            correctIndex: 1,
+            explanation: "Absurd (बेतुका): wildly unreasonable, illogical, or inappropriate. Etymology: From Latin absurdus \"out of tune,\" from ab- \"away from\" + surdus \"deaf, muffled.\""
+        },{
+            id: 49,
+            text: "Anto : ACCEDE",
+            reference: "",
+            options: ["Recede", "Proceed", "Deny", "Acquiesce"],  // Using json.dumps for proper escaping
+            correctIndex: 2,
+            explanation: "Accede (मंजूर करना): agree to a request, application, or demand. Etymology: From Latin accedere \"to approach, enter upon,\" from ad- \"to\" + cedere \"to go.\""
+        },{
+            id: 50,
+            text: "Anto : Accumulate",
+            reference: "",
+            options: ["Fritter", "Squandered", "Collect", "Economise"],  // Using json.dumps for proper escaping
+            correctIndex: 1,
+            explanation: "Accumulate (संचित करना): gather together or acquire an increasing quantity. Etymology: From Latin accumulatus, past participle of accumulare \"to heap up,\" from ad- \"to\" + cumulare \"to heap.\""
+        },{
+            id: 51,
+            text: "Anto : Accustomed",
+            reference: "",
+            options: ["Ordinary", "Unusual", "Fabulous", "Terrific"],  // Using json.dumps for proper escaping
+            correctIndex: 1,
+            explanation: "Accustomed (आदी): familiar with something through regular practice or use. Etymology: From Old French acostumer, from a- \"to\" + costume \"custom.\""
+        },{
+            id: 52,
+            text: "Anto : ACQUISITION",
+            reference: "",
+            options: ["Addition", "Prize", "Loss", "Recovery"],  // Using json.dumps for proper escaping
+            correctIndex: 2,
+            explanation: "Acquisition (अधिग्रहण): process of acquiring or gaining possession. Etymology: From Latin acquisitionem, from acquirere \"to get in addition,\" from ad- \"to\" + quaerere \"to seek.\""
+        },{
+            id: 53,
+            text: "Anto : Adamant",
+            reference: "",
+            options: ["Coherent", "Stubborn", "Flexible", "Stupid"],  // Using json.dumps for proper escaping
+            correctIndex: 2,
+            explanation: "Adamant (अटल): refusing to change one\'s mind, firmly determined. Etymology: From Old French adamaunt, from Latin adamantem \"diamond,\" from Greek adamas \"unbreakable.\""
+        },{
+            id: 54,
+            text: "Anto : Adequate",
+            reference: "",
+            options: ["Talented", "Equal", "Dearth", "Useful"],  // Using json.dumps for proper escaping
+            correctIndex: 2,
+            explanation: "Adequate (पर्याप्त): satisfactory or acceptable in quality or quantity. Etymology: From Latin adaequatus, past participle of adaequare \"to make equal to,\" from ad- \"to\" + aequare \"to make equal.\""
+        },{
+            id: 55,
+            text: "Anto : ADMIRE",
+            reference: "",
+            options: ["Dislike", "Diagree", "Respect", "Approve"],  // Using json.dumps for proper escaping
+            correctIndex: 0,
+            explanation: "Admire (प्रशंसा करना): regard with respect or warm approval. Etymology: From Latin admirari \"to wonder at,\" from ad- \"to\" + mirari \"to wonder.\""
+        },{
+            id: 56,
+            text: "Anto : ADMONISH",
+            reference: "",
+            options: ["Chide", "Scold", "Warn", "Applaud"],  // Using json.dumps for proper escaping
+            correctIndex: 3,
+            explanation: "Admonish (चेतावनी देना): warn or reprimand firmly. Etymology: From Latin admonere \"to remind, warn,\" from ad- \"to\" + monere \"to warn.\""
+        },{
+            id: 57,
+            text: "Anto : Adroit",
+            reference: "",
+            options: ["Clumsy", "Dexterous", "Handy", "Deft"],  // Using json.dumps for proper escaping
+            correctIndex: 0,
+            explanation: "Adroit (कुशल): clever or skillful. Etymology: From French à droit \"according to right,\" from Latin ad- \"to\" + directus \"straight, direct.\""
+        },{
+            id: 58,
+            text: "Anto : AFFINITY",
+            reference: "",
+            options: ["Inclination", "Attraction", "Aversion", "Weakness"],  // Using json.dumps for proper escaping
+            correctIndex: 2,
+            explanation: "Affinity (समानता): natural liking for or attraction to a person or thing. Etymology: From Latin affinitas, from affinis \"related,\" from ad- \"to\" + finis \"border, boundary.\""
+        },{
+            id: 59,
+            text: "Anto : Alienate",
+            reference: "",
+            options: ["Alter", "Reconcile", "Alternate", "Renounce"],  // Using json.dumps for proper escaping
+            correctIndex: 1,
+            explanation: "Alienate (अलग करना): make someone feel isolated. Etymology: From Latin alienatus, past participle of alienare \"to make another\'s,\" from alienus \"of or belonging to another,\" from alius \"other.\""
+        }] };
+        const state = {
+            currentQuestion: 0,
+            answers: Array(quizData.questions.length).fill(null),
+            startTime: new Date(),
+            timePerQuestion: Array(quizData.questions.length).fill(0),
+            avgTimePerQuestion: 0,
+            totalTime: 900,
+            negativeMark: 0.25,
+            submitted: false,
+            touchStartX: 0,
+            touchEndX: 0,
+            inReviewMode: false,
+            lastPlayedQuestion: -1
+        };
+
+        // Audio elements
+        const clickSound = document.getElementById('clickSound');
+        const swipeSound = document.getElementById('swipeSound');
+        const correctSound = document.getElementById('correctSound');
+        const wrongSound = document.getElementById('wrongSound');
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            initQuiz();
+            initSwipeDetection();
+        });
+
+        function initQuiz() {
+            startTimer();
+            createNumberedNav();
+            renderQuestion(0);
+            
+            document.getElementById('submitBtn').addEventListener('click', submitQuiz);
+            document.getElementById('reviewBtn').addEventListener('click', reviewAnswers);
+            
+            // Enable keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') navigate(-1);
+                if (e.key === 'ArrowRight') navigate(1);
+                if (e.key >= '1' && e.key <= quizData.questions.length.toString()) {
+                    if (!state.submitted) updateQuestionTime();
+                    renderQuestion(parseInt(e.key) - 1);
+                }
+            });
+        }
+
+        function initSwipeDetection() {
+            const container = document.getElementById('quizContainer');
+            container.addEventListener('touchstart', (e) => { 
+                state.touchStartX = e.changedTouches[0].screenX; 
+            }, false);
+            
+            container.addEventListener('touchend', (e) => {
+                state.touchEndX = e.changedTouches[0].screenX;
+                if (Math.abs(state.touchStartX - state.touchEndX) > 50) {
+                    if (!state.inReviewMode) {
+                        swipeSound.currentTime = 0;
+                        swipeSound.play();
+                    }
+                    navigate(state.touchStartX > state.touchEndX ? 1 : -1);
+                }
+            }, false);
+        }
+
+        function navigate(direction) {
+            const newIndex = state.currentQuestion + direction;
+            if (newIndex >= 0 && newIndex < quizData.questions.length) {
+                if (!state.submitted) updateQuestionTime();
+                renderQuestion(newIndex);
+            }
+        }
+
+        function startTimer() {
+            const startTime = new Date().getTime();
+            const duration = state.totalTime * 1000;
+            const endTime = startTime + duration;
+            
+            updateTimer(duration);
+            
+            state.timerInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const timeLeft = endTime - now;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(state.timerInterval);
+                    updateTimer(0);
+                    submitQuiz();
+                } else {
+                    updateTimer(timeLeft);
+                    document.getElementById('timeProgress').style.width = `${(timeLeft / duration) * 100}%`;
+                    
+                    if (timeLeft < duration * 0.25) {
+                        document.getElementById('timeProgress').className = 'progress-bar progress-bar-striped progress-bar-animated bg-danger';
+                    } else if (timeLeft < duration * 0.5) {
+                        document.getElementById('timeProgress').className = 'progress-bar progress-bar-striped progress-bar-animated bg-warning';
+                    }
+                }
+            }, 1000);
+        }
+
+        function updateTimer(timeLeft) {
+            const minutes = Math.floor(timeLeft / 60000).toString().padStart(2, '0');
+            const seconds = Math.floor((timeLeft % 60000) / 1000).toString().padStart(2, '0');
+            
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+            
+            if (timeLeft < 60000) document.getElementById('timer').classList.add('text-danger');
+        }
+
+        function createNumberedNav() {
+            const nav = document.getElementById('questionNav');
+            quizData.questions.forEach((_, idx) => {
+                const box = document.createElement('div');
+                box.className = 'page-box';
+                box.textContent = idx + 1;
+                box.dataset.index = idx;
+                box.addEventListener('click', () => {
+                    if (!state.submitted) updateQuestionTime();
+                    renderQuestion(idx);
+                });
+                nav.appendChild(box);
+            });
+        }
+
+        function renderQuestion(idx) {
+            state.currentQuestion = idx;
+            const question = quizData.questions[idx];
+            
+            let html = `<div class="card question-card shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="card-title mb-3">Question ${idx + 1} of ${quizData.questions.length}</h5>`;
+            
+            if (question.reference) html += `<div class="question-reference">${question.reference}</div>`;
+            
+            html += `<p class="question-text mb-4 fw-bold">${question.text}</p><div class="options">`;
+            
+            question.options.forEach((option, optionIdx) => {
+                let btnClass = 'option-btn w-100';
+                if (state.answers[idx] === optionIdx) btnClass += ' selected';
+                if (state.submitted) {
+                    if (optionIdx === question.correctIndex) btnClass += ' correct';
+                    else if (state.answers[idx] === optionIdx) btnClass += ' incorrect';
+                }
+                html += `<button class="${btnClass}" data-index="${optionIdx}">${option}</button>`;
+            });
+            
+            html += `</div>`;
+            
+            // Add explanation section
+            html += `<div class="explanation mt-3" ${state.submitted ? '' : 'style="display:none"'}>
+                <h6 class="fw-bold"><i class="fas fa-lightbulb me-2"></i>Explanation</h6>
+                ${question.explanation}
+            </div>`;
+            
+            // Add analysis panel when in review mode
+            if (state.submitted) {
+                const timeSpent = state.timePerQuestion[idx];
+                const avgTime = state.avgTimePerQuestion;
+                let timeStatus, iconColor;
+                
+                if (timeSpent < avgTime * 0.7) {
+                    timeStatus = "Fast";
+                    iconColor = "#28a745";
+                } else if (timeSpent > avgTime * 1.3) {
+                    timeStatus = "Slow";
+                    iconColor = "#dc3545";
+                } else {
+                    timeStatus = "Average";
+                    iconColor = "#4361ee";
+                }
+                
+                const isCorrect = state.answers[idx] === question.correctIndex;
+                const isAttempted = state.answers[idx] !== null;
+                
+                html += `
+                <div class="analysis-panel mt-4">
+                    <h6 class="fw-bold mb-3"><i class="fas fa-chart-line me-2"></i>Question Analysis</h6>
+                    
+                    <div class="analysis-item">
+                        <div class="analysis-icon" style="background-color:${isAttempted ? (isCorrect ? '#28a745' : '#dc3545') : '#ffc107'}">
+                            <i class="fas fa-${isAttempted ? (isCorrect ? 'check' : 'times') : 'question'}"></i>
+                        </div>
+                        <div>Status: <strong>${isAttempted ? (isCorrect ? 'Correct' : 'Incorrect') : 'Unattempted'}</strong></div>
+                    </div>
+                    
+                    <div class="analysis-item">
+                        <div class="analysis-icon" style="background-color:${iconColor}">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>Time spent: <strong>${timeSpent.toFixed(1)} seconds</strong> 
+                            <span class="badge-${timeStatus.toLowerCase()}">${timeStatus}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-2">Time compared to average:</div>
+                    <div class="time-bar">
+                        <div class="time-fill" style="width:${Math.min(timeSpent/avgTime * 100, 200)}%"></div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-1">
+                        <small>0s</small>
+                        <small>${avgTime.toFixed(1)}s (avg)</small>
+                        <small>${(avgTime * 2).toFixed(1)}s+</small>
+                    </div>
+                </div>`;
+            }
+            
+            html += `</div></div>`;
+            
+            document.getElementById('questionContainer').innerHTML = html;
+            
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (!state.submitted) {
+                        clickSound.currentTime = 0;
+                        clickSound.play();
+                        selectOption(btn.dataset.index);
+                    }
+                });
+            });
+            
+            updateQuestionNav();
+            
+            // Play correct/wrong sound when in review mode and showing answer
+            if (state.inReviewMode && state.lastPlayedQuestion !== idx) {
+                state.lastPlayedQuestion = idx;
+                const question = quizData.questions[idx];
+                const isCorrect = state.answers[idx] === question.correctIndex;
+                const isAttempted = state.answers[idx] !== null;
+                
+                if (isAttempted) {
+                    setTimeout(() => {
+                        if (isCorrect) {
+                            correctSound.currentTime = 0;
+                            correctSound.play();
+                        } else {
+                            wrongSound.currentTime = 0;
+                            wrongSound.play();
+                        }
+                    }, 300);
+                }
+            }
+        }
+
+        function updateQuestionNav() {
+            document.querySelectorAll('#questionNav .page-box').forEach((box, idx) => {
+                box.className = 'page-box';
+                
+                if (idx === state.currentQuestion) {
+                    box.classList.add('active');
+                }
+                
+                if (state.answers[idx] !== null) {
+                    if (state.submitted) {
+                        if (state.answers[idx] === quizData.questions[idx].correctIndex) {
+                            box.classList.add('correct');
+                        } else {
+                            box.classList.add('incorrect');
+                        }
+                    }
+                }
+            });
+        }
+
+        function selectOption(optionIdx) {
+            state.answers[state.currentQuestion] = parseInt(optionIdx);
+            
+            document.querySelectorAll('.option-btn').forEach(opt => opt.classList.remove('selected'));
+            document.querySelector(`.option-btn[data-index="${optionIdx}"]`).classList.add('selected');
+            
+            updateQuestionNav();
+            
+            // Auto advance to next question after selection (with delay)
+            if (state.currentQuestion < quizData.questions.length - 1) {
+                setTimeout(() => {
+                    updateQuestionTime();
+                    renderQuestion(state.currentQuestion + 1);
+                }, 800);
+            }
+        }
+
+        function updateQuestionTime() {
+            const now = new Date();
+            state.timePerQuestion[state.currentQuestion] += (now - state.startTime) / 1000;
+            state.startTime = now;
+        }
+
+        function submitQuiz() {
+            if (state.submitted) return;
+            
+            clearInterval(state.timerInterval);
+            updateQuestionTime();
+            state.submitted = true;
+            
+            // Calculate average time per question
+            let totalTimeSpent = state.timePerQuestion.reduce((acc, time) => acc + time, 0);
+            state.avgTimePerQuestion = totalTimeSpent / quizData.questions.length;
+            
+            const results = {
+                correct: 0,
+                incorrect: 0,
+                unattempted: 0,
+                score: 0,
+                negativeMarks: 0
+            };
+            
+            state.answers.forEach((answer, idx) => {
+                if (answer === null) {
+                    results.unattempted++;
+                } else if (answer === quizData.questions[idx].correctIndex) {
+                    results.correct++;
+                    results.score++;
+                } else {
+                    results.incorrect++;
+                    results.score -= state.negativeMark;
+                    results.negativeMarks += state.negativeMark;
+                }
+            });
+            
+            // Don't clamp score to zero - show negative scores if they occur
+            const percentage = (results.score / quizData.questions.length) * 100;
+            
+            document.getElementById('scoreDisplay').textContent = `${results.score.toFixed(2)} / ${quizData.questions.length} (${percentage.toFixed(1)}%)`;
+            document.getElementById('correctAnswers').textContent = results.correct;
+            document.getElementById('incorrectAnswers').textContent = results.incorrect;
+            document.getElementById('unattempted').textContent = results.unattempted;
+            document.getElementById('negativeMarks').textContent = `-${results.negativeMarks.toFixed(2)}`;
+            
+            document.getElementById('questionContainer').style.display = 'none';
+            document.getElementById('questionNav').style.display = 'none';
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('resultContainer').style.display = 'block';
+            
+            createPerformanceChart(results);
+            createTimeAnalysisChart();
+            
+            // Play appropriate sound based on score
+            if (percentage >= 70) {
+                createConfetti();
+                correctSound.currentTime = 0;
+                correctSound.play();
+            } else if (percentage < 50) {
+                wrongSound.currentTime = 0;
+                wrongSound.play();
+            }
+        }
+
+        function createPerformanceChart(results) {
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Correct', 'Incorrect', 'Unattempted'],
+                    datasets: [{
+                        data: [results.correct, results.incorrect, results.unattempted],
+                        backgroundColor: ['#28a745', '#dc3545', '#ffc107']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+        }
+        
+        function createTimeAnalysisChart() {
+            const ctx = document.getElementById('timeAnalysisChart').getContext('2d');
+            const questionLabels = Array.from({length: quizData.questions.length}, (_, i) => `Q${i+1}`);
+            
+            // Create data for correct vs incorrect answers
+            const correctData = [];
+            const incorrectData = [];
+            const unattemptedData = [];
+            
+            state.answers.forEach((answer, idx) => {
+                const time = state.timePerQuestion[idx];
+                if (answer === null) {
+                    unattemptedData.push(time);
+                    correctData.push(0);
+                    incorrectData.push(0);
+                } else if (answer === quizData.questions[idx].correctIndex) {
+                    correctData.push(time);
+                    incorrectData.push(0);
+                    unattemptedData.push(0);
+                } else {
+                    incorrectData.push(time);
+                    correctData.push(0);
+                    unattemptedData.push(0);
+                }
+            });
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: questionLabels,
+                    datasets: [
+                        {
+                            label: 'Correct',
+                            data: correctData,
+                            backgroundColor: '#28a745',
+                            borderColor: '#28a745',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Incorrect',
+                            data: incorrectData,
+                            backgroundColor: '#dc3545',
+                            borderColor: '#dc3545',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Unattempted',
+                            data: unattemptedData,
+                            backgroundColor: '#ffc107',
+                            borderColor: '#ffc107',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                            title: {
+                                display: true,
+                                text: 'Questions'
+                            }
+                        },
+                        y: {
+                            stacked: true,
+                            title: {
+                                display: true,
+                                text: 'Time (seconds)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    return `Question ${tooltipItems[0].dataIndex + 1}`;
+                                },
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label && context.parsed.y > 0) {
+                                        label += `: ${context.parsed.y.toFixed(1)} seconds`;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function reviewAnswers() {
+            state.inReviewMode = true;
+            state.lastPlayedQuestion = -1; // Reset last played question
+            document.getElementById('questionContainer').style.display = 'block';
+            document.getElementById('questionNav').style.display = 'flex';
+            document.getElementById('resultContainer').style.display = 'none';
+            renderQuestion(0);
+        }
+        
+        function createConfetti() {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            for (let i = 0; i < 150; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                
+                document.body.appendChild(confetti);
+                
+                const animation = confetti.animate([
+                    { transform: 'translateY(0) rotate(0)', opacity: 1 },
+                    { transform: `translateY(${Math.random() * 500 + 500}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                ], { duration: Math.random() * 3000 + 2000, easing: 'cubic-bezier(.23,1,.32,1)' });
+                
+                animation.onfinish = () => confetti.remove();
+            }
+        }
+    </script>
+</body>
+</html>

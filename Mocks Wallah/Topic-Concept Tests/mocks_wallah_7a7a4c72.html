@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mocks Wallah</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #7209b7;
+            --secondary: #4361ee;
+            --accent: #f72585;
+            --success: #06d6a0;
+            --warning: #ffd166;
+            --danger: #ef476f;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        body {
+            background-color: #f0f2f5;
+            font-size: 16px;
+            padding-bottom: 60px; /* Space for fixed navigation */
+        }
+        .navbar {
+            background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,.1);
+            padding: 0.5rem 1rem;
+        }
+        .navbar-brand {
+            font-size: 1.1rem;
+            margin-right: 0;
+        }
+        .navbar .container-fluid {
+            justify-content: space-between;
+        }
+        .controls-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+        .timer-display {
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: white;
+            border-radius: 50px;
+            box-shadow: 0 3px 8px rgba(0,0,0,.1);
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+        }
+        .nav-btn {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            margin-left: 0.25rem;
+        }
+        .question-nav {
+            position: fixed;
+            top: 56px;
+            right: 0;
+            height: calc(100vh - 56px);
+            width: 280px;
+            transform: translateX(280px);
+            transition: transform .3s;
+            z-index: 100;
+            background: #fff;
+            box-shadow: -5px 0 15px rgba(0,0,0,.1);
+        }
+        .question-nav.show {
+            transform: translateX(0);
+        }
+        .main-content {
+            transition: margin .3s;
+            min-height: calc(100vh - 116px);
+        }
+        .question-text {
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+        .question-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+            gap: 6px;
+        }
+        .q-box {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            border: 1px solid #dee2e6;
+            background: #fff;
+            transition: all .2s;
+        }
+        .q-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 5px rgba(0,0,0,.1);
+        }
+        .q-box.attempted {
+            background-color: var(--secondary);
+            color: white;
+        }
+        .q-box.correct {
+            background-color: var(--success);
+            color: white;
+        }
+        .q-box.incorrect {
+            background-color: var(--danger);
+            color: white;
+        }
+        .q-box.current {
+            border: 2px solid var(--accent) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,.15);
+        }
+        .card {
+            border-radius: 12px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,.08);
+        }
+        .option-label {
+            border-radius: 8px;
+            transition: all .2s;
+            border: 1px solid #dee2e6;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+        }
+        .option-label:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,0,0,.05);
+        }
+        .form-check-input:checked + .option-label {
+            border-color: var(--primary);
+            background-color: rgba(114,9,183,.05);
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Bottom fixed navigation for mobile */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,.1);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 90;
+        }
+        
+        @media (min-width: 992px) {
+            .main-content.with-nav {
+                margin-right: 280px;
+            }
+            .question-nav {
+                transform: translateX(0);
+            }
+            .nav-toggle-btn {
+                display: none;
+            }
+            .bottom-nav {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .question-grid {
+                grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+            }
+            .option-label {
+                padding: 0.625rem 0.875rem;
+                font-size: 0.95rem;
+            }
+            .question-text {
+                font-size: 1rem;
+            }
+            .navbar-brand {
+                font-size: 1rem;
+            }
+            .timer-display {
+                font-size: 0.8125rem;
+                padding: 0.2rem 0.6rem;
+            }
+            .nav-btn {
+                padding: 0.2rem 0.6rem;
+                font-size: 0.8125rem;
+            }
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header navbar -->
+    <nav class="navbar navbar-dark sticky-top">
+        <div class="container-fluid px-2">
+            <a class="navbar-brand fw-bold" href="#"><i class="fas fa-graduation-cap me-1"></i>Mocks Wallah</a>
+            
+            <div class="controls-group">
+                <!-- Timer -->
+                <div class="timer-display me-1 fw-bold" id="timer">
+                    <i class="far fa-clock me-1"></i><span id="timer-display">12:00</span>
+                </div>
+                
+                <!-- Submit button -->
+                <button class="btn btn-light btn-sm nav-btn me-1" id="submit-btn" onclick="confirmSubmit()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+                
+                <!-- Language toggle -->
+                <button class="btn btn-light btn-sm nav-btn me-1" id="lang-btn" onclick="toggleLanguage()">
+                    <span id="lang-text">En</span>
+                </button>
+                
+                <!-- Questions toggle for mobile -->
+                <button class="btn btn-light btn-sm nav-btn nav-toggle-btn" id="nav-toggle" onclick="toggleNav()">
+                    <i class="fas fa-th"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main content -->
+    <div class="main-content" id="main-content">
+        <div class="container py-3">
+            <!-- Question counter -->
+            <div class="fw-bold text-center mb-3" id="question-counter">Question 1 of 25</div>
+            
+            <!-- Questions will be displayed here -->
+            <div id="questions-container"></div>
+        </div>
+    </div>
+    
+    <!-- Bottom navigation for mobile -->
+    <div class="bottom-nav d-lg-none">
+        <button class="btn btn-outline-primary px-3" onclick="prevQuestion()">
+            <i class="fas fa-chevron-left me-1"></i> Previous
+        </button>
+        <button class="btn btn-outline-primary px-3" onclick="nextQuestion()">
+            Next <i class="fas fa-chevron-right ms-1"></i>
+        </button>
+    </div>
+    
+    <!-- Question navigation sidebar -->
+    <div class="question-nav" id="question-nav">
+        <div class="p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="m-0">Questions</h5>
+                <div>
+                    <span class="badge bg-secondary me-1" id="attempted-count">0</span>
+                    <span class="badge bg-secondary" id="total-count">25</span>
+                    <button class="btn btn-sm btn-outline-secondary ms-2 d-lg-none" onclick="toggleNav()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Section selector moved here -->
+            <div class="mb-3">
+                <label for="section-selector" class="form-label small text-muted">Jump to Section</label>
+                <select class="form-select form-select-sm" id="section-selector" onchange="switchSection(this.value)">
+                    <option value="all">All Sections</option>
+                </select>
+            </div>
+            
+            <div class="question-grid" id="question-boxes"></div>
+        </div>
+    </div>
+    
+    <!-- Results modal -->
+    <div class="modal fade" id="results-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0">
+                <div class="modal-header border-0" style="background:linear-gradient(135deg,var(--primary),var(--secondary));color:white">
+                    <h5 class="modal-title">Test Results</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row text-center g-2">
+                        <div class="col-6">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#4361ee,#3a0ca3);color:white">
+                                <h3 id="score-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Score</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#06d6a0,#1b9aaa);color:white">
+                                <h3 id="correct-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Correct</div>
+                            </div>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#ef476f,#f72585);color:white">
+                                <h3 id="incorrect-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Incorrect</div>
+                            </div>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <div class="p-3 rounded shadow-sm" style="background:linear-gradient(135deg,#6c757d,#495057);color:white">
+                                <h3 id="unattempted-value" class="mb-0 fw-bold">0</h3>
+                                <div class="small">Unattempted</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-primary" onclick="reviewTest()">Review Test</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Questions data
+        const questions = [];
+        const sections = {};
+        let currentLang = "en";
+        let currentQuestion = 0;
+        let answers = {};
+        let submitted = false;
+        let totalTime = 12 * 60;
+        let resultsModal;
+        
+        // Initialize the test
+        window.onload = function() {
+            initializeTest();
+            startTimer();
+            resultsModal = new bootstrap.Modal(document.getElementById('results-modal'));
+            
+            // If on desktop, show the question navigation by default
+            if (window.innerWidth >= 992) {
+                document.getElementById('question-nav').classList.add('show');
+                document.getElementById('main-content').classList.add('with-nav');
+            }
+        };
+        
+        // Initialize test data
+        function initializeTest() {
+            // Add sections and questions
+            
+            sections["7"] = {
+                name: "English",
+                start: 0,
+                end: 23
+            };
+            
+            document.getElementById('section-selector').innerHTML += 
+                `<option value="7">English</option>`;
+            
+            sections["misc"] = {
+                name: "Miscellaneous",
+                start: 24,
+                end: 24
+            };
+            
+            document.getElementById('section-selector').innerHTML += 
+                `<option value="misc">Miscellaneous</option>`;
+            
+            
+                questions.push({
+                    id: "1",
+                    section: "7",
+                    question_en: "<p>1. Select the most appropriate option to substitute the underline segment in the given sentence.If there is no need to substitute it, select no improvement.<br>Our new office will become operational <span style=\"text-decoration: underline;\">from a weeks time.</span></p>",
+                    question_hi: "<p>1. Select the most appropriate option to substitute the underline segment in the given sentence.If there is no need to substitute it, select no improvement.<br>Our new office will become operational <span style=\"text-decoration: underline;\">from a weeks time.</span></p>",
+                    options_en: ["<p>no improvement.</p>", "<p>in a week\'s time</p>", 
+                                "<p>by the week\'s time</p>", "<p>for a weeks time</p>"],
+                    options_hi: ["<p>no improvement.</p>", "<p>in a week\'s time</p>",
+                                "<p>by the week\'s time</p>", "<p>for a weeks time</p>"],
+                    solution_en: "<p>1.(b) In a week&rsquo;s time.<br>&lsquo;in a week\'s time&rsquo; should be used because its the correct form that means If you say that something will happen, for example, in a week\'s time or in two years\' time, you mean that it will happen a week from now or two years from now. Presidential elections are due to be held in ten days\' time.</p>",
+                    solution_hi: "<p>1.(b) In a week&rsquo;s time.<br>यहाँ &lsquo;in a week\'s time&rsquo; का प्रयोग किया जाना चाहिए क्योंकि यह correct form है जिसका अर्थ है कि यदि आप कहते हैं कि कुछ घटित होगा, उदाहरण के लिए, &lsquo;in a week\'s time&rsquo; या &lsquo;in two years\' time&rsquo;, तो आपका मतलब है कि यह एक सप्ताह बाद या दो साल बाद होगा।</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "2",
+                    section: "7",
+                    question_en: "<p>2. Select the correct passive form of the given sentence.<br>Fortunately, the fire did not cause much damage.</p>",
+                    question_hi: "<p>2. Select the correct passive form of the given sentence.<br>Fortunately, the fire did not cause much damage.</p>",
+                    options_en: ["<p>Fortunately, not much damage is caused by the fire.</p>", "<p>Fortunately, not much damage was being caused by the fire.</p>", 
+                                "<p>Fortunately, not much damage is being caused by the fire.</p>", "<p>Fortunately, not much damage was caused by the fire.</p>"],
+                    options_hi: ["<p>Fortunately, not much damage is caused by the fire.</p>", "<p>Fortunately, not much damage was being caused by the fire.</p>",
+                                "<p>Fortunately, not much damage is being caused by the fire.</p>", "<p>Fortunately, not much damage was caused by the fire.</p>"],
+                    solution_en: "<p>2.(d) Fortunately, not much damage is caused by the fire.- Passive form<br>(a) Fortunately, not much damage <strong><span style=\"text-decoration: underline;\">is</span> </strong>caused by the fire. (Incorrect tense)<br>(b) Fortunately, not much damage <strong><span style=\"text-decoration: underline;\">was being caused</span></strong> by the fire.(Incorrect tense)<br>(c) Fortunately, not much damage <strong><span style=\"text-decoration: underline;\">is being caused</span></strong> by the fire.(Incorrect tense)</p>",
+                    solution_hi: "<p>2.(d) Fortunately, not much damage is caused by the fire.- Passive form<br>(a) Fortunately, not much damage <strong><span style=\"text-decoration: underline;\">is</span></strong> caused by the fire. (गलत tense)<br>(b) Fortunately, not much damage <strong><span style=\"text-decoration: underline;\">was being caused</span></strong> by the fire.(गलत tense)<br>(c) Fortunately, not much damage <strong><span style=\"text-decoration: underline;\">is being caused</span> </strong>by the fire.(गलत tense)</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "3",
+                    section: "7",
+                    question_en: "<p>3. Select the appropriate synonym of the given word.<br>Solemn</p>",
+                    question_hi: "<p>3. Select the appropriate synonym of the given word.<br>Solemn</p>",
+                    options_en: ["<p>Furious</p>", "<p>Serious</p>", 
+                                "<p>Ignorant</p>", "<p>Ordinary</p>"],
+                    options_hi: ["<p>Furious</p>", "<p>Serious</p>",
+                                "<p>Ignorant</p>", "<p>Ordinary</p>"],
+                    solution_en: "<p>3.(b) Serious.<br>Solemn - formal and dignified.<br>Furious - extremely angry.<br>Serious - demanding or characterized by careful consideration or application.<br>Ignorant - lacking knowledge or awareness in general; uneducated or unsophisticated.<br>Ordinary - with no special or distinctive features; normal.</p>",
+                    solution_hi: "<p>3.(b) Serious.<br>Solemn (गंभीर) - formal and dignified.<br>Furious (उग्र) - extremely angry.<br>Serious (गंभीर) - demanding or characterized by careful consideration or application.<br>Ignorant (अज्ञानी) - lacking knowledge or awareness in general; uneducated or unsophisticated.<br>Ordinary (साधारण) - with no special or distinctive features; normal.</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "4",
+                    section: "7",
+                    question_en: "<p>4. Select the most appropriate option to substitute the underline segment in the given sentence.If there is no need to substitute it, select no improvement.<br>You will not learn cycling <span style=\"text-decoration: underline;\">unless you don\'t try.</span></p>",
+                    question_hi: "<p>4. Select the most appropriate option to substitute the underline segment in the given sentence.If there is no need to substitute it, select no improvement.<br>You will not learn cycling <span style=\"text-decoration: underline;\">unless you don\'t try.</span></p>",
+                    options_en: ["<p>unless you didn\'t try</p>", "<p>unless you try</p>", 
+                                "<p>until you don\'t try</p>", "<p>until you are not trying</p>"],
+                    options_hi: ["<p>unless you didn\'t try</p>", "<p>unless you try</p>",
+                                "<p>until you don\'t try</p>", "<p>until you are not trying</p>"],
+                    solution_en: "<p>4.(b) unless you try. <br>&lsquo;unless you try&rsquo; will be the correct form. Unless means the same as &lsquo;if...not&rsquo;. &lsquo;Like if, unless&rsquo; is followed by a present tense, a past tense, or a past perfect tense (never by a conditional). &lsquo;Unless&rsquo; is used instead of &lsquo;if...not&rsquo; in conditional sentences of all types. The order of the clauses doesn\'t matter with sentences using &lsquo;unless&rsquo;.</p>",
+                    solution_hi: "<p>4.(b) unless you try. <br>यहाँ &lsquo;unless you try&rsquo; correct form होगा। Unless का अर्थ if...not के समान है। Like if, unless के बाद present tense, past tense, या past perfect tense का प्रयोग होता है, (conditional कभी भी नहीं)। सभी प्रकार के conditional sentences में if...not के स्थान पर Unless का प्रयोग किया जाता है। Unless का प्रयोग करने वाले sentences में clauses का order मायने नहीं रखता।</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "5",
+                    section: "7",
+                    question_en: "<p>5. Select the most appropriate meaning of the given idiom.<br>Kill two birds with one stone</p>",
+                    question_hi: "<p>5. Select the most appropriate meaning of the given idiom.<br>Kill two birds with one stone</p>",
+                    options_en: ["<p>To try something impossible</p>", "<p>To be an expert shooter</p>", 
+                                "<p>To achieve two results with a single effort</p>", "<p>To plan two murders simultaneously</p>"],
+                    options_hi: ["<p>To try something impossible</p>", "<p>To be an expert shooter</p>",
+                                "<p>To achieve two results with a single effort</p>", "<p>To plan two murders simultaneously</p>"],
+                    solution_en: "<p>5.(c) Kill two birds with one stone: To achieve two results with a single effort<br>Eg- He bought some groceries while coming from the bank. He killed two birds with one stone.</p>",
+                    solution_hi: "<p>5.(c) Kill two birds with one stone - To try something impossible./कुछ असंभव प्रयास करना।</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "6",
+                    section: "7",
+                    question_en: "<p>6. Select the correct indirect form of the given sentence.<br>Rahul said to his mother,\"Can I go out and play now ?\"</p>",
+                    question_hi: "<p>6. Select the correct indirect form of the given sentence.<br>Rahul said to his mother,\"Can I go out and play now ?\"</p>",
+                    options_en: ["<p>Rahul asked to his mother could he go out and play now.</p>", "<p>Rahul asked his mother that could he go out and play then.</p>", 
+                                "<p>Rahul asked his mother if could he go out and play then.</p>", "<p>Rahul asked his mother if can he go out and play then.</p>"],
+                    options_hi: ["<p>Rahul asked to his mother could he go out and play now.</p>", "<p>Rahul asked his mother that could he go out and play then.</p>",
+                                "<p>Rahul asked his mother if could he go out and play then.</p>", "<p>Rahul asked his mother if can he go out and play then.</p>"],
+                    solution_en: "<p>6.(c) Rahul asked his mother if he could go out and play then. (Correct) <br>(a) Rahul <span style=\"text-decoration: underline;\">asked to</span> his mother could he go out and play now.(Incorrect Reported verb)<br>(b) Rahul asked his mother <span style=\"text-decoration: underline;\">that could he</span> go out and play then. ( Incorrect usage of that) <br>(d) Rahul asked his mother <span style=\"text-decoration: underline;\">if can he</span> go out and play then.( Incorrect Verb used)</p>",
+                    solution_hi: "<p>6.(c) Rahul asked his mother if he could go out and play then. (सही) <br>(a) Rahul <span style=\"text-decoration: underline;\">asked to</span> his mother could he go out and play now.(गलत Reported verb)<br>(b) Rahul asked his mother <span style=\"text-decoration: underline;\">that could he</span> go out and play then. (गलत usage of that)&nbsp;<br>(d) Rahul asked his mother <span style=\"text-decoration: underline;\">if can he</span> go out and play then.(गलत Verb used)</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "7",
+                    section: "7",
+                    question_en: "<p>7. <strong>Cloze test :</strong><br>Tourism can cause social, cultural or environmental disruptions. The greatest concern is (7) _____damage to environment. In order to attract more tourists, (8) _____ resorts are built which take neither the local architecture (9) _____ the ecology into consideration. Natural systems get (10) ______as a result of indiscriminate construction to provide water (11) _____waste disposal facilities along with recreational arrangements to tourists.<br>Select the most appropriate option for blank no.7</p>",
+                    question_hi: "<p>7. <strong>Cloze test :</strong><br>Tourism can cause social, cultural or environmental disruptions. The greatest concern is (7) _____damage to environment. In order to attract more tourists, (8) _____ resorts are built which take neither the local architecture (9) _____ the ecology into consideration. Natural systems get (10) ______as a result of indiscriminate construction to provide water (11) _____waste disposal facilities along with recreational arrangements to tourists.<br>Select the most appropriate option for blank no.7</p>",
+                    options_en: ["<p>the</p>", "<p>a</p>", 
+                                "<p>one</p>", "<p>an</p>"],
+                    options_hi: ["<p>the</p>", "<p>a</p>",
+                                "<p>one</p>", "<p>an</p>"],
+                    solution_en: "<p>7.(a) the<br>The definite article (the) is used before a noun to indicate that the identity of the noun is known to the reader. The indefinite article (a, an) is used before a noun that is general or when its identity is not known. There are certain situations in which a noun takes no article.</p>",
+                    solution_hi: "<p>7.(a) the<br>Definite article &ldquo;the&rdquo; का प्रयोग किसी noun से पहले यह indicate करने के लिए किया जाता है कि reader को noun की identity ज्ञात है। Indefinite article &ldquo;a, an&rdquo; का प्रयोग उस noun से पहले किया जाता है जो सामान्य हो या जब उसकी identity ज्ञात न हो।</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "8",
+                    section: "7",
+                    question_en: "<p>8. <strong>Cloze test :</strong><br>Tourism can cause social, cultural or environmental disruptions. The greatest concern is (7) _____damage to environment. In order to attract more tourists, (8) _____ resorts are built which take neither the local architecture (9) _____ the ecology into consideration. Natural systems get (10) ______as a result of indiscriminate construction to provide water (11) _____waste disposal facilities along with recreational arrangements to tourists.<br>Select the most appropriate option for blank no.8</p>",
+                    question_hi: "<p>8. <strong>Cloze test :</strong><br>Tourism can cause social, cultural or environmental disruptions. The greatest concern is (7) _____damage to environment. In order to attract more tourists, (8) _____ resorts are built which take neither the local architecture (9) _____ the ecology into consideration. Natural systems get (10) ______as a result of indiscriminate construction to provide water (11) _____waste disposal facilities along with recreational arrangements to tourists.<br>Select the most appropriate option for blank no.8</p>",
+                    options_en: ["<p>spreading</p>", "<p>sprawling</p>", 
+                                "<p>stretching</p>", "<p>scheming</p>"],
+                    options_hi: ["<p>spreading</p>", "<p>sprawling</p>",
+                                "<p>stretching</p>", "<p>scheming</p>"],
+                    solution_en: "<p>8.(b) sprawling<br>Sprawling means &lsquo;spreading out over a large area in an untidy or irregular way&rsquo;.</p>",
+                    solution_hi: "<p>8.(b) sprawling<br>यहाँ \'Sprawling\' का अर्थ है &lsquo;अव्यवस्थित या अनियमित तरीके से एक बड़े क्षेत्र में फैलना&rsquo;।</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "9",
+                    section: "7",
+                    question_en: "<p>9. <strong>Cloze test :</strong><br>Tourism can cause social, cultural or environmental disruptions. The greatest concern is (7) _____damage to environment. In order to attract more tourists, (8) _____ resorts are built which take neither the local architecture (9) _____ the ecology into consideration. Natural systems get (10) ______as a result of indiscriminate construction to provide water (11) _____waste disposal facilities along with recreational arrangements to tourists.<br>Select the most appropriate option for blank no.9</p>",
+                    question_hi: "<p>9. <strong>Cloze test :</strong><br>Tourism can cause social, cultural or environmental disruptions. The greatest concern is (7) _____damage to environment. In order to attract more tourists, (8) _____ resorts are built which take neither the local architecture (9) _____ the ecology into consideration. Natural systems get (10) ______as a result of indiscriminate construction to provide water (11) _____waste disposal facilities along with recreational arrangements to tourists.<br>Select the most appropriate option for blank no.9</p>",
+                    options_en: ["<p>no</p>", "<p>or</p>", 
+                                "<p>nor</p>", "<p>none</p>"],
+                    options_hi: ["<p>no</p>", "<p>or</p>",
+                                "<p>nor</p>", "<p>none</p>"],
+                    solution_en: "<p>9.(c) nor<br>\'Neither/nor\' are conjunctions that are used to deny or negate words and phrases. In the case of \'neither\', it gives two options that are both negated. \'Nor\' is the negative form of \'or\'.</p>",
+                    solution_hi: "<p>9.(c) nor<br>यहाँ &lsquo;neither/nor&rsquo; ऐसे conjunctions हैं जिनका प्रयोग words और phrases को अस्वीकार या नकारात्मक करने के लिए किया जाता है। &lsquo;Neither&rsquo; के case में, यह दो ऐसे विकल्प देता है जो दोनों नकारात्मक हैं। &lsquo;Nor&rsquo;, &lsquo;or&rsquo; का negative form है।</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "10",
+                    section: "7",
+                    question_en: "<p>10. <strong>Cloze test :</strong><br>Tourism can cause social, cultural or environmental disruptions. The greatest concern is (7) _____damage to environment. In order to attract more tourists, (8) _____ resorts are built which take neither the local architecture (9) _____ the ecology into consideration. Natural systems get (10) ______as a result of indiscriminate construction to provide water (11) _____waste disposal facilities along with recreational arrangements to tourists.<br>Select the most appropriate option for blank no.10</p>",
+                    question_hi: "<p>10. <strong>Cloze test :</strong><br>Tourism can cause social, cultural or environmental disruptions. The greatest concern is (7) _____damage to environment. In order to attract more tourists, (8) _____ resorts are built which take neither the local architecture (9) _____ the ecology into consideration. Natural systems get (10) ______as a result of indiscriminate construction to provide water (11) _____waste disposal facilities along with recreational arrangements to tourists.<br>Select the most appropriate option for blank no.10</p>",
+                    options_en: ["<p>distracted</p>", "<p>destroyed</p>", 
+                                "<p>displayed</p>", "<p>dismayed</p>"],
+                    options_hi: ["<p>distracted</p>", "<p>destroyed</p>",
+                                "<p>displayed</p>", "<p>dismayed</p>"],
+                    solution_en: "<p>10.(b) destroyed<br>&ldquo;Destroyed&rdquo; means to damage something so badly that it can no longer be used or no longer exists.</p>",
+                    solution_hi: "<p>10.(b) destroyed<br>\"Destroyed\" का अर्थ है किसी चीज को इतना बुरी तरह से क्षतिग्रस्त (damage) कर देना कि वह अब इस्तेमाल करने योग्य न रहे या उसका अस्तित्व ही न रहे।</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "11",
+                    section: "7",
+                    question_en: "<p>11. <strong>Cloze test :</strong><br>Tourism can cause social, cultural or environmental disruptions. The greatest concern is (7) _____damage to environment. In order to attract more tourists, (8) _____ resorts are built which take neither the local architecture (9) _____ the ecology into consideration. Natural systems get (10) ______as a result of indiscriminate construction to provide water (11) _____waste disposal facilities along with recreational arrangements to tourists.<br>Select the most appropriate option for blank no.11</p>",
+                    question_hi: "<p>11. <strong>Cloze test :</strong><br>Tourism can cause social, cultural or environmental disruptions. The greatest concern is (7) _____damage to environment. In order to attract more tourists, (8) _____ resorts are built which take neither the local architecture (9) _____ the ecology into consideration. Natural systems get (10) ______as a result of indiscriminate construction to provide water (11) _____waste disposal facilities along with recreational arrangements to tourists.<br>Select the most appropriate option for blank no.11</p>",
+                    options_en: ["<p>also</p>", "<p>and</p>", 
+                                "<p>but</p>", "<p>as</p>"],
+                    options_hi: ["<p>also</p>", "<p>and</p>",
+                                "<p>but</p>", "<p>as</p>"],
+                    solution_en: "<p>11.(b) and<br>To connect two words or sentences conjunction \'and\' is used. The sentence talks about the cause of the destruction of natural systems because of indiscriminate construction to provide water and waste disposal facilities.</p>",
+                    solution_hi: "<p>11.(b) and<br>यह रिक्त स्थान \"water\" तथा \"waste disposal facilities\" को connect है। ये एक list में दो अलग लेकिन related item हैं। इस तरह की list में items को connect के लिए सबसे common conjunction \"and\" है। अतः, &lsquo;and&rsquo; सबसे उपयुक्त उत्तर है।</p>",
+                    correct: "b",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "12",
+                    section: "7",
+                    question_en: "<p>12. Select the most appropriate word to fill in the blank.<br>Do you want to ______ to Reader\'s Digest magazine?</p>",
+                    question_hi: "<p>12. Select the most appropriate word to fill in the blank.<br>Do you want to ______ to Reader\'s Digest magazine?</p>",
+                    options_en: ["<p>transcribe</p>", "<p>prescribe</p>", 
+                                "<p>describe</p>", "<p>subscribe</p>"],
+                    options_hi: ["<p>transcribe</p>", "<p>prescribe</p>",
+                                "<p>describe</p>", "<p>subscribe</p>"],
+                    solution_en: "<p>12.(d) Subscribe<br>&ldquo;Subscribe&rdquo; means to arrange to receive something regularly (like a magazine) by paying in advance.</p>",
+                    solution_hi: "<p>12.(d) Subscribe<br>&ldquo;Subscribe&rdquo; का अर्थ है अग्रिम भुगतान करके नियमित रूप से कुछ प्राप्त करने की व्यवस्था करना (जैसे कोई magazine)।</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "13",
+                    section: "7",
+                    question_en: "13. Select the most appropriate words which mean the same as the group of words given.<br />Person or animal living on another",
+                    question_hi: "13. Select the most appropriate words which mean the same as the group of words given.<br />Person or animal living on another",
+                    options_en: [" Heir", " Successor", 
+                                " Pupil", " Parasite"],
+                    options_hi: [" Heir", " Successor",
+                                " Pupil", " Parasite"],
+                    solution_en: "13.(d) Parasite - Person or animal living on another.",
+                    solution_hi: "13.(d) Parasite (परजीवी) - Person or animal living on another.",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "14",
+                    section: "7",
+                    question_en: "<p>14. Select the most appropriate word to fill in the blank.<br>Your demands are bound to lead to ______ in the family.</p>",
+                    question_hi: "<p>14. Select the most appropriate word to fill in the blank.<br>Your demands are bound to lead to ______ in the family.</p>",
+                    options_en: ["<p>discord</p>", "<p>barrier</p>", 
+                                "<p>decrease</p>", "<p>absence</p>"],
+                    options_hi: ["<p>discord</p>", "<p>barrier</p>",
+                                "<p>decrease</p>", "<p>absence</p>"],
+                    solution_en: "<p>14.(a) discord<br>Within a family discord is there, which means &lsquo;disagreement between people&rsquo;.</p>",
+                    solution_hi: "<p>14.(a) discord<br>एक family के भीतर कलह (discord) है, जिसका अर्थ है \'लोगों के बीच असहमति\'।</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "15",
+                    section: "7",
+                    question_en: "<p>15. Select the appropriate synonym of the given word.<br>Eradicate</p>",
+                    question_hi: "<p>15. Select the appropriate synonym of the given word.<br>Eradicate</p>",
+                    options_en: ["<p>Magnify</p>", "<p>Condense</p>", 
+                                "<p>Approve</p>", "<p>Uproot</p>"],
+                    options_hi: ["<p>Magnify</p>", "<p>Condense</p>",
+                                "<p>Approve</p>", "<p>Uproot</p>"],
+                    solution_en: "<p>15.(d) <br>Uproot - pull (something, especially a tree or plant) out of the ground.<br>Eradicate - destroy completely; put an end to.<br>Magnify - make (something) appear larger than it is, especially with a lens or microscope.<br>Condense - make (something) denser or more concentrated.<br>Approve - officially agree to or accept as satisfactory.</p>",
+                    solution_hi: "<p>15.(d) <br>Uproot (उखाड़ना) - pull (something, especially a tree or plant) out of the ground.<br>Eradicate (जड़ से मिटाना) - destroy completely; put an end to.<br>Magnify (आवर्धित करना) - make (something) appear larger than it is, especially with a lens or microscope.<br>Condense (संघनित करना) - make (something) denser or more concentrated.<br>Approve (स्वीकृत) - officially agree to or accept as satisfactory.</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "16",
+                    section: "7",
+                    question_en: "<p>16. Select the appropriate antonym of the given word.<br>Rear</p>",
+                    question_hi: "<p>16. Select the appropriate antonym of the given word.<br>Rear</p>",
+                    options_en: ["<p>Back</p>", "<p>Hind</p>", 
+                                "<p>Front</p>", "<p>Lower</p>"],
+                    options_hi: ["<p>Back</p>", "<p>Hind</p>",
+                                "<p>Front</p>", "<p>Lower</p>"],
+                    solution_en: "<p>16.(c)<br>Front - the forward or leading part of something.<br>Rear - the back part of something, especially a building or vehicle.<br>Back - the rear surface of the human body from the shoulders to the hips.<br>Hind - (especially of a bodily part) situated at the back; posterior.<br>Lower - less high in position.</p>",
+                    solution_hi: "<p>16.(c)<br>Front (सामने) - the forward or leading part of something.<br>Rear (पश्च) - the back part of something, especially a building or vehicle.<br>Back (पीठ) - the rear surface of the human body from the shoulders to the hips.<br>Hind (पिछला) - (especially of a bodily part) situated at the back; posterior.<br>Lower (निचला) - less high in position.</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "17",
+                    section: "7",
+                    question_en: "<p>17. Select the most appropriate meaning of the given idiom.<br>Make off with</p>",
+                    question_hi: "<p>17. Select the most appropriate meaning of the given idiom.<br>Make off with</p>",
+                    options_en: ["<p>To transfer</p>", "<p>To discover</p>", 
+                                "<p>To run away</p>", "<p>To understand</p>"],
+                    options_hi: ["<p>To transfer</p>", "<p>To discover</p>",
+                                "<p>To run away</p>", "<p>To understand</p>"],
+                    solution_en: "<p>17.(c) Make off with - To transfer</p>",
+                    solution_hi: "<p>17.(c) Make off with - To transfer./स्थानांतरित करना।</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "18",
+                    section: "7",
+                    question_en: "<p>18. Select the INCORRECTLY spelt word.</p>",
+                    question_hi: "<p>18. Select the INCORRECTLY spelt word.</p>",
+                    options_en: ["<p>Journy</p>", "<p>Furious</p>", 
+                                "<p>Delicious</p>", "<p>Failure</p>"],
+                    options_hi: ["<p>Journy</p>", "<p>Furious</p>",
+                                "<p>Delicious</p>", "<p>Failure</p>"],
+                    solution_en: "<p>18.(a) Journy.<br>&lsquo;Journey&rsquo; is the correct spelling.</p>",
+                    solution_hi: "<p>18.(a) Journy.<br>&lsquo;Journey&rsquo; सही spelling है।</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "19",
+                    section: "7",
+                    question_en: "<p>19. Identify the segment in the sentence which contains the grammatical error from the given options.<br>If a few drops of lemon are put in the milk, it has turned sour.</p>",
+                    question_hi: "<p>19. Identify the segment in the sentence which contains the grammatical error from the given options.<br>If a few drops of lemon are put in the milk, it has turned sour.</p>",
+                    options_en: ["<p>drops of lemon</p>", "<p>If a few</p>", 
+                                "<p>it has turned sour</p>", "<p>are put in the milk</p>"],
+                    options_hi: ["<p>drops of lemon</p>", "<p>If a few</p>",
+                                "<p>it has turned sour</p>", "<p>are put in the milk</p>"],
+                    solution_en: "<p>19.(c) it has turned sour.<br>&lsquo;it has turned sour&rsquo; should be replaced with &lsquo;it turns sour&rsquo; because it\'s a universal truth and therefore it should be in the present indefinite tense.</p>",
+                    solution_hi: "<p>19.(c) it has turned sour.<br>&lsquo;it has turned sour&rsquo; के स्थान पर &lsquo;it turns sour&rsquo; का प्रयोग होगा क्योंकि यह एक universal truth है और इसलिए यह present indefinite tense में होना चाहिए। it has turned sour.</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "20",
+                    section: "7",
+                    question_en: "<p>20. Select the most appropriate sequence from the given options to make a meaningful paragraph from jumbled sentences.<br>A. These baits were temptations that people couldn\'t resist.<br>B. He evolved a theory that the world was a rat-trap.<br>C. Once, a peddler sat looking at his rat-traps.<br>D. Here, people lay baits for others.</p>",
+                    question_hi: "<p>20. Select the most appropriate sequence from the given options to make a meaningful paragraph from jumbled sentences.<br>A. These baits were temptations that people couldn\'t resist.<br>B. He evolved a theory that the world was a rat-trap.<br>C. Once, a peddler sat looking at his rat-traps.<br>D. Here, people lay baits for others.</p>",
+                    options_en: ["<p>CBDA</p>", "<p>CADB</p>", 
+                                "<p>DACB</p>", "<p>BDAC</p>"],
+                    options_hi: ["<p>CBDA</p>", "<p>CADB</p>",
+                                "<p>DACB</p>", "<p>BDAC</p>"],
+                    solution_en: "<p>20.(a) CBDA.<br>Option (a) &lsquo;CBDA&rsquo; is the correct sequence.</p>",
+                    solution_hi: "<p>20.(a) CBDA.<br>Option (a) &lsquo;CBDA&rsquo; में सही sequence है।</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "21",
+                    section: "7",
+                    question_en: "<p>21. Select the INCORRECTLY spelt word.</p>",
+                    question_hi: "<p>21. Select the INCORRECTLY spelt word.</p>",
+                    options_en: ["<p>Pamphlet</p>", "<p>Persevere</p>", 
+                                "<p>Potraite</p>", "<p>Pageant</p>"],
+                    options_hi: ["<p>Pamphlet</p>", "<p>Persevere</p>",
+                                "<p>Potraite</p>", "<p>Pageant</p>"],
+                    solution_en: "<p>21.(c) Potraite.<br>&lsquo;Portrait&rsquo; is the correct spelling.</p>",
+                    solution_hi: "<p>21.(c) Potraite.<br>&lsquo;Portrait&rsquo; सही spelling है।</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "22",
+                    section: "7",
+                    question_en: "<p>22. Select the appropriate antonym of the given word.<br>Persuade</p>",
+                    question_hi: "<p>22. Select the appropriate antonym of the given word.<br>Persuade</p>",
+                    options_en: ["<p>Impress</p>", "<p>Induce</p>", 
+                                "<p>Dissuade</p>", "<p>Pervade</p>"],
+                    options_hi: ["<p>Impress</p>", "<p>Induce</p>",
+                                "<p>Dissuade</p>", "<p>Pervade</p>"],
+                    solution_en: "<p>22.(c) <br>Dissuade - To convince someone not to do something.<br>Persuade - To convince someone to do something.<br>Impress - To make someone admire or respect you.<br>Induce - To lead or move by persuasion or influence<br>Pervade - To spread through and be perceived in every part of something.</p>",
+                    solution_hi: "<p>22.(c) <br>Dissuade (मना करना) - To convince someone not to do something.<br>Persuade (राजी करना) - To convince someone to do something.<br>Impress (प्रभावित करना) - To make someone admire or respect you.<br>Induce (प्रेरित करना) - To lead or move by persuasion or influence<br>Pervade (व्याप्त होना) -To spread through and be perceived in every part of something.</p>",
+                    correct: "c",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "23",
+                    section: "7",
+                    question_en: "<p>23. Select the most appropriate words which that means the same as the group of words given.<br>Central character in a story or play</p>",
+                    question_hi: "<p>23. Select the most appropriate words which that means the same as the group of words given.<br>Central character in a story or play</p>",
+                    options_en: ["<p>Cartoonist</p>", "<p>Opportunist</p>", 
+                                "<p>Hedonist</p>", "<p>Protagonist</p>"],
+                    options_hi: ["<p>Cartoonist</p>", "<p>Opportunist</p>",
+                                "<p>Hedonist</p>", "<p>Protagonist</p>"],
+                    solution_en: "<p>23.(d) Protagonist - Central character in a story or play.</p>",
+                    solution_hi: "<p>23.(d) Protagonist (नायक) - Central character in a story or play.</p>",
+                    correct: "d",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "24",
+                    section: "7",
+                    question_en: "<p>24. Select the most appropriate sequence from the given options to make a meaningful paragraph from jumbled sentences.<br>A. Their prestige and glory spread far and wide.<br>B. The first Olympics were held at Olympia in Greece in 776 B.C.<br>C. It was because the Christians believe that they encouraged pagan worship in temples.<br>D. However, with the advent of Christianity, the games lost their importance.</p>",
+                    question_hi: "<p>24. Select the most appropriate sequence from the given options to make a meaningful paragraph from jumbled sentences.<br>A. Their prestige and glory spread far and wide.<br>B. The first Olympics were held at Olympia in Greece in 776 B.C.<br>C. It was because the Christians believe that they encouraged pagan worship in temples.<br>D. However, with the advent of Christianity, the games lost their importance.</p>",
+                    options_en: ["<p>BADC</p>", "<p>DCAB</p>", 
+                                "<p>ACDB</p>", "<p>BCDA</p>"],
+                    options_hi: ["<p>BADC</p>", "<p>DCAB</p>",
+                                "<p>ACDB</p>", "<p>BCDA</p>"],
+                    solution_en: "<p>24.(a) BADC. <br>Option (a) &lsquo;BADC&rsquo; is the correct sequence.</p>",
+                    solution_hi: "<p>24.(a) BADC. <br>Option (a) &lsquo;BADC&rsquo; में sequence है।</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+                questions.push({
+                    id: "25",
+                    section: "misc",
+                    question_en: "<p>25. Identify the segment in the sentence which contains the grammatical error from the given options.<br>Mohan did not went to school yesterday as he was unwell.</p>",
+                    question_hi: "<p>25. Identify the segment in the sentence which contains the grammatical error from the given options.<br>Mohan did not went to school yesterday as he was unwell.</p>",
+                    options_en: ["<p>went to school</p>", "<p>yesterday as he</p>", 
+                                "<p>Mohan did not</p>", "<p>was unwell</p>"],
+                    options_hi: ["<p>went to school</p>", "<p>yesterday as he</p>",
+                                "<p>Mohan did not</p>", "<p>was unwell</p>"],
+                    solution_en: "<p>25.(a) went to school.<br>&lsquo;went to school&rsquo; must be replaced with &lsquo;go to school&rsquo;. When &lsquo;did&rsquo; is used as an auxiliary, its partner verb is in the plain infinitive form.</p>",
+                    solution_hi: "<p>25.(a) went to school.<br>&lsquo;went to school&rsquo; के स्थान पर &lsquo;go to school&rsquo; का प्रयोग किया जाना चाहिए। जब &lsquo;did&rsquo; का प्रयोग auxiliary के रूप में होता है, तो उसकी partner verb, साधारण infinitive form में होती है।</p>",
+                    correct: "a",
+                    pos_marks: 2.0,
+                    neg_marks: 0.5
+                });
+            
+            // Generate question boxes
+            const boxesContainer = document.getElementById('question-boxes');
+            questions.forEach((q, index) => {
+                const box = document.createElement('div');
+                box.className = 'q-box';
+                box.textContent = index + 1;
+                box.onclick = () => showQuestion(index);
+                box.id = `box-${index}`;
+                boxesContainer.appendChild(box);
+            });
+            
+            // Show first question
+            showQuestion(0);
+            updateProgress();
+        }
+        
+        // Show a specific question
+        function showQuestion(index) {
+            if (index < 0 || index >= questions.length) return;
+            
+            currentQuestion = index;
+            const question = questions[index];
+            
+            // Update question counter
+            document.getElementById('question-counter').textContent = `Question ${index + 1} of ${questions.length}`;
+            
+            // Update question boxes
+            document.querySelectorAll('.q-box').forEach(box => box.classList.remove('current'));
+            document.getElementById(`box-${index}`).classList.add('current');
+            
+            // Generate question HTML - more compact
+            let html = `
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="question-text mb-3">
+                            <div class="en">${question.question_en}</div>
+                            <div class="hi" style="display:none">${question.question_hi}</div>
+                        </div>
+                        <div class="options">`;
+                        
+            // Add options
+            ['a', 'b', 'c', 'd'].forEach((opt, i) => {
+                let optionClass = 'option-label';
+                
+                // When reviewing, highlight user's choice and correct answer
+                if (submitted) {
+                    if (opt === question.correct) {
+                        optionClass += ' border-success bg-success bg-opacity-10';
+                    }
+                    if (answers[question.id] === opt && opt !== question.correct) {
+                        optionClass += ' border-danger bg-danger bg-opacity-10';
+                    }
+                }
+                
+                html += `
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="q${index}" 
+                            id="opt-${index}-${opt}" value="${opt}" 
+                            ${answers[question.id] === opt ? 'checked' : ''}
+                            onclick="selectAnswer('${question.id}', '${opt}')">
+                        <label class="form-check-label w-100 ${optionClass}" for="opt-${index}-${opt}">
+                            ${submitted && opt === question.correct ? '<i class="fas fa-check-circle text-success me-1"></i>' : ''}
+                            <div class="en">${question.options_en[i]}</div>
+                            <div class="hi" style="display:none">${question.options_hi[i]}</div>
+                        </label>
+                    </div>`;
+            });
+            
+            // Add solution if submitted
+            if (submitted) {
+                const isCorrect = answers[question.id] === question.correct;
+                const alertClass = isCorrect ? 'alert-success' : 'alert-danger';
+                const resultText = answers[question.id] ? (isCorrect ? 'Correct!' : 'Incorrect!') : 'Not attempted';
+                
+                html += `
+                    <div class="alert ${alertClass} mt-3 py-2">
+                        <strong>${resultText}</strong>
+                        <div class="mt-1 small">
+                            <strong>Solution:</strong>
+                            <div class="en">${question.solution_en}</div>
+                            <div class="hi" style="display:none">${question.solution_hi}</div>
+                        </div>
+                    </div>`;
+            }
+            
+            html += `</div></div>`;
+            
+            document.getElementById('questions-container').innerHTML = html;
+            
+            // Apply language settings
+            applyLanguage();
+            
+            // If in mobile view, close the menu
+            if (window.innerWidth < 992) {
+                toggleNav(false);
+            }
+        }
+        
+        // Apply current language
+        function applyLanguage() {
+            document.querySelectorAll(`.${currentLang}`).forEach(el => el.style.display = 'block');
+            document.querySelectorAll(`.${currentLang === 'en' ? 'hi' : 'en'}`).forEach(el => el.style.display = 'none');
+        }
+        
+        // Select an answer
+        function selectAnswer(qId, option) {
+            if (submitted) return;
+            
+            answers[qId] = option;
+            updateProgress();
+            
+            // Mark question as attempted in the navigation
+            const index = questions.findIndex(q => q.id === qId);
+            if (index >= 0) {
+                document.getElementById(`box-${index}`).classList.add('attempted');
+            }
+        }
+        
+        // Navigate to previous/next question
+        function prevQuestion() { if (currentQuestion > 0) showQuestion(currentQuestion - 1); }
+        function nextQuestion() { if (currentQuestion < questions.length - 1) showQuestion(currentQuestion + 1); }
+        
+        // Switch section
+        function switchSection(sectionId) {
+            if (sectionId === 'all') {
+                showQuestion(0);
+                return;
+            }
+            
+            const section = sections[sectionId];
+            if (section) showQuestion(section.start);
+        }
+        
+        // Toggle language
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            applyLanguage();
+            
+            // Update button text
+            document.getElementById('lang-text').textContent = currentLang === 'en' ? 'Hi' : 'En';
+        }
+        
+        // Toggle navigation sidebar
+        function toggleNav(show) {
+            const nav = document.getElementById('question-nav');
+            const content = document.getElementById('main-content');
+            
+            if (show === undefined) {
+                show = !nav.classList.contains('show');
+            }
+            
+            if (show) {
+                nav.classList.add('show');
+                if (window.innerWidth >= 992) {
+                    content.classList.add('with-nav');
+                }
+            } else {
+                nav.classList.remove('show');
+                if (window.innerWidth >= 992) {
+                    content.classList.remove('with-nav');
+                }
+            }
+        }
+        
+        // Update progress
+        function updateProgress() {
+            const attempted = Object.keys(answers).length;
+            document.getElementById('attempted-count').textContent = attempted;
+        }
+        
+        // Start timer - compact
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            let timeLeft = totalTime;
+            
+            const timerInterval = setInterval(() => {
+                if (timeLeft <= 0 || submitted) {
+                    clearInterval(timerInterval);
+                    if (!submitted) submitTest();
+                    return;
+                }
+                
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                timeLeft--;
+            }, 1000);
+        }
+        
+        // Confirm before submitting
+        function confirmSubmit() {
+            if (submitted) return;
+            
+            const attempted = Object.keys(answers).length;
+            const remaining = questions.length - attempted;
+            
+            if (confirm(`You have attempted ${attempted} of ${questions.length} questions.
+${remaining} questions are unattempted.
+
+Are you sure you want to submit?`)) {
+                submitTest();
+            }
+        }
+        
+        // Submit test
+        function submitTest() {
+            if (submitted) return;
+            
+            submitted = true;
+            
+            let score = 0;
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let unattemptedCount = 0;
+            
+            questions.forEach((q, index) => {
+                const userAns = answers[q.id];
+                const box = document.getElementById(`box-${index}`);
+                
+                box.classList.remove('attempted');
+                
+                if (!userAns) {
+                    unattemptedCount++;
+                    box.classList.add('bg-secondary', 'text-white');
+                } else if (userAns === q.correct) {
+                    correctCount++;
+                    score += q.pos_marks;
+                    box.classList.add('correct');
+                } else {
+                    incorrectCount++;
+                    score -= q.neg_marks;
+                    box.classList.add('incorrect');
+                }
+            });
+            
+            // Update result values
+            document.getElementById('score-value').textContent = score.toFixed(2);
+            document.getElementById('correct-value').textContent = correctCount;
+            document.getElementById('incorrect-value').textContent = incorrectCount;
+            document.getElementById('unattempted-value').textContent = unattemptedCount;
+            
+            // Show the results modal
+            resultsModal.show();
+            
+            // Disable submit button
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.classList.replace('btn-light', 'btn-success');
+            submitBtn.innerHTML = '<i class="fas fa-check"></i>';
+            
+            // Refresh current question view to show solution
+            showQuestion(currentQuestion);
+        }
+        
+        // Review test
+        function reviewTest() {
+            resultsModal.hide();
+            showQuestion(0);
+        }
+        
+        // Add event listener for window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 992) {
+                if (document.getElementById('question-nav').classList.contains('show')) {
+                    document.getElementById('main-content').classList.add('with-nav');
+                }
+            } else {
+                document.getElementById('main-content').classList.remove('with-nav');
+            }
+        });
+    </script>
+</body>
+</html>

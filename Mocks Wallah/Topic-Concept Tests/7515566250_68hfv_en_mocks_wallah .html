@@ -1,0 +1,2694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mocks Wallah - Quiz 5 - Ancient Architecture</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+        <style>
+:root {
+    --primary: #4361ee;
+    --primary-light: rgba(67, 97, 238, 0.1);
+    --secondary: #3a0ca3;
+    --success: #2ec4b6;
+    --danger: #e71d36;
+    --warning: #ff9f1c;
+    --dark: #1a1a2e;
+    --darker: #16213e;
+    --light: #f8f9fa;
+    --lighter: #ffffff;
+    --card: rgba(255, 255, 255, 0.95);
+    --card-border: rgba(255, 255, 255, 0.3);
+    --text: #2b2d42;
+    --text-light: #8d99ae;
+    --radius: 12px;
+    --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --glass: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --transition: all 0.2s ease;
+}
+
+[data-theme=dark] {
+    --card: rgba(30, 41, 59, 0.95);
+    --card-border: rgba(30, 41, 59, 0.3);
+    --text: #f8f9fa;
+    --text-light: #94a3b8;
+    --darker: #0f172a;
+    --glass: rgba(15, 23, 42, 0.6);
+    --glass-border: rgba(15, 23, 42, 0.4);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: var(--light);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 1rem;
+    background-image: linear-gradient(135deg, rgba(67, 97, 238, 0.03) 0%, rgba(255, 255, 255, 0.03) 100%);
+    min-height: 100vh;
+}
+
+body[data-theme=dark] {
+    background: var(--darker);
+    background-image: linear-gradient(135deg, rgba(67, 97, 238, 0.03) 0%, rgba(15, 23, 42, 0.03) 100%);
+}
+
+/* Header Styles */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--primary);
+    color: var(--lighter);
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.header-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.timer {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 100px;
+    padding: 0.35rem 1rem;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btn {
+    background: var(--lighter);
+    color: var(--primary);
+    border: none;
+    border-radius: 100px;
+    padding: 0.5rem 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn i {
+    font-size: 0.9em;
+}
+
+/* Main Layout */
+.main-wrapper {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    padding-top: 1rem;
+}
+
+.main-container {
+    flex: 1;
+    padding: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Question Card Styles */
+.q-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    display: none;
+    transition: var(--transition);
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+.q-card.active {
+    display: block;
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.q-header {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background: var(--glass);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.q-num {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--primary);
+    color: var(--lighter);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.75rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.q-section {
+    flex: 1;
+    font-size: 0.95rem;
+    color: var(--text-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.q-marks {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-light);
+    white-space: nowrap;
+    margin-left: 0.5rem;
+}
+
+.q-body {
+    padding: 1.5rem;
+}
+
+.comp-text {
+    background: var(--glass);
+    padding: 1rem;
+    border-radius: var(--radius);
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--glass-border);
+}
+
+.q-text {
+    margin-bottom: 2rem;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.q-text img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    margin: 0.5rem 0;
+}
+
+/* Options Styles */
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.option {
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--glass-border);
+    background: var(--glass);
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.option:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+    border-color: var(--primary);
+}
+
+.option-text {
+    flex: 1;
+}
+
+.option-selector {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    border: 2px solid var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: var(--transition);
+}
+
+.option-circle {
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background: transparent;
+    transition: var(--transition);
+}
+
+.selected .option-selector {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+
+.selected .option-circle {
+    background: var(--primary);
+}
+
+.correct .option-selector {
+    border-color: var(--success);
+    background: rgba(46, 196, 182, 0.1);
+}
+
+.correct .option-circle {
+    background: var(--success);
+}
+
+.incorrect .option-selector {
+    border-color: var(--danger);
+    background: rgba(231, 29, 54, 0.1);
+}
+
+.incorrect .option-circle {
+    background: var(--danger);
+}
+
+/* Solution Styles */
+.solution {
+    display: none;
+    background: rgba(46, 196, 182, 0.05);
+    padding: 1.25rem;
+    border-radius: var(--radius);
+    margin-top: 1.5rem;
+    border: 1px solid rgba(46, 196, 182, 0.2);
+}
+
+.solution-title {
+    font-weight: 600;
+    color: var(--success);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.solution-content {
+    line-height: 1.7;
+}
+
+.solution-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    margin: 0.5rem 0;
+}
+
+/* Navigation Panel */
+.nav-panel {
+    width: 280px;
+    background: var(--card);
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.06);
+    padding: 1rem;
+    border-left: 1px solid var(--glass-border);
+    height: calc(100vh - 110px);
+    position: sticky;
+    top: 60px;
+    overflow-y: auto;
+    display: block;
+    transition: transform 0.2s ease;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.section-select {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--glass-border);
+    margin-bottom: 1rem;
+    background: var(--glass);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.section-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.q-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(2.5rem, 1fr));
+    gap: 0.5rem;
+}
+
+.q-nav-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--glass);
+    color: var(--text);
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.q-nav-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    border-color: var(--primary);
+}
+
+.q-nav-btn.active {
+    background: var(--primary);
+    color: var(--lighter);
+    border-color: var(--primary);
+    box-shadow: 0 2px 6px rgba(67, 97, 238, 0.25);
+}
+
+.q-nav-btn.answered {
+    background: rgba(46, 196, 182, 0.1);
+    border-color: rgba(46, 196, 182, 0.3);
+}
+
+.q-nav-btn.correct {
+    background: rgba(46, 196, 182, 0.2);
+    border-color: var(--success);
+}
+
+.q-nav-btn.incorrect {
+    background: rgba(231, 29, 54, 0.2);
+    border-color: var(--danger);
+}
+
+/* Footer Navigation */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card);
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
+    z-index: 10;
+    border-top: 1px solid var(--glass-border);
+}
+
+.nav-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 100px;
+    background: var(--primary);
+    color: var(--lighter);
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.nav-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Results Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 900;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.results-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    padding: 2rem;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    border: 1px solid var(--glass-border);
+}
+
+.score-display {
+    font-size: 3.5rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--primary), var(--success));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 0.5rem 0;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.stat-box {
+    background: var(--glass);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    text-align: center;
+    transition: var(--transition);
+    border: 1px solid var(--glass-border);
+}
+
+.stat-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.review-btn {
+    background: var(--primary);
+    color: var(--lighter);
+    border: none;
+    border-radius: 100px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.review-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-modal:hover {
+    background: var(--glass);
+    color: var(--text);
+}
+
+/* Mobile Styles */
+.nav-mobile {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--lighter);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.nav-mobile:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 992px) {
+    .nav-panel {
+        display: none;
+        position: fixed;
+        top: 60px;
+        right: -100%;
+        bottom: 60px;
+        width: 280px;
+        z-index: 99;
+        transition: all 0.2s ease;
+    }
+    
+    .nav-panel.active {
+        right: 0;
+        display: block;
+    }
+    
+    .nav-mobile {
+        display: block;
+    }
+    
+    .main-container {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .header-title {
+        font-size: 1.1rem;
+    }
+    
+    .timer {
+        padding: 0.25rem 0.75rem;
+        font-size: 0.9rem;
+    }
+    
+    .btn {
+        padding: 0.4rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .q-body {
+        padding: 1rem;
+    }
+    
+    .footer {
+        padding: 0.5rem 1rem;
+    }
+    
+    .nav-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.95rem;
+    }
+    
+    .option {
+        padding: 0.75rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 1.05rem;
+    }
+    
+    .header {
+        padding: 0.5rem;
+    }
+    
+    .header-title {
+        font-size: 1rem;
+    }
+    
+    .timer {
+        padding: 0.2rem 0.5rem;
+        font-size: 0.85rem;
+    }
+    
+    .btn {
+        padding: 0.3rem 0.75rem;
+        font-size: 0.85rem;
+    }
+    
+    .main-container {
+        padding: 0.75rem;
+    }
+    
+    .q-header {
+        padding: 0.5rem 1rem;
+    }
+    
+    .q-num {
+        width: 1.75rem;
+        height: 1.75rem;
+        font-size: 0.9rem;
+        margin-right: 0.5rem;
+    }
+    
+    .q-section, .q-marks {
+        font-size: 0.85rem;
+    }
+    
+    .q-nav-btn {
+        width: 2rem;
+        height: 2rem;
+        font-size: 0.85rem;
+    }
+    
+    .option {
+        padding: 0.75rem;
+        font-size: 1rem;
+        gap: 0.75rem;
+    }
+    
+    .option-selector {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+    
+    .option-circle {
+        width: 0.6rem;
+        height: 0.6rem;
+    }
+    
+    .score-display {
+        font-size: 2.5rem;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+    }
+    
+    .review-btn {
+        padding: 0.6rem 1.25rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* Simplified pulse animation for selection */
+.selected {
+    animation: pulse 0.15s ease;
+}
+
+@keyframes pulse {
+    50% { transform: scale(1.02); }
+}
+    </style>
+</head>
+<body>
+    <header class="header">
+        <button id="toggle-nav" class="nav-mobile" onclick="toggleNavPanel()">
+            <i class="fas fa-bars"></i>
+        </button>
+        <h1 class="header-title">Mocks Wallah</h1>
+        <div class="header-actions">
+            <div class="timer">
+                <i class="fas fa-clock" style="margin-right: 8px;"></i>
+                <div id="test-timer">00:10:00</div>
+            </div>
+            <button id="theme-toggle" class="btn" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="btn" id="submit-test" onclick="submitTest()">
+                <i class="fas fa-check-circle"></i> Submit
+            </button>
+        </div>
+    </header>
+    
+    <div class="main-wrapper">
+        <div class="main-container">
+            <div id="questions-container">
+                
+                <div class="q-card" id="q682179cbfa4b5aa2491d739e" data-qnum="1" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">1</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text">
+<span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Which
+of the following styles of temple architecture is popular in North
+India?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5aa2491d739e', 0)" ondblclick="clearSelection('682179cbfa4b5aa2491d739e')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Mandapa</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5aa2491d739e', 1)" ondblclick="clearSelection('682179cbfa4b5aa2491d739e')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Dravida</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5aa2491d739e', 2)" ondblclick="clearSelection('682179cbfa4b5aa2491d739e')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Vimana</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5aa2491d739e', 3)" ondblclick="clearSelection('682179cbfa4b5aa2491d739e')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Nagara</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5aa2491d739e">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+word ‘Nagara’ is made from Nagar. It is a style of
+structural temple architecture in north India that was prevalent in
+areas ranging from the Himalayas to the Vindhya Mountains. It was
+given adequate patronage by the ruling dynasties present in North
+India during the 18th century. Its characteristics the prominence of
+the peak rising from the flat roof is found.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5a018f1d7397" data-qnum="2" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">2</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Which
+is the architectural rock of Brihaddiswara Temple located in Tamil
+Nadu?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5a018f1d7397', 0)" ondblclick="clearSelection('682179cbfa4b5a018f1d7397')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Nagara</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5a018f1d7397', 1)" ondblclick="clearSelection('682179cbfa4b5a018f1d7397')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Gadag</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5a018f1d7397', 2)" ondblclick="clearSelection('682179cbfa4b5a018f1d7397')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Dravidian</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5a018f1d7397', 3)" ondblclick="clearSelection('682179cbfa4b5a018f1d7397')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Champa</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5a018f1d7397">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">■</span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+architectural style of Brihaddishvara Temple located in Thanjavur,
+Tamil Nadu is Dravidian architecture. This temple is situated on the
+banks of river Kaveri. It is the largest temple in the southern part
+of India. </span></span>
+<br/>■
+<span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">It
+has been included in the list of UNESCO World</span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+Heritage Sites. </span></span>
+<br/>■
+<span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">This
+temple was built by King Rajaraja I between</span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+1003 and 1010 AD. </span></span>
+<br/>■
+<span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+architecture of this tem</span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">ple
+is the best example of the rules of science and geometry. </span></span>
+<br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5ab0241d7398" data-qnum="3" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">3</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">How
+many temples are there in Panchayat styles of architecture?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5ab0241d7398', 0)" ondblclick="clearSelection('682179cbfa4b5ab0241d7398')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    7</span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5ab0241d7398', 1)" ondblclick="clearSelection('682179cbfa4b5ab0241d7398')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    3</span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5ab0241d7398', 2)" ondblclick="clearSelection('682179cbfa4b5ab0241d7398')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    9    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5ab0241d7398', 3)" ondblclick="clearSelection('682179cbfa4b5ab0241d7398')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    5</span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5ab0241d7398">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Panchayatan
+style is a style of temple construction consisting of a central
+temple surrounded by four other temples [means total 5 temples]. It
+consists of a main temple which is surrounded by four subsidiary
+temples. Examples of temples of this style are Lakshman Temple in
+Khajuraho, Lingaraja Temple in Bhubaneswar, Dashavatara Temple etc.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5a57701d738e" data-qnum="4" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">4</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">In
+which state is the brick temple of Bhitargaon located?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5a57701d738e', 0)" ondblclick="clearSelection('682179cbfa4b5a57701d738e')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Madhya
+Pradesh</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5a57701d738e', 1)" ondblclick="clearSelection('682179cbfa4b5a57701d738e')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Uttar
+Pradesh</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5a57701d738e', 2)" ondblclick="clearSelection('682179cbfa4b5a57701d738e')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Jharkhand</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5a57701d738e', 3)" ondblclick="clearSelection('682179cbfa4b5a57701d738e')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Odisha</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5a57701d738e">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+brick temple of Bhitargaon is located in Kanpur district of Uttar
+Pradesh. This Gupta period temple made of bricks is especially famous
+because of its safe and well molded bricks.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5a54831d7390" data-qnum="5" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">5</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Which
+Indian state is home to Buddhist cave temples these are known as
+Barabar Caves?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5a54831d7390', 0)" ondblclick="clearSelection('682179cbfa4b5a54831d7390')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">West
+Bengal</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5a54831d7390', 1)" ondblclick="clearSelection('682179cbfa4b5a54831d7390')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Bihar</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5a54831d7390', 2)" ondblclick="clearSelection('682179cbfa4b5a54831d7390')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Uttar
+Pradesh</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5a54831d7390', 3)" ondblclick="clearSelection('682179cbfa4b5a54831d7390')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Sikkim</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5a54831d7390">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+state of Bihar is home to Buddhist cave temples, known as the Barabar
+Caves. These caves are a group of four main caves, located on the
+Barabar Hills. These caves are- Lomas Rishi Cave, Sudama Cave, Karan
+Chaupar and Vishwa Jhopri.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5a94961d7392" data-qnum="6" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">6</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Which
+element in North Indian temple architecture represents the
+superstructure or tower over the sanctum sanctorum and pillared
+mandapas?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5a94961d7392', 0)" ondblclick="clearSelection('682179cbfa4b5a94961d7392')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Shikhara</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5a94961d7392', 1)" ondblclick="clearSelection('682179cbfa4b5a94961d7392')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Kalash</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5a94961d7392', 2)" ondblclick="clearSelection('682179cbfa4b5a94961d7392')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Amlaka</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5a94961d7392', 3)" ondblclick="clearSelection('682179cbfa4b5a94961d7392')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Antaral</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5a94961d7392">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">In
+North Indian temple architecture, Shikhara refers to the
+superstructure or tower over the sanctum sanctorum and pillared
+mandapas. A simple spire whose base is square and the walls turn
+inward and meet at a point at the top is usually called
+‘Rekha-Prasad’.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5a3f2f1d738a" data-qnum="7" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">7</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Hoysaleshwara
+temple was built with which of the following stones by a Hoysala king
+in 1150?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5a3f2f1d738a', 0)" ondblclick="clearSelection('682179cbfa4b5a3f2f1d738a')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Sandstone</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5a3f2f1d738a', 1)" ondblclick="clearSelection('682179cbfa4b5a3f2f1d738a')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Gray
+basalt</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5a3f2f1d738a', 2)" ondblclick="clearSelection('682179cbfa4b5a3f2f1d738a')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">White
+marble</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5a3f2f1d738a', 3)" ondblclick="clearSelection('682179cbfa4b5a3f2f1d738a')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Black
+schist stone</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5a3f2f1d738a">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Hoysaleshwara
+Temple is located in Halebid, Karnataka. It was built from black
+schist stone by the Hoysala king in 1150 AD. UNESCO has included this
+temple in the World Heritage list in 2023.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5a3c961d739f" data-qnum="8" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">8</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Dilwara
+Temples at Mount Abu, Rajasthan is an example of…….
+Temple architecture.</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5a3c961d739f', 0)" ondblclick="clearSelection('682179cbfa4b5a3c961d739f')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Budhist</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5a3c961d739f', 1)" ondblclick="clearSelection('682179cbfa4b5a3c961d739f')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Drawidian</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5a3c961d739f', 2)" ondblclick="clearSelection('682179cbfa4b5a3c961d739f')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Jain</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5a3c961d739f', 3)" ondblclick="clearSelection('682179cbfa4b5a3c961d739f')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Mughal</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5a3c961d739f">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Dilwara
+Temples is a group of five Jain temples located in Mount Abu,
+Rajasthan. The temples were built between the 11th and 13th centuries
+AD and are considered to be one of the finest examples of Jain temple
+architecture.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5a76fc1d73a1" data-qnum="9" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">9</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+mighty gateways found at the temples of South India is called?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5a76fc1d73a1', 0)" ondblclick="clearSelection('682179cbfa4b5a76fc1d73a1')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Vimana</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5a76fc1d73a1', 1)" ondblclick="clearSelection('682179cbfa4b5a76fc1d73a1')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Gopuram</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5a76fc1d73a1', 2)" ondblclick="clearSelection('682179cbfa4b5a76fc1d73a1')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Ardhamandalam</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5a76fc1d73a1', 3)" ondblclick="clearSelection('682179cbfa4b5a76fc1d73a1')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Mandalam</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5a76fc1d73a1">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Gopuram,
+in south Indian architecture, the entrance gateway to a Hindu temple
+enclosure. Relatively small at first, the gopuras grew in size from
+the mid-12th century until the colossal gateways came to dominate the
+temple complex, quite surpassing the main sanctum in both size and
+architectural elaboration.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5a01051d738d" data-qnum="10" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">10</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+ancient Neemrana stepwell is located in which of the following
+districts of Rajasthan?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5a01051d738d', 0)" ondblclick="clearSelection('682179cbfa4b5a01051d738d')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Bikaner</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5a01051d738d', 1)" ondblclick="clearSelection('682179cbfa4b5a01051d738d')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Jaipur</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5a01051d738d', 2)" ondblclick="clearSelection('682179cbfa4b5a01051d738d')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Alwar</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5a01051d738d', 3)" ondblclick="clearSelection('682179cbfa4b5a01051d738d')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Ajmer</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5a01051d738d">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+ancient Neemrana stepwell is located in Alwar district of Rajasthan.
+Neemrana Stepwell, which shows the importance of Rajput architecture
+and water conservation, will now be included among the monuments of
+national importance. The 12 storey stepwell is one of the important
+tourist destinations of Rajasthan. </span></span>
+<br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5a42751d738c" data-qnum="11" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">11</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Which
+of the following is not true about Ajanta Caves?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5a42751d738c', 0)" ondblclick="clearSelection('682179cbfa4b5a42751d738c')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">They
+are in Maharashtra.</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5a42751d738c', 1)" ondblclick="clearSelection('682179cbfa4b5a42751d738c')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">They
+are decorated with Buddhist Art.</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5a42751d738c', 2)" ondblclick="clearSelection('682179cbfa4b5a42751d738c')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">They
+depict the techniques used in Ancient India. </span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5a42751d738c', 3)" ondblclick="clearSelection('682179cbfa4b5a42751d738c')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">They
+do not contain paintings of flora and fauna.</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5a42751d738c">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+The Ajanta Caves are located in the state of Maharashtra, India.
+While the Ajanta Caves primarily depict Buddhist scenes and stories,
+they do include representations of flora and fauna alongside human
+figures. The Ajanta Caves offer a valuable glimpse into the artistic
+techniques and practices of ancient India. The paintings and
+sculptures demonstrate the artistic advancements of their time.</span></span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5a4fca1d739c" data-qnum="12" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">12</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><p><span style="font-family: 'Cambria Math',serif;"><span style="font-size: 19px;">Kandariya Mahadeva Temple was constructed by ––––––.</span></span></p></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5a4fca1d739c', 0)" ondblclick="clearSelection('682179cbfa4b5a4fca1d739c')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Chandelas</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5a4fca1d739c', 1)" ondblclick="clearSelection('682179cbfa4b5a4fca1d739c')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Cholas</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5a4fca1d739c', 2)" ondblclick="clearSelection('682179cbfa4b5a4fca1d739c')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Pallavas</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5a4fca1d739c', 3)" ondblclick="clearSelection('682179cbfa4b5a4fca1d739c')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Hoysalas</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5a4fca1d739c">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Kandariya
+Mahadev Temple is located in Khajuraho, Madhya Pradesh. The Kandariya
+Mahadeva temple was constructed by king Dhandadeva of Chandela
+dynasty in 999 CE. The temple was dedicated to Lord Shiva.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5a26f81d738b" data-qnum="13" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">13</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Khajuraho
+Group of monuments is attributed to which dynasty?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5a26f81d738b', 0)" ondblclick="clearSelection('682179cbfa4b5a26f81d738b')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Chandela</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5a26f81d738b', 1)" ondblclick="clearSelection('682179cbfa4b5a26f81d738b')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Mughal</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5a26f81d738b', 2)" ondblclick="clearSelection('682179cbfa4b5a26f81d738b')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Maurya</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5a26f81d738b', 3)" ondblclick="clearSelection('682179cbfa4b5a26f81d738b')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Shunga</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5a26f81d738b">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+Khajuraho Group of Monuments are attributed to the Chandela dynasty
+which under the sovereignty of Gurjar Pratihars reached its glory.
+The ensemble of monuments that have survived belong to the Hindu and
+Jain Religious practices with a striking fusion of sculpture and
+architecture. The best example of this outstanding feature is seen in
+the Kandariya Mahadev Temple. Of the 85 temples built here, only 22
+temples have survived in an area of 20 km, which represents the
+Chandela period of the 10th century located in the Indian state of
+Madhya Pradesh, it was inscribed by UNESCO as a World Heritage Site a
+cultural property on 1986 for its unique original artistic creation
+and proof of the Chandela culture that existed prior to the Muslim
+invasion of India in the early 12th century.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5af8a61d739b" data-qnum="14" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">14</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+famous cultural site Rani-ki-Vav [The Queen's Stepwell] is situated
+on the banks of which river?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5af8a61d739b', 0)" ondblclick="clearSelection('682179cbfa4b5af8a61d739b')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Mahanadi</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5af8a61d739b', 1)" ondblclick="clearSelection('682179cbfa4b5af8a61d739b')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Yamuna
+River</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5af8a61d739b', 2)" ondblclick="clearSelection('682179cbfa4b5af8a61d739b')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Saraswati
+River</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5af8a61d739b', 3)" ondblclick="clearSelection('682179cbfa4b5af8a61d739b')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Hooghly
+River</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5af8a61d739b">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Rani-ki-Vav
+[The Queen's Stepwell] is a World Heritage Site in Patan [Gujarat] on
+the banks of Saraswati River. Its construction was started by Rani
+Udaymati of Solanki dynasty in the memory of Raja Bhimdev. It was
+made for water harvesting as rainwater conservation was done in this.
+It has been listed as one of UNESCO's World Heritage Site since 2014.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5a27461d7391" data-qnum="15" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">15</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Which
+of the following is an example of a Chola empire temple?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5a27461d7391', 0)" ondblclick="clearSelection('682179cbfa4b5a27461d7391')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Virupaksha
+temple</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5a27461d7391', 1)" ondblclick="clearSelection('682179cbfa4b5a27461d7391')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Badami
+cave temple</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5a27461d7391', 2)" ondblclick="clearSelection('682179cbfa4b5a27461d7391')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Chennakesava
+temple</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5a27461d7391', 3)" ondblclick="clearSelection('682179cbfa4b5a27461d7391')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Airavateshvara
+temple</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5a27461d7391">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+Chola rulers were great builders and during their reign, the most
+magnificent temples were built in South India. They ruled for nearly
+1500 years and temples become the centre of importance during their
+power. The Airavatesvara temple at Darasuram in Tamil Nadu was built
+by the great Chola king Rajaraja II and it is placed third, after the
+two famous chola temples of Thanjavur and Gangaikondacholpuram
+temple. Virupakhsha Temple is one of the famous Lord Shiva temples
+located in Hampi, Karnataka and </span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">the
+temple was initially built by Lakkan Dandesha, a chieftain under the
+Vijayanagara ruler Deva Raya II. While Krishnadevaraya did make
+significant additions and renovations to the temple, particularly the
+Ranga Mantapa and other mandapas, he did not build the original
+structure. </span></span></span>
+<br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5a8be31d739a" data-qnum="16" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">16</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+popular rock-cut sculputure, the 'Descent of the Ganga' is found in
+which of the following places of India?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5a8be31d739a', 0)" ondblclick="clearSelection('682179cbfa4b5a8be31d739a')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Tanjore</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5a8be31d739a', 1)" ondblclick="clearSelection('682179cbfa4b5a8be31d739a')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Mahabalipuram</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5a8be31d739a', 2)" ondblclick="clearSelection('682179cbfa4b5a8be31d739a')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Madurai</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5a8be31d739a', 3)" ondblclick="clearSelection('682179cbfa4b5a8be31d739a')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Mount
+Abu</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5a8be31d739a">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Mahabalipuram
+in state of Tamil Nadu is famous for the splendor of its ancient
+temple and architecture. Here the work of constructing artistic
+temples and caves by carving stone was done during the kings of the
+Pallava dynasty. Mahabalipuram's prevalent Tamil name is another form
+of Mamallapuram. This means the city of wrestlers which has been sent
+here with the idols of the Ganges. It is believed that the
+Gangavataran has been demonstrated from the midst of Shiva's Yatra
+after the severe penance performed by Bhagiratha to the death of his
+ancestors.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5a6aec1d73a0" data-qnum="17" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">17</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Which
+dynasty had developed the Gandhara School of Art in ancient India?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5a6aec1d73a0', 0)" ondblclick="clearSelection('682179cbfa4b5a6aec1d73a0')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Kushana
+Dynasty</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5a6aec1d73a0', 1)" ondblclick="clearSelection('682179cbfa4b5a6aec1d73a0')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Gupta
+Dynasty</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5a6aec1d73a0', 2)" ondblclick="clearSelection('682179cbfa4b5a6aec1d73a0')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Mauryan
+Dynasty</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5a6aec1d73a0', 3)" ondblclick="clearSelection('682179cbfa4b5a6aec1d73a0')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Chola
+Dynasty</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5a6aec1d73a0">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Gandhara
+art flourished in India during the rule of the Kushan Empire.
+Kanishka was the greatest patron Kushan Art and Architecture. He was
+a famous supporter of the arts. Gandhara art flourished during his
+reign.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5a135f1d739d" data-qnum="18" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">18</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Which
+temple complex is in the shape of a gigantic chariot, having
+elaborately carved stone wheels, pillars and walls ?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5a135f1d739d', 0)" ondblclick="clearSelection('682179cbfa4b5a135f1d739d')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Meenakshi
+Temple</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5a135f1d739d', 1)" ondblclick="clearSelection('682179cbfa4b5a135f1d739d')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Mahabodhi
+Temple</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5a135f1d739d', 2)" ondblclick="clearSelection('682179cbfa4b5a135f1d739d')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Brihadisvara
+Temple</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5a135f1d739d', 3)" ondblclick="clearSelection('682179cbfa4b5a135f1d739d')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Konark
+Sun Temple</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5a135f1d739d">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+Sun Temple of Konark, also known as the Black Pagoda is located in
+the city of Puri in Odisha. It is a monumental representation of the
+Sun God Surya's chariot; its 24 wheels are decorated with symbolic
+designs and it is led by a team of seven horses. This temple is built
+in the Nagara style and red sandstone and black granite stones have
+been used in its construction. This temple was built by Ganga Dynasty
+ruler Narasimha Deva in 1238-1264 AD. This temple has been declared
+by UNESCO as a World Heritage Site in1984. Its main feature is the
+sculptures drawn on its outer walls. </span></span>
+<br/>●
+<span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"><b>Meenakshi
+Temple</b></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">–It
+is located in the city of Madurai in Tamil Nadu. It is a temple
+dedicated to Lord Shiva and Goddess Parvati. </span></span>
+<br/>●
+<span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"><b>Brihadisvara
+Temple</b></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">–
+This temple is a classic example of Chola architecture. It was built
+by Maharaja Raja Raja I.</span></span><br/>●
+<span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"><b>Mahabodhi
+Temple</b></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">–It
+is located in Bodhgaya, Bihar. These sites provide an extraordinary
+record of events related to the life of Mahatma Buddha and facts
+related to his workship.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5a577d1d7394" data-qnum="19" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">19</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Which
+of the following is not correctly matched?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5a577d1d7394', 0)" ondblclick="clearSelection('682179cbfa4b5a577d1d7394')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+Mahakaal temple-Ujjain</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5a577d1d7394', 1)" ondblclick="clearSelection('682179cbfa4b5a577d1d7394')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Sringeri
+Matha- Chikkmanglur district</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5a577d1d7394', 2)" ondblclick="clearSelection('682179cbfa4b5a577d1d7394')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+Sun Temple- Konark</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5a577d1d7394', 3)" ondblclick="clearSelection('682179cbfa4b5a577d1d7394')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Jain
+temples-Khajuraho</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5a577d1d7394">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+Jain temples are associated with Dilwara near Mount Abu, Rajasthan's
+only hill station. These Jain temples were built by Vastupal–Tejpal.
+Khajuraho is famous for its erotic temples and sculpture. The
+Mahakaal temple is dedicated to Lord Shiva, which is situated in
+Ujjain [Madhya Pradesh]. Shringeri Matha is located in the
+Chikkamangalur district on the banks of the Tunga River, this
+monastery reflects the tradition of Yajurveda. The monastery is set
+in the Hoysala and Dravidian installation style. The Sun temple is
+located in Konark [Odisha], it was established by king Narsimhadeva
+of Ganga dynasty.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5aadc31d7399" data-qnum="20" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">20</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">In
+which state of India is the Group of Monuments at Pattadakal located?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5aadc31d7399', 0)" ondblclick="clearSelection('682179cbfa4b5aadc31d7399')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Maharashtra</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5aadc31d7399', 1)" ondblclick="clearSelection('682179cbfa4b5aadc31d7399')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Himachal
+Pradesh</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5aadc31d7399', 2)" ondblclick="clearSelection('682179cbfa4b5aadc31d7399')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Karnataka</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5aadc31d7399', 3)" ondblclick="clearSelection('682179cbfa4b5aadc31d7399')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Madhya
+Pradesh</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5aadc31d7399">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Group
+of Monuments at Pattadakal is situated in the southern state of
+Karnataka. It is famous for their harmonious blend of architectural
+forms of northern and southern India. Pattadakal was the capital of
+the Chalukya dynasty of medieval India. This famous world heritage
+site consists of a group of ten major temples, each displaying
+interesting architectural features. This Group of Monuments at
+Pattadakal was built by Chalukya kings.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5ad4991d7396" data-qnum="21" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">21</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+earliest reference to sati custom is made in which of the following
+inscriptions?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5ad4991d7396', 0)" ondblclick="clearSelection('682179cbfa4b5ad4991d7396')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Allahabad
+Pillar inscription</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5ad4991d7396', 1)" ondblclick="clearSelection('682179cbfa4b5ad4991d7396')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Eran
+inscription of Bhanugupta</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5ad4991d7396', 2)" ondblclick="clearSelection('682179cbfa4b5ad4991d7396')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Aihole
+inscription of Pulkesin II</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5ad4991d7396', 3)" ondblclick="clearSelection('682179cbfa4b5ad4991d7396')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Bhitan
+inscription of Skandgupta</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5ad4991d7396">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">The
+earliest historical evidence of the Sati system is found in an
+inscription engraved in 510 AD. On a pillar found at Eran near Sagar
+in Madhya Pradesh, i.e. the Eran posthumous inscription of Goparaja.
+Ascribed to Bhanugupta, the inscription mentions that his wife
+followed him on the pyre after his death in the battle against the
+Hunas.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5a74a61d7393" data-qnum="22" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">22</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+Gyana Saraswati temple of southern India is located at:</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5a74a61d7393', 0)" ondblclick="clearSelection('682179cbfa4b5a74a61d7393')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Puducherry</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5a74a61d7393', 1)" ondblclick="clearSelection('682179cbfa4b5a74a61d7393')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Tirunelveli</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5a74a61d7393', 2)" ondblclick="clearSelection('682179cbfa4b5a74a61d7393')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Thrissur</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5a74a61d7393', 3)" ondblclick="clearSelection('682179cbfa4b5a74a61d7393')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Basara</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5a74a61d7393">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Gyana
+Saraswati Temple of South India is a famous pilgrimage site located
+in Basara Village of Nirmal district of Telangana state. This temple
+is built on white stones and has a four feet high grand statue of Maa
+Saraswati installed. This temple is situated on the banks of river
+Godavari called as Ganga of south India or Dakshni Ganga.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5a76991d7389" data-qnum="23" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">23</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Charupallam,
+'the village of the Incline' is located near which temple?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5a76991d7389', 0)" ondblclick="clearSelection('682179cbfa4b5a76991d7389')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Jagannath
+Puri</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5a76991d7389', 1)" ondblclick="clearSelection('682179cbfa4b5a76991d7389')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Tirupati
+Temple</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5a76991d7389', 2)" ondblclick="clearSelection('682179cbfa4b5a76991d7389')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Rajarajeshwara
+Temple</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5a76991d7389', 3)" ondblclick="clearSelection('682179cbfa4b5a76991d7389')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Konark
+Temple</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5a76991d7389">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">To
+built the Rajarajeshvara temple at Thanjavur architects built an
+inclined path to the top of the temple to place a boulder on rollers,
+which was rolled in all the way to the top of the shikhara. Even
+today, a village near the Rajarajeshvara temple is called
+Charupallam, the "Village of the Incline".</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5adb561d738f" data-qnum="24" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">24</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Which
+of the following limestone caves is in India?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5adb561d738f', 0)" ondblclick="clearSelection('682179cbfa4b5adb561d738f')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Borra
+Caves</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5adb561d738f', 1)" ondblclick="clearSelection('682179cbfa4b5adb561d738f')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Undavalli
+Caves</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5adb561d738f', 2)" ondblclick="clearSelection('682179cbfa4b5adb561d738f')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Varaha
+Cave</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5adb561d738f', 3)" ondblclick="clearSelection('682179cbfa4b5adb561d738f')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Bhimbetka
+Caves</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5adb561d738f">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Borra
+Caves is considered to be one of the oldest limes tine caves of the
+country, located amidst the Ananthagiri Hills in Araku Valley of
+Andhra Pradesh. This cave is made of limestone situated at a height
+of about 705 m.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <div class="q-card" id="q682179cbfa4b5ad4671d7395" data-qnum="25" data-section="0">
+                    <div class="q-header">
+                        <div class="q-num">25</div>
+                        <div class="q-section">General Awareness</div>
+                        <div class="q-marks">+2s, -0.5s</div>
+                    </div>
+                    <div class="q-body">
+                        
+                        <div class="q-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">What
+is the Mehrauli Pillar in the complex of Qutub Minar primarily famous
+for?</span></span><br/></div>
+                        <div class="options">
+                    <div class="option" data-option="0" onclick="selectOption(this, '682179cbfa4b5ad4671d7395', 0)" ondblclick="clearSelection('682179cbfa4b5ad4671d7395')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Proverbial
+height</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="1" onclick="selectOption(this, '682179cbfa4b5ad4671d7395', 1)" ondblclick="clearSelection('682179cbfa4b5ad4671d7395')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Skilful
+stone cutting</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="2" onclick="selectOption(this, '682179cbfa4b5ad4671d7395', 2)" ondblclick="clearSelection('682179cbfa4b5ad4671d7395')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Excellent
+quality steel</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                
+                    <div class="option" data-option="3" onclick="selectOption(this, '682179cbfa4b5ad4671d7395', 3)" ondblclick="clearSelection('682179cbfa4b5ad4671d7395')">
+                        <div class="option-text"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">    </span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Statue
+of Buddha on top</span></span><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px"/></span></span></div>
+                        <div class="option-selector">
+                            <div class="option-circle"></div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        <div class="solution" id="sol-682179cbfa4b5ad4671d7395">
+                            <div class="solution-title"><i class="fas fa-lightbulb"></i> Solution</div>
+                            <div class="solution-content"><span style="color: #000000"><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">
+</span></span></span><span style="font-family: 'Cambria Math',serif"><span style="font-size: 19px">Mehrauli
+Pillar is famous for excellent quality steel because of its high
+resistance to corrosion and has been called a "testimony to the
+high level of skill achieved by the ancient Indian iron smiths in the
+extraction and processing of Iron". This piller of the Gupta
+period is proving the superiority of the then scientific development.
+This is a posthumous inscription. It is mentioned that
+Chandragupta-II defeated the union of kings formed in the Bengal
+battle field. In the article, Chandragupta-II is said to be a devotee
+of Vishnu who established the Vishnu flag on a mountain called
+Vishnupad.</span></span><br/></div>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+        
+        <div class="nav-panel" id="nav-panel">
+            <div class="panel-header">
+                <h3>Question Navigator</h3>
+                <button class="nav-mobile" onclick="toggleNavPanel()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <select class="section-select" id="section-select" onchange="filterBySection()">
+                <option value="all">All Sections</option>
+            </select>
+            
+            <div class="q-grid" id="q-grid">
+                <!-- Question navigation buttons will be added dynamically -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="results-modal">
+        <div class="results-card">
+            <button class="close-modal" onclick="closeResultsModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="score-display" id="score-value">0</div>
+            <p id="score-display">out of 50 marks</p>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="correct-count">0</div>
+                    <div>Correct</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="incorrect-count">0</div>
+                    <div>Incorrect</div>
+                </div>
+            </div>
+            
+            <button class="review-btn" onclick="reviewTest()">
+                <i class="fas fa-eye"></i> Review Test
+            </button>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <button class="nav-btn" id="prev-btn" onclick="navigate(-1)">
+            <i class="fas fa-chevron-left"></i> Previous
+        </button>
+        
+        <button class="nav-btn" id="next-btn" onclick="navigate(1)">
+            Next <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+    
+    <script>
+// Test data
+const test = {
+    questions: 25,
+    marks: 50,
+    timer: 600,
+    timeSpent: 0,
+    current: 1,
+    answers: {},
+    correct: {"682179cbfa4b5aa2491d739e": 3, "682179cbfa4b5a018f1d7397": 2, "682179cbfa4b5ab0241d7398": 3, "682179cbfa4b5a57701d738e": 1, "682179cbfa4b5a54831d7390": 1, "682179cbfa4b5a94961d7392": 0, "682179cbfa4b5a3f2f1d738a": 3, "682179cbfa4b5a3c961d739f": 2, "682179cbfa4b5a76fc1d73a1": 1, "682179cbfa4b5a01051d738d": 2, "682179cbfa4b5a42751d738c": 3, "682179cbfa4b5a4fca1d739c": 0, "682179cbfa4b5a26f81d738b": 0, "682179cbfa4b5af8a61d739b": 2, "682179cbfa4b5a27461d7391": 3, "682179cbfa4b5a8be31d739a": 1, "682179cbfa4b5a6aec1d73a0": 0, "682179cbfa4b5a135f1d739d": 3, "682179cbfa4b5a577d1d7394": 3, "682179cbfa4b5aadc31d7399": 2, "682179cbfa4b5ad4991d7396": 1, "682179cbfa4b5a74a61d7393": 3, "682179cbfa4b5a76991d7389": 2, "682179cbfa4b5adb561d738f": 0, "682179cbfa4b5ad4671d7395": 2},
+    marks: {"682179cbfa4b5aa2491d739e": {"positive": 2, "negative": 0.5}, "682179cbfa4b5a018f1d7397": {"positive": 2, "negative": 0.5}, "682179cbfa4b5ab0241d7398": {"positive": 2, "negative": 0.5}, "682179cbfa4b5a57701d738e": {"positive": 2, "negative": 0.5}, "682179cbfa4b5a54831d7390": {"positive": 2, "negative": 0.5}, "682179cbfa4b5a94961d7392": {"positive": 2, "negative": 0.5}, "682179cbfa4b5a3f2f1d738a": {"positive": 2, "negative": 0.5}, "682179cbfa4b5a3c961d739f": {"positive": 2, "negative": 0.5}, "682179cbfa4b5a76fc1d73a1": {"positive": 2, "negative": 0.5}, "682179cbfa4b5a01051d738d": {"positive": 2, "negative": 0.5}, "682179cbfa4b5a42751d738c": {"positive": 2, "negative": 0.5}, "682179cbfa4b5a4fca1d739c": {"positive": 2, "negative": 0.5}, "682179cbfa4b5a26f81d738b": {"positive": 2, "negative": 0.5}, "682179cbfa4b5af8a61d739b": {"positive": 2, "negative": 0.5}, "682179cbfa4b5a27461d7391": {"positive": 2, "negative": 0.5}, "682179cbfa4b5a8be31d739a": {"positive": 2, "negative": 0.5}, "682179cbfa4b5a6aec1d73a0": {"positive": 2, "negative": 0.5}, "682179cbfa4b5a135f1d739d": {"positive": 2, "negative": 0.5}, "682179cbfa4b5a577d1d7394": {"positive": 2, "negative": 0.5}, "682179cbfa4b5aadc31d7399": {"positive": 2, "negative": 0.5}, "682179cbfa4b5ad4991d7396": {"positive": 2, "negative": 0.5}, "682179cbfa4b5a74a61d7393": {"positive": 2, "negative": 0.5}, "682179cbfa4b5a76991d7389": {"positive": 2, "negative": 0.5}, "682179cbfa4b5adb561d738f": {"positive": 2, "negative": 0.5}, "682179cbfa4b5ad4671d7395": {"positive": 2, "negative": 0.5}},
+    qMap: {"1": {"id": "682179cbfa4b5aa2491d739e", "section": 0}, "2": {"id": "682179cbfa4b5a018f1d7397", "section": 0}, "3": {"id": "682179cbfa4b5ab0241d7398", "section": 0}, "4": {"id": "682179cbfa4b5a57701d738e", "section": 0}, "5": {"id": "682179cbfa4b5a54831d7390", "section": 0}, "6": {"id": "682179cbfa4b5a94961d7392", "section": 0}, "7": {"id": "682179cbfa4b5a3f2f1d738a", "section": 0}, "8": {"id": "682179cbfa4b5a3c961d739f", "section": 0}, "9": {"id": "682179cbfa4b5a76fc1d73a1", "section": 0}, "10": {"id": "682179cbfa4b5a01051d738d", "section": 0}, "11": {"id": "682179cbfa4b5a42751d738c", "section": 0}, "12": {"id": "682179cbfa4b5a4fca1d739c", "section": 0}, "13": {"id": "682179cbfa4b5a26f81d738b", "section": 0}, "14": {"id": "682179cbfa4b5af8a61d739b", "section": 0}, "15": {"id": "682179cbfa4b5a27461d7391", "section": 0}, "16": {"id": "682179cbfa4b5a8be31d739a", "section": 0}, "17": {"id": "682179cbfa4b5a6aec1d73a0", "section": 0}, "18": {"id": "682179cbfa4b5a135f1d739d", "section": 0}, "19": {"id": "682179cbfa4b5a577d1d7394", "section": 0}, "20": {"id": "682179cbfa4b5aadc31d7399", "section": 0}, "21": {"id": "682179cbfa4b5ad4991d7396", "section": 0}, "22": {"id": "682179cbfa4b5a74a61d7393", "section": 0}, "23": {"id": "682179cbfa4b5a76991d7389", "section": 0}, "24": {"id": "682179cbfa4b5adb561d738f", "section": 0}, "25": {"id": "682179cbfa4b5ad4671d7395", "section": 0}},
+    sections: {"0": {"name": "General Awareness", "start_question": 1, "questions": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]}},
+    currentSection: "all",
+    submitted: false
+};
+
+// Initialize test
+document.addEventListener('DOMContentLoaded', () => {
+    // Set up sections dropdown
+    setupSections();
+    
+    // Set up question navigation grid
+    setupNavigation();
+    
+    // Show first question
+    showQuestion(1);
+    
+    // Start timer if configured
+    if (test.timer > 0) startTimer();
+    
+    // Set initial theme based on user preference
+    setInitialTheme();
+});
+
+// Set initial theme based on user preference
+function setInitialTheme() {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (prefersDark) {
+        document.body.setAttribute('data-theme', 'dark');
+        const icon = document.getElementById('theme-toggle').querySelector('i');
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+    }
+}
+
+// Setup section dropdown
+function setupSections() {
+    const select = document.getElementById('section-select');
+    
+    for (const id in test.sections) {
+        const option = document.createElement('option');
+        option.value = id;
+        option.textContent = test.sections[id].name;
+        select.appendChild(option);
+    }
+}
+
+// Filter questions by section
+function filterBySection() {
+    const sectionId = document.getElementById('section-select').value;
+    test.currentSection = sectionId;
+    
+    // Update question grid
+    setupNavigation();
+    
+    // Show first question of section
+    if (sectionId !== 'all') {
+        const firstQuestion = test.sections[sectionId].questions[0];
+        if (firstQuestion) showQuestion(firstQuestion);
+    }
+}
+
+// Setup question navigation grid
+function setupNavigation() {
+    const grid = document.getElementById('q-grid');
+    grid.innerHTML = ''; // Clear existing buttons
+    
+    for (let i = 1; i <= test.questions; i++) {
+        // Skip if filtering by section
+        if (test.currentSection !== 'all') {
+            const sectionId = test.qMap[i].section;
+            if (sectionId != test.currentSection) continue;
+        }
+        
+        const btn = document.createElement('button');
+        btn.className = 'q-nav-btn';
+        btn.textContent = i;
+        btn.onclick = () => {
+            showQuestion(i);
+            if (window.innerWidth <= 992) toggleNavPanel();
+        };
+        
+        updateButtonStatus(btn, i);
+        grid.appendChild(btn);
+    }
+}
+
+// Update button status
+function updateButtonStatus(btn, num) {
+    if (!test.qMap[num]) return;
+    
+    const id = test.qMap[num].id;
+    
+    btn.classList.remove('active', 'answered', 'correct', 'incorrect');
+    
+    if (test.answers[id] !== undefined) {
+        if (test.submitted) {
+            btn.classList.add(test.answers[id] === test.correct[id] ? 'correct' : 'incorrect');
+        } else {
+            btn.classList.add('answered');
+        }
+    }
+    
+    if (num === test.current) {
+        btn.classList.add('active');
+    }
+}
+
+// Show specific question
+function showQuestion(num) {
+    if (num < 1 || num > test.questions || !test.qMap[num]) return;
+    
+    test.current = num;
+    const id = test.qMap[num].id;
+    
+    // Hide all questions
+    document.querySelectorAll('.q-card').forEach(q => {
+        q.style.display = 'none';
+        q.classList.remove('active');
+    });
+    
+    // Show current question
+    const card = document.getElementById(`q${id}`);
+    if (card) {
+        card.style.display = 'block';
+        setTimeout(() => card.classList.add('active'), 10);
+        
+        // Update navigation buttons
+        document.getElementById('prev-btn').disabled = num <= 1;
+        document.getElementById('next-btn').disabled = num >= test.questions;
+        
+        // Update navigation grid
+        document.querySelectorAll('.q-nav-btn').forEach((btn, index) => {
+            const btnNum = parseInt(btn.textContent);
+            updateButtonStatus(btn, btnNum);
+        });
+        
+        // If test is submitted, show solution
+        if (test.submitted) {
+            const solution = card.querySelector('.solution');
+            if (solution) solution.style.display = 'block';
+            
+            // Mark correct/incorrect
+            if (test.answers[id] !== undefined) {
+                const isCorrect = test.answers[id] === test.correct[id];
+                const selected = card.querySelector(`.option[data-option="${test.answers[id]}"]`);
+                if (selected) {
+                    selected.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+                
+                // Highlight correct option if wrong
+                if (!isCorrect) {
+                    const correct = card.querySelector(`.option[data-option="${test.correct[id]}"]`);
+                    if (correct) correct.classList.add('correct');
+                }
+            }
+        }
+        
+        // Process MathJax
+        if (typeof MathJax !== 'undefined' && MathJax.typeset) {
+            MathJax.typeset([card]);
+        }
+    }
+}
+
+// Navigate between questions
+function navigate(direction) {
+    let next = test.current + direction;
+    
+    // Skip questions from other sections if filtering
+    if (test.currentSection !== 'all') {
+        while (next >= 1 && next <= test.questions) {
+            if (!test.qMap[next]) {
+                next += direction;
+                continue;
+            }
+            
+            const section = test.qMap[next].section;
+            if (section == test.currentSection) break;
+            next += direction;
+        }
+    }
+    
+    if (next >= 1 && next <= test.questions && test.qMap[next]) {
+        showQuestion(next);
+    }
+}
+
+// Toggle navigation panel
+function toggleNavPanel() {
+    const panel = document.getElementById('nav-panel');
+    panel.classList.toggle('active');
+    
+    // Add overlay when panel is active
+    if (panel.classList.contains('active')) {
+        const overlay = document.createElement('div');
+        overlay.className = 'nav-overlay';
+        overlay.style.position = 'fixed';
+        overlay.style.top = '60px';
+        overlay.style.left = '0';
+        overlay.style.right = '0';
+        overlay.style.bottom = '60px';
+        overlay.style.background = 'rgba(0,0,0,0.5)';
+        overlay.style.zIndex = '98';
+        overlay.style.backdropFilter = 'blur(2px)';
+        overlay.style.webkitBackdropFilter = 'blur(2px)';
+        overlay.onclick = toggleNavPanel;
+        document.body.appendChild(overlay);
+    } else {
+        const overlay = document.querySelector('.nav-overlay');
+        if (overlay) overlay.remove();
+    }
+}
+
+// Select an option
+function selectOption(element, id, option) {
+    if (test.submitted) return;
+    
+    test.answers[id] = option;
+    
+    // Remove selection from all options
+    element.closest('.q-card').querySelectorAll('.option').forEach(opt => {
+        opt.classList.remove('selected');
+    });
+    
+    // Add selection to clicked option
+    element.classList.add('selected');
+    
+    // Update navigation
+    updateNavigation();
+}
+
+// Clear selection
+function clearSelection(id) {
+    if (test.submitted) return;
+    
+    delete test.answers[id];
+    
+    document.getElementById(`q${id}`).querySelectorAll('.option').forEach(opt => {
+        opt.classList.remove('selected');
+    });
+    
+    updateNavigation();
+}
+
+// Update navigation after selection
+function updateNavigation() {
+    const buttons = document.querySelectorAll('.q-nav-btn');
+    buttons.forEach(btn => {
+        const btnNum = parseInt(btn.textContent);
+        if (btnNum && test.qMap[btnNum]) {
+            updateButtonStatus(btn, btnNum);
+        }
+    });
+}
+
+// Submit test
+function submitTest() {
+    if (test.submitted) return;
+    
+    if (!confirm('Are you sure you want to submit the test?')) return;
+    
+    test.submitted = true;
+    
+    let correct = 0, incorrect = 0, score = 0;
+    
+    for (const id in test.correct) {
+        const marks = test.marks[id];
+        
+        if (test.answers[id] !== undefined) {
+            if (test.answers[id] === test.correct[id]) {
+                correct++;
+                score += marks.positive;
+            } else {
+                incorrect++;
+                score -= marks.negative;
+            }
+        }
+    }
+    
+    score = Math.max(0, score);
+    
+    document.getElementById('score-value').textContent = score.toFixed(2);
+    document.getElementById('correct-count').textContent = correct;
+    document.getElementById('incorrect-count').textContent = incorrect;
+    
+    document.getElementById('results-modal').style.display = 'flex';
+    document.getElementById('submit-test').disabled = true;
+    
+    updateNavigation();
+    showQuestion(test.current);
+}
+
+// Close results modal
+function closeResultsModal() {
+    document.getElementById('results-modal').style.display = 'none';
+}
+
+// Review test
+function reviewTest() {
+    showQuestion(1);
+    document.getElementById('results-modal').style.display = 'none';
+    window.scrollTo(0, 0);
+}
+
+// Toggle theme
+function toggleTheme() {
+    document.body.setAttribute('data-theme', 
+        document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    
+    const icon = document.getElementById('theme-toggle').querySelector('i');
+    icon.classList.toggle('fa-moon');
+    icon.classList.toggle('fa-sun');
+}
+
+// Timer functionality
+function startTimer() {
+    const timer = document.getElementById('test-timer');
+    let timeLeft = test.timer;
+    
+    const interval = setInterval(() => {
+        if (test.submitted) {
+            clearInterval(interval);
+            return;
+        }
+        
+        timeLeft--;
+        test.timeSpent++;
+        
+        if (timeLeft <= 0) {
+            clearInterval(interval);
+            submitTest();
+            return;
+        }
+        
+        const h = Math.floor(timeLeft / 3600);
+        const m = Math.floor((timeLeft % 3600) / 60);
+        const s = timeLeft % 60;
+        
+        timer.textContent = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }, 1000);
+}
+    </script>
+</body>
+</html>
