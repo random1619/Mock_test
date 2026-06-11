@@ -8,6 +8,12 @@ const PROGRESS_FILE = path.join(__dirname, 'progress-db.json');
 
 app.use(express.json());
 
+// In-memory cache for dynamic mocks scanner
+let cachedMocks = null;
+let lastScanTime = 0;
+const CACHE_TTL = 10000; // 10 seconds TTL
+
+
 // Recursive function to dynamically scan the workspace for mocks (.html and .pdf files)
 function scanMocks(dir, baseDir) {
   let list = [];
@@ -41,16 +47,25 @@ function scanMocks(dir, baseDir) {
   return list;
 }
 
-// GET mocks catalog dynamically scanned from the filesystem on demand
+// GET mocks catalog dynamically scanned from the filesystem on demand (with caching)
 app.get('/api/mocks', (req, res) => {
   try {
+    const now = Date.now();
+    if (cachedMocks && (now - lastScanTime < CACHE_TTL)) {
+      return res.json(cachedMocks);
+    }
+
     const filesList = scanMocks(__dirname, __dirname);
     // Sort files to keep order consistent
     filesList.sort();
-    return res.json({
+
+    cachedMocks = {
       generatedAt: new Date().toISOString(),
       files: filesList
-    });
+    };
+    lastScanTime = now;
+
+    return res.json(cachedMocks);
   } catch (err) {
     return res.status(500).json({ error: 'Failed to dynamically scan mocks directory' });
   }
@@ -71,11 +86,12 @@ app.get('/api/progress', (req, res) => {
 
 // POST save progress
 app.post('/api/progress', (req, res) => {
-  const { solved, starred, recent } = req.body;
+  const { solved, starred, recent, scores } = req.body;
   const progressData = {
     solved: Array.isArray(solved) ? solved : [],
     starred: Array.isArray(starred) ? starred : [],
-    recent: Array.isArray(recent) ? recent : []
+    recent: Array.isArray(recent) ? recent : [],
+    scores: Array.isArray(scores) ? scores : []
   };
 
   try {

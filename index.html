@@ -1780,6 +1780,7 @@
     const starredSet = new Set();
     const recentOpened = []; // array of path strings
     const attemptedScores = []; // array of score objects: { path, score, maxScore, accuracy, timeTaken, date }
+    let activeScoreInterval = null;
 
     function saveSolved() {
       if (isServer) {
@@ -2949,6 +2950,11 @@
     const previewIframe = document.getElementById('preview-iframe');
     previewIframe.onload = () => {
       try {
+        if (activeScoreInterval) {
+          clearInterval(activeScoreInterval);
+          activeScoreInterval = null;
+        }
+
         const doc = previewIframe.contentDocument || previewIframe.contentWindow.document;
         if (doc && !doc.getElementById('portal-injected-styles')) {
           // Extract brand color dynamically
@@ -3170,6 +3176,10 @@
               detectAndSaveIframeScore();
             }, 500);
           });
+
+          activeScoreInterval = setInterval(() => {
+            detectAndSaveIframeScore();
+          }, 3000);
         }
       } catch (e) {
         console.warn("Could not inject custom CSS into the preview iframe (likely file origin restriction)", e);
@@ -3228,6 +3238,10 @@
     };
 
     window.closePreview = function() {
+      if (activeScoreInterval) {
+        clearInterval(activeScoreInterval);
+        activeScoreInterval = null;
+      }
       previewDrawer.classList.remove('open');
       previewBackdrop.classList.remove('open');
       previewIframe.src = 'about:blank';
