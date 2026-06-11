@@ -1706,6 +1706,39 @@
         </button>
       </div>
     </div>
+
+    <!-- Dynamic Score Badge & Tracker Bar -->
+    <div class="drawer-stats-bar" id="drawer-stats-bar" style="display:flex;align-items:center;justify-content:space-between;padding: 10px 24px;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.01);gap:16px;">
+      <div id="drawer-score-badge" style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-muted)">
+        <i class="fa-solid fa-trophy" style="color:var(--amber)"></i>
+        <span>Not attempted yet</span>
+      </div>
+      <button class="btn-primary" id="btn-log-score" onclick="openScoreForm()" style="padding:4px 12px;font-size:11px;height:auto;border-radius:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--text-sub);cursor:pointer;transition:all 0.2s;">
+        Record Score
+      </button>
+    </div>
+
+    <!-- Score Manual Entry Inline Form -->
+    <div class="drawer-score-form" id="drawer-score-form" style="display:none;padding: 12px 24px;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);gap:12px;flex-wrap:wrap;align-items:center;">
+      <div style="font-size:11px;font-weight:600;color:var(--indigo);width:100%;">Record Test Score</div>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <span style="font-size:11px;color:var(--text-muted)">Score:</span>
+        <input type="number" id="input-score-obtained" step="0.01" style="width:65px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:var(--text);padding:3px 6px;font-size:12px;">
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <span style="font-size:11px;color:var(--text-muted)">Max:</span>
+        <input type="number" id="input-score-max" value="100" style="width:65px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:var(--text);padding:3px 6px;font-size:12px;">
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <span style="font-size:11px;color:var(--text-muted)">Time:</span>
+        <input type="text" id="input-score-time" placeholder="e.g. 20m" style="width:65px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:var(--text);padding:3px 6px;font-size:12px;">
+      </div>
+      <div style="display:flex;gap:6px;margin-left:auto;">
+        <button class="btn-primary" onclick="saveManualScore()" style="padding:4px 10px;font-size:11px;height:auto;border-radius:4px;">Save</button>
+        <button class="btn-primary" onclick="closeScoreForm()" style="padding:4px 10px;font-size:11px;height:auto;border-radius:4px;background:transparent;border:1px solid rgba(255,255,255,0.1);color:var(--text);">Cancel</button>
+      </div>
+    </div>
+
     <div class="drawer-iframe-container" id="drawer-iframe-container">
       <iframe src="about:blank" id="preview-iframe"></iframe>
     </div>
@@ -1742,10 +1775,11 @@
     const isServer = window.location.protocol.startsWith('http');
     let allFiles = [];
 
-    /* ── 1. LocalStorage Persist Arrays ─────────────────────── */
+    /* ── 1. LocalStorage Persist Arrays & Scores ────────────── */
     const solvedSet = new Set();
     const starredSet = new Set();
     const recentOpened = []; // array of path strings
+    const attemptedScores = []; // array of score objects: { path, score, maxScore, accuracy, timeTaken, date }
 
     function saveSolved() {
       if (isServer) {
@@ -1776,9 +1810,145 @@
         body: JSON.stringify({
           solved: [...solvedSet],
           starred: [...starredSet],
-          recent: recentOpened
+          recent: recentOpened,
+          scores: attemptedScores
         })
       }).catch(err => console.error('Failed to sync progress to server:', err));
+    }
+
+    function saveScoreEntry(path, score, maxScore, accuracy, timeTaken = '') {
+      const idx = attemptedScores.findIndex(s => s.path === path);
+      const scoreObj = {
+        path,
+        score: parseFloat(score),
+        maxScore: parseFloat(maxScore),
+        accuracy: parseInt(accuracy),
+        timeTaken,
+        date: new Date().toISOString()
+      };
+      
+      if (idx !== -1) {
+        attemptedScores[idx] = scoreObj;
+      } else {
+        attemptedScores.push(scoreObj);
+      }
+      
+      // Auto-mark as solved
+      if (!solvedSet.has(path)) {
+        solvedSet.add(path);
+        saveSolved();
+      }
+      
+      if (isServer) {
+        syncProgressToServer();
+      } else {
+        localStorage.setItem('portal_scores', JSON.stringify(attemptedScores));
+      }
+      
+      updateDrawerScoreBadge();
+      refreshActiveView();
+    }
+
+    window.openScoreForm = function() {
+      const path = state.currentPreviewPath;
+      if (!path) return;
+      
+      const existing = attemptedScores.find(s => s.path === path);
+      document.getElementById('input-score-obtained').value = existing ? existing.score : '';
+      document.getElementById('input-score-max').value = existing ? existing.maxScore : '100';
+      document.getElementById('input-score-time').value = existing ? existing.timeTaken : '';
+      
+      document.getElementById('drawer-score-form').style.display = 'flex';
+    };
+    
+    window.closeScoreForm = function() {
+      document.getElementById('drawer-score-form').style.display = 'none';
+    };
+    
+    window.saveManualScore = function() {
+      const path = state.currentPreviewPath;
+      if (!path) return;
+      
+      const scoreVal = parseFloat(document.getElementById('input-score-obtained').value);
+      const maxVal = parseFloat(document.getElementById('input-score-max').value || 100);
+      const timeVal = document.getElementById('input-score-time').value.trim();
+      
+      if (isNaN(scoreVal)) {
+        alert('Please enter a valid score');
+        return;
+      }
+      
+      const accuracy = Math.round((scoreVal / maxVal) * 100);
+      saveScoreEntry(path, scoreVal, maxVal, accuracy, timeVal);
+      closeScoreForm();
+    };
+
+    function updateDrawerScoreBadge() {
+      const path = state.currentPreviewPath;
+      const badge = document.getElementById('drawer-score-badge');
+      const btn = document.getElementById('btn-log-score');
+      
+      if (!badge || !path) return;
+      
+      const existing = attemptedScores.find(s => s.path === path);
+      if (existing) {
+        badge.innerHTML = `
+          <i class="fa-solid fa-trophy" style="color:var(--amber)"></i>
+          <span>Score: <strong>${existing.score}/${existing.maxScore}</strong> (${existing.accuracy}%) ${existing.timeTaken ? `in ${existing.timeTaken}` : ''}</span>
+        `;
+        btn.textContent = 'Edit Score';
+      } else {
+        badge.innerHTML = `
+          <i class="fa-solid fa-circle-question" style="color:var(--text-muted)"></i>
+          <span>Not attempted yet</span>
+        `;
+        btn.textContent = 'Record Score';
+      }
+    }
+
+    function detectAndSaveIframeScore() {
+      const path = state.currentPreviewPath;
+      if (!path) return;
+      
+      try {
+        const iframeDoc = previewIframe.contentDocument || previewIframe.contentWindow.document;
+        if (!iframeDoc) return;
+
+        let scoreEl = iframeDoc.getElementById('score') || iframeDoc.querySelector('.result-score') || iframeDoc.querySelector('.score-highlight .score') || iframeDoc.querySelector('.score');
+        if (!scoreEl) return;
+
+        let text = scoreEl.innerText || scoreEl.textContent;
+        if (!text || text.trim() === '') return;
+
+        let scoreMatch = text.match(/([0-9.-]+)\s*\/\s*([0-9.]+)/);
+        let score = null;
+        let maxScore = null;
+        
+        if (scoreMatch) {
+          score = parseFloat(scoreMatch[1]);
+          maxScore = parseFloat(scoreMatch[2]);
+        } else {
+          let val = parseFloat(text.replace(/[^0-9.-]/g, ''));
+          if (!isNaN(val)) {
+            score = val;
+            let maxEl = iframeDoc.querySelector('.result-label') || iframeDoc.querySelector('.score-highlight .total');
+            if (maxEl) {
+              let maxText = maxEl.innerText || maxEl.textContent;
+              let maxMatch = maxText.match(/([0-9.]+)/);
+              if (maxMatch) maxScore = parseFloat(maxMatch[1]);
+            }
+          }
+        }
+
+        if (score !== null && !isNaN(score)) {
+          const existing = attemptedScores.find(s => s.path === path);
+          if (!existing || existing.score !== score) {
+            saveScoreEntry(path, score, maxScore || 100, Math.round((score / (maxScore || 100)) * 100));
+          }
+        }
+      } catch (err) {
+        // Safe fail
+      }
     }
 
     function addRecent(path) {
@@ -2985,6 +3155,15 @@
           `;
           doc.head.appendChild(style);
         }
+
+        // Setup dynamic submit score listener
+        if (doc) {
+          doc.addEventListener('click', (e) => {
+            setTimeout(() => {
+              detectAndSaveIframeScore();
+            }, 500);
+          });
+        }
       } catch (e) {
         console.warn("Could not inject custom CSS into the preview iframe (likely file origin restriction)", e);
       }
@@ -3005,6 +3184,8 @@
       drawerSubtitle.textContent = filepath;
       
       updateDrawerBtnStates();
+      updateDrawerScoreBadge();
+      closeScoreForm();
 
       // Open in tab action
       drawerBtnTab.onclick = () => window.open(encodeURI(filepath), '_blank');
@@ -3242,6 +3423,8 @@
             (progress.starred || []).forEach(x => starredSet.add(x));
             recentOpened.length = 0;
             (progress.recent || []).forEach(x => recentOpened.push(x));
+            attemptedScores.length = 0;
+            (progress.scores || []).forEach(x => attemptedScores.push(x));
           }
         } catch (err) {
           console.error('Failed to fetch /api/progress:', err);
@@ -3250,6 +3433,8 @@
         JSON.parse(localStorage.getItem('portal_solved') || '[]').forEach(x => solvedSet.add(x));
         JSON.parse(localStorage.getItem('portal_starred') || '[]').forEach(x => starredSet.add(x));
         JSON.parse(localStorage.getItem('portal_recent') || '[]').forEach(x => recentOpened.push(x));
+        attemptedScores.length = 0;
+        JSON.parse(localStorage.getItem('portal_scores') || '[]').forEach(x => attemptedScores.push(x));
       }
 
       updateTimestamp();
