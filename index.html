@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mocks Dashboard</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg2: #111936;
+      --card: rgba(15, 23, 42, 0.74);
+      --card-border: rgba(148, 163, 184, 0.18);
+      --text: #e5eefc;
+      --muted: #9fb0d0;
+      --accent: #7dd3fc;
+      --accent-2: #a78bfa;
+      --accent-3: #34d399;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(125, 211, 252, 0.18), transparent 26%),
+        radial-gradient(circle at top right, rgba(167, 139, 250, 0.18), transparent 24%),
+        linear-gradient(180deg, #050816 0%, var(--bg) 45%, #090d1b 100%);
+    }
+
+    .wrap {
+      width: min(1200px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 40px;
+    }
+
+    .hero {
+      display: grid;
+      gap: 18px;
+      padding: 28px;
+      border: 1px solid var(--card-border);
+      border-radius: calc(var(--radius) + 8px);
+      background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.62)),
+        linear-gradient(135deg, rgba(125, 211, 252, 0.12), rgba(167, 139, 250, 0.08));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -60px -100px auto;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(52, 211, 153, 0.16), transparent 70%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(125, 211, 252, 0.1);
+      border: 1px solid rgba(125, 211, 252, 0.16);
+      color: #c7f1ff;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+    }
+
+    .lead {
+      margin: 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .stat {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(2, 6, 23, 0.32);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .section {
+      margin-top: 26px;
+    }
+
+    .section h2 {
+      margin: 0 0 12px;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      padding: 18px;
+      border-radius: var(--radius);
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 14px;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-meta {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .badge {
+      flex: 0 0 auto;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: rgba(125, 211, 252, 0.12);
+      color: #c7f1ff;
+      border: 1px solid rgba(125, 211, 252, 0.18);
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 12px;
+      border-radius: 999px;
+      color: var(--text);
+      text-decoration: none;
+      background: rgba(148, 163, 184, 0.12);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+      font-size: 13px;
+    }
+
+    .chip:hover {
+      transform: translateY(-1px);
+      background: rgba(125, 211, 252, 0.14);
+      border-color: rgba(125, 211, 252, 0.3);
+    }
+
+    .chip.primary {
+      background: linear-gradient(135deg, rgba(125, 211, 252, 0.18), rgba(167, 139, 250, 0.18));
+      border-color: rgba(125, 211, 252, 0.28);
+    }
+
+    .note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .footer {
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+      padding-bottom: 6px;
+    }
+
+    @media (max-width: 900px) {
+      .stats,
+      .grid { grid-template-columns: 1fr; }
+      .hero { padding: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="eyebrow">Mock launcher dashboard</div>
+      <h1>Start mocks by brand, section, and test type.</h1>
+      <p class="lead">
+        This dashboard launches the actual mock files directly. Each card points to a real uploaded mock,
+        so you can start practicing with one click instead of drilling into folders.
+      </p>
+      <div class="stats">
+        <div class="stat"><strong>9</strong><span>brand groups</span></div>
+        <div class="stat"><strong>2</strong><span>English Madhyam variants</span></div>
+        <div class="stat"><strong>4+</strong><span>common test types per brand</span></div>
+        <div class="stat"><strong>1</strong><span>root launcher</span></div>
+      </div>
+    </header>
+
+    <section class="section">
+      <h2>Primary Brands</h2>
+      <div class="grid">
+        <article class="card">
+          <div class="card-head">
+            <div>
+              <h3 class="brand-title">Pundits</h3>
+              <p class="brand-meta">Direct entry to real mock files from the uploaded content.</p>
+            </div>
+            <div class="badge">Core</div>
+          </div>
+          <div class="links">
+            <a class="chip primary" href="./Pundits/Sectional%20Tests/@the_solvers_ProMock%20LIVE%20Mock%2010%20-%20Sectional%20Timer%20P_83943.html" target="_self">Open mock</a>
+            <a class="chip" href="./Pundits/Sectional%20Tests/@the_solvers_ProMocks%20-%20ADVERB%20-%20Quiz%201_79573.html" target="_self">Adverb Quiz</a>
+            <a class="chip" href="./Pundits/Topic-Concept%20Tests/06001_en_mocks_wallah.html" target="_self">Topic concept</a>
+            <a class="chip" href="./Pundits/Previous%20Year%20Papers/343dp_hn_mocks_wallah.html" target="_self">Previous paper</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <div>
+              <h3 class="brand-title">Pundits Mocks</h3>
+              <p class="brand-meta">Full mocks, reasoning, vocabulary, and narration-based practice files.</p>
+            </div>
+            <div class="badge">Extensive</div>
+          </div>
+          <div class="links">
+            <a class="chip primary" href="./pundits-mocks/Reasoning/@the_solvers_ProMocks%20Analogy%20-%20Quiz%201_77155.html" target="_self">Open mock</a>
+            <a class="chip" href="./pundits-mocks/Reasoning/@the_solvers_ProMocks%20Analogy%20-%20Quiz%201_77155.html" target="_self">Reasoning</a>
+            <a class="chip" href="./pundits-mocks/Vocabulary/@the_solvers_THE%20PUNDITS%20Vocab%20-%20QUIZ%202_77350.html" target="_self">Vocabulary</a>
+            <a class="chip" href="./pundits-mocks/Voice%20and%20Narration/@the_solvers_ProMocks%20-%20Narration%20Quiz_80745.html" target="_self">Narration</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <div>
+              <h3 class="brand-title">English Madhyam</h3>
+              <p class="brand-meta">Two variants are present, each with direct files ready to launch.</p>
+            </div>
+            <div class="badge">Dual</div>
+          </div>
+          <div class="links">
+            <a class="chip primary" href="./english-madhyam/English%20Madhyam/SSC%20CGL%20Tier-1%20Mocks/English%20Madhyam%20Tier-1%20Mock%2001%20%5B20236fe%5D.html" target="_self">Tier-1 mock</a>
+            <a class="chip" href="./english-madhyam/English%20Madhyam/SSC%20CGL%20Tier-2%20Mocks/English%20Madhyam%20Tier-2%20Mock%2001%20%5B17e513a%5D.html" target="_self">Tier-2 mock</a>
+            <a class="chip" href="./english-madhyam/English%20Madhyam/General%20Mocks/English%20Madhyam%20General%20Mock%2001%20%5BDevGagan_017%5D.html" target="_self">General mock</a>
+            <a class="chip" href="./English%20Madhyam/Topic-Concept%20Tests/@mocks_wallah_101ee9.html" target="_self">Topic concept</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <div>
+              <h3 class="brand-title">Mocks Wallah</h3>
+              <p class="brand-meta">Full tests, practice sets, previous papers, topic concepts, and sectionals.</p>
+            </div>
+            <div class="badge">Popular</div>
+          </div>
+          <div class="links">
+            <a class="chip primary" href="./Mocks%20Wallah/Full%20Tests/b63yj_en_mocks_wallah.html" target="_self">Full test</a>
+            <a class="chip" href="./Mocks%20Wallah/Practice%20Sets/@mocks_wallah_CGL%202025%20T-2%20Paid%20Mock%204.html" target="_self">Practice set</a>
+            <a class="chip" href="./Mocks%20Wallah/Sectional%20Tests/@mocks_wallah_CGL%202025%20T-2%20Paid%20Mock%2011.html" target="_self">Sectional test</a>
+            <a class="chip" href="./Mocks%20Wallah/Previous%20Year%20Papers/@SSC_CGL_MOCKS_2025_SSC%20SUPER%20PRACTICE_37787.html" target="_self">Previous paper</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Other Brands</h2>
+      <div class="grid">
+        <article class="card">
+          <div class="card-head">
+            <div>
+              <h3 class="brand-title">Oliveboard</h3>
+              <p class="brand-meta">Practice sets, sectionals, and topic-based files.</p>
+            </div>
+            <div class="badge">Brand</div>
+          </div>
+          <div class="links">
+            <a class="chip primary" href="./oliveboard/Oliveboard_Mocks/OB_CGL_Tier1_Mock_01.html" target="_self">Open mock</a>
+            <a class="chip" href="./oliveboard/Practice%20Sets/@SSC_CGL_MOCKS_2025_SSC%20CGL34.html" target="_self">Practice set</a>
+            <a class="chip" href="./oliveboard/Sectional%20Tests/@mocks_wallah_free_SSC_CGL_2025_Tier_II_11_11_20251107_152740_116972.html" target="_self">Sectional test</a>
+            <a class="chip" href="./oliveboard/Topic-Concept%20Tests/@mocks_wallah_cgl1_1%20.html" target="_self">Topic concept</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <div>
+              <h3 class="brand-title">Testbook</h3>
+              <p class="brand-meta">Clear split between sectionals and topic-concept practice.</p>
+            </div>
+            <div class="badge">Brand</div>
+          </div>
+          <div class="links">
+            <a class="chip primary" href="./Testbook/Sectional%20Tests/CGL%202025%20Pre%20-%201.html" target="_self">Open mock</a>
+            <a class="chip" href="./Testbook/Sectional%20Tests/@the_solvers_ProMocks%201%20By%20THE%20PUNDITS-%20CGL%202025%20PRE_78105.html" target="_self">Pro mock</a>
+            <a class="chip" href="./Testbook/Topic-Concept%20Tests/l2eid_en_mocks_wallah.html" target="_self">Topic concept</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <div>
+              <h3 class="brand-title">Other Brands</h3>
+              <p class="brand-meta">Extra practice content and shared files not tied to one primary brand.</p>
+            </div>
+            <div class="badge">Misc</div>
+          </div>
+          <div class="links">
+            <a class="chip primary" href="./Other%20Brands/Practice%20Sets/Paid%20OWS%20PART%20-%20(I)%20SSC%20CGL%20PRE%202024.html" target="_self">Practice set</a>
+            <a class="chip" href="./Other%20Brands/Previous%20Year%20Papers/Paid%20SHIFT%204_00%20PM%20TO%205_00%20PM%20(%2009%20SEP%202024)%20SSC%20CGL%20PRE.html" target="_self">Previous paper</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Quick Launch Notes</h2>
+      <div class="card">
+        <div class="links">
+          <a class="chip primary" href="./@SSC_CGL_MOCKS_2025_SSC%20CGL23.html" target="_self">Start root mock</a>
+          <a class="chip" href="./Mocks%20Wallah/Full%20Tests/b63yj_en_mocks_wallah.html" target="_self">Start a full mock</a>
+          <a class="chip" href="./Pundits/Sectional%20Tests/@the_solvers_ProMock%20LIVE%20Mock%209%20-%20Sectional%20Timer%20Pa_82112.html" target="_self">Sectional sprint</a>
+          <a class="chip" href="./english-madhyam/English%20Madhyam/Daily%20Quizzes%20%26%20Editorial%20Tests/English%20Madhyam%20Daily%20Quiz%2001%20%5B2dcfadc%5D.html" target="_self">Daily quiz</a>
+        </div>
+        <p class="note">
+          Tip: this file is designed to sit at the repository root. If you add more brand folders later,
+          copy one of the existing cards and point it at a real mock HTML inside that folder.
+        </p>
+      </div>
+    </section>
+
+    <div class="footer">Built for local browsing inside the mock library.</div>
+  </div>
+</body>
+</html>
