@@ -792,7 +792,7 @@
       padding: 12px 16px 16px;
     }
 
-    /* ── CARD COMPONENTS ────────────────────────────────────── */
+    /* ── CARD COMPONENTS & SUBJECT GLOWS ────────────────────── */
     .mock-card {
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid var(--border-thin);
@@ -807,12 +807,13 @@
       min-height: 120px;
     }
 
-    .mock-card:hover {
-      background: var(--bg-surface-hover);
-      border-color: rgba(255, 255, 255, 0.08);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
-    }
+    /* Specific glows based on mock categorization */
+    .mock-card.full-length:hover { border-color: rgba(245, 158, 11, 0.45); box-shadow: 0 0 18px rgba(245, 158, 11, 0.2); }
+    .mock-card.quant:hover { border-color: rgba(14, 165, 233, 0.45); box-shadow: 0 0 18px rgba(14, 165, 233, 0.2); }
+    .mock-card.english:hover { border-color: rgba(16, 185, 129, 0.45); box-shadow: 0 0 18px rgba(16, 185, 129, 0.2); }
+    .mock-card.gs:hover { border-color: rgba(139, 92, 246, 0.45); box-shadow: 0 0 18px rgba(139, 92, 246, 0.2); }
+    .mock-card.pdf:hover { border-color: rgba(244, 63, 94, 0.45); box-shadow: 0 0 18px rgba(244, 63, 94, 0.2); }
+    .mock-card.quiz:hover { border-color: rgba(99, 102, 241, 0.45); box-shadow: 0 0 18px rgba(99, 102, 241, 0.2); }
 
     .mock-card-header {
       display: flex;
@@ -822,13 +823,16 @@
     }
 
     .mock-card-icon {
-      font-size: 18px;
+      font-size: 16px;
       flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-top: 2px;
     }
-    
-    .mock-card-icon.html { color: var(--emerald); }
-    .mock-card-icon.pdf { color: var(--rose); }
 
     .mock-card-title {
       font-size: 13.5px;
@@ -881,7 +885,7 @@
     .status-dot.solved { color: var(--emerald); }
     .status-dot.starred { color: var(--amber); }
 
-    /* List item visual style */
+    /* List item visual style with subject highlight */
     .mock-list-item {
       background: rgba(255, 255, 255, 0.01);
       border: 1px solid var(--border-thin);
@@ -896,11 +900,12 @@
       margin-bottom: 6px;
     }
 
-    .mock-list-item:hover {
-      background: var(--bg-surface-hover);
-      border-color: rgba(255, 255, 255, 0.08);
-      transform: translateX(4px);
-    }
+    .mock-list-item.full-length:hover { border-color: rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.02); }
+    .mock-list-item.quant:hover { border-color: rgba(14, 165, 233, 0.3); background: rgba(14, 165, 233, 0.02); }
+    .mock-list-item.english:hover { border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.02); }
+    .mock-list-item.gs:hover { border-color: rgba(139, 92, 246, 0.3); background: rgba(139, 92, 246, 0.02); }
+    .mock-list-item.pdf:hover { border-color: rgba(244, 63, 94, 0.3); background: rgba(244, 63, 94, 0.02); }
+    .mock-list-item.quiz:hover { border-color: rgba(99, 102, 241, 0.3); background: rgba(99, 102, 241, 0.02); }
 
     .mock-list-left {
       display: flex;
@@ -1422,16 +1427,25 @@
           </div>
 
           <div>
-            <div class="sidebar-block-lbl">File Format</div>
-            <div class="filter-options">
-              <button class="filter-opt-btn active" data-fmt="ALL" onclick="setFormatFilter('ALL')">
-                <i class="fa-solid fa-layer-group"></i>All Formats
+            <div class="sidebar-block-lbl">Mock Subjects</div>
+            <div class="filter-options" id="mock-subject-filters">
+              <button class="filter-opt-btn active" data-subject="ALL" onclick="setSubjectFilter('ALL')">
+                <i class="fa-solid fa-asterisk"></i>All Subjects
               </button>
-              <button class="filter-opt-btn" data-fmt="html" onclick="setFormatFilter('html')">
-                <i class="fa-solid fa-code" style="color:var(--emerald)"></i>HTML Mocks
+              <button class="filter-opt-btn" data-subject="full-length" onclick="setSubjectFilter('full-length')">
+                <i class="fa-solid fa-trophy" style="color:var(--amber)"></i>Full Length Mocks
               </button>
-              <button class="filter-opt-btn" data-fmt="pdf" onclick="setFormatFilter('pdf')">
-                <i class="fa-solid fa-file-pdf" style="color:var(--rose)"></i>PDF Files
+              <button class="filter-opt-btn" data-subject="quant" onclick="setSubjectFilter('quant')">
+                <i class="fa-solid fa-calculator" style="color:var(--sky)"></i>Quant / Math
+              </button>
+              <button class="filter-opt-btn" data-subject="english" onclick="setSubjectFilter('english')">
+                <i class="fa-solid fa-language" style="color:var(--emerald)"></i>English / Grammar
+              </button>
+              <button class="filter-opt-btn" data-subject="gs" onclick="setSubjectFilter('gs')">
+                <i class="fa-solid fa-landmark" style="color:var(--violet)"></i>General Awareness
+              </button>
+              <button class="filter-opt-btn" data-subject="pdf" onclick="setSubjectFilter('pdf')">
+                <i class="fa-solid fa-file-pdf" style="color:var(--rose)"></i>Study Notes (PDF)
               </button>
             </div>
           </div>
@@ -1632,11 +1646,91 @@
       return '';
     }
 
+    /* ── Mock Classification Engine ─────────────────────────── */
+    function classifyMock(item) {
+      const path = item.path.toLowerCase();
+      const name = item.fileName.toLowerCase();
+      
+      if (item.ext === 'pdf') {
+        return {
+          type: 'pdf',
+          label: 'PDF Note',
+          icon: 'fa-regular fa-file-pdf',
+          color: 'var(--rose)',
+          bg: 'rgba(244, 63, 94, 0.08)',
+          badge: 'PDF Note'
+        };
+      }
+      
+      // Full Exam / CGL
+      if (name.includes('cgl') || name.includes('ssc') || name.includes('full length') || name.includes('mains level') || name.includes('pre mock')) {
+        return {
+          type: 'full-length',
+          label: 'Full Exam Mock',
+          icon: 'fa-solid fa-trophy',
+          color: 'var(--amber)',
+          bg: 'rgba(245, 158, 11, 0.08)',
+          badge: 'Full Mock'
+        };
+      }
+      
+      // Quantitative Math
+      if (path.includes('pundits') || name.includes('geometry') || name.includes('algebra') || name.includes('math') || name.includes('number system') || name.includes('arithmetic') || name.includes('trigonometry') || name.includes('solvers')) {
+        // Double check solver tests - many are polity or history
+        if (name.includes('polity') || name.includes('history') || name.includes('geography') || name.includes('constitution') || name.includes('biology') || name.includes('economics')) {
+          // GS category
+        } else {
+          return {
+            type: 'quant',
+            label: 'Quantitative Aptitude',
+            icon: 'fa-solid fa-calculator',
+            color: 'var(--sky)',
+            bg: 'rgba(14, 165, 233, 0.08)',
+            badge: 'Quant Math'
+          };
+        }
+      }
+      
+      // English Comprehension
+      if (path.includes('english') || name.includes('editorial') || name.includes('comprehension') || name.includes('vocabulary') || name.includes('passive') || name.includes('verb') || name.includes('noun') || name.includes('pronoun') || name.includes('preposition') || name.includes('conjunction') || name.includes('tense') || name.includes('grammar')) {
+        return {
+          type: 'english',
+          label: 'English Vocabulary/Grammar',
+          icon: 'fa-solid fa-language',
+          color: 'var(--emerald)',
+          bg: 'rgba(16, 185, 129, 0.08)',
+          badge: 'English'
+        };
+      }
+      
+      // GS / General Studies
+      if (name.includes('polity') || name.includes('history') || name.includes('geography') || name.includes('economics') || name.includes('biology') || name.includes('chemistry') || name.includes('physics') || name.includes('articles') || name.includes('constitution') || name.includes('empire') || name.includes('criminal law') || name.includes('solvers')) {
+        return {
+          type: 'gs',
+          label: 'General Awareness',
+          icon: 'fa-solid fa-landmark',
+          color: 'var(--violet)',
+          bg: 'rgba(139, 92, 246, 0.08)',
+          badge: 'General Studies'
+        };
+      }
+      
+      // Default Quiz
+      return {
+        type: 'quiz',
+        label: 'Subject Test',
+        icon: 'fa-regular fa-lightbulb',
+        color: 'var(--indigo)',
+        bg: 'rgba(99, 102, 241, 0.08)',
+        badge: 'Quiz'
+      };
+    }
+
     /* ── 4. App State ───────────────────────────────────────── */
     const state = {
       activeTab: 'dashboard',
       catalogCategory: 'ALL', // 'ALL' | {type:'root', name} | {type:'sub', root, sub}
-      catalogFormat: 'ALL',   // 'ALL' | 'html' | 'pdf'
+      catalogSubject: 'ALL',  // 'ALL' | 'full-length' | 'quant' | 'english' | 'gs' | 'pdf'
       catalogStatus: 'ALL',   // 'ALL' | 'SOLVED' | 'UNSOLVED'
       catalogView: localStorage.getItem('portal_view_style') || 'grid',
       currentPreviewPath: null
@@ -1797,14 +1891,14 @@
       } else {
         valids.forEach(item => {
           const { label } = parseTestMeta(item.fileName);
-          const icon = fileIconClass(item.ext);
+          const classInfo = classifyMock(item);
           
           const recentItem = document.createElement('div');
           recentItem.className = 'recent-item';
           recentItem.onclick = () => openPreview(item.path, item.fileName);
           
           recentItem.innerHTML = `
-            <div class="recent-file-icon ${item.ext}"><i class="${icon}"></i></div>
+            <div class="recent-file-icon" style="background: ${classInfo.bg}; color: ${classInfo.color};"><i class="${classInfo.icon}"></i></div>
             <div class="recent-info">
               <div class="recent-name">${label}</div>
               <div class="recent-path">${item.root} ${item.sub ? ' / ' + item.sub.split(' / ').pop() : ''}</div>
@@ -1826,13 +1920,12 @@
       const unsolved = items.filter(i => !solvedSet.has(i.path));
       const activeList = unsolved.length > 0 ? unsolved : items;
       
-      // Seed random based on date
       const day = new Date().getDate();
       const item = activeList[day % activeList.length];
       if (!item) return;
 
-      const { label, q, time } = parseTestMeta(item.fileName);
-      const extB = extBadge(item.ext);
+      const { label, q } = parseTestMeta(item.fileName);
+      const classInfo = classifyMock(item);
       
       const card = document.createElement('div');
       card.className = 'challenge-card';
@@ -1843,7 +1936,7 @@
         <div class="challenge-title">${label}</div>
         <div class="challenge-meta">
           <span class="badge badge-default">${item.root}</span>
-          ${extB}
+          <span class="badge" style="background: ${classInfo.bg}; color: ${classInfo.color}; border-color: ${classInfo.color}33">${classInfo.badge}</span>
           ${q ? `<span class="badge badge-default">${q} Questions</span>` : ''}
         </div>
         <button class="btn-primary" id="challenge-start-btn" style="width:100%;">
@@ -1989,10 +2082,10 @@
       renderCatalog();
     };
 
-    window.setFormatFilter = function(fmt) {
-      state.catalogFormat = fmt;
-      document.querySelectorAll('[data-fmt]').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.fmt === fmt);
+    window.setSubjectFilter = function(subj) {
+      state.catalogSubject = subj;
+      document.querySelectorAll('#mock-subject-filters .filter-opt-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.subject === subj);
       });
       renderCatalog();
     };
@@ -2034,7 +2127,13 @@
           if (state.catalogCategory.type === 'root' && f.root !== state.catalogCategory.name) return false;
           if (state.catalogCategory.type === 'sub' && (f.root !== state.catalogCategory.root || f.sub !== state.catalogCategory.sub)) return false;
         }
-        if (state.catalogFormat !== 'ALL' && f.ext !== state.catalogFormat) return false;
+        
+        // Subject classification filter
+        if (state.catalogSubject !== 'ALL') {
+          const classInfo = classifyMock(f);
+          if (classInfo.type !== state.catalogSubject) return false;
+        }
+
         if (state.catalogStatus === 'SOLVED' && !solvedSet.has(f.path)) return false;
         if (state.catalogStatus === 'UNSOLVED' && solvedSet.has(f.path)) return false;
         return true;
@@ -2050,7 +2149,7 @@
         } else if (sortVal === 'questions') {
           const metaA = parseTestMeta(a.fileName).q || 0;
           const metaB = parseTestMeta(b.fileName).q || 0;
-          return metaB - metaA; // descending
+          return metaB - metaA;
         }
         return 0;
       });
@@ -2118,7 +2217,7 @@
     /* Core Catalog Item HTML builder */
     function createMockView(item, isGrid) {
       const { label, q, marks, time } = parseTestMeta(item.fileName);
-      const icon = fileIconClass(item.ext);
+      const classInfo = classifyMock(item);
       const extB = extBadge(item.ext);
       const accessB = accessBadge(item.accessTag);
 
@@ -2133,28 +2232,36 @@
       card.title = label;
       
       if (isGrid) {
-        card.className = 'mock-card';
-        let metaHtml = extB;
+        card.className = `mock-card ${classInfo.type}`;
+        
+        let subjectB = `<span class="badge" style="background: ${classInfo.bg}; color: ${classInfo.color}; border-color: ${classInfo.color}22">${classInfo.badge}</span>`;
+        let metaHtml = subjectB + extB;
         if (accessB) metaHtml += accessB;
-        if (q) metaHtml += `<span class="badge badge-default" style="font-size:9.5px">Q${q} · ${time}m</span>`;
+        if (q) metaHtml += `<span class="badge badge-default" style="font-size:9px">Q${q}</span>`;
 
         card.innerHTML = `
           <div class="status-corner">${statusHtml}</div>
           <div class="mock-card-header">
-            <i class="${icon} mock-card-icon"></i>
+            <div class="mock-card-icon" style="background: ${classInfo.bg}; color: ${classInfo.color};">
+              <i class="${classInfo.icon}"></i>
+            </div>
             <div class="mock-card-title">${label}</div>
           </div>
           <div class="mock-card-meta">${metaHtml}</div>
         `;
       } else {
-        card.className = 'mock-list-item';
-        let metaHtml = extB;
+        card.className = `mock-list-item ${classInfo.type}`;
+        
+        let subjectB = `<span class="badge" style="background: ${classInfo.bg}; color: ${classInfo.color}; border-color: ${classInfo.color}22">${classInfo.badge}</span>`;
+        let metaHtml = subjectB + extB;
         if (accessB) metaHtml += accessB;
-        if (q) metaHtml += `<span class="badge badge-default" style="font-size:9.5px">Q${q} · ${time}m</span>`;
+        if (q) metaHtml += `<span class="badge badge-default" style="font-size:9px">Q${q}</span>`;
 
         card.innerHTML = `
           <div class="mock-list-left">
-            <i class="${icon} mock-card-icon"></i>
+            <div class="mock-card-icon" style="background: ${classInfo.bg}; color: ${classInfo.color}; width:26px; height:26px; font-size:12px; margin-top:0;">
+              <i class="${classInfo.icon}"></i>
+            </div>
             <div class="mock-list-title">${label}</div>
           </div>
           <div class="mock-list-right">
@@ -2172,6 +2279,167 @@
     const previewDrawer = document.getElementById('preview-drawer');
     const previewBackdrop = document.getElementById('preview-backdrop');
     const previewIframe = document.getElementById('preview-iframe');
+    previewIframe.onload = () => {
+      try {
+        const doc = previewIframe.contentDocument || previewIframe.contentWindow.document;
+        if (doc && !doc.getElementById('portal-injected-styles')) {
+          const isOliveboard = state.currentPreviewPath && (state.currentPreviewPath.toLowerCase().includes('/oliveboard/') || state.currentPreviewPath.toLowerCase().includes('\\oliveboard\\'));
+          const style = doc.createElement('style');
+          style.id = 'portal-injected-styles';
+          
+          if (isOliveboard) {
+            style.innerHTML = `
+              /* Oliveboard Professional Style Overrides */
+              @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+              :root {
+                  --primary: #16a34a !important;
+                  --primary-hover: #15803d !important;
+                  --success: #10b981 !important;
+                  --danger: #ef4444 !important;
+                  --warning: #f59e0b !important;
+                  --bg: #090d16 !important;
+                  --card: #111827 !important;
+                  --text: #f3f4f6 !important;
+                  --text-light: #9ca3af !important;
+                  --border: rgba(255, 255, 255, 0.08) !important;
+                  --font-sans: 'Plus Jakarta Sans', sans-serif !important;
+                  --radius: 8px !important;
+              }
+              body {
+                  background: var(--bg) !important;
+                  color: var(--text) !important;
+                  font-family: var(--font-sans) !important;
+              }
+              .welcome-screen {
+                  background: var(--bg) !important;
+              }
+              .welcome-container, .question-card, .option, .navigator-sidebar, .exam-header, .navigation-bar {
+                  background: var(--card) !important;
+                  border: 1px solid var(--border) !important;
+                  border-radius: var(--radius) !important;
+                  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+              }
+              .option {
+                  transition: all 0.15s ease !important;
+              }
+              .option:hover:not(.submitted) {
+                  border-color: var(--primary) !important;
+                  background: rgba(22, 163, 74, 0.04) !important;
+              }
+              .option.selected {
+                  border-color: var(--primary) !important;
+                  background: rgba(22, 163, 74, 0.08) !important;
+              }
+              .start-btn, .btn-next {
+                  background: var(--primary) !important;
+                  color: white !important;
+                  font-weight: 600 !important;
+                  border: none !important;
+                  border-radius: 6px !important;
+                  transition: background 0.15s ease !important;
+              }
+              .start-btn:hover, .btn-next:hover {
+                  background: var(--primary-hover) !important;
+              }
+              .timer-box {
+                  background: rgba(245, 158, 11, 0.08) !important;
+                  color: var(--warning) !important;
+                  border: 1px solid rgba(245, 158, 11, 0.2) !important;
+                  border-radius: 6px !important;
+              }
+              .nav-question {
+                  border-radius: 6px !important;
+                  border-color: var(--border) !important;
+                  transition: all 0.15s ease !important;
+              }
+              .nav-question.current {
+                  border-color: var(--primary) !important;
+                  color: var(--primary) !important;
+                  background: rgba(22, 163, 74, 0.08) !important;
+              }
+              .nav-question.answered {
+                  background: var(--success) !important;
+                  border-color: var(--success) !important;
+                  color: white !important;
+              }
+              .nav-question.wrong {
+                  background: var(--danger) !important;
+                  border-color: var(--danger) !important;
+                  color: white !important;
+              }
+              .nav-question.review {
+                  background: var(--warning) !important;
+                  border-color: var(--warning) !important;
+                  color: white !important;
+              }
+              ::-webkit-scrollbar { width: 5px; height: 5px; }
+              ::-webkit-scrollbar-track { background: transparent; }
+              ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 99px; }
+              ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+            `;
+          } else {
+            style.innerHTML = `
+              /* Portal Injected Style Overrides */
+              @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+              :root {
+                  --primary: #6366f1 !important;
+                  --primary-hover: #4f46e5 !important;
+                  --success: #10b981 !important;
+                  --danger: #ef4444 !important;
+                  --warning: #f59e0b !important;
+                  --bg: #0b0f19 !important;
+                  --card: #111827 !important;
+                  --text: #f3f4f6 !important;
+                  --text-light: #9ca3af !important;
+                  --border: rgba(255, 255, 255, 0.08) !important;
+                  --font-sans: 'Plus Jakarta Sans', sans-serif !important;
+                  --radius: 12px !important;
+              }
+              body {
+                  background: var(--bg) !important;
+                  color: var(--text) !important;
+              }
+              .welcome-screen {
+                  background: var(--bg) !important;
+              }
+              .welcome-container, .question-card, .option, .navigator-sidebar, .exam-header, .navigation-bar {
+                  background: var(--card) !important;
+                  border-color: var(--border) !important;
+                  border-radius: var(--radius) !important;
+              }
+              .option:hover:not(.submitted) {
+                  border-color: var(--primary) !important;
+                  background: rgba(99, 102, 241, 0.04) !important;
+              }
+              .option.selected {
+                  border-color: var(--primary) !important;
+                  background: rgba(99, 102, 241, 0.08) !important;
+              }
+              .start-btn, .btn-next {
+                  background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+                  color: white !important;
+                  border: none !important;
+                  box-shadow: 0 4px 14px rgba(99,102,241,0.35) !important;
+                  border-radius: 8px !important;
+              }
+              .timer-box {
+                  background: rgba(245, 158, 11, 0.1) !important;
+                  color: var(--warning) !important;
+                  border: 1px solid rgba(245, 158, 11, 0.2) !important;
+              }
+              .nav-question.current {
+                  border-color: var(--primary) !important;
+                  color: #818cf8 !important;
+                  background: rgba(99, 102, 241, 0.1) !important;
+              }
+            `;
+          }
+          doc.head.appendChild(style);
+        }
+      } catch (e) {
+        console.warn("Could not inject custom CSS into the preview iframe (likely file origin restriction)", e);
+      }
+    };
     const drawerTitle = document.getElementById('drawer-title');
     const drawerSubtitle = document.getElementById('drawer-subtitle');
     const drawerBtnSolved = document.getElementById('drawer-btn-solved');
