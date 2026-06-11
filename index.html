@@ -1739,31 +1739,46 @@
   (function() {
     'use strict';
 
-    /* ── 0. Manifest Check ──────────────────────────────────── */
-    if (!window.MOCKS_MANIFEST?.files) {
-      document.body.innerHTML = `
-        <div style="padding: 40px; text-align: center; font-family: sans-serif; color: #f43f5e;">
-          <h2>Manifest Not Found</h2>
-          <p>Please regenerate <code>mocks-manifest.js</code> and reload the portal.</p>
-        </div>`;
-      return;
-    }
-
-    const allFiles = window.MOCKS_MANIFEST.files;
+    const isServer = window.location.protocol.startsWith('http');
+    let allFiles = [];
 
     /* ── 1. LocalStorage Persist Arrays ─────────────────────── */
-    const solvedSet = new Set(JSON.parse(localStorage.getItem('portal_solved') || '[]'));
-    const starredSet = new Set(JSON.parse(localStorage.getItem('portal_starred') || '[]'));
-    const recentOpened = JSON.parse(localStorage.getItem('portal_recent') || '[]'); // array of path strings
+    const solvedSet = new Set();
+    const starredSet = new Set();
+    const recentOpened = []; // array of path strings
 
     function saveSolved() {
-      localStorage.setItem('portal_solved', JSON.stringify([...solvedSet]));
+      if (isServer) {
+        syncProgressToServer();
+      } else {
+        localStorage.setItem('portal_solved', JSON.stringify([...solvedSet]));
+      }
     }
     function saveStarred() {
-      localStorage.setItem('portal_starred', JSON.stringify([...starredSet]));
+      if (isServer) {
+        syncProgressToServer();
+      } else {
+        localStorage.setItem('portal_starred', JSON.stringify([...starredSet]));
+      }
     }
     function saveRecent() {
-      localStorage.setItem('portal_recent', JSON.stringify(recentOpened));
+      if (isServer) {
+        syncProgressToServer();
+      } else {
+        localStorage.setItem('portal_recent', JSON.stringify(recentOpened));
+      }
+    }
+
+    function syncProgressToServer() {
+      fetch('/api/progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          solved: [...solvedSet],
+          starred: [...starredSet],
+          recent: recentOpened
+        })
+      }).catch(err => console.error('Failed to sync progress to server:', err));
     }
 
     function addRecent(path) {
@@ -1776,11 +1791,16 @@
     }
 
     /* ── 2. Header Generated Timestamp ──────────────────────── */
-    const ts = window.MOCKS_MANIFEST.generatedAt;
-    if (ts) {
-      document.getElementById('ts-lbl').textContent = 'Updated: ' + new Date(ts).toLocaleDateString(undefined, {
-        month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
-      });
+    function updateTimestamp() {
+      if (window.MOCKS_MANIFEST && window.MOCKS_MANIFEST.generatedAt) {
+        const ts = window.MOCKS_MANIFEST.generatedAt;
+        const tsLbl = document.getElementById('ts-lbl');
+        if (tsLbl) {
+          tsLbl.textContent = 'Updated: ' + new Date(ts).toLocaleDateString(undefined, {
+            month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+          });
+        }
+      }
     }
 
     /* ── 3. Parse Metadata Helpers ──────────────────────────── */
@@ -2029,40 +2049,9 @@
     };
 
     /* Build Data List */
-    const items = allFiles.map(filepath => {
-      const parts = filepath.split('/');
-      let root, sub, fileName;
-      if (parts.length === 1) {
-        root = '(Root)';
-        sub = '';
-        fileName = parts[0];
-      } else if (parts.length === 2) {
-        root = parts[0];
-        sub = '';
-        fileName = parts[1];
-      } else {
-        root = parts[0];
-        sub = parts.slice(1, -1).join(' / ');
-        fileName = parts[parts.length - 1];
-      }
-
-      const ext = fileName.split('.').pop().toLowerCase();
-      const isFree = /^free\b/i.test(fileName);
-      const isPaid = /^paid\b/i.test(fileName);
-      const accessTag = isFree ? 'free' : isPaid ? 'paid' : null;
-
-      return {
-        path: filepath,
-        fileName,
-        root,
-        sub,
-        ext,
-        accessTag
-      };
-    });
-
-    // Extract list of publishers (root folders)
-    const rootFolders = [...new Set(items.map(item => item.root))].sort();
+    let items = [];
+    let rootFolders = [];
+    const tree = {};
 
     // Subject icons & descriptions
     const rootDetails = {
@@ -2073,13 +2062,49 @@
       '(Root)': { icon: 'fa-solid fa-folder-tree', color: '#64748b', desc: 'Miscellaneous root files.' }
     };
 
-    // Build hierarchical tree
-    const tree = {};
-    items.forEach(item => {
-      if (!tree[item.root]) tree[item.root] = {};
-      if (!tree[item.root][item.sub]) tree[item.root][item.sub] = [];
-      tree[item.root][item.sub].push(item);
-    });
+    function buildCatalogData() {
+      items = allFiles.map(filepath => {
+        const parts = filepath.split('/');
+        let root, sub, fileName;
+        if (parts.length === 1) {
+          root = '(Root)';
+          sub = '';
+          fileName = parts[0];
+        } else if (parts.length === 2) {
+          root = parts[0];
+          sub = '';
+          fileName = parts[1];
+        } else {
+          root = parts[0];
+          sub = parts.slice(1, -1).join(' / ');
+          fileName = parts[parts.length - 1];
+        }
+
+        const ext = fileName.split('.').pop().toLowerCase();
+        const isFree = /^free\b/i.test(fileName);
+        const isPaid = /^paid\b/i.test(fileName);
+        const accessTag = isFree ? 'free' : isPaid ? 'paid' : null;
+
+        return {
+          path: filepath,
+          fileName,
+          root,
+          sub,
+          ext,
+          accessTag
+        };
+      });
+
+      rootFolders = [...new Set(items.map(item => item.root))].sort();
+
+      // Clear and rebuild tree
+      for (const key in tree) delete tree[key];
+      items.forEach(item => {
+        if (!tree[item.root]) tree[item.root] = {};
+        if (!tree[item.root][item.sub]) tree[item.root][item.sub] = [];
+        tree[item.root][item.sub].push(item);
+      });
+    }
 
     /* ── 5. Tab Controller ──────────────────────────────────── */
     window.switchTab = function(tabName) {
@@ -2345,7 +2370,7 @@
         sidebarList.appendChild(folderGrp);
       });
     }
-    initCatalogSidebar();
+    // initCatalogSidebar is called within the async initPortal() flow.
 
     window.selectCat = function(category) {
       state.catalogCategory = category;
@@ -3184,7 +3209,56 @@
     }
 
     /* ── 12. Init App ────────────────────────────────────────── */
-    switchTab('dashboard');
+    async function initPortal() {
+      if (isServer) {
+        try {
+          const res = await fetch('/api/mocks');
+          if (res.ok) {
+            window.MOCKS_MANIFEST = await res.json();
+          }
+        } catch (err) {
+          console.error('Failed to fetch /api/mocks:', err);
+        }
+      }
+
+      if (!window.MOCKS_MANIFEST || !window.MOCKS_MANIFEST.files) {
+        document.body.innerHTML = `
+          <div style="padding: 40px; text-align: center; font-family: sans-serif; color: #f43f5e;">
+            <h2>Manifest Not Found</h2>
+            <p>Please regenerate <code>mocks-manifest.js</code> or make sure backend server is running correctly.</p>
+          </div>`;
+        return;
+      }
+      allFiles = window.MOCKS_MANIFEST.files;
+
+      if (isServer) {
+        try {
+          const res = await fetch('/api/progress');
+          if (res.ok) {
+            const progress = await res.json();
+            solvedSet.clear();
+            (progress.solved || []).forEach(x => solvedSet.add(x));
+            starredSet.clear();
+            (progress.starred || []).forEach(x => starredSet.add(x));
+            recentOpened.length = 0;
+            (progress.recent || []).forEach(x => recentOpened.push(x));
+          }
+        } catch (err) {
+          console.error('Failed to fetch /api/progress:', err);
+        }
+      } else {
+        JSON.parse(localStorage.getItem('portal_solved') || '[]').forEach(x => solvedSet.add(x));
+        JSON.parse(localStorage.getItem('portal_starred') || '[]').forEach(x => starredSet.add(x));
+        JSON.parse(localStorage.getItem('portal_recent') || '[]').forEach(x => recentOpened.push(x));
+      }
+
+      updateTimestamp();
+      buildCatalogData();
+      initCatalogSidebar();
+      switchTab('dashboard');
+    }
+
+    initPortal();
 
   })();
   </script>
