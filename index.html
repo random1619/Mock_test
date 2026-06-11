@@ -3,384 +3,752 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mocks Dashboard</title>
+  <title>Mock Library Dashboard</title>
   <style>
     :root {
-      --bg: #0b1020;
-      --bg2: #111936;
-      --card: rgba(15, 23, 42, 0.74);
-      --card-border: rgba(148, 163, 184, 0.18);
-      --text: #e5eefc;
-      --muted: #9fb0d0;
-      --accent: #7dd3fc;
-      --accent-2: #a78bfa;
-      --accent-3: #34d399;
-      --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
-      --radius: 22px;
+      color-scheme: light;
+      --ink: #17202a;
+      --muted: #687684;
+      --paper: #f7f4ee;
+      --panel: #ffffff;
+      --line: #ddd5ca;
+      --line-strong: #c6b9aa;
+      --clay: #b95738;
+      --teal: #157a74;
+      --gold: #b8872d;
+      --leaf: #4f7d3f;
+      --blue: #315f92;
+      --shadow: 0 18px 42px rgba(50, 43, 35, 0.11);
+      --radius: 8px;
     }
 
     * { box-sizing: border-box; }
-    html, body { margin: 0; min-height: 100%; }
+
+    html,
     body {
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--text);
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: "Aptos", "Segoe UI", Tahoma, sans-serif;
+      color: var(--ink);
       background:
-        radial-gradient(circle at top left, rgba(125, 211, 252, 0.18), transparent 26%),
-        radial-gradient(circle at top right, rgba(167, 139, 250, 0.18), transparent 24%),
-        linear-gradient(180deg, #050816 0%, var(--bg) 45%, #090d1b 100%);
+        linear-gradient(90deg, rgba(185, 87, 56, 0.07) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(21, 122, 116, 0.06) 1px, transparent 1px),
+        var(--paper);
+      background-size: 28px 28px;
     }
 
-    .wrap {
-      width: min(1200px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 28px 0 40px;
+    button,
+    input,
+    select {
+      font: inherit;
     }
 
-    .hero {
+    a {
+      color: inherit;
+    }
+
+    .app {
+      min-height: 100vh;
       display: grid;
-      gap: 18px;
-      padding: 28px;
-      border: 1px solid var(--card-border);
-      border-radius: calc(var(--radius) + 8px);
-      background:
-        linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.62)),
-        linear-gradient(135deg, rgba(125, 211, 252, 0.12), rgba(167, 139, 250, 0.08));
+      grid-template-columns: 280px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 22px;
+      border-right: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(14px);
+      overflow: auto;
+    }
+
+    .brandmark {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .brandmark-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: var(--radius);
+      background: var(--ink);
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .brandmark h1 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+
+    .brandmark p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .side-section {
+      margin-top: 22px;
+    }
+
+    .side-section h2 {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .brand-list,
+    .type-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .filter-button {
+      width: 100%;
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 10px;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .filter-button:hover {
+      background: #f1ece5;
+    }
+
+    .filter-button.is-active {
+      background: #fff;
+      border-color: var(--line-strong);
+      box-shadow: 0 6px 18px rgba(50, 43, 35, 0.08);
+    }
+
+    .count-pill {
+      min-width: 32px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: #ece5dc;
+      color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .main {
+      min-width: 0;
+      padding: 26px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(240px, 1fr) auto;
+      gap: 16px;
+      align-items: start;
+      margin-bottom: 18px;
+    }
+
+    .headline {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.82);
       box-shadow: var(--shadow);
-      overflow: hidden;
-      position: relative;
     }
 
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: auto -60px -100px auto;
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(52, 211, 153, 0.16), transparent 70%);
-      pointer-events: none;
+    .headline h2 {
+      margin: 0;
+      max-width: 820px;
+      font-size: 34px;
+      line-height: 1.1;
+      letter-spacing: 0;
     }
 
-    .eyebrow {
+    .headline p {
+      margin: 10px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .action {
+      min-height: 38px;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      width: fit-content;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(125, 211, 252, 0.1);
-      border: 1px solid rgba(125, 211, 252, 0.16);
-      color: #c7f1ff;
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      padding: 9px 12px;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--ink);
+      text-decoration: none;
+      cursor: pointer;
     }
 
-    h1 {
-      margin: 0;
-      font-size: clamp(34px, 5vw, 58px);
-      line-height: 0.98;
-      letter-spacing: -0.04em;
-    }
-
-    .lead {
-      margin: 0;
-      max-width: 760px;
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.7;
+    .action.primary {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: #fff;
     }
 
     .stats {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
+      gap: 12px;
+      margin: 18px 0;
     }
 
     .stat {
       padding: 16px;
-      border-radius: 18px;
-      background: rgba(2, 6, 23, 0.32);
-      border: 1px solid rgba(148, 163, 184, 0.14);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: 0 10px 24px rgba(50, 43, 35, 0.06);
     }
 
     .stat strong {
       display: block;
-      font-size: 22px;
-      margin-bottom: 4px;
+      font-size: 26px;
+      line-height: 1;
     }
 
     .stat span {
+      display: block;
+      margin-top: 8px;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
     }
 
-    .section {
-      margin-top: 26px;
-    }
+    .stat:nth-child(1) { border-top: 4px solid var(--clay); }
+    .stat:nth-child(2) { border-top: 4px solid var(--teal); }
+    .stat:nth-child(3) { border-top: 4px solid var(--gold); }
+    .stat:nth-child(4) { border-top: 4px solid var(--leaf); }
 
-    .section h2 {
-      margin: 0 0 12px;
-      font-size: 20px;
-      letter-spacing: -0.02em;
-    }
-
-    .grid {
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 3;
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .catalog {
-      display: grid;
-      gap: 18px;
-    }
-
-    .catalog-brand {
-      padding: 18px;
+      grid-template-columns: minmax(200px, 1fr) 180px 160px;
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--line);
       border-radius: var(--radius);
-      background: rgba(15, 23, 42, 0.72);
-      border: 1px solid var(--card-border);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px);
       box-shadow: var(--shadow);
     }
 
-    .catalog-brand summary {
-      cursor: pointer;
-      list-style: none;
+    .searchbox {
+      position: relative;
+    }
+
+    .searchbox span {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+    }
+
+    .searchbox input,
+    .toolbar select {
+      width: 100%;
+      height: 42px;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .searchbox input {
+      padding: 0 12px 0 38px;
+    }
+
+    .toolbar select {
+      padding: 0 10px;
+    }
+
+    .results-header {
       display: flex;
-      justify-content: space-between;
-      gap: 12px;
       align-items: center;
-    }
-
-    .catalog-brand summary::-webkit-details-marker { display: none; }
-
-    .catalog-brand h3 {
-      margin: 0;
-      font-size: 18px;
-    }
-
-    .catalog-brand p {
-      margin: 6px 0 0;
+      justify-content: space-between;
+      gap: 14px;
+      margin: 18px 0 10px;
       color: var(--muted);
       font-size: 13px;
     }
 
-    .catalog-meta {
-      color: var(--muted);
-      font-size: 12px;
-      white-space: nowrap;
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
     }
 
-    .subsection {
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(148, 163, 184, 0.12);
+    .mock-card {
+      min-width: 0;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: 0 8px 20px rgba(50, 43, 35, 0.06);
     }
 
-    .subsection h4 {
-      margin: 0 0 10px;
-      font-size: 14px;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      color: #c7f1ff;
+    .mock-card:hover {
+      border-color: var(--line-strong);
+      transform: translateY(-1px);
+      transition: transform 140ms ease, border-color 140ms ease;
     }
 
-    .file-list {
+    .mock-title {
+      display: -webkit-box;
+      min-height: 44px;
+      margin: 0 0 12px;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      font-size: 15px;
+      font-weight: 750;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
+    .mock-meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 6px;
+      margin-bottom: 12px;
     }
 
-    .file-chip {
+    .tag {
       max-width: 100%;
-      white-space: nowrap;
+      padding: 4px 7px;
+      border-radius: 999px;
+      background: #f0ebe4;
+      color: var(--muted);
+      font-size: 11px;
       overflow: hidden;
       text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
-    .catalog-tools {
+    .tag.brand { background: rgba(21, 122, 116, 0.12); color: var(--teal); }
+    .tag.pdf { background: rgba(185, 87, 56, 0.12); color: var(--clay); }
+
+    .mock-actions {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .card {
-      padding: 18px;
-      border-radius: var(--radius);
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
-    }
-
-    .card-head {
-      display: flex;
+      align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      align-items: start;
-      margin-bottom: 14px;
-    }
-
-    .brand-title {
-      margin: 0;
-      font-size: 18px;
-      letter-spacing: -0.02em;
-    }
-
-    .brand-meta {
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .badge {
-      flex: 0 0 auto;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      background: rgba(125, 211, 252, 0.12);
-      color: #c7f1ff;
-      border: 1px solid rgba(125, 211, 252, 0.18);
-    }
-
-    .links {
-      display: flex;
-      flex-wrap: wrap;
       gap: 10px;
     }
 
-    .chip {
+    .open-link {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 10px 12px;
-      border-radius: 999px;
-      color: var(--text);
+      min-height: 34px;
+      padding: 7px 10px;
+      border-radius: var(--radius);
+      background: var(--ink);
+      color: #fff;
       text-decoration: none;
-      background: rgba(148, 163, 184, 0.12);
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      transition: transform .18s ease, border-color .18s ease, background .18s ease;
       font-size: 13px;
+      font-weight: 700;
     }
 
-    .chip:hover {
-      transform: translateY(-1px);
-      background: rgba(125, 211, 252, 0.14);
-      border-color: rgba(125, 211, 252, 0.3);
-    }
-
-    .chip.primary {
-      background: linear-gradient(135deg, rgba(125, 211, 252, 0.18), rgba(167, 139, 250, 0.18));
-      border-color: rgba(125, 211, 252, 0.28);
-    }
-
-    .note {
-      margin-top: 16px;
+    .path-text {
+      min-width: 0;
       color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
+      font-size: 11px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
-    .footer {
-      margin-top: 26px;
+    .empty {
+      display: none;
+      padding: 30px;
+      border: 1px dashed var(--line-strong);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.68);
       color: var(--muted);
-      font-size: 12px;
       text-align: center;
-      padding-bottom: 6px;
     }
 
-    @media (max-width: 900px) {
+    .pager {
+      display: flex;
+      justify-content: center;
+      margin-top: 18px;
+    }
+
+    .load-more {
+      min-height: 42px;
+      padding: 0 18px;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .load-more[hidden] {
+      display: none;
+    }
+
+    @media (max-width: 1100px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar {
+        position: relative;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .brand-list,
+      .type-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .topbar,
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+      .quick-actions {
+        justify-content: flex-start;
+      }
+      .result-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .main,
+      .sidebar {
+        padding: 16px;
+      }
+      .headline h2 {
+        font-size: 26px;
+      }
       .stats,
-      .grid { grid-template-columns: 1fr; }
-      .hero { padding: 22px; }
+      .brand-list,
+      .type-list,
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+      .toolbar {
+        position: relative;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header class="hero">
-      <div class="eyebrow">Mock launcher dashboard</div>
-      <h1>Start mocks by brand, section, and test type.</h1>
-      <p class="lead">
-        This dashboard launches the actual mock files directly. Each card points to a real uploaded mock,
-        so you can start practicing with one click instead of drilling into folders.
-      </p>
-      <div class="stats">
-        <div class="stat"><strong>9</strong><span>brand groups</span></div>
-        <div class="stat"><strong>2</strong><span>English Madhyam variants</span></div>
-        <div class="stat"><strong>4+</strong><span>common test types per brand</span></div>
-        <div class="stat"><strong>1</strong><span>root launcher</span></div>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brandmark">
+        <div class="brandmark-icon">M</div>
+        <div>
+          <h1>Mock Library</h1>
+          <p>All uploaded files, ready to launch</p>
+        </div>
       </div>
-    </header>
 
-    <section class="section">
-      <h2>All Mocks</h2>
-      <div class="catalog-tools">
-        <a class="chip primary" href="./@SSC_CGL_MOCKS_2025_SSC%20CGL23.html" target="_self">Open root mock</a>
-        <a class="chip" href="./mocks-manifest.json" target="_self">Manifest</a>
+      <div class="side-section">
+        <h2>Brands</h2>
+        <div id="brandList" class="brand-list"></div>
       </div>
-      <div id="catalog" class="catalog"></div>
-    </section>
 
-    <div class="footer">Built for local browsing inside the mock library.</div>
+      <div class="side-section">
+        <h2>Mock Type</h2>
+        <div id="typeList" class="type-list"></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="topbar">
+        <div class="headline">
+          <h2>Find the right mock without digging through folders.</h2>
+          <p>Search by name, brand, topic, year, language, or file type. The dashboard reads the manifest and opens the actual uploaded HTML or PDF file directly.</p>
+        </div>
+        <div class="quick-actions">
+          <a id="randomMock" class="action primary" href="#">Random mock</a>
+          <a class="action" href="./mocks-manifest.json">Manifest</a>
+        </div>
+      </section>
+
+      <section class="stats" aria-label="Library stats">
+        <div class="stat"><strong id="totalMocks">0</strong><span>Total files</span></div>
+        <div class="stat"><strong id="htmlMocks">0</strong><span>HTML mocks</span></div>
+        <div class="stat"><strong id="pdfMocks">0</strong><span>PDF files</span></div>
+        <div class="stat"><strong id="visibleMocks">0</strong><span>Current results</span></div>
+      </section>
+
+      <section class="toolbar" aria-label="Catalog controls">
+        <label class="searchbox">
+          <span aria-hidden="true">⌕</span>
+          <input id="searchInput" type="search" placeholder="Search mocks, topics, years, brands..." autocomplete="off" />
+        </label>
+        <select id="sectionSelect" aria-label="Section filter"></select>
+        <select id="sortSelect" aria-label="Sort results">
+          <option value="name">Sort by name</option>
+          <option value="brand">Sort by brand</option>
+          <option value="section">Sort by section</option>
+        </select>
+      </section>
+
+      <div class="results-header">
+        <div id="resultSummary">Loading catalog...</div>
+        <div id="activeFilters"></div>
+      </div>
+
+      <section id="resultGrid" class="result-grid" aria-label="Mock results"></section>
+      <div id="emptyState" class="empty">No mocks match the current filters.</div>
+      <div class="pager">
+        <button id="loadMore" class="load-more" type="button">Show more</button>
+      </div>
+    </main>
   </div>
+
   <script src="./mocks-manifest.js"></script>
   <script>
-    const catalog = document.getElementById('catalog');
+    const manifest = window.MOCKS_MANIFEST || { files: [] };
     const brandRank = ['Pundits', 'pundits-mocks', 'Mocks Wallah', 'English Madhyam', 'english-madhyam', 'oliveboard', 'Testbook', 'Other Brands', 'Aman Sir'];
-    const labelFor = (segment) => segment.replace(/[-_]/g, ' ').replace(/\b\w/g, (m) => m.toUpperCase());
-    const sectionFor = (relativePath) => {
-      const parts = relativePath.split('/');
-      if (parts.length >= 3) return `${parts[0]} / ${parts[1]} / ${parts[2]}`;
-      if (parts.length === 2) return `${parts[0]} / ${parts[1]}`;
-      return parts[0];
+    const state = {
+      brand: 'All',
+      type: 'All',
+      section: 'All',
+      query: '',
+      sort: 'name',
+      shown: 72
     };
-    const fileLabel = (relativePath) => relativePath.split('/').pop().replace(/\.html?$/i, '').replace(/\.pdf$/i, '');
-    const manifest = window.MOCKS_MANIFEST;
-    const grouped = new Map();
-    for (const file of manifest.files) {
-      const brand = file.split('/')[0];
-      if (!grouped.has(brand)) grouped.set(brand, new Map());
-      const group = grouped.get(brand);
-      const subsection = sectionFor(file);
-      if (!group.has(subsection)) group.set(subsection, []);
-      group.get(subsection).push(file);
+
+    const elements = {
+      brandList: document.getElementById('brandList'),
+      typeList: document.getElementById('typeList'),
+      sectionSelect: document.getElementById('sectionSelect'),
+      sortSelect: document.getElementById('sortSelect'),
+      searchInput: document.getElementById('searchInput'),
+      resultGrid: document.getElementById('resultGrid'),
+      resultSummary: document.getElementById('resultSummary'),
+      activeFilters: document.getElementById('activeFilters'),
+      emptyState: document.getElementById('emptyState'),
+      loadMore: document.getElementById('loadMore'),
+      randomMock: document.getElementById('randomMock'),
+      totalMocks: document.getElementById('totalMocks'),
+      htmlMocks: document.getElementById('htmlMocks'),
+      pdfMocks: document.getElementById('pdfMocks'),
+      visibleMocks: document.getElementById('visibleMocks')
+    };
+
+    const cleanName = (value) => value
+      .replace(/\.(html?|pdf)$/i, '')
+      .replace(/^@/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    const brandLabel = (value) => value.replace(/[-_]/g, ' ').replace(/\b\w/g, (m) => m.toUpperCase());
+    const encodePath = (file) => file.split('/').map(encodeURIComponent).join('/');
+    const formatCount = (value) => new Intl.NumberFormat('en-IN').format(value);
+
+    const inferType = (file) => {
+      const text = file.toLowerCase();
+      if (text.endsWith('.pdf')) return 'PDF';
+      if (text.includes('previous year')) return 'Previous Year';
+      if (text.includes('sectional')) return 'Sectional';
+      if (text.includes('topic-concept') || text.includes('topic concept')) return 'Topic Concept';
+      if (text.includes('practice')) return 'Practice Set';
+      if (text.includes('full mock') || text.includes('full test') || text.includes('live mock')) return 'Full Mock';
+      if (text.includes('quiz')) return 'Quiz';
+      return 'Mock';
+    };
+
+    const files = manifest.files.map((file, index) => {
+      const parts = file.split('/');
+      const brand = parts.length > 1 ? parts[0] : 'Root';
+      const section = parts.length > 2 ? parts[1] : (parts.length > 1 ? 'Main' : 'Root');
+      const name = cleanName(parts[parts.length - 1]);
+      const ext = file.toLowerCase().endsWith('.pdf') ? 'PDF' : 'HTML';
+      const type = inferType(file);
+      const search = `${file} ${brand} ${section} ${name} ${type} ${ext}`.toLowerCase();
+      return { index, file, brand, section, name, ext, type, search };
+    });
+
+    const unique = (items) => [...new Set(items)].sort((a, b) => a.localeCompare(b));
+    const brandCounts = new Map();
+    const typeCounts = new Map();
+    for (const item of files) {
+      brandCounts.set(item.brand, (brandCounts.get(item.brand) || 0) + 1);
+      typeCounts.set(item.type, (typeCounts.get(item.type) || 0) + 1);
     }
-    const orderedBrands = [...grouped.keys()].sort((a, b) => {
+
+    const orderedBrands = ['All', ...unique(files.map((item) => item.brand)).sort((a, b) => {
       const ai = brandRank.indexOf(a);
       const bi = brandRank.indexOf(b);
       return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi) || a.localeCompare(b);
-    });
-    catalog.innerHTML = orderedBrands.map((brand) => {
-      const subsections = grouped.get(brand);
-      const files = [...subsections.values()].reduce((sum, arr) => sum + arr.length, 0);
-      const subsectionHtml = [...subsections.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([subsection, items]) => `
-        <div class="subsection">
-          <h4>${subsection}</h4>
-          <div class="file-list">
-            ${items.sort((a, b) => a.localeCompare(b)).map((file) => {
-              const href = file.split('/').map(encodeURIComponent).join('/');
-              return `<a class="chip file-chip" href="./${href}" target="_self" title="${file}">${fileLabel(file)}</a>`;
-            }).join('')}
-          </div>
+    })];
+
+    const orderedTypes = ['All', ...unique(files.map((item) => item.type))];
+
+    function makeFilterButton(label, count, active, onClick) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = `filter-button${active ? ' is-active' : ''}`;
+      button.innerHTML = `<span>${label}</span><span class="count-pill">${formatCount(count)}</span>`;
+      button.addEventListener('click', onClick);
+      return button;
+    }
+
+    function renderSidebar() {
+      elements.brandList.replaceChildren(...orderedBrands.map((brand) => {
+        const count = brand === 'All' ? files.length : brandCounts.get(brand);
+        return makeFilterButton(brand === 'All' ? 'All brands' : brandLabel(brand), count, state.brand === brand, () => {
+          state.brand = brand;
+          state.section = 'All';
+          state.shown = 72;
+          render();
+        });
+      }));
+
+      elements.typeList.replaceChildren(...orderedTypes.map((type) => {
+        const count = type === 'All' ? files.length : typeCounts.get(type);
+        return makeFilterButton(type === 'All' ? 'All types' : type, count, state.type === type, () => {
+          state.type = type;
+          state.shown = 72;
+          render();
+        });
+      }));
+    }
+
+    function availableSections() {
+      const relevant = state.brand === 'All' ? files : files.filter((item) => item.brand === state.brand);
+      return ['All', ...unique(relevant.map((item) => item.section))];
+    }
+
+    function syncSectionSelect() {
+      const sections = availableSections();
+      if (!sections.includes(state.section)) state.section = 'All';
+      elements.sectionSelect.innerHTML = sections.map((section) => {
+        const label = section === 'All' ? 'All sections' : section;
+        return `<option value="${section}">${label}</option>`;
+      }).join('');
+      elements.sectionSelect.value = state.section;
+    }
+
+    function filteredFiles() {
+      const query = state.query.toLowerCase().trim();
+      let items = files.filter((item) => {
+        if (state.brand !== 'All' && item.brand !== state.brand) return false;
+        if (state.type !== 'All' && item.type !== state.type) return false;
+        if (state.section !== 'All' && item.section !== state.section) return false;
+        if (query && !item.search.includes(query)) return false;
+        return true;
+      });
+
+      items = items.sort((a, b) => {
+        if (state.sort === 'brand') return a.brand.localeCompare(b.brand) || a.name.localeCompare(b.name);
+        if (state.sort === 'section') return a.section.localeCompare(b.section) || a.name.localeCompare(b.name);
+        return a.name.localeCompare(b.name);
+      });
+      return items;
+    }
+
+    function renderCard(item) {
+      const href = `./${encodePath(item.file)}`;
+      const article = document.createElement('article');
+      article.className = 'mock-card';
+      article.innerHTML = `
+        <h3 class="mock-title">${item.name}</h3>
+        <div class="mock-meta">
+          <span class="tag brand">${brandLabel(item.brand)}</span>
+          <span class="tag">${item.section}</span>
+          <span class="tag">${item.type}</span>
+          <span class="tag ${item.ext === 'PDF' ? 'pdf' : ''}">${item.ext}</span>
         </div>
-      `).join('');
-      return `
-        <details class="catalog-brand" ${brand === 'Pundits' ? 'open' : ''}>
-          <summary>
-            <div>
-              <h3>${labelFor(brand)}</h3>
-              <p>${subsections.size} subsection${subsections.size === 1 ? '' : 's'} • ${files} mock${files === 1 ? '' : 's'}</p>
-            </div>
-            <div class="catalog-meta">Click to expand</div>
-          </summary>
-          ${subsectionHtml}
-        </details>
+        <div class="mock-actions">
+          <a class="open-link" href="${href}" target="_self">Open</a>
+          <span class="path-text" title="${item.file}">${item.file}</span>
+        </div>
       `;
-    }).join('');
+      return article;
+    }
+
+    function renderStats(items) {
+      elements.totalMocks.textContent = formatCount(files.length);
+      elements.htmlMocks.textContent = formatCount(files.filter((item) => item.ext === 'HTML').length);
+      elements.pdfMocks.textContent = formatCount(files.filter((item) => item.ext === 'PDF').length);
+      elements.visibleMocks.textContent = formatCount(items.length);
+    }
+
+    function render() {
+      renderSidebar();
+      syncSectionSelect();
+
+      const items = filteredFiles();
+      renderStats(items);
+      const visible = items.slice(0, state.shown);
+      elements.resultGrid.replaceChildren(...visible.map(renderCard));
+      elements.emptyState.style.display = items.length ? 'none' : 'block';
+      elements.loadMore.hidden = visible.length >= items.length;
+      elements.resultSummary.textContent = `${formatCount(visible.length)} shown from ${formatCount(items.length)} matching files`;
+
+      const active = [
+        state.brand !== 'All' ? brandLabel(state.brand) : '',
+        state.type !== 'All' ? state.type : '',
+        state.section !== 'All' ? state.section : '',
+        state.query ? `Search: ${state.query}` : ''
+      ].filter(Boolean);
+      elements.activeFilters.textContent = active.length ? active.join(' | ') : 'No filters active';
+
+      const randomItem = items.length ? items[Math.floor(Math.random() * items.length)] : files[0];
+      elements.randomMock.href = randomItem ? `./${encodePath(randomItem.file)}` : '#';
+    }
+
+    elements.searchInput.addEventListener('input', (event) => {
+      state.query = event.target.value;
+      state.shown = 72;
+      render();
+    });
+
+    elements.sectionSelect.addEventListener('change', (event) => {
+      state.section = event.target.value;
+      state.shown = 72;
+      render();
+    });
+
+    elements.sortSelect.addEventListener('change', (event) => {
+      state.sort = event.target.value;
+      render();
+    });
+
+    elements.loadMore.addEventListener('click', () => {
+      state.shown += 72;
+      render();
+    });
+
+    render();
   </script>
 </body>
 </html>
