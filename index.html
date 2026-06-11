@@ -1,1194 +1,1206 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ctOS // DEDSEC_MOCK_VAULT</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Asset Portal</title>
+  <script src="mocks-manifest.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
-
+    /* ── TOKENS ────────────────────────────────────────────── */
     :root {
-      color-scheme: dark;
-      --primary: #00f3ff; /* Watch Dogs Cyan */
-      --secondary: #bfff00; /* Caution Yellow */
-      --danger: #ff0055; /* DedSec Magenta-Red */
-      --success: #00ff66; /* Neon Green */
-      --bg-darker: #050608;
-      --bg-dark: #0c0e14;
-      --bg-panel: #131722;
-      --bg-panel-hover: #1b2030;
-      --border-neon: rgba(0, 243, 255, 0.15);
-      --border-neon-strong: rgba(0, 243, 255, 0.5);
-      --text-primary: #f1f5f9;
-      --text-muted: #94a3b8;
-      
-      --font-header: 'Orbitron', sans-serif;
-      --font-sans: 'Space Grotesk', sans-serif;
-      --font-mono: 'Share Tech Mono', monospace;
-      --radius: 8px;
+      --bg0: #070b13;
+      --bg1: #0d1117;
+      --bg2: #161b27;
+      --bg3: #1c2333;
+      --bg4: #232d42;
+
+      --border0: rgba(255,255,255,0.04);
+      --border1: rgba(255,255,255,0.08);
+      --border2: rgba(255,255,255,0.12);
+
+      --txt0: #f0f4ff;
+      --txt1: #a8b8d0;
+      --txt2: #6a7d96;
+      --txt3: #3d5069;
+
+      --indigo: #6366f1;
+      --indigo-dim: rgba(99,102,241,0.12);
+      --indigo-ring: rgba(99,102,241,0.25);
+      --indigo-soft: #818cf8;
+
+      --emerald: #10b981;
+      --emerald-dim: rgba(16,185,129,0.1);
+      --rose: #f43f5e;
+      --rose-dim: rgba(244,63,94,0.1);
+      --amber: #f59e0b;
+      --amber-dim: rgba(245,158,11,0.1);
+      --sky: #38bdf8;
+      --sky-dim: rgba(56,189,248,0.1);
+
+      --r-sm: 6px;
+      --r-md: 10px;
+      --r-lg: 14px;
+      --r-xl: 18px;
+
+      --font: 'Inter', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+
+      --sidebar-w: 280px;
+      --header-h: 58px;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      scrollbar-width: thin;
-      scrollbar-color: var(--primary) var(--bg-dark);
-    }
-
-    /* Custom scrollbar for premium look */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: var(--bg-darker);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--primary);
-      border-radius: var(--radius);
-    }
-
+    /* ── RESET ────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; -webkit-font-smoothing: antialiased; }
     body {
-      font-family: var(--font-sans);
-      color: var(--text-primary);
-      background-color: var(--bg-darker);
-      background-image: 
-        radial-gradient(circle at 50% 50%, rgba(0, 243, 255, 0.03) 0%, transparent 80%),
-        linear-gradient(rgba(19, 23, 34, 0.96) 50%, rgba(5, 6, 8, 0.99) 50%),
-        linear-gradient(90deg, rgba(0, 243, 255, 0.01) 1px, transparent 1px),
-        linear-gradient(0deg, rgba(0, 243, 255, 0.01) 1px, transparent 1px);
-      background-size: 100% 100%, 4px 4px, 32px 32px, 32px 32px;
-      min-height: 100vh;
-      overflow-x: hidden;
+      font-family: var(--font);
+      background: var(--bg0);
+      color: var(--txt0);
+      height: 100vh;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
     }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    a { color: inherit; text-decoration: none; }
+    input { font-family: inherit; }
 
-    /* Subtle Animated Scanning HUD Line */
-    .scanner-line {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--primary), transparent);
-      box-shadow: 0 0 12px var(--primary);
-      z-index: 9999;
-      animation: scan-vertical 8s linear infinite;
-      pointer-events: none;
-    }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--indigo); }
 
-    @keyframes scan-vertical {
-      0% { top: 0%; opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { top: 100%; opacity: 0; }
-    }
-
-    header {
-      background: rgba(12, 14, 20, 0.9);
-      border-bottom: 2px solid var(--border-neon-strong);
-      padding: 15px 30px;
+    /* ── HEADER ────────────────────────────────────────────── */
+    .header {
+      height: var(--header-h);
+      flex-shrink: 0;
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      backdrop-filter: blur(10px);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      padding: 0 20px;
+      background: var(--bg1);
+      border-bottom: 1px solid var(--border1);
+      gap: 16px;
+      z-index: 20;
     }
-
-    .brand {
+    .logo {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .logo-mark {
+      width: 36px; height: 36px;
+      background: linear-gradient(145deg, #4f46e5, #7c3aed);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      font-size: 15px;
+      box-shadow: 0 0 16px rgba(99,102,241,0.3);
+      flex-shrink: 0;
+    }
+    .logo-text { line-height: 1.2; }
+    .logo-title { font-size: 13px; font-weight: 700; color: var(--txt0); letter-spacing: -0.02em; }
+    .logo-sub { font-size: 11px; color: var(--txt2); }
+
+    /* Header search */
+    .header-search {
+      flex: 1;
+      max-width: 560px;
+      position: relative;
+    }
+    .header-search i {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      color: var(--txt3); font-size: 13px; pointer-events: none;
+    }
+    .header-search input {
+      width: 100%;
+      padding: 8px 12px 8px 34px;
+      background: var(--bg2);
+      border: 1px solid var(--border1);
+      border-radius: var(--r-xl);
+      color: var(--txt0);
+      font-size: 13px;
+      transition: border-color 150ms, box-shadow 150ms;
+    }
+    .header-search input::placeholder { color: var(--txt3); }
+    .header-search input:focus {
+      outline: none;
+      border-color: var(--indigo-ring);
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
     }
 
-    .brand-logo {
-      width: 45px;
-      height: 45px;
-      border: 2px solid var(--primary);
-      background: rgba(0, 243, 255, 0.1);
-      display: grid;
-      place-items: center;
-      font-family: var(--font-header);
-      font-size: 20px;
-      font-weight: 900;
-      color: var(--primary);
-      text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
-      border-radius: var(--radius);
-      position: relative;
+    /* Header right */
+    .header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .pill-toggle {
+      display: flex;
+      background: var(--bg2);
+      border: 1px solid var(--border1);
+      border-radius: var(--r-xl);
+      padding: 3px;
+      gap: 2px;
+    }
+    .pill-btn {
+      padding: 5px 11px;
+      border-radius: var(--r-lg);
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--txt2);
+      transition: all 150ms;
+      white-space: nowrap;
+    }
+    .pill-btn:hover { color: var(--txt0); }
+    .pill-btn.active {
+      background: var(--bg4);
+      color: var(--txt0);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .pill-btn.active.ext-html { color: var(--emerald); }
+    .pill-btn.active.ext-pdf { color: var(--rose); }
+
+    .icon-btn {
+      width: 34px; height: 34px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: var(--r-md);
+      color: var(--txt2);
+      font-size: 13px;
+      transition: all 150ms;
+      border: 1px solid transparent;
+    }
+    .icon-btn:hover { background: var(--bg3); color: var(--txt0); }
+    .icon-btn.active {
+      background: var(--indigo-dim);
+      border-color: var(--indigo-ring);
+      color: var(--indigo-soft);
+    }
+
+    .stamp {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; font-family: var(--mono);
+      color: var(--txt3);
+      padding: 5px 10px;
+      background: var(--bg2);
+      border: 1px solid var(--border0);
+      border-radius: var(--r-xl);
+    }
+    .stamp-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 6px rgba(16,185,129,0.5);
+    }
+
+    /* ── BODY LAYOUT ────────────────────────────────────────── */
+    .body {
+      display: flex;
+      flex: 1;
       overflow: hidden;
     }
 
-    .brand-logo::after {
-      content: '';
-      position: absolute;
+    /* ── SIDEBAR ────────────────────────────────────────────── */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg1);
+      border-right: 1px solid var(--border1);
+      overflow: hidden;
+    }
+    .sidebar-top {
+      padding: 12px;
+      border-bottom: 1px solid var(--border0);
+    }
+    .sidebar-filter {
+      position: relative;
+    }
+    .sidebar-filter i {
+      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+      color: var(--txt3); font-size: 11px; pointer-events: none;
+    }
+    .sidebar-filter input {
       width: 100%;
-      height: 100%;
-      background: linear-gradient(transparent, rgba(0,243,255,0.2), transparent);
-      top: -100%;
-      animation: logo-scan 2s linear infinite;
+      padding: 7px 10px 7px 28px;
+      background: var(--bg2);
+      border: 1px solid var(--border1);
+      border-radius: var(--r-lg);
+      font-size: 12px;
+      color: var(--txt0);
+    }
+    .sidebar-filter input:focus { outline: none; border-color: var(--indigo-ring); }
+    .sidebar-filter input::placeholder { color: var(--txt3); }
+
+    .sidebar-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
     }
 
-    @keyframes logo-scan {
-      0% { top: -100%; }
-      100% { top: 100%; }
-    }
-
-    .brand-info h1 {
-      font-family: var(--font-header);
-      font-size: 20px;
-      letter-spacing: 2px;
-      font-weight: 900;
-      color: #fff;
-    }
-
-    .brand-info p {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-    }
-
-    .system-status {
+    /* Sidebar group: top-level folder */
+    .sb-group { margin-bottom: 2px; }
+    .sb-group-btn {
+      width: 100%;
       display: flex;
       align-items: center;
-      gap: 20px;
-      font-family: var(--font-mono);
+      justify-content: space-between;
+      padding: 7px 10px;
+      border-radius: var(--r-md);
       font-size: 12px;
+      font-weight: 500;
+      color: var(--txt1);
+      border: 1px solid transparent;
+      transition: all 130ms;
+      text-align: left;
+      gap: 6px;
+    }
+    .sb-group-btn:hover { background: var(--bg3); color: var(--txt0); }
+    .sb-group-btn.active {
+      background: var(--indigo-dim);
+      border-color: var(--indigo-ring);
+      color: var(--indigo-soft);
+    }
+    .sb-group-left { display: flex; align-items: center; gap: 7px; min-width: 0; flex: 1; }
+    .sb-group-left i { color: var(--txt3); font-size: 11px; flex-shrink: 0; transition: color 130ms; }
+    .sb-group-btn.active .sb-group-left i { color: var(--indigo); }
+    .sb-group-btn:hover .sb-group-left i { color: var(--indigo-soft); }
+    .sb-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sb-count {
+      font-size: 10px;
+      font-weight: 700;
+      min-width: 24px;
+      text-align: center;
+      padding: 2px 6px;
+      border-radius: var(--r-sm);
+      background: var(--bg3);
+      color: var(--txt3);
+      border: 1px solid var(--border0);
+      flex-shrink: 0;
+    }
+    .sb-group-btn.active .sb-count {
+      background: rgba(99,102,241,0.15);
+      color: var(--indigo-soft);
+      border-color: var(--indigo-ring);
     }
 
-    .status-indicator {
+    /* Sub-items */
+    .sb-sub { padding-left: 12px; margin-top: 1px; display: none; }
+    .sb-sub.open { display: block; }
+    .sb-sub-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 10px 5px 8px;
+      border-radius: var(--r-md);
+      font-size: 11.5px;
+      font-weight: 400;
+      color: var(--txt2);
+      border: 1px solid transparent;
+      transition: all 130ms;
+      text-align: left;
+      gap: 6px;
+      margin-bottom: 1px;
+    }
+    .sb-sub-btn:hover { background: var(--bg3); color: var(--txt0); }
+    .sb-sub-btn.active {
+      background: var(--indigo-dim);
+      border-color: var(--indigo-ring);
+      color: var(--indigo-soft);
+    }
+    .sb-divider {
+      height: 1px;
+      background: var(--border0);
+      margin: 6px 4px;
+    }
+
+    /* ── MAIN ────────────────────────────────────────────────── */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* KPI strip */
+    .kpi-bar {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      border-bottom: 1px solid var(--border1);
+      background: var(--bg1);
+      flex-shrink: 0;
+    }
+    .kpi {
+      flex: 1;
+      padding: 10px 18px;
+      border-right: 1px solid var(--border0);
+    }
+    .kpi:last-child { border-right: none; }
+    .kpi-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--txt3); font-weight: 600; }
+    .kpi-val { font-size: 18px; font-weight: 800; margin-top: 2px; letter-spacing: -0.03em; line-height: 1; }
+    .kpi-val.c-accent { color: var(--indigo-soft); }
+    .kpi-val.c-html { color: var(--emerald); }
+    .kpi-val.c-pdf { color: var(--rose); }
+    .kpi-val.c-white { color: var(--txt0); }
+
+    /* Content scroll area */
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px 40px;
+    }
+
+    /* Context breadcrumb */
+    .context-bar {
       display: flex;
       align-items: center;
       gap: 8px;
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      background-color: var(--success);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--success);
-      animation: pulse 1.5s infinite alternate;
-    }
-
-    @keyframes pulse {
-      0% { opacity: 0.4; }
-      100% { opacity: 1; }
-    }
-
-    .layout-container {
-      display: grid;
-      grid-template-columns: 320px 1fr;
-      flex-grow: 1;
-      min-height: calc(100vh - 78px);
-    }
-
-    /* Sidebar controls */
-    aside {
-      background: rgba(19, 23, 34, 0.85);
-      border-right: 1px solid var(--border-neon);
-      padding: 25px;
-      backdrop-filter: blur(10px);
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
-      overflow-y: auto;
-      height: calc(100vh - 78px);
-      position: sticky;
-      top: 78px;
-    }
-
-    .panel-title {
-      font-family: var(--font-header);
+      margin-bottom: 16px;
       font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: var(--secondary);
-      text-transform: uppercase;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      color: var(--txt2);
     }
+    .context-bar i { font-size: 10px; color: var(--txt3); }
+    .context-bar strong { color: var(--txt0); font-weight: 600; }
 
-    .panel-title::after {
-      content: '';
-      flex-grow: 1;
-      height: 1px;
-      background: var(--border-neon);
-      margin-left: 10px;
-    }
-
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .filter-btn {
-      width: 100%;
-      background: rgba(12, 14, 20, 0.5);
-      border: 1px solid var(--border-neon);
-      color: var(--text-primary);
-      padding: 10px 15px;
-      font-family: var(--font-sans);
-      font-size: 13px;
-      font-weight: 500;
-      text-align: left;
-      border-radius: var(--radius);
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: all 0.2s ease;
-    }
-
-    .filter-btn:hover {
-      background: rgba(0, 243, 255, 0.08);
-      border-color: var(--primary);
-    }
-
-    .filter-btn.active {
-      background: rgba(0, 243, 255, 0.15);
-      border-color: var(--primary);
-      box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
-      color: var(--primary);
-      font-weight: 600;
-    }
-
-    .filter-btn .badge {
-      background: rgba(5, 6, 8, 0.6);
-      border: 1px solid var(--border-neon);
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-family: var(--font-mono);
-      color: var(--secondary);
-    }
-
-    .filter-btn.active .badge {
-      border-color: var(--primary);
-    }
-
-    /* Main view area */
-    main {
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-      overflow-y: auto;
-      max-width: 1600px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    /* Stats HUD widget */
-    .hud-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-    }
-
-    .hud-card {
-      background: rgba(19, 23, 34, 0.7);
-      border: 1px solid var(--border-neon);
-      padding: 20px;
-      border-radius: var(--radius);
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hud-card::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 4px;
-      height: 100%;
-      background: var(--primary);
-    }
-
-    .hud-card.warning::before { background: var(--secondary); }
-    .hud-card.danger::before { background: var(--danger); }
-    .hud-card.success::before { background: var(--success); }
-
-    .hud-icon {
-      font-size: 24px;
-      color: var(--primary);
-    }
-    .hud-card.warning .hud-icon { color: var(--secondary); }
-    .hud-card.danger .hud-icon { color: var(--danger); }
-    .hud-card.success .hud-icon { color: var(--success); }
-
-    .hud-details h3 {
-      font-family: var(--font-mono);
-      font-size: 24px;
-      font-weight: 700;
-      line-height: 1.1;
-    }
-
-    .hud-details p {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-top: 4px;
-    }
-
-    /* Toolbar search controls */
-    .controls-panel {
-      background: rgba(19, 23, 34, 0.9);
-      border: 1px solid var(--border-neon-strong);
-      padding: 20px;
-      border-radius: var(--radius);
-      display: grid;
-      grid-template-columns: 1fr auto auto;
-      gap: 15px;
-      align-items: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-
-    .search-wrapper {
-      position: relative;
-    }
-
-    .search-wrapper i {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--primary);
-    }
-
-    .search-wrapper input {
-      width: 100%;
-      background: var(--bg-darker);
-      border: 1px solid var(--border-neon);
-      color: var(--text-primary);
-      padding: 12px 15px 12px 42px;
-      border-radius: var(--radius);
-      outline: none;
-      font-size: 14px;
-      font-family: var(--font-sans);
-    }
-
-    .search-wrapper input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
-    }
-
-    .select-wrapper select {
-      background: var(--bg-darker);
-      border: 1px solid var(--border-neon);
-      color: var(--text-primary);
-      padding: 12px 20px;
-      border-radius: var(--radius);
-      outline: none;
-      font-size: 13px;
-      font-family: var(--font-mono);
-      cursor: pointer;
-    }
-
-    .select-wrapper select:focus {
-      border-color: var(--primary);
-    }
-
-    .quick-launch-btn {
-      background: var(--primary);
-      color: var(--bg-darker);
-      border: none;
-      padding: 12px 25px;
-      font-family: var(--font-header);
-      font-weight: 700;
-      font-size: 13px;
-      letter-spacing: 1px;
-      border-radius: var(--radius);
-      cursor: pointer;
-      text-transform: uppercase;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      transition: all 0.2s ease;
-    }
-
-    .quick-launch-btn:hover {
-      background: #fff;
-      box-shadow: 0 0 15px rgba(255,255,255,0.4);
-    }
-
-    /* Section-wise Mocks Container */
-    .sections-container {
-      display: flex;
-      flex-direction: column;
-      gap: 40px;
-    }
-
+    /* ── SECTION BLOCK ────────────────────────────────────────── */
     .section-block {
-      background: rgba(19, 23, 34, 0.4);
-      border: 1px solid var(--border-neon);
-      border-radius: var(--radius);
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .section-block-header {
-      border-bottom: 1px solid var(--border-neon);
-      padding-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .section-block-title {
-      font-family: var(--font-header);
-      font-size: 16px;
-      font-weight: 700;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .section-block-title i {
-      color: var(--primary);
-    }
-
-    .section-block-meta {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--secondary);
-    }
-
-    /* Mocks Grid */
-    .mocks-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 20px;
-    }
-
-    .mock-card {
-      background: var(--bg-panel);
-      border: 1px solid var(--border-neon);
-      border-radius: var(--radius);
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: relative;
-      min-height: 200px;
-      transition: all 0.2s ease;
-    }
-
-    .mock-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 10px;
-      height: 10px;
-      border-top: 2px solid var(--primary);
-      border-right: 2px solid var(--primary);
-    }
-
-    .mock-card:hover {
-      border-color: var(--primary);
-      background: var(--bg-panel-hover);
-      box-shadow: 0 5px 20px rgba(0, 243, 255, 0.15);
-      transform: translateY(-2px);
-    }
-
-    .mock-header {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .mock-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: #fff;
-      line-height: 1.4;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+      margin-bottom: 20px;
+      border: 1px solid var(--border1);
+      border-radius: var(--r-xl);
+      background: rgba(13,17,23,0.5);
       overflow: hidden;
-      margin-bottom: 5px;
     }
 
-    .mock-badge-group {
+    .section-head {
       display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-    }
-
-    .badge {
-      font-size: 10px;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-family: var(--font-mono);
-      text-transform: uppercase;
-      font-weight: bold;
-    }
-
-    .badge.brand {
-      background: rgba(0, 243, 255, 0.1);
-      color: var(--primary);
-      border: 1px solid var(--primary);
-    }
-
-    .badge.timer-badge {
-      background: rgba(255, 0, 85, 0.1);
-      color: var(--danger);
-      border: 1px solid var(--danger);
-    }
-
-    .badge.soft-badge {
-      background: rgba(191, 255, 0, 0.1);
-      color: var(--secondary);
-      border: 1px solid var(--secondary);
-    }
-
-    .badge.type-badge {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text-muted);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .badge.pdf-badge {
-      background: rgba(255, 42, 95, 0.1);
-      color: var(--danger);
-      border: 1px solid var(--danger);
-    }
-
-    .mock-actions {
-      display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-top: 20px;
-      border-top: 1px solid rgba(255,255,255,0.05);
-      padding-top: 15px;
+      justify-content: space-between;
+      padding: 13px 18px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 150ms;
       gap: 10px;
     }
+    .section-head:hover { background: var(--bg3); }
+    .section-head-left { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
 
-    .mock-path {
-      font-size: 11px;
-      font-family: var(--font-mono);
-      color: var(--text-muted);
+    .section-icon {
+      width: 32px; height: 32px;
+      border-radius: var(--r-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .section-icon.root { background: var(--indigo-dim); color: var(--indigo); border: 1px solid var(--indigo-ring); }
+    .section-icon.folder { background: var(--bg3); color: var(--txt2); border: 1px solid var(--border1); }
+
+    .section-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--txt0);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
-    .launch-btn {
-      background: rgba(0, 243, 255, 0.1);
-      border: 1px solid var(--primary);
-      color: var(--primary);
-      padding: 6px 15px;
-      font-size: 12px;
-      font-family: var(--font-header);
-      font-weight: 700;
-      border-radius: 4px;
-      cursor: pointer;
-      text-transform: uppercase;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .launch-btn:hover {
-      background: var(--primary);
-      color: var(--bg-darker);
-      box-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
-    }
-
-    .expand-btn {
-      background: transparent;
-      border: 1px dashed var(--border-neon);
-      color: var(--primary);
-      padding: 12px;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      border-radius: var(--radius);
-      cursor: pointer;
-      text-align: center;
-      width: 100%;
-      text-transform: uppercase;
-    }
-
-    .expand-btn:hover {
-      background: rgba(0, 243, 255, 0.05);
-      border-color: var(--primary);
-    }
-
-    .empty-state {
-      background: rgba(255, 0, 85, 0.05);
-      border: 2px dashed var(--danger);
-      color: var(--danger);
-      padding: 40px;
-      border-radius: var(--radius);
-      text-align: center;
-      font-family: var(--font-mono);
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-
-    /* Logger Terminal widget */
-    .terminal-panel {
-      background: #050608;
-      border: 1px solid var(--border-neon-strong);
-      border-radius: var(--radius);
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-      margin-top: 15px;
-    }
-
-    .terminal-header {
-      background: rgba(0, 243, 255, 0.08);
-      border-bottom: 1px solid var(--border-neon-strong);
-      padding: 10px 15px;
-      font-family: var(--font-header);
+    .section-path {
       font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      color: var(--primary);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      color: var(--txt3);
+      font-family: var(--mono);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 2px;
     }
 
-    .terminal-body {
-      padding: 15px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      max-height: 150px;
-      overflow-y: auto;
+    .section-head-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .count-chip {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: var(--r-sm);
+      background: var(--bg3);
+      color: var(--txt2);
+      border: 1px solid var(--border1);
+      font-family: var(--mono);
+    }
+    .chevron {
+      color: var(--txt3);
+      font-size: 11px;
+      transition: transform 200ms;
+    }
+    .section-block.open .chevron { transform: rotate(90deg); }
+
+    /* Sub-category tabs */
+    .sub-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 0 18px 12px;
+      border-bottom: 1px solid var(--border0);
+    }
+    .sub-tab {
+      display: flex; align-items: center; gap: 5px;
+      padding: 4px 10px;
+      border-radius: var(--r-sm);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--txt2);
+      background: var(--bg2);
+      border: 1px solid var(--border1);
+      cursor: pointer;
+      transition: all 130ms;
+    }
+    .sub-tab:hover { color: var(--txt0); background: var(--bg3); border-color: var(--border2); }
+    .sub-tab.active { background: var(--indigo-dim); border-color: var(--indigo-ring); color: var(--indigo-soft); }
+    .sub-tab-count { font-size: 9px; opacity: 0.7; }
+
+    /* Section body */
+    .section-body { display: none; }
+    .section-block.open .section-body { display: block; }
+
+    /* Sub-section header */
+    .subsection-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px 6px;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--txt3);
+    }
+    .subsection-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border0);
+    }
+
+    /* ── GRID / LIST ────────────────────────────────────────── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 8px;
+      padding: 8px 14px 14px;
+    }
+    .card-list {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      padding: 6px 10px 10px;
     }
 
-    .terminal-line {
+    /* GRID CARD */
+    .card {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 11px 13px;
+      border-radius: var(--r-lg);
+      background: var(--bg2);
+      border: 1px solid var(--border1);
+      text-decoration: none;
+      color: inherit;
+      transition: all 160ms;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(99,102,241,0.06), transparent 60%);
+      opacity: 0;
+      transition: opacity 160ms;
+      pointer-events: none;
+    }
+    .card:hover {
+      background: var(--bg3);
+      border-color: var(--border2);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+    .card:hover::before { opacity: 1; }
+
+    .card-icon {
+      font-size: 15px;
+      color: var(--txt3);
+      margin-top: 1px;
+      flex-shrink: 0;
+      transition: color 160ms;
+    }
+    .card:hover .card-icon { color: var(--indigo-soft); }
+    .card-icon.pdf { color: var(--rose); opacity: 0.7; }
+    .card:hover .card-icon.pdf { color: var(--rose); opacity: 1; }
+
+    .card-body { flex: 1; min-width: 0; }
+    .card-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--txt1);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 160ms;
+      line-height: 1.4;
+    }
+    .card:hover .card-title { color: var(--txt0); }
+    .card-meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 5px;
+    }
+
+    /* LIST ITEM */
+    .list-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 8px;
+      border-radius: var(--r-md);
+      border: 1px solid transparent;
+      text-decoration: none;
+      color: inherit;
+      transition: all 130ms;
+    }
+    .list-item:hover {
+      background: var(--bg3);
+      border-color: var(--border1);
+    }
+    .list-item-icon {
+      font-size: 12px;
+      color: var(--txt3);
+      flex-shrink: 0;
+      width: 20px;
+      text-align: center;
+      transition: color 130ms;
+    }
+    .list-item:hover .list-item-icon { color: var(--indigo-soft); }
+    .list-item-icon.pdf { color: var(--rose); opacity: 0.7; }
+    .list-item:hover .list-item-icon.pdf { opacity: 1; }
+    .list-item-title {
+      flex: 1;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--txt1);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 130ms;
+    }
+    .list-item:hover .list-item-title { color: var(--txt0); }
+    .list-item-right {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+    .list-item-sub {
+      font-size: 10.5px;
+      color: var(--txt3);
+      font-family: var(--mono);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 180px;
+    }
+
+    /* ── BADGES ────────────────────────────────────────────── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 9.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-family: var(--mono);
+      border: 1px solid;
+      flex-shrink: 0;
+    }
+    .badge-html { background: var(--emerald-dim); color: var(--emerald); border-color: rgba(16,185,129,0.2); }
+    .badge-pdf { background: var(--rose-dim); color: var(--rose); border-color: rgba(244,63,94,0.2); }
+    .badge-free { background: var(--sky-dim); color: var(--sky); border-color: rgba(56,189,248,0.2); }
+    .badge-paid { background: var(--amber-dim); color: var(--amber); border-color: rgba(245,158,11,0.2); }
+    .badge-default { background: var(--bg4); color: var(--txt3); border-color: var(--border1); }
+
+    /* ── EMPTY / ERROR ─────────────────────────────────────── */
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--txt2);
+    }
+    .empty i { font-size: 28px; margin-bottom: 12px; opacity: 0.3; display: block; }
+    .empty p { font-size: 13px; color: var(--txt3); }
+
+    .error-box {
+      margin: 40px auto;
+      max-width: 480px;
+      padding: 20px;
+      background: var(--rose-dim);
+      border: 1px solid rgba(244,63,94,0.2);
+      border-radius: var(--r-xl);
       display: flex;
       gap: 12px;
+      align-items: flex-start;
+    }
+    .error-box i { color: var(--rose); font-size: 18px; margin-top: 2px; }
+    .error-box h4 { font-size: 13px; color: var(--rose); font-weight: 700; }
+    .error-box p { font-size: 12px; color: rgba(244,63,94,0.8); margin-top: 4px; line-height: 1.6; }
+
+    /* ── RESPONSIVE ────────────────────────────────────────── */
+    @media (max-width: 900px) { .sidebar { display: none; } }
+    @media (max-width: 600px) {
+      .stamp { display: none; }
+      .kpi { padding: 8px 12px; }
+      .kpi-val { font-size: 15px; }
     }
 
-    .terminal-time {
-      color: var(--text-muted);
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: 1ms !important; animation-duration: 1ms !important; }
     }
 
-    .terminal-msg.info { color: var(--primary); }
-    .terminal-msg.warn { color: var(--secondary); }
-    .terminal-msg.err { color: var(--danger); }
-
-    @media (max-width: 1024px) {
-      .layout-container {
-        grid-template-columns: 1fr;
-      }
-      aside {
-        height: auto;
-        position: relative;
-        top: 0;
-        border-right: none;
-        border-bottom: 1px solid var(--border-neon);
-      }
-      .hud-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 640px) {
-      header {
-        padding: 10px 15px;
-        flex-direction: column;
-        gap: 10px;
-      }
-      .hud-grid {
-        grid-template-columns: 1fr;
-      }
-      .controls-panel {
-        grid-template-columns: 1fr;
-      }
-      main {
-        padding: 15px;
-      }
-    }
+    /* hidden util */
+    .hidden { display: none !important; }
   </style>
 </head>
+
 <body>
-  <div class="scanner-line"></div>
-  
-  <header>
-    <div class="brand">
-      <div class="brand-logo">DS</div>
-      <div class="brand-info">
-        <h1>DEDSEC_VAULT</h1>
-        <p>ctOS DECRYPTION SYSTEM V4.0</p>
-      </div>
+
+<!-- ═══ HEADER ═══════════════════════════════════════════════ -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-mark"><i class="fa-solid fa-graduation-cap"></i></div>
+    <div class="logo-text">
+      <div class="logo-title">Study Asset Portal</div>
+      <div class="logo-sub">Mock Tests &amp; Study Materials</div>
     </div>
-    <div class="system-status">
-      <span id="activeFilters">ALL CONTEXTS ACTIVE</span>
-      <div class="status-indicator">
-        <span class="status-dot"></span>
-        <span>ONLINE</span>
-      </div>
-    </div>
-  </header>
-
-  <div class="layout-container">
-    <aside>
-      <div>
-        <div class="panel-title">DOMAINS</div>
-        <div class="filter-group" id="brandList"></div>
-      </div>
-      <div>
-        <div class="panel-title">DATASETS</div>
-        <div class="filter-group" id="typeList"></div>
-      </div>
-    </aside>
-
-    <main>
-      <!-- HUD Diagnostics -->
-      <section class="hud-grid" aria-label="Library Status HUD">
-        <div class="hud-card">
-          <i class="fas fa-network-wired hud-icon"></i>
-          <div class="hud-details">
-            <h3 id="totalMocks">0</h3>
-            <p>Resolved Nodes</p>
-          </div>
-        </div>
-        <div class="hud-card success">
-          <i class="fas fa-file-code hud-icon"></i>
-          <div class="hud-details">
-            <h3 id="htmlMocks">0</h3>
-            <p>HTML Players</p>
-          </div>
-        </div>
-        <div class="hud-card danger">
-          <i class="fas fa-file-pdf hud-icon"></i>
-          <div class="hud-details">
-            <h3 id="pdfMocks">0</h3>
-            <p>PDF Stacks</p>
-          </div>
-        </div>
-        <div class="hud-card warning">
-          <i class="fas fa-search hud-icon"></i>
-          <div class="hud-details">
-            <h3 id="matchingCount">0</h3>
-            <p>Active Context</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Search and Launch bar -->
-      <section class="controls-panel">
-        <div class="search-wrapper">
-          <i class="fas fa-terminal"></i>
-          <input type="search" id="searchInput" placeholder="SEARCH NODES, TOPICS, SECTIONS, BRANDS..." autocomplete="off">
-        </div>
-        <div class="select-wrapper">
-          <select id="sortSelect">
-            <option value="name">SORT BY NAME</option>
-            <option value="brand">SORT BY DOMAIN</option>
-            <option value="section">SORT BY SECTION</option>
-          </select>
-        </div>
-        <a id="randomLaunch" class="quick-launch-btn" href="#">
-          <i class="fas fa-random"></i> Decrypt Random
-        </a>
-      </section>
-
-      <!-- Section-wise Mocks Container -->
-      <section id="sectionsContainer" class="sections-container"></section>
-      <div id="emptyState" class="empty-state" style="display: none;">
-        SYSTEM WARNING: NO COMPATIBLE DECRYPTION NODES MATCH SELECTIVE PARAMETERS.
-      </div>
-
-      <!-- Logging Terminal -->
-      <section class="terminal-panel">
-        <div class="terminal-header">
-          <span>LOGGER://SYSTEM_ACTIVITY_FEED</span>
-          <span class="status-indicator">
-            <span class="status-dot" style="background-color: var(--secondary); box-shadow: 0 0 8px var(--secondary);"></span>
-            <span>FEED ACTIVE</span>
-          </span>
-        </div>
-        <div class="terminal-body" id="consoleLogs"></div>
-      </section>
-    </main>
   </div>
 
-  <script src="./mocks-manifest.js"></script>
-  <script>
-    const manifest = window.MOCKS_MANIFEST || { files: [] };
-    
-    // Customize Brand display names
-    const brandDisplayNames = {
-      All: 'ALL_DOMAINS',
-      Root: 'ROOT_DISPATCH',
-      Pundits: 'THE_PUNDITS',
-      'pundits-mocks': 'PUNDITS_ARCHIVE',
-      'Mocks Wallah': 'MOCKS_WALLAH',
-      'English Madhyam': 'ENGLISH_MADHYAM_PREMIUM',
-      'english-madhyam': 'ENGLISH_MADHYAM_CLASSIC',
-      oliveboard: 'OLIVEBOARD',
-      Testbook: 'TESTBOOK',
-      'Other Brands': 'OTHER_HOUSES',
-      'Aman Sir': 'AMAN_SIR'
-    };
+  <div class="header-search">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" id="global-search" placeholder="Search tests, topics, exams…" autocomplete="off">
+  </div>
 
-    // Customize dataset types
-    const typeDisplayNames = {
-      All: 'ALL_DATASETS',
-      Mock: 'STANDARD_MOCKS',
-      Quiz: 'QUIZZES',
-      'Full Mock': 'FULL_MOCKS',
-      Sectional: 'SECTIONAL_TESTS',
-      'Topic Concept': 'CONCEPT_TESTS',
-      'Previous Year': 'PREVIOUS_YEAR_PAPERS',
-      'Practice Set': 'PRACTICE_SETS',
-      PDF: 'PDF_DOCUMENTS'
-    };
+  <div class="header-right">
+    <!-- Format filter -->
+    <div class="pill-toggle" id="ext-toggle">
+      <button class="pill-btn active" data-ext="ALL" onclick="setExt('ALL')">All</button>
+      <button class="pill-btn ext-html" data-ext="html" onclick="setExt('html')">HTML</button>
+      <button class="pill-btn ext-pdf" data-ext="pdf" onclick="setExt('pdf')">PDF</button>
+    </div>
 
-    const state = {
-      brand: 'All',
-      type: 'All',
-      query: '',
-      sort: 'name',
-      expandedSections: {} // tracks which section blocks are fully expanded
-    };
+    <!-- View toggle -->
+    <div class="pill-toggle" id="view-toggle">
+      <button class="icon-btn active" data-view="grid" onclick="setView('grid')" title="Grid view">
+        <i class="fa-solid fa-table-cells-large"></i>
+      </button>
+      <button class="icon-btn" data-view="list" onclick="setView('list')" title="List view">
+        <i class="fa-solid fa-list"></i>
+      </button>
+    </div>
 
-    const els = {
-      brandList: document.getElementById('brandList'),
-      typeList: document.getElementById('typeList'),
-      totalMocks: document.getElementById('totalMocks'),
-      htmlMocks: document.getElementById('htmlMocks'),
-      pdfMocks: document.getElementById('pdfMocks'),
-      matchingCount: document.getElementById('matchingCount'),
-      searchInput: document.getElementById('searchInput'),
-      sortSelect: document.getElementById('sortSelect'),
-      randomLaunch: document.getElementById('randomLaunch'),
-      sectionsContainer: document.getElementById('sectionsContainer'),
-      emptyState: document.getElementById('emptyState'),
-      consoleLogs: document.getElementById('consoleLogs'),
-      activeFilters: document.getElementById('activeFilters')
-    };
+    <!-- Timestamp -->
+    <div class="stamp">
+      <span class="stamp-dot"></span>
+      <span id="ts-label">—</span>
+    </div>
+  </div>
+</header>
 
-    // Terminal Logging Helper
-    function log(msg, type = 'info') {
-      const now = new Date();
-      const timeStr = now.toTimeString().split(' ')[0] + '.' + String(now.getMilliseconds()).padStart(3, '0');
-      const line = document.createElement('div');
-      line.className = 'terminal-line';
-      
-      let typeClass = 'info';
-      let prefix = '[OK] ';
-      if (type === 'warn') {
-        typeClass = 'warn';
-        prefix = '[SYS] ';
-      } else if (type === 'err') {
-        typeClass = 'err';
-        prefix = '[ERR] ';
-      }
+<!-- ═══ BODY ══════════════════════════════════════════════════ -->
+<div class="body">
 
-      line.innerHTML = `<span class="terminal-time">[${timeStr}]</span><span class="terminal-msg ${typeClass}">${prefix}${msg}</span>`;
-      els.consoleLogs.appendChild(line);
-      els.consoleLogs.scrollTop = els.consoleLogs.scrollHeight;
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="sidebar-filter">
+        <i class="fa-solid fa-filter"></i>
+        <input type="text" id="sb-search" placeholder="Filter folders…">
+      </div>
+    </div>
+    <div class="sidebar-list" id="sb-list">
+      <div class="sb-group">
+        <button class="sb-group-btn active" id="sb-all" onclick="selectScope({type:'all'})">
+          <span class="sb-group-left">
+            <i class="fa-solid fa-layer-group"></i>
+            <span class="sb-label">All Materials</span>
+          </span>
+          <span class="sb-count" id="sb-all-count">0</span>
+        </button>
+      </div>
+      <div class="sb-divider"></div>
+      <div id="sb-nodes"></div>
+    </div>
+  </aside>
 
-      while (els.consoleLogs.childElementCount > 30) {
-        els.consoleLogs.removeChild(els.consoleLogs.firstChild);
-      }
-    }
+  <!-- Main content -->
+  <main class="main">
 
-    log('Connection established. Resolving ctOS mock network...');
-    log(`Database synchronized. Loaded ${manifest.files.length} active node paths.`);
+    <!-- KPI bar -->
+    <div class="kpi-bar">
+      <div class="kpi">
+        <div class="kpi-label">Context</div>
+        <div class="kpi-val c-white" id="kpi-scope" style="font-size:13px;font-weight:600;margin-top:4px;">All Materials</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Total Items</div>
+        <div class="kpi-val c-accent" id="kpi-total">0</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">HTML Tests</div>
+        <div class="kpi-val c-html" id="kpi-html">0</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">PDF Docs</div>
+        <div class="kpi-val c-pdf" id="kpi-pdf">0</div>
+      </div>
+    </div>
 
-    // Helper functions
-    const cleanName = (name) => name
-      .replace(/\.(html?|pdf)$/i, '')
-      .replace(/^@/g, '')
-      .replace(/\s+/g, ' ')
-      .trim();
+    <!-- Scrollable content -->
+    <div class="content" id="content">
+      <div class="empty">
+        <i class="fa-solid fa-circle-notch fa-spin"></i>
+        <p>Loading assets…</p>
+      </div>
+    </div>
+  </main>
+</div>
 
-    const titleCase = (value) => value.replace(/[-_]/g, ' ').toUpperCase();
-    const getBrandLabel = (value) => brandDisplayNames[value] || titleCase(value);
-    const getTypeLabel = (value) => typeDisplayNames[value] || value.toUpperCase();
-    const encodePath = (path) => path.split('/').map(encodeURIComponent).join('/');
-    const formatNumber = (num) => new Intl.NumberFormat('en-IN').format(num);
+<script>
+(function() {
+  'use strict';
 
-    const inferType = (file) => {
-      const text = file.toLowerCase();
-      if (text.endsWith('.pdf')) return 'PDF';
-      if (text.includes('previous year')) return 'Previous Year';
-      if (text.includes('sectional')) return 'Sectional';
-      if (text.includes('topic-concept') || text.includes('topic concept')) return 'Topic Concept';
-      if (text.includes('practice')) return 'Practice Set';
-      if (text.includes('full mock') || text.includes('full test') || text.includes('live mock')) return 'Full Mock';
-      if (text.includes('quiz')) return 'Quiz';
-      return 'Mock';
-    };
-
-    // Preprocess mock files
-    const files = manifest.files.map((file, idx) => {
-      const parts = file.split('/');
-      const brand = parts.length > 1 ? parts[0] : 'Root';
-      const section = parts.length > 2 ? parts[1] : (parts.length > 1 ? 'General Tests' : 'Unsorted');
-      const name = cleanName(parts[parts.length - 1]);
-      const ext = file.toLowerCase().endsWith('.pdf') ? 'PDF' : 'HTML';
-      const type = inferType(file);
-      
-      // Look for indicators in file names for better badges
-      const isSectionalTimer = file.toLowerCase().includes('sectional timer') || file.toLowerCase().includes('tierii') || file.toLowerCase().includes('tier ii');
-      const isSoftSwitch = !isSectionalTimer && (file.toLowerCase().includes('tier1') || file.toLowerCase().includes('tier i') || file.toLowerCase().includes('pre'));
-
-      const search = `${file} ${brand} ${section} ${name} ${type} ${ext}`.toLowerCase();
-      return { idx, file, brand, section, name, ext, type, isSectionalTimer, isSoftSwitch, search };
-    });
-
-    log('Node type-inferenced & parsed metadata indexing maps compiled.');
-
-    // Count statistics
-    const uniqueValues = (arr) => [...new Set(arr)].sort((a,b) => a.localeCompare(b));
-    const brandCounts = new Map();
-    const typeCounts = new Map();
-
-    files.forEach(f => {
-      brandCounts.set(f.brand, (brandCounts.get(f.brand) || 0) + 1);
-      typeCounts.set(f.type, (typeCounts.get(f.type) || 0) + 1);
-    });
-
-    const orderedBrands = ['All', ...uniqueValues(files.map(f => f.brand))];
-    const orderedTypes = ['All', ...uniqueValues(files.map(f => f.type))];
-
-    function makeFilterBtn(label, count, active, onClick) {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = `filter-btn${active ? ' active' : ''}`;
-      btn.innerHTML = `<span>${label}</span><span class="badge">${formatNumber(count)}</span>`;
-      btn.addEventListener('click', onClick);
-      return btn;
-    }
-
-    function renderFilters() {
-      // Sidebar domains
-      els.brandList.replaceChildren(...orderedBrands.map(b => {
-        const count = b === 'All' ? files.length : brandCounts.get(b);
-        return makeFilterBtn(getBrandLabel(b), count, state.brand === b, () => {
-          log(`Subsystem filter update: ${getBrandLabel(b)} active.`);
-          state.brand = b;
-          render();
-        });
-      }));
-
-      // Sidebar datasets
-      els.typeList.replaceChildren(...orderedTypes.map(t => {
-        const count = t === 'All' ? files.length : typeCounts.get(t);
-        return makeFilterBtn(getTypeLabel(t), count, state.type === t, () => {
-          log(`Subsystem filter update: ${getTypeLabel(t)} active.`);
-          state.type = t;
-          render();
-        });
-      }));
-    }
-
-    function getFilteredAndSorted() {
-      const query = state.query.toLowerCase().trim();
-      const tokens = query ? query.split(/\s+/) : [];
-
-      let items = files.filter(f => {
-        if (state.brand !== 'All' && f.brand !== state.brand) return false;
-        if (state.type !== 'All' && f.type !== state.type) return false;
-        if (tokens.length > 0) {
-          return tokens.every(token => f.search.includes(token));
-        }
-        return true;
-      });
-
-      items.sort((a, b) => {
-        if (state.sort === 'brand') return a.brand.localeCompare(b.brand) || a.name.localeCompare(b.name);
-        if (state.sort === 'section') return a.section.localeCompare(b.section) || a.name.localeCompare(b.name);
-        return a.name.localeCompare(b.name);
-      });
-
-      return items;
-    }
-
-    function renderHUD(items) {
-      els.totalMocks.textContent = formatNumber(files.length);
-      els.htmlMocks.textContent = formatNumber(files.filter(f => f.ext === 'HTML').length);
-      els.pdfMocks.textContent = formatNumber(files.filter(f => f.ext === 'PDF').length);
-      els.matchingCount.textContent = formatNumber(items.length);
-    }
-
-    function renderCard(item) {
-      const href = `./${encodePath(item.file)}`;
-      const card = document.createElement('div');
-      card.className = 'mock-card';
-      
-      let badges = `<span class="badge brand">${getBrandLabel(item.brand)}</span>`;
-      if (item.ext === 'PDF') {
-        badges += `<span class="badge pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>`;
-      } else {
-        badges += `<span class="badge type-badge">CBT CBT</span>`;
-        if (item.isSectionalTimer) {
-          badges += `<span class="badge timer-badge"><i class="fas fa-clock"></i> Sectional Timer (Lock)</span>`;
-        }
-        if (item.isSoftSwitch) {
-          badges += `<span class="badge soft-badge"><i class="fas fa-exchange-alt"></i> Soft Switching</span>`;
-        }
-      }
-
-      card.innerHTML = `
-        <div class="mock-header">
-          <h4 class="mock-title" title="${item.name}">${item.name}</h4>
-          <div class="mock-badge-group">
-            ${badges}
-          </div>
+  /* ── 0. Guard ───────────────────────────────────────────── */
+  if (!window.MOCKS_MANIFEST?.files) {
+    document.getElementById('content').innerHTML = `
+      <div class="error-box">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <div>
+          <h4>Manifest Not Found</h4>
+          <p>Could not read <code>window.MOCKS_MANIFEST.files</code>. Re-generate the index file and reload.</p>
         </div>
-        <div class="mock-actions">
-          <span class="mock-path" title="${item.file}">${item.file}</span>
-          <a class="launch-btn" href="${href}" target="_self">Decrypt Node</a>
+      </div>`;
+    return;
+  }
+
+  const allFiles = window.MOCKS_MANIFEST.files;
+
+  /* ── 1. Timestamp ───────────────────────────────────────── */
+  const ts = window.MOCKS_MANIFEST.generatedAt;
+  document.getElementById('ts-label').textContent = ts
+    ? new Date(ts).toLocaleString(undefined, { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' })
+    : 'N/A';
+  document.getElementById('sb-all-count').textContent = allFiles.length;
+
+  /* ── 2. Build Data Tree ─────────────────────────────────── */
+  // Structure: tree[rootFolder][subFolder] = [fileObj, ...]
+  const tree = {};
+
+  allFiles.forEach(filepath => {
+    const parts = filepath.split('/');
+    let root, sub, fileName;
+
+    if (parts.length === 1) {
+      root = '(Root)';
+      sub = '';
+      fileName = parts[0];
+    } else if (parts.length === 2) {
+      root = parts[0];
+      sub = '';
+      fileName = parts[1];
+    } else {
+      root = parts[0];
+      sub = parts.slice(1, -1).join(' / ');
+      fileName = parts[parts.length - 1];
+    }
+
+    const ext = fileName.split('.').pop().toLowerCase();
+    const isFree = /^free\b/i.test(fileName);
+    const isPaid = /^paid\b/i.test(fileName);
+    const accessTag = isFree ? 'free' : isPaid ? 'paid' : null;
+
+    if (!tree[root]) tree[root] = {};
+    if (!tree[root][sub]) tree[root][sub] = [];
+
+    tree[root][sub].push({ fileName, path: filepath, ext, sub, accessTag });
+  });
+
+  /* ── 3. Label Cleaning ──────────────────────────────────── */
+  function cleanLabel(name) {
+    return name
+      .replace(/\.(html|pdf)$/i, '')
+      .replace(/\s+\d{5,}$/, '')        // trailing numeric IDs
+      .replace(/\s*\(\d+\)$/, m => ` ${m.trim()}`) // (2) → keep but clean space
+      .trim();
+  }
+
+  function parseTestMeta(name) {
+    const cleaned = cleanLabel(name);
+    // Extract QUESTION/MARKS/TIME metadata
+    const m = cleaned.match(/QUESTION[-\s]*(\d+)[,\s]+MARKS[-\s]*(\d+)[,\s]+TIME[-\s]*(\d+)/i);
+    if (m) {
+      const label = cleaned.replace(/QUESTION[-\s]*\d+[,\s]+MARKS[-\s]*\d+[,\s]+TIME[-\s]*\d+.*/i, '').replace(/TEST\s*$/i,'').trim();
+      return { label, q: m[1], marks: m[2], time: m[3] };
+    }
+    return { label: cleaned, q: null, marks: null, time: null };
+  }
+
+  /* ── 4. Badge Helpers ───────────────────────────────────── */
+  function extBadge(ext) {
+    return ext === 'html'
+      ? '<span class="badge badge-html">HTML</span>'
+      : ext === 'pdf'
+      ? '<span class="badge badge-pdf">PDF</span>'
+      : `<span class="badge badge-default">${ext}</span>`;
+  }
+
+  function accessBadge(tag) {
+    if (tag === 'free') return '<span class="badge badge-free">Free</span>';
+    if (tag === 'paid') return '<span class="badge badge-paid">Paid</span>';
+    return '';
+  }
+
+  function fileIconClass(ext, isClass) {
+    const base = ext === 'pdf' ? 'fa-regular fa-file-pdf' : 'fa-regular fa-file-code';
+    return isClass ? `${base} ${ext === 'pdf' ? 'pdf' : ''}` : base;
+  }
+
+  /* ── 5. App State ───────────────────────────────────────── */
+  const state = {
+    scope: { type: 'all' },   // {type:'all'} | {type:'root', root} | {type:'sub', root, sub}
+    ext: 'ALL',
+    search: '',
+    view: 'grid'
+  };
+  let debounce = null;
+
+  /* ── 6. Sidebar Builder ─────────────────────────────────── */
+  const sbNodes = document.getElementById('sb-nodes');
+
+  const sortedRoots = Object.keys(tree).sort((a,b) => a.localeCompare(b));
+
+  sortedRoots.forEach(root => {
+    const subs = Object.keys(tree[root]).sort();
+    const rootCount = subs.reduce((s, k) => s + tree[root][k].length, 0);
+    const hasSubs = subs.some(s => s !== '');
+
+    const grp = document.createElement('div');
+    grp.className = 'sb-group';
+    grp.dataset.root = root;
+
+    // Root button
+    const rootBtn = document.createElement('button');
+    rootBtn.className = 'sb-group-btn';
+    rootBtn.innerHTML = `
+      <span class="sb-group-left">
+        <i class="fa-regular fa-folder"></i>
+        <span class="sb-label" title="${root}">${root}</span>
+      </span>
+      <span class="sb-count">${rootCount}</span>
+    `;
+    rootBtn.onclick = () => {
+      if (hasSubs) {
+        const sub = grp.querySelector('.sb-sub');
+        sub.classList.toggle('open');
+        rootBtn.querySelector('i').className = sub.classList.contains('open')
+          ? 'fa-regular fa-folder-open'
+          : 'fa-regular fa-folder';
+      }
+      selectScope({ type: 'root', root });
+    };
+
+    grp.appendChild(rootBtn);
+
+    // Sub-folder buttons
+    if (hasSubs) {
+      const subWrap = document.createElement('div');
+      subWrap.className = 'sb-sub';
+
+      subs.filter(s => s !== '').sort().forEach(sub => {
+        const subCount = tree[root][sub].length;
+        const subLabel = sub.split(' / ').pop();
+        const btn = document.createElement('button');
+        btn.className = 'sb-sub-btn';
+        btn.innerHTML = `
+          <span class="sb-group-left">
+            <i class="fa-regular fa-folder-open" style="font-size:10px;opacity:0.5"></i>
+            <span class="sb-label" title="${sub}">${subLabel}</span>
+          </span>
+          <span class="sb-count">${subCount}</span>
+        `;
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          selectScope({ type: 'sub', root, sub });
+        };
+        btn.dataset.sub = sub;
+        subWrap.appendChild(btn);
+      });
+
+      grp.appendChild(subWrap);
+    }
+
+    sbNodes.appendChild(grp);
+  });
+
+  /* ── 7. Sidebar Active State ────────────────────────────── */
+  function updateSidebarActive() {
+    document.querySelectorAll('.sb-group-btn, .sb-sub-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('sb-all').classList.remove('active');
+
+    const { scope } = state;
+    if (scope.type === 'all') {
+      document.getElementById('sb-all').classList.add('active');
+      return;
+    }
+    if (scope.type === 'root' || scope.type === 'sub') {
+      const grp = sbNodes.querySelector(`[data-root="${CSS.escape(scope.root)}"]`);
+      if (grp) {
+        grp.querySelector('.sb-group-btn').classList.add('active');
+        if (scope.type === 'sub') {
+          const subBtn = grp.querySelector(`[data-sub="${CSS.escape(scope.sub)}"]`);
+          if (subBtn) subBtn.classList.add('active');
+        }
+      }
+    }
+  }
+
+  window.selectScope = function(scope) {
+    state.scope = scope;
+    updateSidebarActive();
+    render();
+  };
+
+  /* ── 8. Sidebar Filter ─────────────────────────────────── */
+  document.getElementById('sb-search').addEventListener('input', e => {
+    const q = e.target.value.toLowerCase().trim();
+    document.querySelectorAll('#sb-nodes .sb-group').forEach(grp => {
+      const label = grp.querySelector('.sb-label').textContent.toLowerCase();
+      const hidden = q && !label.includes(q);
+      grp.classList.toggle('hidden', hidden);
+    });
+  });
+
+  /* ── 9. Toolbar Handlers ────────────────────────────────── */
+  window.setExt = function(ext) {
+    state.ext = ext;
+    document.querySelectorAll('#ext-toggle .pill-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.ext === ext);
+    });
+    render();
+  };
+
+  window.setView = function(view) {
+    state.view = view;
+    document.querySelectorAll('#view-toggle .icon-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.view === view);
+    });
+    render();
+  };
+
+  document.getElementById('global-search').addEventListener('input', e => {
+    clearTimeout(debounce);
+    debounce = setTimeout(() => {
+      state.search = e.target.value.trim().toLowerCase();
+      render();
+    }, 160);
+  });
+
+  /* ── 10. Main Render ────────────────────────────────────── */
+  function getVisibleRoots() {
+    const { scope } = state;
+    if (scope.type === 'all') return sortedRoots;
+    if (scope.type === 'root' || scope.type === 'sub') return [scope.root];
+    return sortedRoots;
+  }
+
+  function filterFiles(files) {
+    return files.filter(f => {
+      if (state.ext !== 'ALL' && f.ext !== state.ext) return false;
+      if (state.search) {
+        const hay = `${f.fileName} ${f.sub}`.toLowerCase();
+        if (!hay.includes(state.search)) return false;
+      }
+      return true;
+    });
+  }
+
+  function buildCard(file, isGrid) {
+    const { label, q, marks, time } = parseTestMeta(file.fileName);
+    const icon = fileIconClass(file.ext, false);
+    const iconCls = file.ext === 'pdf' ? 'pdf' : '';
+    const extB = extBadge(file.ext);
+    const accessB = accessBadge(file.accessTag);
+
+    if (isGrid) {
+      const a = document.createElement('a');
+      a.className = 'card';
+      a.href = encodeURI(file.path);
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.title = label;
+
+      let metaHtml = extB;
+      if (accessB) metaHtml += accessB;
+      if (q) metaHtml += `<span class="badge badge-default" style="font-size:9px">Q${q} · ${time}m</span>`;
+
+      a.innerHTML = `
+        <i class="${icon} card-icon ${iconCls}"></i>
+        <div class="card-body">
+          <div class="card-title">${label}</div>
+          <div class="card-meta">${metaHtml}</div>
         </div>
       `;
+      return a;
+    } else {
+      const a = document.createElement('a');
+      a.className = 'list-item';
+      a.href = encodeURI(file.path);
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.title = label;
 
-      card.querySelector('.launch-btn').addEventListener('click', () => {
-        log(`Broadcasting decrypt request to payload: ${item.name}`, 'warn');
-      });
+      let rightHtml = '';
+      if (accessB) rightHtml += accessB;
+      rightHtml += extB;
+      if (q) rightHtml += `<span class="badge badge-default" style="font-size:9px">Q${q}·${time}m</span>`;
 
-      return card;
+      a.innerHTML = `
+        <i class="${icon} list-item-icon ${iconCls}"></i>
+        <span class="list-item-title">${label}</span>
+        ${file.sub ? `<span class="list-item-sub">${file.sub.split(' / ').pop()}</span>` : ''}
+        <div class="list-item-right">${rightHtml}</div>
+      `;
+      return a;
     }
+  }
 
-    function renderSectionWise(items) {
-      els.sectionsContainer.innerHTML = '';
-      
-      // Group by sections
-      const sectionsMap = {};
-      items.forEach(item => {
-        const key = item.section;
-        if (!sectionsMap[key]) {
-          sectionsMap[key] = [];
-        }
-        sectionsMap[key].push(item);
+  function render() {
+    const content = document.getElementById('content');
+    content.innerHTML = '';
+
+    let total = 0, htmlCount = 0, pdfCount = 0;
+    const { scope, view } = state;
+    const isGrid = view === 'grid';
+    const roots = getVisibleRoots();
+
+    // Update KPI scope label
+    document.getElementById('kpi-scope').textContent =
+      scope.type === 'all' ? 'All Materials'
+      : scope.type === 'sub' ? scope.sub.split(' / ').pop()
+      : scope.root;
+
+    roots.forEach(root => {
+      const subMap = tree[root];
+      if (!subMap) return;
+
+      const subs = scope.type === 'sub'
+        ? [scope.sub]
+        : Object.keys(subMap).sort();
+
+      // Collect all matching files for this root
+      let rootMatchCount = 0;
+      const subData = {};
+      subs.forEach(sub => {
+        const files = filterFiles(subMap[sub] || []);
+        if (files.length) { subData[sub] = files; rootMatchCount += files.length; }
       });
 
-      const sectionKeys = Object.keys(sectionsMap).sort((a,b) => a.localeCompare(b));
-      
-      if (sectionKeys.length === 0) {
-        els.emptyState.style.display = 'block';
-        return;
-      }
-      els.emptyState.style.display = 'none';
+      if (rootMatchCount === 0) return;
 
-      sectionKeys.forEach(secName => {
-        const secItems = sectionsMap[secName];
-        const block = document.createElement('div');
-        block.className = 'section-block';
-        
-        const isExpanded = !!state.expandedSections[secName];
-        const limit = 8;
-        const visibleItems = isExpanded ? secItems : secItems.slice(0, limit);
+      total += rootMatchCount;
+      Object.values(subData).forEach(files => files.forEach(f => {
+        if (f.ext === 'html') htmlCount++;
+        if (f.ext === 'pdf') pdfCount++;
+      }));
 
-        block.innerHTML = `
-          <div class="section-block-header">
-            <div class="section-block-title">
-              <i class="fas fa-folder-open"></i>
-              <span>${secName.toUpperCase()}</span>
-            </div>
-            <div class="section-block-meta">${secItems.length} Resolved Mocks</div>
+      // Section block
+      const block = document.createElement('div');
+      block.className = 'section-block open';
+
+      const subKeys = Object.keys(subData);
+      const hasSubs = subKeys.some(k => k !== '');
+
+      // Section header
+      const head = document.createElement('div');
+      head.className = 'section-head';
+      head.innerHTML = `
+        <div class="section-head-left">
+          <div class="section-icon root"><i class="fa-solid fa-folder-open"></i></div>
+          <div style="min-width:0">
+            <div class="section-name">${root}</div>
+            ${hasSubs ? `<div class="section-path">${subKeys.length} sub-categories</div>` : ''}
           </div>
-          <div class="mocks-grid" id="grid-${secName}"></div>
-        `;
+        </div>
+        <div class="section-head-right">
+          <span class="count-chip">${rootMatchCount} items</span>
+          <i class="fa-solid fa-chevron-right chevron"></i>
+        </div>
+      `;
+      head.addEventListener('click', () => {
+        block.classList.toggle('open');
+      });
+      block.appendChild(head);
 
-        const grid = block.querySelector(`#grid-${secName}`);
-        grid.replaceChildren(...visibleItems.map(renderCard));
+      // Section body
+      const body = document.createElement('div');
+      body.className = 'section-body';
 
-        if (secItems.length > limit && !isExpanded) {
-          const expandBtn = document.createElement('button');
-          expandBtn.className = 'expand-btn';
-          expandBtn.innerHTML = `<i class="fas fa-plus"></i> Load ${secItems.length - limit} More Nodes in this Section`;
-          expandBtn.addEventListener('click', () => {
-            log(`Expanding block layout for section: ${secName.toUpperCase()}`);
-            state.expandedSections[secName] = true;
-            render();
-          });
-          block.appendChild(expandBtn);
-        } else if (isExpanded) {
-          const collapseBtn = document.createElement('button');
-          collapseBtn.className = 'expand-btn';
-          collapseBtn.innerHTML = `<i class="fas fa-minus"></i> Collapse Section`;
-          collapseBtn.addEventListener('click', () => {
-            log(`Collapsing block layout for section: ${secName.toUpperCase()}`);
-            state.expandedSections[secName] = false;
-            render();
-          });
-          block.appendChild(collapseBtn);
+      subKeys.sort().forEach(sub => {
+        const files = subData[sub];
+        if (!files || !files.length) return;
+
+        if (sub) {
+          const label = document.createElement('div');
+          label.className = 'subsection-label';
+          label.textContent = sub.split(' / ').pop();
+          body.appendChild(label);
         }
 
-        els.sectionsContainer.appendChild(block);
+        const container = document.createElement('div');
+        container.className = isGrid ? 'card-grid' : 'card-list';
+
+        files.forEach(f => container.appendChild(buildCard(f, isGrid)));
+        body.appendChild(container);
       });
-    }
 
-    function updateHeaderStatus() {
-      const activeFilters = [];
-      if (state.brand !== 'All') activeFilters.push(`DOMAIN: ${getBrandLabel(state.brand)}`);
-      if (state.type !== 'All') activeFilters.push(`DATASET: ${getTypeLabel(state.type)}`);
-      if (state.query) activeFilters.push(`QUERY: "${state.query.toUpperCase()}"`);
-      
-      els.activeFilters.textContent = activeFilters.length > 0 ? activeFilters.join(' | ') : 'ALL MOCKS RESOLVED';
-    }
-
-    function render() {
-      renderFilters();
-      
-      const items = getFilteredAndSorted();
-      renderHUD(items);
-      renderSectionWise(items);
-      updateHeaderStatus();
-
-      // Configure random launch URL
-      if (items.length > 0) {
-        const rand = items[Math.floor(Math.random() * items.length)];
-        els.randomLaunch.href = `./${encodePath(rand.file)}`;
-      } else {
-        els.randomLaunch.href = '#';
-      }
-    }
-
-    // Event Listeners
-    els.searchInput.addEventListener('input', (e) => {
-      state.query = e.target.value;
-      log(`Decoding query matrix: "${state.query.toUpperCase()}"`);
-      render();
+      block.appendChild(body);
+      content.appendChild(block);
     });
 
-    els.sortSelect.addEventListener('change', (e) => {
-      state.sort = e.target.value;
-      log(`Re-ordering tree indexes by sort: ${state.sort.toUpperCase()}`);
-      render();
-    });
+    // Empty state
+    if (total === 0) {
+      content.innerHTML = `
+        <div class="empty">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <strong style="display:block;margin-bottom:6px;font-size:14px">No results found</strong>
+          <p>Try adjusting your search, format filter, or selected folder.</p>
+        </div>
+      `;
+    }
 
-    els.randomLaunch.addEventListener('click', (e) => {
-      if (els.randomLaunch.getAttribute('href') === '#') {
-        e.preventDefault();
-        log('No decryption node maps resolved under active parameters.', 'err');
-      } else {
-        log('Injecting decipher stream packet into randomized host Node...', 'warn');
-      }
-    });
+    document.getElementById('kpi-total').textContent = total.toLocaleString();
+    document.getElementById('kpi-html').textContent = htmlCount.toLocaleString();
+    document.getElementById('kpi-pdf').textContent = pdfCount.toLocaleString();
+  }
 
-    // Initial render
-    render();
-  </script>
+  /* ── 11. Initial Render ─────────────────────────────────── */
+  render();
+  updateSidebarActive();
+
+})();
+</script>
 </body>
 </html>
