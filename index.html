@@ -3,47 +3,73 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mock Library Dashboard</title>
+  <title>DEDSEC // MOCK_DECRYPTOR</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+
     :root {
-      color-scheme: light;
-      --ink: #17202a;
-      --muted: #687684;
-      --paper: #f7f4ee;
-      --panel: #ffffff;
-      --line: #ddd5ca;
-      --line-strong: #c6b9aa;
-      --clay: #b95738;
-      --teal: #157a74;
-      --gold: #b8872d;
-      --leaf: #4f7d3f;
-      --blue: #315f92;
-      --shadow: 0 18px 42px rgba(50, 43, 35, 0.11);
-      --radius: 8px;
+      color-scheme: dark;
+      --primary-neon: #00f3ff; /* Watch Dogs cyan */
+      --accent-warning: #dfff00; /* Cyber yellow */
+      --accent-danger: #ff2a5f; /* DedSec red */
+      --bg-dark: #07080b;
+      --bg-panel: #0f1117;
+      --bg-panel-soft: #161922;
+      --border-neon: rgba(0, 243, 255, 0.2);
+      --border-neon-strong: rgba(0, 243, 255, 0.7);
+      --text-primary: #e2e8f0;
+      --text-muted: #627284;
+      --font-header: 'Orbitron', sans-serif;
+      --font-mono: 'Share Tech Mono', monospace;
+      --radius: 0px; /* Monolithic sharp design */
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+      transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
 
     html,
     body {
       margin: 0;
       min-height: 100%;
+      background-color: var(--bg-dark);
     }
 
     body {
-      font-family: "Aptos", "Segoe UI", Tahoma, sans-serif;
-      color: var(--ink);
-      background:
-        linear-gradient(90deg, rgba(185, 87, 56, 0.07) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(21, 122, 116, 0.06) 1px, transparent 1px),
-        var(--paper);
-      background-size: 28px 28px;
+      font-family: var(--font-mono);
+      color: var(--text-primary);
+      background-image: 
+        linear-gradient(rgba(15, 17, 23, 0.9) 50%, rgba(7, 8, 11, 0.95) 50%),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(0, 243, 255, 0.04) 1px, transparent 1px);
+      background-size: 4px 4px, 24px 24px, 24px 24px;
+      position: relative;
+    }
+
+    /* Scanline Animation */
+    @keyframes scan {
+      0% { transform: translateY(-100vh); }
+      100% { transform: translateY(100vh); }
+    }
+    .scanline {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(0, 243, 255, 0.15);
+      box-shadow: 0 0 12px var(--primary-neon);
+      z-index: 9999;
+      pointer-events: none;
+      animation: scan 8s linear infinite;
     }
 
     button,
     input,
     select {
       font: inherit;
+      border-radius: var(--radius);
     }
 
     a {
@@ -53,67 +79,115 @@
     .app {
       min-height: 100vh;
       display: grid;
-      grid-template-columns: 280px minmax(0, 1fr);
+      grid-template-columns: 300px minmax(0, 1fr);
     }
 
+    /* Sidebar Hacking Interface */
     .sidebar {
       position: sticky;
       top: 0;
       height: 100vh;
-      padding: 22px;
-      border-right: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.78);
-      backdrop-filter: blur(14px);
-      overflow: auto;
+      padding: 24px 18px;
+      border-right: 2px solid var(--primary-neon);
+      background: rgba(15, 17, 23, 0.95);
+      backdrop-filter: blur(10px);
+      overflow-y: auto;
+      box-shadow: 5px 0 25px rgba(0, 243, 255, 0.05);
     }
 
     .brandmark {
+      margin-bottom: 30px;
+      border-bottom: 1px solid var(--border-neon);
+      padding-bottom: 20px;
+      position: relative;
+    }
+
+    .brandmark::before {
+      content: "[// DEDSEC_NET]";
+      position: absolute;
+      top: -12px;
+      right: 0;
+      font-size: 10px;
+      color: var(--accent-warning);
+      letter-spacing: 1px;
+    }
+
+    .brandmark-title-wrapper {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 22px;
     }
 
     .brandmark-icon {
-      width: 42px;
-      height: 42px;
+      width: 48px;
+      height: 48px;
       display: grid;
       place-items: center;
-      border-radius: var(--radius);
-      background: var(--ink);
-      color: #fff;
-      font-weight: 800;
+      background: var(--bg-dark);
+      border: 2px solid var(--primary-neon);
+      color: var(--primary-neon);
+      font-family: var(--font-header);
+      font-weight: 900;
+      font-size: 18px;
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+      position: relative;
+    }
+
+    .brandmark-icon::after {
+      content: "";
+      position: absolute;
+      inset: -4px;
+      border: 1px solid var(--accent-warning);
+      opacity: 0.5;
+      pointer-events: none;
     }
 
     .brandmark h1 {
       margin: 0;
+      font-family: var(--font-header);
       font-size: 20px;
-      letter-spacing: 0;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: #fff;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
     }
 
     .brandmark p {
-      margin: 3px 0 0;
-      color: var(--muted);
-      font-size: 12px;
+      margin: 5px 0 0;
+      color: var(--primary-neon);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .side-section {
-      margin-top: 22px;
+      margin-top: 24px;
     }
 
     .side-section h2 {
-      margin: 0 0 10px;
-      color: var(--muted);
+      margin: 0 0 14px;
+      color: var(--accent-warning);
       font-size: 12px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .side-section h2::after {
+      content: "";
+      flex-grow: 1;
+      height: 1px;
+      background: var(--border-neon);
+      margin-left: 10px;
     }
 
     .brand-list,
     .type-list {
       display: grid;
-      gap: 8px;
+      gap: 6px;
     }
 
     .filter-button {
@@ -123,147 +197,286 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 9px 10px;
-      border: 1px solid transparent;
-      border-radius: var(--radius);
-      background: transparent;
-      color: var(--ink);
+      padding: 8px 12px;
+      border: 1px solid var(--border-neon);
+      background: rgba(22, 25, 34, 0.4);
+      color: var(--text-primary);
       cursor: pointer;
       text-align: left;
+      position: relative;
+    }
+
+    .filter-button::before {
+      content: ">";
+      color: var(--primary-neon);
+      margin-right: 6px;
+      opacity: 0;
+      transform: translateX(-4px);
+      transition: all 0.15s ease;
     }
 
     .filter-button:hover {
-      background: #f1ece5;
+      background: rgba(0, 243, 255, 0.06);
+      border-color: var(--primary-neon);
+      box-shadow: 0 0 8px rgba(0, 243, 255, 0.15);
+    }
+
+    .filter-button:hover::before {
+      opacity: 1;
+      transform: translateX(0);
     }
 
     .filter-button.is-active {
-      background: #fff;
-      border-color: var(--line-strong);
-      box-shadow: 0 6px 18px rgba(50, 43, 35, 0.08);
+      background: rgba(0, 243, 255, 0.12);
+      border-color: var(--primary-neon);
+      color: var(--primary-neon);
+      box-shadow: 0 0 12px rgba(0, 243, 255, 0.25);
+      font-weight: 700;
+    }
+
+    .filter-button.is-active::before {
+      opacity: 1;
+      transform: translateX(0);
+      content: "■";
     }
 
     .count-pill {
-      min-width: 32px;
-      padding: 3px 7px;
-      border-radius: 999px;
-      background: #ece5dc;
-      color: var(--muted);
+      padding: 2px 6px;
+      background: var(--bg-dark);
+      border: 1px solid var(--border-neon);
+      color: var(--accent-warning);
       font-size: 11px;
-      text-align: center;
     }
 
+    .filter-button.is-active .count-pill {
+      border-color: var(--primary-neon);
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    /* Main Decryption HUD */
     .main {
       min-width: 0;
-      padding: 26px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
     .topbar {
       display: grid;
       grid-template-columns: minmax(240px, 1fr) auto;
-      gap: 16px;
+      gap: 20px;
       align-items: start;
-      margin-bottom: 18px;
     }
 
     .headline {
-      padding: 22px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.82);
-      box-shadow: var(--shadow);
+      padding: 24px;
+      border: 2px solid var(--border-neon);
+      background: rgba(15, 17, 23, 0.85);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .headline::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--primary-neon);
     }
 
     .headline h2 {
       margin: 0;
-      max-width: 820px;
-      font-size: 34px;
-      line-height: 1.1;
-      letter-spacing: 0;
+      font-family: var(--font-header);
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #fff;
+      text-transform: uppercase;
     }
 
     .headline p {
-      margin: 10px 0 0;
-      max-width: 760px;
-      color: var(--muted);
-      line-height: 1.55;
+      margin: 12px 0 0;
+      color: var(--text-primary);
+      line-height: 1.6;
+      font-size: 14px;
     }
 
     .quick-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
       justify-content: flex-end;
     }
 
     .action {
-      min-height: 38px;
+      min-height: 40px;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 9px 12px;
-      border: 1px solid var(--line-strong);
-      border-radius: var(--radius);
-      background: #fff;
-      color: var(--ink);
+      gap: 10px;
+      padding: 10px 18px;
+      border: 1px solid var(--primary-neon);
+      background: transparent;
+      color: var(--primary-neon);
       text-decoration: none;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
       cursor: pointer;
+      position: relative;
+    }
+
+    .action:hover {
+      background: rgba(0, 243, 255, 0.1);
+      box-shadow: 0 0 12px rgba(0, 243, 255, 0.3);
     }
 
     .action.primary {
-      border-color: var(--ink);
-      background: var(--ink);
-      color: #fff;
+      background: var(--primary-neon);
+      color: var(--bg-dark);
+      border-color: var(--primary-neon);
     }
 
+    .action.primary:hover {
+      background: #00d2dd;
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+    }
+
+    /* Diagnostic Telemetry Widgets */
     .stats {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      margin: 18px 0;
+      gap: 15px;
     }
 
     .stat {
       padding: 16px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel);
-      box-shadow: 0 10px 24px rgba(50, 43, 35, 0.06);
+      border: 1px solid var(--border-neon);
+      background: rgba(15, 17, 23, 0.9);
+      position: relative;
+    }
+
+    .stat::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 10px;
+      width: 15px;
+      height: 3px;
+      background: var(--primary-neon);
     }
 
     .stat strong {
       display: block;
-      font-size: 26px;
-      line-height: 1;
+      font-size: 28px;
+      font-family: var(--font-header);
+      font-weight: 900;
+      color: var(--primary-neon);
     }
 
     .stat span {
       display: block;
       margin-top: 8px;
-      color: var(--muted);
-      font-size: 12px;
+      color: var(--text-muted);
+      font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 1.5px;
     }
 
-    .stat:nth-child(1) { border-top: 4px solid var(--clay); }
-    .stat:nth-child(2) { border-top: 4px solid var(--teal); }
-    .stat:nth-child(3) { border-top: 4px solid var(--gold); }
-    .stat:nth-child(4) { border-top: 4px solid var(--leaf); }
+    /* Unique Watch Dogs warning accents on stats */
+    .stat:nth-child(1) { border-left: 3px solid var(--accent-warning); }
+    .stat:nth-child(1) strong { color: var(--accent-warning); }
+    .stat:nth-child(2) { border-left: 3px solid var(--primary-neon); }
+    .stat:nth-child(3) { border-left: 3px solid var(--accent-danger); }
+    .stat:nth-child(3) strong { color: var(--accent-danger); }
+    .stat:nth-child(4) { border-left: 3px solid var(--primary-neon); }
 
+    /* Decryption Terminal Log Console Widget */
+    .console-panel {
+      border: 1px solid var(--border-neon-strong);
+      background: rgba(7, 8, 11, 0.9);
+      font-family: var(--font-mono);
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .console-header {
+      background: rgba(0, 243, 255, 0.1);
+      padding: 8px 14px;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--primary-neon);
+      border-bottom: 1px solid var(--border-neon-strong);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .console-header .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent-warning);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.3; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .console-body {
+      padding: 12px 14px;
+      font-size: 12px;
+      height: 120px;
+      overflow-y: auto;
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .console-line {
+      display: flex;
+      gap: 10px;
+    }
+
+    .console-line .time {
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .console-line .log-info {
+      color: var(--primary-neon);
+    }
+
+    .console-line .log-warning {
+      color: var(--accent-warning);
+    }
+
+    .console-line .log-danger {
+      color: var(--accent-danger);
+    }
+
+    /* Toolbar Filter Row */
     .toolbar {
       position: sticky;
       top: 0;
-      z-index: 3;
+      z-index: 10;
       display: grid;
       grid-template-columns: minmax(200px, 1fr) 180px 160px;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
       padding: 12px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(14px);
-      box-shadow: var(--shadow);
+      border: 1px solid var(--primary-neon);
+      background: rgba(15, 17, 23, 0.95);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
     }
 
     .searchbox {
@@ -275,25 +488,28 @@
       left: 12px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--muted);
+      color: var(--primary-neon);
     }
 
     .searchbox input,
     .toolbar select {
       width: 100%;
       height: 42px;
-      border: 1px solid var(--line-strong);
-      border-radius: var(--radius);
-      background: #fff;
-      color: var(--ink);
+      border: 1px solid var(--border-neon);
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      padding: 0 12px;
+      outline: none;
     }
 
     .searchbox input {
-      padding: 0 12px 0 38px;
+      padding-left: 38px;
     }
 
-    .toolbar select {
-      padding: 0 10px;
+    .searchbox input:focus,
+    .toolbar select:focus {
+      border-color: var(--primary-neon);
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
     }
 
     .results-header {
@@ -301,72 +517,103 @@
       align-items: center;
       justify-content: space-between;
       gap: 14px;
-      margin: 18px 0 10px;
-      color: var(--muted);
+      color: var(--text-muted);
       font-size: 13px;
+      border-bottom: 1px solid var(--border-neon);
+      padding-bottom: 8px;
     }
 
+    #activeFilters {
+      color: var(--accent-warning);
+      font-weight: 700;
+    }
+
+    /* Result Grid with Encrypted Data Cards */
     .result-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
+      gap: 16px;
     }
 
     .mock-card {
-      min-width: 0;
-      padding: 14px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel);
-      box-shadow: 0 8px 20px rgba(50, 43, 35, 0.06);
+      padding: 16px;
+      border: 1px solid var(--border-neon);
+      background: rgba(15, 17, 23, 0.8);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 175px;
+    }
+
+    .mock-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 8px;
+      height: 8px;
+      border-top: 2px solid var(--primary-neon);
+      border-right: 2px solid var(--primary-neon);
     }
 
     .mock-card:hover {
-      border-color: var(--line-strong);
-      transform: translateY(-1px);
-      transition: transform 140ms ease, border-color 140ms ease;
+      border-color: var(--primary-neon);
+      background: rgba(22, 25, 34, 0.9);
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.25);
+      transform: translateY(-2px);
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
     .mock-title {
       display: -webkit-box;
-      min-height: 44px;
       margin: 0 0 12px;
       overflow: hidden;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
+      font-family: var(--font-header);
       font-size: 15px;
-      font-weight: 750;
-      line-height: 1.45;
-      overflow-wrap: anywhere;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .mock-meta {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
 
     .tag {
-      max-width: 100%;
-      padding: 4px 7px;
-      border-radius: 999px;
-      background: #f0ebe4;
-      color: var(--muted);
+      padding: 3px 8px;
+      background: var(--bg-panel-soft);
+      border: 1px solid var(--border-neon);
+      color: var(--text-primary);
       font-size: 11px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
 
-    .tag.brand { background: rgba(21, 122, 116, 0.12); color: var(--teal); }
-    .tag.pdf { background: rgba(185, 87, 56, 0.12); color: var(--clay); }
+    .tag.brand {
+      background: rgba(0, 243, 255, 0.1);
+      color: var(--primary-neon);
+      border-color: var(--primary-neon);
+    }
+
+    .tag.pdf {
+      background: rgba(255, 42, 95, 0.1);
+      color: var(--accent-danger);
+      border-color: var(--accent-danger);
+    }
 
     .mock-actions {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 12px;
+      margin-top: auto;
     }
 
     .open-link {
@@ -374,19 +621,25 @@
       align-items: center;
       justify-content: center;
       min-height: 34px;
-      padding: 7px 10px;
-      border-radius: var(--radius);
-      background: var(--ink);
-      color: #fff;
+      padding: 6px 14px;
+      background: var(--primary-neon);
+      color: var(--bg-dark);
       text-decoration: none;
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .open-link:hover {
+      background: #fff;
+      box-shadow: 0 0 10px #fff;
     }
 
     .path-text {
       min-width: 0;
-      color: var(--muted);
-      font-size: 11px;
+      color: var(--text-muted);
+      font-size: 10px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -394,40 +647,51 @@
 
     .empty {
       display: none;
-      padding: 30px;
-      border: 1px dashed var(--line-strong);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.68);
-      color: var(--muted);
+      padding: 40px;
+      border: 2px dashed var(--accent-danger);
+      background: rgba(255, 42, 95, 0.05);
+      color: var(--accent-danger);
       text-align: center;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 2px;
     }
 
     .pager {
       display: flex;
       justify-content: center;
-      margin-top: 18px;
+      margin-top: 20px;
     }
 
     .load-more {
       min-height: 42px;
-      padding: 0 18px;
-      border: 1px solid var(--line-strong);
-      border-radius: var(--radius);
-      background: #fff;
+      padding: 0 24px;
+      border: 1px solid var(--primary-neon);
+      background: transparent;
       cursor: pointer;
+      color: var(--primary-neon);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .load-more:hover {
+      background: rgba(0, 243, 255, 0.1);
+      box-shadow: 0 0 12px rgba(0, 243, 255, 0.3);
     }
 
     .load-more[hidden] {
       display: none;
     }
 
+    /* Responsiveness matching hacker layouts */
     @media (max-width: 1100px) {
       .app { grid-template-columns: 1fr; }
       .sidebar {
         position: relative;
         height: auto;
         border-right: 0;
-        border-bottom: 1px solid var(--line);
+        border-bottom: 2px solid var(--primary-neon);
       }
       .brand-list,
       .type-list {
@@ -451,7 +715,7 @@
         padding: 16px;
       }
       .headline h2 {
-        font-size: 26px;
+        font-size: 22px;
       }
       .stats,
       .brand-list,
@@ -466,23 +730,26 @@
   </style>
 </head>
 <body>
+  <div class="scanline"></div>
   <div class="app">
     <aside class="sidebar">
       <div class="brandmark">
-        <div class="brandmark-icon">M</div>
-        <div>
-          <h1>Mock Library</h1>
-          <p>All uploaded files, ready to launch</p>
+        <div class="brandmark-title-wrapper">
+          <div class="brandmark-icon">DS</div>
+          <div>
+            <h1>DEDSEC_VAULT</h1>
+            <p>ctOS DECRYPTION PORTAL</p>
+          </div>
         </div>
       </div>
 
       <div class="side-section">
-        <h2>Brands</h2>
+        <h2>DOMAINS</h2>
         <div id="brandList" class="brand-list"></div>
       </div>
 
       <div class="side-section">
-        <h2>Mock Type</h2>
+        <h2>DATASETS</h2>
         <div id="typeList" class="type-list"></div>
       </div>
     </aside>
@@ -490,45 +757,57 @@
     <main class="main">
       <section class="topbar">
         <div class="headline">
-          <h2>Find the right mock without digging through folders.</h2>
-          <p>Search by name, brand, topic, year, language, or file type. The dashboard reads the manifest and opens the actual uploaded HTML or PDF file directly.</p>
+          <h2>DECRYPTION STATUS: ACTIVE</h2>
+          <p>Access the global library index. Decrypt, filter, and extract documents directly from target hosts. Source nodes are fully resolved.</p>
         </div>
         <div class="quick-actions">
-          <a id="randomMock" class="action primary" href="#">Random mock</a>
-          <a class="action" href="./mocks-manifest.json">Manifest</a>
+          <a id="randomMock" class="action primary" href="#">RUN_DECRYPT</a>
+          <a class="action" href="./mocks-manifest.json">RAW_LOG</a>
         </div>
       </section>
 
       <section class="stats" aria-label="Library stats">
-        <div class="stat"><strong id="totalMocks">0</strong><span>Total files</span></div>
-        <div class="stat"><strong id="htmlMocks">0</strong><span>HTML mocks</span></div>
-        <div class="stat"><strong id="pdfMocks">0</strong><span>PDF files</span></div>
-        <div class="stat"><strong id="visibleMocks">0</strong><span>Current results</span></div>
+        <div class="stat"><strong id="totalMocks">0</strong><span>RESOLVED NODES</span></div>
+        <div class="stat"><strong id="htmlMocks">0</strong><span>HTML FRAGMENTS</span></div>
+        <div class="stat"><strong id="pdfMocks">0</strong><span>PDF DOCUMENT STACKS</span></div>
+        <div class="stat"><strong id="visibleMocks">0</strong><span>ACTIVE CONTEXT</span></div>
       </section>
 
       <section class="toolbar" aria-label="Catalog controls">
         <label class="searchbox">
-          <span aria-hidden="true">⌕</span>
-          <input id="searchInput" type="search" placeholder="Search mocks, topics, years, brands..." autocomplete="off" />
+          <span aria-hidden="true">></span>
+          <input id="searchInput" type="search" placeholder="SEARCH SYSTEMS, TOPICS, NODES, DOMAINS..." autocomplete="off" />
         </label>
         <select id="sectionSelect" aria-label="Section filter"></select>
         <select id="sortSelect" aria-label="Sort results">
-          <option value="name">Sort by name</option>
-          <option value="brand">Sort by brand</option>
-          <option value="section">Sort by section</option>
+          <option value="name">SORT BY NAME</option>
+          <option value="brand">SORT BY BRAND</option>
+          <option value="section">SORT BY SECTION</option>
         </select>
       </section>
 
       <div class="results-header">
-        <div id="resultSummary">Loading catalog...</div>
+        <div id="resultSummary">Connecting...</div>
         <div id="activeFilters"></div>
       </div>
 
       <section id="resultGrid" class="result-grid" aria-label="Mock results"></section>
-      <div id="emptyState" class="empty">No mocks match the current filters.</div>
+      <div id="emptyState" class="empty">SYSTEM ALERT: NO DECIPHERABLE NODES MATCH SELECTED MATRIX.</div>
+      
       <div class="pager">
-        <button id="loadMore" class="load-more" type="button">Show more</button>
+        <button id="loadMore" class="load-more" type="button">LOAD MORE ENTRIES</button>
       </div>
+
+      <!-- Real-time Hacking Terminal Console Simulator -->
+      <section class="console-panel">
+        <div class="console-header">
+          <span>CONSOLE // TERMINAL_OUTPUT</span>
+          <span class="pulse-dot"></span>
+        </div>
+        <div class="console-body" id="consoleLogs">
+          <!-- Terminal lines go here -->
+        </div>
+      </section>
     </main>
   </div>
 
@@ -536,6 +815,30 @@
   <script>
     const manifest = window.MOCKS_MANIFEST || { files: [] };
     const brandRank = ['Pundits', 'pundits-mocks', 'Mocks Wallah', 'English Madhyam', 'english-madhyam', 'oliveboard', 'Testbook', 'Other Brands', 'Aman Sir'];
+    const brandNames = {
+      All: 'ALL_DOMAINS',
+      Root: 'ROOT_DISPATCH',
+      Pundits: 'THE_PUNDITS',
+      'pundits-mocks': 'PUNDITS_ARCHIVE',
+      'Mocks Wallah': 'MOCKS_WALLAH',
+      'English Madhyam': 'ENGLISH_MADHYAM_CLASSIC',
+      'english-madhyam': 'ENGLISH_MADHYAM_VAULT',
+      oliveboard: 'OLIVEBOARD',
+      Testbook: 'TESTBOOK',
+      'Other Brands': 'OTHER_HOUSES',
+      'Aman Sir': 'AMAN_SIR'
+    };
+    const typeNames = {
+      All: 'ALL_DATASETS',
+      Mock: 'GENERAL_MOCKS',
+      Quiz: 'QUIZZES',
+      'Full Mock': 'FULL_MOCKS',
+      Sectional: 'SECTIONAL_TESTS',
+      'Topic Concept': 'TOPIC_CONCEPT_DRILLS',
+      'Previous Year': 'PYP_ARCHIVES',
+      'Practice Set': 'PRACTICE_SETS',
+      PDF: 'PDF_DOCUMENTS'
+    };
     const state = {
       brand: 'All',
       type: 'All',
@@ -560,8 +863,39 @@
       totalMocks: document.getElementById('totalMocks'),
       htmlMocks: document.getElementById('htmlMocks'),
       pdfMocks: document.getElementById('pdfMocks'),
-      visibleMocks: document.getElementById('visibleMocks')
+      visibleMocks: document.getElementById('visibleMocks'),
+      consoleLogs: document.getElementById('consoleLogs')
     };
+
+    // Console Logging helper
+    function logToConsole(message, type = 'info') {
+      const now = new Date();
+      const timeStr = now.toTimeString().split(' ')[0] + '.' + String(now.getMilliseconds()).padStart(3, '0');
+      const line = document.createElement('div');
+      line.className = 'console-line';
+      
+      let typeClass = 'log-info';
+      let prefix = '[OK] ';
+      if (type === 'warn') {
+        typeClass = 'log-warning';
+        prefix = '[SYS] ';
+      } else if (type === 'danger') {
+        typeClass = 'log-danger';
+        prefix = '[ERR] ';
+      }
+
+      line.innerHTML = `<span class="time">[${timeStr}]</span><span class="${typeClass}">${prefix}${message}</span>`;
+      elements.consoleLogs.appendChild(line);
+      elements.consoleLogs.scrollTop = elements.consoleLogs.scrollHeight;
+
+      // Limit console buffer to 20 lines
+      while (elements.consoleLogs.childElementCount > 20) {
+        elements.consoleLogs.removeChild(elements.consoleLogs.firstChild);
+      }
+    }
+
+    logToConsole('DEDSEC Console initialized. Connection: ESTABLISHED.');
+    logToConsole(`Analyzing manifest database: ${manifest.files.length} mock files detected.`);
 
     const cleanName = (value) => value
       .replace(/\.(html?|pdf)$/i, '')
@@ -569,7 +903,9 @@
       .replace(/\s+/g, ' ')
       .trim();
 
-    const brandLabel = (value) => value.replace(/[-_]/g, ' ').replace(/\b\w/g, (m) => m.toUpperCase());
+    const titleCase = (value) => value.replace(/[-_]/g, ' ').toUpperCase();
+    const brandLabel = (value) => brandNames[value] || titleCase(value);
+    const typeLabel = (value) => typeNames[value] || value.toUpperCase();
     const encodePath = (file) => file.split('/').map(encodeURIComponent).join('/');
     const formatCount = (value) => new Intl.NumberFormat('en-IN').format(value);
 
@@ -595,6 +931,8 @@
       const search = `${file} ${brand} ${section} ${name} ${type} ${ext}`.toLowerCase();
       return { index, file, brand, section, name, ext, type, search };
     });
+
+    logToConsole('Mapped indexing layers and inferred system types.');
 
     const unique = (items) => [...new Set(items)].sort((a, b) => a.localeCompare(b));
     const brandCounts = new Map();
@@ -624,7 +962,8 @@
     function renderSidebar() {
       elements.brandList.replaceChildren(...orderedBrands.map((brand) => {
         const count = brand === 'All' ? files.length : brandCounts.get(brand);
-        return makeFilterButton(brand === 'All' ? 'All brands' : brandLabel(brand), count, state.brand === brand, () => {
+        return makeFilterButton(brandLabel(brand), count, state.brand === brand, () => {
+          logToConsole(`Set domain filter: ${brandLabel(brand).toUpperCase()}`);
           state.brand = brand;
           state.section = 'All';
           state.shown = 72;
@@ -634,7 +973,8 @@
 
       elements.typeList.replaceChildren(...orderedTypes.map((type) => {
         const count = type === 'All' ? files.length : typeCounts.get(type);
-        return makeFilterButton(type === 'All' ? 'All types' : type, count, state.type === type, () => {
+        return makeFilterButton(typeLabel(type), count, state.type === type, () => {
+          logToConsole(`Set dataset filter: ${typeLabel(type).toUpperCase()}`);
           state.type = type;
           state.shown = 72;
           render();
@@ -651,7 +991,7 @@
       const sections = availableSections();
       if (!sections.includes(state.section)) state.section = 'All';
       elements.sectionSelect.innerHTML = sections.map((section) => {
-        const label = section === 'All' ? 'All sections' : section;
+        const label = section === 'All' ? 'ALL_SECTIONS' : section.toUpperCase();
         return `<option value="${section}">${label}</option>`;
       }).join('');
       elements.sectionSelect.value = state.section;
@@ -683,15 +1023,21 @@
         <h3 class="mock-title">${item.name}</h3>
         <div class="mock-meta">
           <span class="tag brand">${brandLabel(item.brand)}</span>
-          <span class="tag">${item.section}</span>
-          <span class="tag">${item.type}</span>
+          <span class="tag">${item.section.toUpperCase()}</span>
+          <span class="tag">${typeLabel(item.type)}</span>
           <span class="tag ${item.ext === 'PDF' ? 'pdf' : ''}">${item.ext}</span>
         </div>
         <div class="mock-actions">
-          <a class="open-link" href="${href}" target="_self">Open</a>
+          <a class="open-link" href="${href}" target="_self">DECRYPT</a>
           <span class="path-text" title="${item.file}">${item.file}</span>
         </div>
       `;
+
+      // Log when decrypting/opening a file
+      article.querySelector('.open-link').addEventListener('click', () => {
+        logToConsole(`Request decrypt stream for node: ${item.name}`, 'warn');
+      });
+
       return article;
     }
 
@@ -712,15 +1058,15 @@
       elements.resultGrid.replaceChildren(...visible.map(renderCard));
       elements.emptyState.style.display = items.length ? 'none' : 'block';
       elements.loadMore.hidden = visible.length >= items.length;
-      elements.resultSummary.textContent = `${formatCount(visible.length)} shown from ${formatCount(items.length)} matching files`;
+      elements.resultSummary.textContent = `${formatCount(visible.length)} NODES LOADED // ${formatCount(items.length)} MATCHING IDENTIFIED`;
 
       const active = [
         state.brand !== 'All' ? brandLabel(state.brand) : '',
-        state.type !== 'All' ? state.type : '',
-        state.section !== 'All' ? state.section : '',
-        state.query ? `Search: ${state.query}` : ''
+        state.type !== 'All' ? typeLabel(state.type) : '',
+        state.section !== 'All' ? state.section.toUpperCase() : '',
+        state.query ? `QUERY: "${state.query.toUpperCase()}"` : ''
       ].filter(Boolean);
-      elements.activeFilters.textContent = active.length ? active.join(' | ') : 'No filters active';
+      elements.activeFilters.textContent = active.length ? active.join(' | ') : 'NO FILTERS ACTIVE';
 
       const randomItem = items.length ? items[Math.floor(Math.random() * items.length)] : files[0];
       elements.randomMock.href = randomItem ? `./${encodePath(randomItem.file)}` : '#';
@@ -729,23 +1075,35 @@
     elements.searchInput.addEventListener('input', (event) => {
       state.query = event.target.value;
       state.shown = 72;
+      logToConsole(`Searching query matrix: "${state.query.toUpperCase()}"`);
       render();
     });
 
     elements.sectionSelect.addEventListener('change', (event) => {
       state.section = event.target.value;
       state.shown = 72;
+      logToConsole(`Set segment zone filter: ${state.section.toUpperCase()}`);
       render();
     });
 
     elements.sortSelect.addEventListener('change', (event) => {
       state.sort = event.target.value;
+      logToConsole(`Re-indexing list structure sorted by: ${state.sort.toUpperCase()}`);
       render();
     });
 
     elements.loadMore.addEventListener('click', () => {
       state.shown += 72;
+      logToConsole(`Buffer limits expanded. Visible buffer incremented.`);
       render();
+    });
+
+    elements.randomMock.addEventListener('click', (e) => {
+      if (elements.randomMock.href.endsWith('#')) {
+        logToConsole('Decrypt action error: No resolved targets available.', 'danger');
+      } else {
+        logToConsole('Initiating random decipher sequence...', 'warn');
+      }
     });
 
     render();
