@@ -34,10 +34,28 @@ const OLIVEBOARD_OVERRIDE_CSS = `
             border-radius: var(--radius) !important;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
         }
+        
+        /* High-Readability Contrast & Font Sizes */
+        .question-text {
+            font-size: 16.5px !important;
+            line-height: 1.65 !important;
+            letter-spacing: 0.1px !important;
+        }
         .option {
+            font-size: 15.5px !important;
+            line-height: 1.5 !important;
             transition: all 0.15s ease !important;
         }
-        .option:hover:not(.submitted) {
+        
+        /* Force color readability for nested content (overrides raw inline styling) */
+        .question-text, .question-text *, 
+        .option:not(.correct):not(.wrong):not(.selected), .option:not(.correct):not(.wrong):not(.selected) *,
+        .comprehension, .comprehension *,
+        .solution-box, .solution-box * {
+            color: #e5e7eb !important;
+        }
+        
+        .option:hover:not(.submitted):not(.correct):not(.wrong):not(.selected) {
             border-color: var(--primary) !important;
             background: rgba(22, 163, 74, 0.04) !important;
         }
@@ -45,6 +63,32 @@ const OLIVEBOARD_OVERRIDE_CSS = `
             border-color: var(--primary) !important;
             background: rgba(22, 163, 74, 0.08) !important;
         }
+        .option.selected, .option.selected * {
+            color: #ffffff !important;
+        }
+        .option.correct, .option.correct * {
+            color: #10b981 !important;
+        }
+        .option.wrong, .option.wrong * {
+            color: #ef4444 !important;
+        }
+        
+        /* Math expressions formatting */
+        .math-exp, .math-num, .math-line {
+            color: inherit !important;
+        }
+        
+        /* Tables layout & readability */
+        table, tr, td, th {
+            border-color: rgba(255, 255, 255, 0.12) !important;
+            color: #e5e7eb !important;
+        }
+        th {
+            background: rgba(255, 255, 255, 0.05) !important;
+            color: #ffffff !important;
+            font-weight: 600 !important;
+        }
+        
         .start-btn, .btn-next {
             background: var(--primary) !important;
             color: white !important;
@@ -90,6 +134,71 @@ const OLIVEBOARD_OVERRIDE_CSS = `
             border-color: var(--warning) !important;
             color: white !important;
         }
+
+        /* Creative Section Navigator Pills */
+        .section-tabs {
+            counter-reset: section-counter;
+            display: flex !important;
+            gap: 8px !important;
+            background: rgba(0, 0, 0, 0.2) !important;
+            border: 1px solid var(--border) !important;
+            padding: 6px 12px !important;
+            border-radius: 30px !important;
+            margin: 12px auto !important;
+            width: fit-content !important;
+            max-width: calc(100% - 40px) !important;
+            overflow-x: auto !important;
+            scrollbar-width: none !important;
+        }
+        .section-tabs::-webkit-scrollbar {
+            display: none !important;
+        }
+        .section-tab {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            padding: 8px 16px !important;
+            border: 1px solid transparent !important;
+            background: transparent !important;
+            color: var(--text-light) !important;
+            font-weight: 600 !important;
+            font-size: 13px !important;
+            border-radius: 20px !important;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            cursor: pointer !important;
+            border-bottom: none !important;
+            white-space: nowrap !important;
+        }
+        .section-tab::before {
+            counter-increment: section-counter;
+            content: "0" counter(section-counter);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-light);
+            border-radius: 50%;
+            font-size: 10px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+        .section-tab:hover {
+            color: var(--text) !important;
+            background: rgba(255, 255, 255, 0.03) !important;
+        }
+        .section-tab.active {
+            background: var(--primary) !important;
+            color: #ffffff !important;
+            border-color: var(--primary) !important;
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25) !important;
+        }
+        .section-tab.active::before {
+            background: rgba(255, 255, 255, 0.2) !important;
+            color: #ffffff !important;
+        }
+
         /* Custom scrollbar override */
         ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -102,13 +211,9 @@ const OLIVEBOARD_OVERRIDE_CSS = `
 function redesignFile(filePath) {
     let content = fs.readFileSync(filePath, 'utf8');
     
-    // Check if already styled with Oliveboard professional overrides
-    if (content.includes('/* Oliveboard Professional Style Overrides */')) {
-        return false;
-    }
-    
-    // Check for target blocks to replace
+    // Always replace to apply latest high readability CSS overrides
     const blocks = [
+        { start: '<!-- START: Oliveboard Professional Style Overrides -->', end: '<!-- END: Oliveboard Professional Style Overrides -->' },
         { start: '<!-- START: Oliveboard Premium Style Overrides -->', end: '<!-- END: Oliveboard Premium Style Overrides -->' },
         { start: '<!-- START: Modern Premium Style Overrides -->', end: '<!-- END: Modern Premium Style Overrides -->' }
     ];
@@ -123,7 +228,6 @@ function redesignFile(filePath) {
         }
     }
     
-    // Otherwise inject right before </head>
     if (content.includes('</head>')) {
         content = content.replace('</head>', `${OLIVEBOARD_OVERRIDE_CSS}\n</head>`);
         fs.writeFileSync(filePath, content, 'utf8');
@@ -156,7 +260,7 @@ const targetDir = path.join(__dirname, 'oliveboard');
 console.log(`Scanning directory: ${targetDir} for Oliveboard HTML files...`);
 if (fs.existsSync(targetDir)) {
     const count = scanDir(targetDir);
-    console.log(`Successfully redesigned ${count} Oliveboard HTML mock files with professional styles!`);
+    console.log(`Successfully redesigned ${count} Oliveboard HTML mock files with high readability overrides!`);
 } else {
     console.error(`Error: Oliveboard directory not found at ${targetDir}`);
 }

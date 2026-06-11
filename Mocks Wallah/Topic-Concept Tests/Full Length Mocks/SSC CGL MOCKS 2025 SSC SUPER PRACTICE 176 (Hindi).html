@@ -1,0 +1,2531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>devgagan</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e40af;
+            --primary-hover: #1e3a8a;
+            --success: #059669;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --bg: #f3f4f6;
+            --card: #ffffff;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #d1d5db;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --radius: 6px;
+            --font-sans: 'Space Grotesk', sans-serif;
+            --font-mono: 'Share Tech Mono', monospace;
+        }
+
+        body.dark-mode {
+            --bg: #0b0f19;
+            --card: #151f32;
+            --text: #f3f4f6;
+            --text-light: #9ca3af;
+            --border: #374151;
+            --primary: #3b82f6;
+            --primary-hover: #60a5fa;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg);
+            z-index: 1000;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .welcome-screen.hidden {
+            display: none;
+        }
+
+        .welcome-container {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            margin: 20px auto;
+            border: 1px solid var(--border);
+        }
+
+        .welcome-header {
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .welcome-header h1 {
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .test-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .detail-item {
+            background: rgba(0,0,0,0.02);
+            padding: 15px;
+            border-radius: var(--radius);
+            border-left: 3px solid var(--primary);
+            border-top: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .section-info {
+            margin-bottom: 25px;
+        }
+
+        .section-info h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .section-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+        }
+
+        .section-table th,
+        .section-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        .section-table th {
+            background: rgba(0,0,0,0.04);
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .subsec-container {
+            margin-top: 8px;
+            padding-left: 15px;
+        }
+
+        .subsec-row {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .welcome-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .start-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .start-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .channel-link {
+            color: var(--primary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: 2px solid var(--primary);
+            border-radius: var(--radius);
+            font-weight: 600;
+        }
+
+        /* CBT Interface */
+        .exam-container {
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .exam-container.active {
+            display: flex;
+        }
+
+        /* Header block */
+        .exam-header {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .exam-title {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary);
+        }
+
+        .exam-timer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timer-box {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 16px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .dark-mode .timer-box {
+            background: #78350f;
+            color: #fef3c7;
+        }
+
+        /* Candidate info block */
+        .candidate-bar {
+            background: rgba(0,0,0,0.02);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .candidate-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .candidate-photo {
+            width: 36px;
+            height: 36px;
+            background: var(--border);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            color: var(--text-light);
+        }
+
+        .candidate-details {
+            font-size: 13px;
+        }
+
+        .candidate-name {
+            font-weight: 600;
+        }
+
+        .section-badge {
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 4px;
+        }
+
+        /* Segment switcher tabs */
+        .section-tabs {
+            display: flex;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .section-tab {
+            padding: 14px 20px;
+            border: none;
+            background: transparent;
+            color: var(--text-light);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+        }
+
+        .section-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .section-tab.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Main Workspace */
+        .exam-main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 300px;
+            background: var(--bg);
+        }
+
+        .question-area {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 120px);
+            overflow: hidden;
+        }
+
+        .question-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .question-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .question-marks {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .lang-toggle {
+            display: flex;
+            background: rgba(0,0,0,0.05);
+            padding: 2px;
+            border-radius: var(--radius);
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            padding: 6px 12px;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: var(--radius);
+            color: var(--text-light);
+        }
+
+        .lang-btn.active {
+            background: var(--card);
+            color: var(--primary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .comprehension {
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .comprehension h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .question-text {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        /* Math rendering fractions */
+        .math-exp {
+            display: inline-block;
+            vertical-align: middle;
+            position: relative;
+            margin: 0 2px;
+        }
+        
+        .math-num {
+            text-align: center;
+            display: block;
+            padding: 0;
+        }
+        
+        .math-line {
+            display: block;
+            border-top: 1px solid;
+            padding: 0;
+            text-align: center;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            gap: 12px;
+        }
+
+        .option:hover:not(.submitted) {
+            border-color: var(--primary);
+            background: rgba(30, 64, 175, 0.02);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background: rgba(30, 64, 175, 0.05);
+        }
+
+        .option.correct {
+            border-color: var(--success) !important;
+            background: rgba(16, 185, 129, 0.08) !important;
+        }
+
+        .option.wrong {
+            border-color: var(--danger) !important;
+            background: rgba(239, 68, 68, 0.08) !important;
+        }
+
+        .option-indicator {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .option.selected .option-indicator {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .option.correct .option-indicator {
+            border-color: var(--success) !important;
+            background: var(--success) !important;
+            color: white !important;
+        }
+
+        .option.wrong .option-indicator {
+            border-color: var(--danger) !important;
+            background: var(--danger) !important;
+            color: white !important;
+        }
+
+        .solution-box {
+            margin-top: 24px;
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: var(--radius);
+            padding: 20px;
+            display: none;
+        }
+
+        .solution-box.show {
+            display: block;
+        }
+
+        .solution-header {
+            color: var(--success);
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .solution-stats {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Navigation control bar */
+        .navigation-bar {
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn {
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-prev {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-next {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-next:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-review {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .btn-review.marked {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-submit {
+            background: var(--success);
+            color: white;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress-info {
+            text-align: center;
+            font-size: 13px;
+        }
+
+        /* Sidebar Question Navigator */
+        .navigator-sidebar {
+            background: var(--card);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 120px);
+        }
+
+        .navigator-header {
+            padding: 16px;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .navigator-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            padding: 16px;
+            overflow-y: auto;
+            align-content: start;
+        }
+
+        .nav-question {
+            aspect-ratio: 1;
+            border: 2px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            border-radius: var(--radius);
+            font-size: 13px;
+            font-weight: 600;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+        }
+
+        .nav-question.current {
+            border-color: var(--primary);
+            background: rgba(30, 64, 175, 0.05);
+            color: var(--primary);
+        }
+
+        .nav-question.answered {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .nav-question.wrong {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+        }
+
+        .nav-question.review {
+            background: var(--warning);
+            border-color: var(--warning);
+            color: white;
+        }
+
+        .nav-question.disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .navigator-legend {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+            font-size: 12px;
+            color: var(--text-light);
+            display: grid;
+            gap: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-box {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+
+        /* Result Modal */
+        .result-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .result-modal.show {
+            display: flex;
+        }
+
+        .result-container {
+            background: var(--card);
+            border-radius: var(--radius);
+            max-width: 500px;
+            width: 100%;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .result-score {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 10px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .result-stat {
+            padding: 12px;
+            border-radius: var(--radius);
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .result-stat-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .result-stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .result-stat.correct {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
+            color: var(--success);
+        }
+
+        .result-stat.incorrect {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.05);
+            color: var(--danger);
+        }
+
+        .section-results {
+            margin-bottom: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .section-results h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .section-results-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .section-results-table th,
+        .section-results-table td {
+            padding: 6px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .section-results-table th {
+            background: rgba(0,0,0,0.03);
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .result-btn {
+            flex: 1;
+            border: none;
+            padding: 12px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-close {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-review-ans {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .theme-toggle:hover {
+            color: var(--primary);
+        }
+
+        .mobile-only {
+            display: none;
+        }
+
+        /* Mobile drawer navigation */
+        .mobile-navigator {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            width: 280px;
+            background: var(--card);
+            border-left: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            z-index: 200;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-navigator.open {
+            transform: translateX(0);
+        }
+
+        .mobile-nav-header {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .close-nav {
+            font-size: 24px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        @media (max-width: 1023px) {
+            .exam-main {
+                grid-template-columns: 1fr;
+            }
+            .desktop-only {
+                display: none;
+            }
+            .mobile-only {
+                display: block;
+            }
+            .question-area {
+                height: calc(100vh - 120px);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .exam-header {
+                padding: 10px 15px;
+            }
+            .exam-title {
+                font-size: 15px;
+            }
+            .timer-box {
+                font-size: 14px;
+                padding: 6px 12px;
+            }
+            .candidate-bar {
+                padding: 8px 15px;
+            }
+            .section-tab {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+        }
+    </style>
+
+    <!-- START: Unified Premium Dark Mode Overrides -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #f59e0b !important;
+            --primary-hover: #d97706 !important;
+            --success: #10b981 !important;
+            --danger: #ef4444 !important;
+            --warning: #f59e0b !important;
+            --bg: #090d16 !important;
+            --card: #111827 !important;
+            --text: #f3f4f6 !important;
+            --text-light: #9ca3af !important;
+            --border: rgba(255, 255, 255, 0.08) !important;
+            --font-sans: 'Plus Jakarta Sans', sans-serif !important;
+            --radius: 10px !important;
+        }
+
+        body {
+            background: var(--bg) !important;
+            color: var(--text) !important;
+            font-family: var(--font-sans) !important;
+        }
+
+        /* Container & Card Backgrounds */
+        .welcome-screen, .exam-container, .question-area, .navigator-sidebar, .mobile-navigator {
+            background: var(--bg) !important;
+        }
+        
+        .welcome-container, .question-card, .option, .navigator-sidebar, .exam-header, 
+        .navigation-bar, .footer, .candidate-bar, .footer-bar, .action-bar, .navigator-header, .navigator-legend {
+            background: var(--card) !important;
+            border-color: var(--border) !important;
+            color: var(--text) !important;
+        }
+
+        .welcome-container, .question-card, .option, .navigator-sidebar {
+            border: 1px solid var(--border) !important;
+            border-radius: var(--radius) !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        /* Welcome Screen Details & Tables */
+        .detail-item {
+            background: rgba(255, 255, 255, 0.03) !important;
+            border-left: 3px solid var(--primary) !important;
+            border-top: 1px solid var(--border) !important;
+            border-right: 1px solid var(--border) !important;
+            border-bottom: 1px solid var(--border) !important;
+            border-radius: 6px !important;
+        }
+        .detail-label {
+            color: var(--text-light) !important;
+        }
+        .detail-value {
+            color: var(--primary) !important;
+            font-weight: 700 !important;
+        }
+        .section-table, table.section-table {
+            background: var(--card) !important;
+            border: 1px solid var(--border) !important;
+        }
+        .section-table th, .section-table td, table.section-table th, table.section-table td {
+            border: 1px solid var(--border) !important;
+            background: transparent !important;
+        }
+        .section-table th, table.section-table th {
+            background: rgba(255, 255, 255, 0.05) !important;
+            color: #ffffff !important;
+        }
+        .section-table td, table.section-table td {
+            color: var(--text) !important;
+        }
+        .subsec-row {
+            color: var(--text-light) !important;
+        }
+
+        /* Top Exam Header */
+        .exam-header {
+            background: #151d30 !important; /* Sleek dark blue-gray */
+            border-bottom: 1px solid var(--border) !important;
+        }
+        .exam-title, .exam-timer {
+            color: #ffffff !important;
+        }
+
+        /* Candidate Info Bar - Sleek Dark Design */
+        .candidate-bar {
+            background: var(--card) !important;
+            border-bottom: 1px solid var(--border) !important;
+        }
+        .candidate-name {
+            color: #ffffff !important;
+            font-weight: 600 !important;
+        }
+        .candidate-id, .candidate-details, .candidate-details * {
+            color: var(--text-light) !important;
+        }
+        .candidate-photo {
+            background: rgba(255, 255, 255, 0.03) !important;
+            border: 1px solid var(--border) !important;
+            color: var(--text-light) !important;
+        }
+
+        /* Section Tabs in Header */
+        .section-badge {
+            background: var(--primary) !important;
+            color: #ffffff !important;
+        }
+
+        /* Language Toggle Buttons */
+        .lang-toggle {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid var(--border) !important;
+        }
+        .lang-btn {
+            color: var(--text-light) !important;
+        }
+        .lang-btn.active {
+            background: var(--primary) !important;
+            color: #ffffff !important;
+        }
+
+        /* High-Readability Contrast & Text Overrides */
+        .question-text, .question-text *,
+        .option, .option *,
+        .comprehension, .comprehension *,
+        .solution-box, .solution-box *,
+        .candidate-bar *,
+        .exam-title, .exam-title *,
+        .timer-box, .timer-box *,
+        .nav-question,
+        table, tr, td, th {
+            color: #e5e7eb !important;
+        }
+
+        /* Comprehension & Solution Box Cards */
+        .comprehension {
+            background: rgba(255, 255, 255, 0.02) !important;
+            border-left: 4px solid var(--primary) !important;
+            border-top: 1px solid var(--border) !important;
+            border-right: 1px solid var(--border) !important;
+            border-bottom: 1px solid var(--border) !important;
+            border-radius: var(--radius) !important;
+        }
+        .comprehension h4 {
+            color: var(--primary) !important;
+            font-weight: 600 !important;
+        }
+
+        .solution-box {
+            background: rgba(16, 185, 129, 0.08) !important;
+            border-left: 4px solid var(--success) !important;
+            border-top: 1px solid var(--border) !important;
+            border-right: 1px solid var(--border) !important;
+            border-bottom: 1px solid var(--border) !important;
+            border-radius: var(--radius) !important;
+        }
+        .solution-header {
+            color: var(--success) !important;
+        }
+
+        /* Formulas & Math Layout legibility */
+        mjx-container, math, .mathjax, [class*="mathjax"], [id*="MathJax"], .katex, .katex * {
+            color: #f3f4f6 !important;
+            fill: #f3f4f6 !important;
+        }
+        
+        mjx-container svg *, math svg *, .katex svg * {
+            fill: currentColor !important;
+            stroke: currentColor !important;
+        }
+        
+        .math-exp, .math-num, .math-line {
+            color: inherit !important;
+        }
+
+        /* Auto-invert monochrome math images/gifs for dark mode readability */
+        .question-card img, .option img, .comprehension img, .solution-box img {
+            filter: invert(1) brightness(1.5) contrast(1.1) !important;
+        }
+
+        /* Tables layout & readability */
+        table, tr, td, th {
+            border-color: rgba(255, 255, 255, 0.12) !important;
+        }
+        th {
+            background: rgba(255, 255, 255, 0.05) !important;
+            color: #ffffff !important;
+            font-weight: 600 !important;
+        }
+
+        /* Option Box States */
+        .option {
+            background: rgba(255, 255, 255, 0.01) !important;
+            border: 1.5px solid var(--border) !important;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        .option:hover:not(.submitted):not(.correct):not(.wrong):not(.selected) {
+            border-color: var(--primary) !important;
+            background: rgba(255, 255, 255, 0.03) !important;
+        }
+        .option.selected {
+            border-color: var(--primary) !important;
+            background: rgba(255, 255, 255, 0.06) !important;
+        }
+        .option.selected, .option.selected * {
+            color: #ffffff !important;
+        }
+        .option.correct, .option.correct * {
+            color: #10b981 !important;
+            background: rgba(16, 185, 129, 0.1) !important;
+            border-color: var(--success) !important;
+        }
+        .option.wrong, .option.wrong * {
+            color: #ef4444 !important;
+            background: rgba(239, 68, 68, 0.1) !important;
+            border-color: var(--danger) !important;
+        }
+
+        .option-indicator {
+            border-color: rgba(255, 255, 255, 0.3) !important;
+            background: transparent !important;
+        }
+        .option.selected .option-indicator {
+            border-color: var(--primary) !important;
+            background: var(--primary) !important;
+        }
+        .option.correct .option-indicator {
+            border-color: var(--success) !important;
+            background: var(--success) !important;
+        }
+        .option.wrong .option-indicator {
+            border-color: var(--danger) !important;
+            background: var(--danger) !important;
+        }
+
+        /* Buttons & Actions */
+        .start-btn, .btn-next {
+            background: var(--primary) !important;
+            color: white !important;
+            font-weight: 600 !important;
+            border: none !important;
+            border-radius: var(--radius) !important;
+            transition: all 0.2s ease !important;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+        }
+        .start-btn:hover, .btn-next:hover {
+            background: var(--primary-hover) !important;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35) !important;
+        }
+        
+        .btn-prev {
+            background: rgba(255, 255, 255, 0.06) !important;
+            color: #f3f4f6 !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-radius: var(--radius) !important;
+            transition: all 0.2s ease !important;
+        }
+        .btn-prev:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .timer-box {
+            background: rgba(245, 158, 11, 0.08) !important;
+            color: var(--warning) !important;
+            border: 1px solid rgba(245, 158, 11, 0.2) !important;
+            border-radius: 6px !important;
+        }
+
+        /* Question Sidebar & Navigator Grid */
+        .nav-question {
+            background: rgba(255, 255, 255, 0.02) !important;
+            border-color: var(--border) !important;
+            border-radius: 6px !important;
+            color: var(--text-light) !important;
+            transition: all 0.15s ease !important;
+        }
+        .nav-question:hover {
+            background: rgba(255, 255, 255, 0.08) !important;
+            color: var(--text) !important;
+        }
+        .nav-question.current {
+            border-color: var(--primary) !important;
+            color: var(--primary) !important;
+            background: rgba(255, 255, 255, 0.08) !important;
+        }
+        .nav-question.answered {
+            background: var(--success) !important;
+            border-color: var(--success) !important;
+            color: white !important;
+        }
+        .nav-question.wrong {
+            background: var(--danger) !important;
+            border-color: var(--danger) !important;
+            color: white !important;
+        }
+        .nav-question.review {
+            background: var(--warning) !important;
+            border-color: var(--warning) !important;
+            color: white !important;
+        }
+
+        /* Welcome Instructions Panel */
+        .welcome-instructions {
+            background: rgba(245, 158, 11, 0.08) !important;
+            border: 1px solid rgba(245, 158, 11, 0.2) !important;
+            color: #fef08a !important;
+            border-radius: var(--radius) !important;
+        }
+        .welcome-instructions h3 {
+            color: #fbbf24 !important;
+        }
+        .welcome-instructions ul, .welcome-instructions li {
+            color: #fef08a !important;
+        }
+
+        /* Section Tabs styling */
+        .section-tabs {
+            counter-reset: section-counter;
+            display: flex !important;
+            gap: 8px !important;
+            background: rgba(0, 0, 0, 0.3) !important;
+            border: 1px solid var(--border) !important;
+            padding: 6px 12px !important;
+            border-radius: 30px !important;
+            margin: 12px auto !important;
+            width: fit-content !important;
+            max-width: calc(100% - 40px) !important;
+            overflow-x: auto !important;
+            scrollbar-width: none !important;
+        }
+        .section-tabs::-webkit-scrollbar {
+            display: none !important;
+        }
+        .section-tab {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            padding: 8px 16px !important;
+            border: 1px solid transparent !important;
+            background: transparent !important;
+            color: var(--text-light) !important;
+            font-weight: 600 !important;
+            font-size: 13px !important;
+            border-radius: 20px !important;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            cursor: pointer !important;
+            white-space: nowrap !important;
+        }
+        .section-tab::before {
+            counter-increment: section-counter;
+            content: "0" counter(section-counter);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-light);
+            border-radius: 50%;
+            font-size: 10px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+        .section-tab:hover {
+            color: var(--text) !important;
+            background: rgba(255, 255, 255, 0.03) !important;
+        }
+        .section-tab.active {
+            background: var(--primary) !important;
+            color: #ffffff !important;
+            border-color: var(--primary) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+        }
+        .section-tab.active::before {
+            background: rgba(255, 255, 255, 0.2) !important;
+            color: #ffffff !important;
+        }
+
+        /* Webkit custom scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 99px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+    </style>
+    <!-- END: Unified Premium Dark Mode Overrides -->
+
+</head>
+<body>
+    <!-- Welcome Start page -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-container">
+            <div class="welcome-header">
+                <h1><i class="fas fa-graduation-cap"></i> CBT Portal</h1>
+                <p>Computer Based Test Environment</p>
+            </div>
+            
+            <div class="test-details">
+                <div class="detail-item">
+                    <div class="detail-label">Total Questions</div>
+                    <div class="detail-value" id="welcomeTotalQs">0</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Total Marks</div>
+                    <div class="detail-value" id="welcomeTotalMarks">0</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Duration</div>
+                    <div class="detail-value" id="welcomeDuration">0 mins</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Marking Scheme</div>
+                    <div class="detail-value" id="welcomeMarksScheme">+0.0 / -0.0</div>
+                </div>
+            </div>
+            
+            <div class="section-info" id="welcomeSectionsBlock" style="display:none;">
+                <h3><i class="fas fa-layer-group"></i> Section Details</h3>
+                <table class="section-table">
+                    <thead>
+                        <tr>
+                            <th>Section Name</th>
+                            <th>Questions</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="welcomeSectionsBody"></tbody>
+                </table>
+            </div>
+            
+            <div class="welcome-actions">
+                <button class="start-btn" id="startBtn">
+                    <i class="fas fa-play"></i> Start Test
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Active Exam Interface -->
+    <div class="exam-container" id="examContainer">
+        <div class="exam-header">
+            <div class="exam-title">Mocks Wallah</div>
+            <div class="exam-timer">
+                <div class="timer-box" id="mainTimer">00:00</div>
+                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <button class="nav-btn btn-submit mobile-only" id="submitBtn">Submit</button>
+            </div>
+        </div>
+        
+        <div class="candidate-bar">
+            <div class="candidate-info">
+                <div class="candidate-photo">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="candidate-details">
+                    <div class="candidate-name">Candidate</div>
+                    <div class="candidate-id">ID: User</div>
+                </div>
+            </div>
+            <div class="section-badge" id="sectionBadge" style="display:none;">
+                <span id="sectionName"></span><span id="sectionTimer"></span>
+            </div>
+        </div>
+
+        <!-- Section tabs for Soft Switching (Tier I) -->
+        <div class="section-tabs" id="sectionTabs" style="display:none;"></div>
+        
+        <div class="exam-main">
+            <div class="question-area">
+                <div class="question-scroll">
+                    <div class="question-card">
+                        <div class="question-header">
+                            <div>
+                                <div class="question-number" id="questionNum">Question 1</div>
+                                <div class="question-marks" id="questionMarks">Marks: 3.0</div>
+                            </div>
+                            <div class="lang-toggle">
+                                <button class="lang-btn active" id="engBtn">English</button>
+                                <button class="lang-btn" id="hinBtn">हिंदी</button>
+                            </div>
+                        </div>
+                        
+                        <div class="comprehension" id="comprehension" style="display:none;">
+                            <h4><i class="fas fa-book-open"></i> Comprehension</h4>
+                            <div id="comprehensionText"></div>
+                        </div>
+                        
+                        <div class="question-text" id="questionText"></div>
+                        <div class="options-list" id="optionsList"></div>
+                        
+                        <div class="solution-box" id="solutionBox">
+                            <div class="solution-header">
+                                <i class="fas fa-lightbulb"></i> Solution
+                            </div>
+                            <div class="solution-stats" id="solutionStats"></div>
+                            <div id="solutionText"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="navigation-bar">
+                    <button class="nav-btn btn-prev" id="prevBtn"><i class="fas fa-chevron-left"></i> Prev</button>
+                    <div class="progress-info">
+                        <div id="progressText">Question 1</div>
+                        <div style="font-size:11px;margin-top:4px">
+                            Answered: <span id="answeredCount">0</span>
+                        </div>
+                    </div>
+                    <button class="nav-btn btn-review" id="reviewBtn"><i class="fas fa-flag"></i> Mark for Review</button>
+                    <button class="nav-btn mobile-only" id="navigatorBtn"><i class="fas fa-th"></i> Grid</button>
+                    <button class="nav-btn btn-submit desktop-only" id="submitBtnDesktop">Submit</button>
+                    <button class="nav-btn btn-next">Next <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            
+            <div class="navigator-sidebar desktop-only">
+                <div class="navigator-header">Question Navigator</div>
+                <div class="navigator-grid" id="desktopNav"></div>
+                <div class="navigator-legend">
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--success)"></div>
+                        <span>Answered</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--warning)"></div>
+                        <span>Marked for Review</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--danger)"></div>
+                        <span>Incorrect</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--card);border:2px solid var(--border)"></div>
+                        <span>Unattempted</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile drawer panel -->
+    <div class="mobile-navigator" id="mobileNav">
+        <div class="mobile-nav-header">
+            <h3>Question Navigator</h3>
+            <button class="close-nav" id="closeNav">&times;</button>
+        </div>
+        <div class="navigator-grid" id="mobileNavGrid"></div>
+        <div class="navigator-legend">
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--success)"></div>
+                <span>Answered</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--warning)"></div>
+                <span>Marked for Review</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--danger)"></div>
+                <span>Incorrect</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--card);border:2px solid var(--border)"></div>
+                <span>Unattempted</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Result Overlay -->
+    <div class="result-modal" id="resultModal">
+        <div class="result-container">
+            <div class="result-header">
+                <h2>Test Completed!</h2>
+                <div class="result-score" id="resultScore">0.00</div>
+            </div>
+            
+            <div class="result-grid">
+                <div class="result-stat correct">
+                    <div class="result-stat-value" id="correctCount">0</div>
+                    <div class="result-stat-label">Correct</div>
+                </div>
+                <div class="result-stat incorrect">
+                    <div class="result-stat-value" id="incorrectCount">0</div>
+                    <div class="result-stat-label">Incorrect</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="unattemptedCount">0</div>
+                    <div class="result-stat-label">Unattempted</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="timeTaken">0</div>
+                    <div class="result-stat-label">Minutes</div>
+                </div>
+            </div>
+            
+            <div class="section-results" id="sectionResults" style="display:none;">
+                <h3>Section-wise Performance</h3>
+                <table class="section-results-table">
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Attempted</th>
+                            <th>Correct</th>
+                            <th>Wrong</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sectionResultsBody"></tbody>
+                </table>
+            </div>
+            
+            <div class="result-actions">
+                <button class="result-btn btn-close" id="closeResult">Close</button>
+                <button class="result-btn btn-review-ans" id="reviewAnswers">Review Answers</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const questions = [
+  {
+    "question": "<p>Density of population, is expressed as______.</p>",
+    "options": [
+      "number of rural persons per unit area",
+      "number of literate persons per unit area",
+      "number of persons per unit area",
+      "number of animals and persons per unit area"
+    ],
+    "correct_option_id": 2,
+    "solution": "<p>The density of population is a measure that expresses the number of individuals living in a specific area, usually given as the <b>number of persons per unit area</b>.</p>",
+    "question_index": 0
+  },
+  {
+    "question": "<p>The growth rate of India's population has been declining since __________.</p>",
+    "options": [
+      "1971",
+      "1991",
+      "1951",
+      "1981"
+    ],
+    "correct_option_id": 3,
+    "solution": "<p>&#183; The growth rate peaked in the 1971-1981 period, but from 1981 onwards, the growth rate began to decline gradually. </p><p>&#183; The growth rate from 1981-1991 was 23.87%, showing a slight decrease.</p>",
+    "question_index": 1
+  },
+  {
+    "question": "<p>The National Youth Policy 2014 defines youth as population between the ages of ________ and _________.</p>",
+    "options": [
+      "20; 29",
+      "15; 25",
+      "15; 29",
+      "10; 19"
+    ],
+    "correct_option_id": 2,
+    "solution": "<p>The National Youth Policy (NYP) 2014 defines youth as individuals in the age group of 15 to 29 years.</p><p>&#183; This policy focuses on empowering young people in areas such as education, skill development, employment, and civic engagement.</p><p>&#183; It was introduced by the Ministry of Youth Affairs and Sports to provide a framework for youth-oriented programs.</p><p>Thus, the correct answer is 15-29 years (Option 3).</p>",
+    "question_index": 2
+  },
+  {
+    "question": "<p>Which of the following options is mostly caused by overpopulation? </p>",
+    "options": [
+      "Land and other renewable resources are under pressure",
+      "Adequate natural resource storage",
+      "Reduction in the scarcity of water",
+      "Increase in the area covered by forests"
+    ],
+    "correct_option_id": 0,
+    "solution": "<p>Overpopulation puts significant pressure on land and renewable resources as more people require more resources for survival, leading to:</p><p>&#183; Increased demand for agricultural land</p><p>&#183; Greater exploitation of natural resources</p><p>&#183; Strain on water resources</p><p>&#183; Deforestation for human settlement</p><p>&#183; Degradation of available resources</p>",
+    "question_index": 3
+  },
+  {
+    "question": "<p>Who published the logistic equation model of population growth in 1838?</p>",
+    "options": [
+      "Howard Thomas Odum",
+      "Alfred Russel Wallace",
+      "Pierre Fran&#231;ois Verhulst",
+      "George Evelyn Hutchinson"
+    ],
+    "correct_option_id": 2,
+    "solution": "<p>&#183; Pierre Fran&#231;ois Verhulst introduced the logistic growth model in 1838, describing how populations grow in a limited environment.</p><p>&#183; It forms the basis of modern population ecology.</p>",
+    "question_index": 4
+  },
+  {
+    "question": "<p>Which of the following periods is known as the period of population explosion in India?</p>",
+    "options": [
+      "1981 - 2021",
+      "1931 - 1961",
+      "1921 - 1851",
+      "1951 - 1981"
+    ],
+    "correct_option_id": 3,
+    "solution": "<p>The period known as the \"population explosion\" in India is mainly associated with the years from <b>1951 to 1981</b>. This was when India's population experienced significant and rapid growth.</p>",
+    "question_index": 5
+  },
+  {
+    "question": "<p>What is the emigration of a significant proportion of a country's highly skilled, highly educated professional population to other countries offering better economic and social opportunities called?</p>",
+    "options": [
+      "Carrying capacity",
+      "Brain drain",
+      "Demographic transition",
+      "Closed population"
+    ],
+    "correct_option_id": 1,
+    "solution": "<p>The term <b>Brain drain indicates a substantial emigration or migration of individuals. </b>It is a situation when a country's highly skilled, highly educated professional population to other countries offering better economic and social opportunities.</p>",
+    "question_index": 6
+  },
+  {
+    "question": "<p>When the analysis of population density is done by calculating it through net cultivated area, what is this measure termed as?</p><p><b>Options:</b></p>",
+    "options": [
+      "Agricultural density",
+      "Physiological density",
+      "Gross density",
+      "Net density"
+    ],
+    "correct_option_id": 1,
+    "solution": "<p><b>Physiological density:- </b>The total population per net cultivated area of a country refers to it's physiological density.</p>",
+    "question_index": 7
+  },
+  {
+    "question": "<p>According to the Census of India 2001, which of the following is the main reason for male migration in India?</p>",
+    "options": [
+      "Education",
+      "Marriage",
+      "Work and employment",
+      "Business"
+    ],
+    "correct_option_id": 2,
+    "solution": "<p>As per the 2001 Census of India, the primary reason for male migration in India was work and employment, accounting for over 38% of total male migration. This pattern has continued in later censuses, reflecting economic migration trends.</p>",
+    "question_index": 8
+  },
+  {
+    "question": "<p>In which year was the Smart Cities Mission launched?</p>",
+    "options": [
+      "2015",
+      "2013",
+      "2019",
+      "2018"
+    ],
+    "correct_option_id": 0,
+    "solution": "<p>The Smart Cities Mission was launched by the Government of India in 2015 to promote sustainable and inclusive urban development.</p>",
+    "question_index": 9
+  },
+  {
+    "question": "<p>Which of the following countries has the highest Hindu population after India?</p>",
+    "options": [
+      "Bhutan",
+      "Sri Lanka",
+      "Myanmar",
+      "Nepal"
+    ],
+    "correct_option_id": 3,
+    "solution": "<p>&#183; Nepal has the highest Hindu population after India. As of recent estimates, around 81% of Nepal's population follows Hinduism, making it the only officially Hindu country in the past.</p><p>&#183; Bhutan is primarily a Buddhist country, with a small Hindu population.</p><p>&#183; Sri Lanka has a Hindu population mainly concentrated in the northern and eastern regions but is significantly smaller than in Nepal.</p><p>&#183; Myanmar has a very small Hindu population, mostly among Indian-origin communities.</p>",
+    "question_index": 10
+  },
+  {
+    "question": "<p>The __________ results from an increase in the proportion of workers relative to non-workers in the population.</p>",
+    "options": [
+      "Age structure of population",
+      "Demographic dividend",
+      "Population momentum",
+      "Old-age dependency ratio"
+    ],
+    "correct_option_id": 1,
+    "solution": "<p>&bull; The <b>demographic dividend</b> results from an increase in the proportion of workers relative to non-workers in the population.</p><p>&bull; A demographic dividend occurs when there is a favorable age structure in a country's population, with a larger proportion of working-age people compared to dependents (children and elderly).</p><p>&bull; This demographic situation can potentially lead to accelerated economic growth if the right policies and conditions are in place to productively employ the larger workforce.</p><p><b>The other options describe different demographic concepts:</b></p><p>&bull; Age structure of population: The distribution of people across different age groups</p><p>&bull; Population momentum: The tendency for population growth to continue despite falling fertility rates</p><p>&bull; Old-age dependency ratio: The ratio of elderly people to working-age people</p>",
+    "question_index": 11
+  },
+  {
+    "question": "<p>What is the literacy rate of males in India as per the report published in the National Survey of India-2022?</p>",
+    "options": [
+      "83.4%",
+      "86.3%",
+      "84.7%",
+      "81.2%"
+    ],
+    "correct_option_id": 2,
+    "solution": "<p>&#183; The literacy rate is 77.70%, with literate males at <b>84.70%</b> and literate females at 70.30%, according to the National Family Health Survey (NFHS-5) and National Statistical Office: NSO (2021 and 2022). </p><p>&#183; NFHS-5 (2019-21): Conducted by the Ministry of Health and Family Welfare.</p><p>&#183; Census 2011 (last official census) reported 80.9% male literacy, but NFHS-5 reflects updated estimates.</p>",
+    "question_index": 12
+  },
+  {
+    "question": "<p>Which of the following states launched the first Migration Monitoring System in the year 2022?</p>",
+    "options": [
+      "Karnataka",
+      "Goa",
+      "Maharashtra",
+      "Kerala"
+    ],
+    "correct_option_id": 2,
+    "solution": "<p>The Maharashtra government launched India's first Migration Monitoring System in 2022 to track the movement of seasonal migrant workers and ensure their access to government welfare schemes. The system was developed to help monitor the socio-economic conditions of migrant laborers.</p>",
+    "question_index": 13
+  },
+  {
+    "question": "<p>Which of the following movements created regional disparities between large and small farmers in India?</p>",
+    "options": [
+      "Green Revolution",
+      "Yellow Revolution",
+      "Pink Revolution",
+      "Blue Revolution"
+    ],
+    "correct_option_id": 0,
+    "solution": "<p>&bull; The Green Revolution (1960s-70s) focused on high-yielding variety (HYV) seeds, fertilizers, and irrigation, increasing agricultural production.</p><p>&bull; However, it mainly benefited large farmers in Punjab, Haryana, and western Uttar Pradesh, while small farmers in rain-fed areas lagged.</p><p>&bull; This led to regional disparities and increased the income gap between rich and poor farmers.</p>",
+    "question_index": 14
+  },
+  {
+    "question": "<p>As per the report of the NITI Aayog in 2023, which among the following states in India has the lowest percentage of the total population that is multidimensionally poor? </p>",
+    "options": [
+      "Kerala",
+      "Goa",
+      "Sikkim",
+      "Uttarakhand"
+    ],
+    "correct_option_id": 0,
+    "solution": "<p>As per the NITI Aayog's 2023 report on Multidimensional Poverty, Kerala had the lowest percentage of the total population that is multidimensionally poor among Indian states.</p><p>Reasons for Kerala's low poverty levels:</p> <ul style='margin-top:0cm' type=disc> <li class=MsoNormal>High literacy rate (above 96%) and strong educational infrastructure.</li> <li class=MsoNormal>Advanced healthcare system with high life expectancy and low infant mortality.</li> <li class=MsoNormal>Strong social welfare programs and effective governance.</li> </ul>",
+    "question_index": 15
+  },
+  {
+    "question": "<p>Which of the following age groups is considered as working population or working age in India?</p>",
+    "options": [
+      "15 - 40 years",
+      "0 - 60 years",
+      "15 - 59 years",
+      "25 - 65 years"
+    ],
+    "correct_option_id": 2,
+    "solution": "<p>The <b>working-age population</b> in India, as per standard demographic definitions, includes individuals aged <b>15 - 59 years</b>. This group is considered capable of contributing to the labor force.</p><p><b>Why other options are incorrect:</b></p><p>&#183; <b>15 - 40 years:</b> Too narrow; excludes older productive workers.</p><p>&#183; <b>0 - 60 years:</b> Includes children and non-working groups, incorrect.</p><p>&#183; <b>25 - 65 years:</b> Excludes younger workers and extends too far.</p><p><b>Further Insight:</b></p><p>This range aligns with international standards, though some extend it to 64 years. It's critical for calculating dependency ratios and economic planning.</p>",
+    "question_index": 16
+  },
+  {
+    "question": "<p>Which of the following years is called the Year of the Great Divide in the demographic history of India?</p>",
+    "options": [
+      "1951",
+      "1911",
+      "1921",
+      "1931"
+    ],
+    "correct_option_id": 2,
+    "solution": "<p>The year <b>1921</b> is often referred to as the \"Year of the Great Divide,\" the last period in which India's population declined, due to the effects of famine.</p>",
+    "question_index": 17
+  },
+  {
+    "question": "<p>Which of the following reasons may be considered as India's pull factors for migration?</p><p>I. Labour demand</p><p>II. Natural disaster</p><p>III. Protection of human and civil rights</p><p>IV. High consumption and living standards</p>",
+    "options": [
+      "Only II",
+      "Both I and IV",
+      "Only II, III and IV",
+      "Only I, III and IV"
+    ],
+    "correct_option_id": 3,
+    "solution": "<p>&#183; In migration theory, factors influencing population movement are categorized as either \"push\" or \"pull\" factors. </p><p>&#183; Push factors often involve negative conditions like war, poverty, or persecution, while pull factors offer positive opportunities like job prospects, better living standards, or political stability. </p><p>&#183; <b>Natural disaster</b> is a <b>push factor</b>  -  it drives people <b>away</b> from a place, not toward it.</p><p><b>Further information:</b></p><p>A structured table outlining the <b>push and pull factors of migration</b>:</p><table style=\"border-collapse:collapse;\"><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>Push Factors (Reasons to leave a place)</b></td><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>Pull Factors (Reasons to move to a place)</b></td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>1. Economic</b></td><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>1. Economic</b></td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Poverty/lack of jobs</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Better job opportunities</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Low wages</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Higher wages/salaries</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Economic instability</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Economic stability/growth</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>2. Social</b></td><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>2. Social</b></td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Lack of education/healthcare</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Access to quality education/healthcare</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Discrimination/persecution</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Social equality/acceptance</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Poor living conditions</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Better living standards</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>3. Political</b></td><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>3. Political</b></td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- War/conflict</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Political stability/safety</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Oppressive government</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Democratic freedoms</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Human rights violations</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Protection of rights</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>4. Environmental</b></td><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>4. Environmental</b></td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Natural disasters (floods, droughts)</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Favorable climate</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Pollution/environmental degradation</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Clean environment</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Scarcity of resources (water, land)</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">- Abundant natural resources</td></tr></table><p><b>Key Notes:</b></p><p>&#183; <b>Push factors</b> drive people away from their home region.</p><p>&#183; <b>Pull factors</b> attract migrants to a new location.</p><p>&#183; Often, migration results from a <b>combination</b> of these factors (e.g., fleeing war <i>and</i> seeking jobs).</p>",
+    "question_index": 18
+  },
+  {
+    "question": "<p>Which of the following statements is true?</p><p>I. The Family Welfare Program has sought to promote responsible and planned parenthood on a mandatory basis.</p><p>II. The National Population Policy 2000 provides a policy framework to provide free and compulsory education up to the age of 14 years.</p><p>Select the correct options<b>:</b></p>",
+    "options": [
+      "Neither I nor II",
+      "Only I",
+      "Only II",
+      "Both I and II"
+    ],
+    "correct_option_id": 2,
+    "solution": "<p><b>Statement I is false:</b> The Government of India initiated the comprehensive Family Planning Programme in 1952. The Family Welfare Programme has sought <b>to promote responsible and planned parenthood on a voluntary basis.</b></p><p><b>Statement II is true: </b>The National Population Policy (NPP) 2000 is a culmination of years of planned efforts. <b>The NPP 2000 provides a policy framework for imparting free and compulsory school education up to 14 years of age</b>, reducing infant mortality rate to below 30 per 1000 live births, achieving universal immunization of children against all vaccine preventable diseases, promoting delayed marriage for girls, and making family welfare a people-center.</p>",
+    "question_index": 19
+  }
+];
+        const sectionsData = null;
+        const marksPerQ = 3.0;
+        const negMarks = 1.0;
+        const totalDuration = 60;
+        
+        class CBTExamApp {
+            constructor() {
+                this.questions = questions;
+                this.sections = sectionsData;
+                this.currentQuestion = 0;
+                this.answers = new Array(this.questions.length).fill(null);
+                this.markedForReview = new Array(this.questions.length).fill(false);
+                this.timeSpent = new Array(this.questions.length).fill(0);
+                this.isEnglish = true;
+                this.isSubmitted = false;
+                this.startTime = null;
+                this.lastQuestionTime = null;
+                this.mainTimer = null;
+                this.sectionTimer = null;
+                
+                // Determine active section index for hard locks, or custom segment tabs
+                this.currentSectionIdx = 0;
+                
+                this.totalTimeLeft = totalDuration * 60;
+                
+                this.initElements();
+                this.setupWelcomeScreen();
+                this.setupThemeToggle();
+                this.setupBeforeUnload();
+            }
+            
+            initElements() {
+                this.els = {
+                    welcomeScreen: document.getElementById('welcomeScreen'),
+                    examContainer: document.getElementById('examContainer'),
+                    mainTimer: document.getElementById('mainTimer'),
+                    sectionBadge: document.getElementById('sectionBadge'),
+                    sectionName: document.getElementById('sectionName'),
+                    sectionTimer: document.getElementById('sectionTimer'),
+                    sectionTabs: document.getElementById('sectionTabs'),
+                    questionNum: document.getElementById('questionNum'),
+                    questionMarks: document.getElementById('questionMarks'),
+                    questionText: document.getElementById('questionText'),
+                    comprehension: document.getElementById('comprehension'),
+                    comprehensionText: document.getElementById('comprehensionText'),
+                    optionsList: document.getElementById('optionsList'),
+                    solutionBox: document.getElementById('solutionBox'),
+                    solutionStats: document.getElementById('solutionStats'),
+                    solutionText: document.getElementById('solutionText'),
+                    progressText: document.getElementById('progressText'),
+                    answeredCount: document.getElementById('answeredCount'),
+                    desktopNav: document.getElementById('desktopNav'),
+                    mobileNav: document.getElementById('mobileNav'),
+                    mobileNavGrid: document.getElementById('mobileNavGrid'),
+                    resultModal: document.getElementById('resultModal'),
+                    resultScore: document.getElementById('resultScore'),
+                    correctCount: document.getElementById('correctCount'),
+                    incorrectCount: document.getElementById('incorrectCount'),
+                    unattemptedCount: document.getElementById('unattemptedCount'),
+                    timeTaken: document.getElementById('timeTaken'),
+                    sectionResults: document.getElementById('sectionResults'),
+                    sectionResultsBody: document.getElementById('sectionResultsBody')
+                };
+            }
+
+            setupWelcomeScreen() {
+                document.getElementById('welcomeTotalQs').textContent = this.questions.length;
+                document.getElementById('welcomeTotalMarks').textContent = (this.questions.length * marksPerQ).toFixed(1);
+                document.getElementById('welcomeDuration').textContent = totalDuration;
+                document.getElementById('welcomeMarksScheme').textContent = `+${marksPerQ.toFixed(1)} / -${negMarks.toFixed(1)}`;
+                
+                if (this.sections && this.sections.length > 0) {
+                    const sBlock = document.getElementById('welcomeSectionsBlock');
+                    const sBody = document.getElementById('welcomeSectionsBody');
+                    sBlock.style.display = 'block';
+                    sBody.innerHTML = this.sections.map(s => `
+                        <tr>
+                            <td>
+                                <strong>${s.name}</strong>
+                                ${s.subsections ? `<div class="subsec-container">${s.subsections.map(sub => `<div class="subsec-row">${sub.name}: Q${sub.start+1}-Q${sub.end+1}</div>`).join('')}</div>` : ''}
+                            </td>
+                            <td>Q${s.start+1} - Q${s.end+1}</td>
+                            <td>${Math.round(s.timer / 60)} mins</td>
+                        </tr>
+                    `).join('');
+                }
+
+                document.getElementById('startBtn').addEventListener('click', () => {
+                    this.els.welcomeScreen.classList.add('hidden');
+                    this.els.examContainer.classList.add('active');
+                    this.startExam();
+                });
+            }
+
+            setupThemeToggle() {
+                const btn = document.getElementById('themeToggle');
+                btn.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-mode');
+                    const isDark = document.body.classList.contains('dark-mode');
+                    btn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                });
+            }
+
+            setupBeforeUnload() {
+                window.addEventListener('beforeunload', (e) => {
+                    if (!this.isSubmitted) {
+                        e.preventDefault();
+                        e.returnValue = 'Your test is in progress. Are you sure you want to leave?';
+                        return e.returnValue;
+                    }
+                });
+            }
+
+            startExam() {
+                this.startTime = Date.now();
+                this.lastQuestionTime = this.startTime;
+                
+                // If it is Tier I (no hard sectionsData), construct segment switcher bar dynamically
+                if (!this.sections || this.sections.length === 0) {
+                    this.buildSoftSections();
+                }
+                
+                this.createNavigator();
+                this.startMainTimer();
+                
+                if (this.sections && this.sections.length > 0) {
+                    this.startSectionTimer();
+                    this.updateSectionInfo();
+                }
+                
+                this.loadQuestion(0);
+                this.setupEventListeners();
+            }
+
+            // Dynamically construct Tier I segments (Reasoning, GK, Maths, English)
+            buildSoftSections() {
+                if (this.questions.length === 100) {
+                    this.softSections = [
+                        { name: "REASONING", start: 0, end: 24 },
+                        { name: "GENERAL AWARENESS", start: 25, end: 49 },
+                        { name: "QUANTITATIVE APTITUDE", start: 50, end: 74 },
+                        { name: "ENGLISH COMPREHENSION", start: 75, end: 99 }
+                    ];
+                } else {
+                    // Fallback division by 4
+                    const part = Math.floor(this.questions.length / 4);
+                    this.softSections = [
+                        { name: "SECTION A", start: 0, end: part - 1 },
+                        { name: "SECTION B", start: part, end: (part * 2) - 1 },
+                        { name: "SECTION C", start: part * 2, end: (part * 3) - 1 },
+                        { name: "SECTION D", start: part * 3, end: this.questions.length - 1 }
+                    ];
+                }
+                
+                this.els.sectionTabs.style.display = 'flex';
+                this.renderSoftSectionTabs();
+            }
+
+            renderSoftSectionTabs() {
+                this.els.sectionTabs.innerHTML = this.softSections.map((sec, idx) => {
+                    const isActive = this.currentQuestion >= sec.start && this.currentQuestion <= sec.end;
+                    return `<button class="section-tab${isActive ? ' active' : ''}" onclick="window.app.goToQuestion(${sec.start})">${sec.name}</button>`;
+                }).join('');
+            }
+
+            updateSoftSectionTabs() {
+                if (!this.softSections) return;
+                const tabs = this.els.sectionTabs.querySelectorAll('.section-tab');
+                this.softSections.forEach((sec, idx) => {
+                    const isActive = this.currentQuestion >= sec.start && this.currentQuestion <= sec.end;
+                    tabs[idx].classList.toggle('active', isActive);
+                });
+            }
+
+            setupEventListeners() {
+                document.getElementById('engBtn').onclick = () => this.setLanguage(true);
+                document.getElementById('hinBtn').onclick = () => this.setLanguage(false);
+                document.getElementById('prevBtn').onclick = () => this.navigate(-1);
+                document.querySelector('.navigation-bar .btn-next').onclick = () => this.navigate(1);
+                document.getElementById('reviewBtn').onclick = () => this.toggleReview();
+                document.getElementById('submitBtn').onclick = () => this.confirmSubmit();
+                document.getElementById('submitBtnDesktop').onclick = () => this.confirmSubmit();
+                document.getElementById('navigatorBtn').onclick = () => this.openMobileNav();
+                document.getElementById('closeNav').onclick = () => this.closeMobileNav();
+                document.getElementById('closeResult').onclick = () => this.closeResultModal();
+                document.getElementById('reviewAnswers').onclick = () => this.reviewAnswers();
+            }
+
+            createNavigator() {
+                [this.els.desktopNav, this.els.mobileNavGrid].forEach(container => {
+                    container.innerHTML = '';
+                    this.questions.forEach((_, i) => {
+                        const btn = document.createElement('div');
+                        btn.className = 'nav-question';
+                        btn.textContent = i + 1;
+                        btn.onclick = () => this.goToQuestion(i);
+                        container.appendChild(btn);
+                    });
+                });
+            }
+
+            extractText(html, isEng) {
+                if (!html) return '';
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                
+                const langSpans = temp.querySelectorAll('span.eqt, span.hqt');
+                langSpans.forEach(span => {
+                    if ((isEng && span.classList.contains('hqt')) || 
+                        (!isEng && span.classList.contains('eqt'))) {
+                        span.style.display = 'none';
+                    } else {
+                        span.style.display = '';
+                    }
+                });
+                
+                return temp.innerHTML;
+            }
+
+            getQuestionMarks(qIdx) {
+                if (!this.sections) return marksPerQ;
+                for (const section of this.sections) {
+                    if (qIdx >= section.start && qIdx <= section.end) {
+                        if (section.subsections) {
+                            for (const subsec of section.subsections) {
+                                if (qIdx >= subsec.start && qIdx <= subsec.end) {
+                                    return subsec.marks_per_q;
+                                }
+                            }
+                        }
+                        return marksPerQ;
+                    }
+                }
+                return marksPerQ;
+            }
+
+            loadQuestion(idx) {
+                if (this.currentQuestion !== idx) {
+                    const now = Date.now();
+                    this.timeSpent[this.currentQuestion] += (now - this.lastQuestionTime) / 1000;
+                    this.lastQuestionTime = now;
+                }
+                
+                this.currentQuestion = idx;
+                const q = this.questions[idx];
+                const qMarks = this.getQuestionMarks(idx);
+                
+                this.els.questionNum.textContent = `Question ${idx + 1} of ${this.questions.length}`;
+                this.els.questionMarks.textContent = `Marks: ${qMarks.toFixed(1)}`;
+                this.els.progressText.textContent = `Question ${idx + 1} of ${this.questions.length}`;
+                this.updateAnsweredCount();
+                this.updateNavigator();
+                this.updateNavigationButtons();
+                this.updateReviewButton();
+                this.updateSoftSectionTabs();
+                
+                if (q.comp) {
+                    this.els.comprehension.style.display = 'block';
+                    this.els.comprehensionText.innerHTML = this.extractText(q.comp, this.isEnglish);
+                } else {
+                    this.els.comprehension.style.display = 'none';
+                }
+                
+                this.els.questionText.innerHTML = this.extractText(q.question, this.isEnglish);
+                this.loadOptions(q, idx);
+                
+                if (this.isSubmitted && q.solution) {
+                    const timeSpent = Math.round(this.timeSpent[idx]);
+                    const mins = Math.floor(timeSpent / 60);
+                    const secs = timeSpent % 60;
+                    const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+                    
+                    this.els.solutionStats.innerHTML = `
+                        <span><i class="fas fa-clock"></i> Time spent: ${timeStr}</span>
+                        <span><i class="fas fa-check-circle"></i> Correct Option: ${String.fromCharCode(65 + q.correct_option_id)}</span>
+                    `;
+                    this.els.solutionText.innerHTML = this.extractText(q.solution, this.isEnglish);
+                    this.els.solutionBox.classList.add('show');
+                } else {
+                    this.els.solutionBox.classList.remove('show');
+                }
+            }
+
+            loadOptions(q, qIdx) {
+                this.els.optionsList.innerHTML = '';
+                const userAnswer = this.answers[qIdx];
+                const correctAnswer = q.correct_option_id;
+                
+                if (!q.options || !Array.isArray(q.options)) return;
+                
+                q.options.forEach((opt, i) => {
+                    const div = document.createElement('div');
+                    let className = 'option';
+                    
+                    if (this.isSubmitted) className += ' submitted';
+                    if (userAnswer === i) className += ' selected';
+                    
+                    if (this.isSubmitted && correctAnswer !== undefined) {
+                        if (i === correctAnswer) {
+                            className += ' correct';
+                        } else if (userAnswer === i && userAnswer !== correctAnswer) {
+                            className += ' wrong';
+                        }
+                    }
+                    
+                    div.className = className;
+                    
+                    let indicator = String.fromCharCode(65 + i);
+                    if (this.isSubmitted && correctAnswer !== undefined) {
+                        if (i === correctAnswer) {
+                            indicator = '✓';
+                        } else if (userAnswer === i) {
+                            indicator = '✗';
+                        }
+                    } else if (userAnswer === i) {
+                        indicator = '✓';
+                    }
+                    
+                    div.innerHTML = `
+                        <div class="option-indicator">${indicator}</div>
+                        <div class="option-text">${this.extractText(opt, this.isEnglish)}</div>
+                    `;
+                    
+                    if (!this.isSubmitted) {
+                        div.onclick = () => this.selectOption(i, qIdx);
+                    }
+                    
+                    this.els.optionsList.appendChild(div);
+                });
+            }
+
+            selectOption(optIdx, qIdx) {
+                if (this.isSubmitted) return;
+                this.answers[qIdx] = this.answers[qIdx] === optIdx ? null : optIdx;
+                this.loadOptions(this.questions[qIdx], qIdx);
+                this.updateAnsweredCount();
+                this.updateNavigator();
+            }
+
+            toggleReview() {
+                if (this.isSubmitted) return;
+                this.markedForReview[this.currentQuestion] = !this.markedForReview[this.currentQuestion];
+                this.updateNavigator();
+                this.updateReviewButton();
+            }
+
+            updateReviewButton() {
+                const btn = document.getElementById('reviewBtn');
+                if (this.markedForReview[this.currentQuestion]) {
+                    btn.classList.add('marked');
+                    btn.innerHTML = '<i class="fas fa-flag"></i> Marked';
+                } else {
+                    btn.classList.remove('marked');
+                    btn.innerHTML = '<i class="fas fa-flag"></i> Mark for Review';
+                }
+            }
+
+            navigate(dir) {
+                const newIdx = this.currentQuestion + dir;
+                if (this.isSubmitted) {
+                    if (newIdx >= 0 && newIdx < this.questions.length) {
+                        this.loadQuestion(newIdx);
+                    }
+                    return;
+                }
+                
+                if (this.sections && this.sections.length > 0) {
+                    const currentSection = this.sections[this.currentSectionIdx];
+                    if (newIdx < currentSection.start || newIdx > currentSection.end) {
+                        return;
+                    }
+                }
+                
+                if (newIdx >= 0 && newIdx < this.questions.length) {
+                    this.loadQuestion(newIdx);
+                }
+            }
+
+            goToQuestion(idx) {
+                if (this.isSubmitted) {
+                    this.loadQuestion(idx);
+                    this.closeMobileNav();
+                    return;
+                }
+                
+                if (this.sections && this.sections.length > 0) {
+                    const currentSection = this.sections[this.currentSectionIdx];
+                    if (idx < currentSection.start || idx > currentSection.end) {
+                        return;
+                    }
+                }
+                
+                this.loadQuestion(idx);
+                this.closeMobileNav();
+            }
+
+            updateNavigator() {
+                [this.els.desktopNav, this.els.mobileNavGrid].forEach(container => {
+                    const btns = container.querySelectorAll('.nav-question');
+                    btns.forEach((btn, i) => {
+                        btn.className = 'nav-question';
+                        
+                        if (i === this.currentQuestion) {
+                            btn.classList.add('current');
+                        } else if (this.isSubmitted) {
+                            if (this.answers[i] !== null && this.questions[i].correct_option_id !== undefined) {
+                                if (this.answers[i] === this.questions[i].correct_option_id) {
+                                    btn.classList.add('answered');
+                                } else {
+                                    btn.classList.add('wrong');
+                                }
+                            }
+                        } else {
+                            if (this.markedForReview[i]) {
+                                btn.classList.add('review');
+                            } else if (this.answers[i] !== null) {
+                                btn.classList.add('answered');
+                            }
+                            
+                            if (this.sections && this.sections.length > 0) {
+                                const currentSection = this.sections[this.currentSectionIdx];
+                                if (i < currentSection.start || i > currentSection.end) {
+                                    btn.classList.add('disabled');
+                                }
+                            }
+                        }
+                    });
+                });
+            }
+
+            updateNavigationButtons() {
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.querySelector('.navigation-bar .btn-next');
+                const reviewBtn = document.getElementById('reviewBtn');
+                
+                prevBtn.disabled = this.currentQuestion === 0;
+                nextBtn.disabled = this.currentQuestion === this.questions.length - 1;
+                
+                if (this.isSubmitted) {
+                    reviewBtn.style.display = 'none';
+                } else {
+                    reviewBtn.style.display = 'inline-flex';
+                }
+                
+                if (this.sections && this.sections.length > 0 && !this.isSubmitted) {
+                    const currentSection = this.sections[this.currentSectionIdx];
+                    prevBtn.disabled = prevBtn.disabled || (this.currentQuestion === currentSection.start);
+                    nextBtn.disabled = nextBtn.disabled || (this.currentQuestion === currentSection.end);
+                }
+            }
+
+            updateAnsweredCount() {
+                const count = this.answers.filter(a => a !== null).length;
+                this.els.answeredCount.textContent = count;
+            }
+
+            setLanguage(isEng) {
+                this.isEnglish = isEng;
+                document.getElementById('engBtn').classList.toggle('active', isEng);
+                document.getElementById('hinBtn').classList.toggle('active', !isEng);
+                this.loadQuestion(this.currentQuestion);
+            }
+
+            startMainTimer() {
+                this.mainTimer = setInterval(() => {
+                    this.totalTimeLeft--;
+                    if (this.totalTimeLeft <= 0) {
+                        clearInterval(this.mainTimer);
+                        this.submitTest();
+                        return;
+                    }
+                    const mins = Math.floor(this.totalTimeLeft / 60);
+                    const secs = this.totalTimeLeft % 60;
+                    this.els.mainTimer.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+                }, 1000);
+            }
+
+            startSectionTimer() {
+                if (!this.sections || this.sections.length === 0) return;
+                
+                if (this.sectionTimer) clearInterval(this.sectionTimer);
+                
+                const section = this.sections[this.currentSectionIdx];
+                if (section.time_left === undefined) {
+                    section.time_left = section.timer;
+                }
+                
+                const updateTimerDisplay = () => {
+                    const mins = Math.floor(section.time_left / 60);
+                    const secs = section.time_left % 60;
+                    this.els.sectionTimer.textContent = ` | ${mins}:${secs.toString().padStart(2, '0')}`;
+                };
+                
+                updateTimerDisplay();
+                
+                this.sectionTimer = setInterval(() => {
+                    section.time_left--;
+                    updateTimerDisplay();
+                    
+                    if (section.time_left <= 0) {
+                        clearInterval(this.sectionTimer);
+                        this.submitSection();
+                    }
+                }, 1000);
+            }
+
+            updateSectionInfo() {
+                if (!this.sections || this.sections.length === 0) return;
+                const section = this.sections[this.currentSectionIdx];
+                this.els.sectionName.textContent = section.name;
+                this.els.sectionBadge.style.display = 'block';
+                
+                if (section.time_left !== undefined) {
+                    const mins = Math.floor(section.time_left / 60);
+                    const secs = section.time_left % 60;
+                    this.els.sectionTimer.textContent = ` | ${mins}:${secs.toString().padStart(2, '0')}`;
+                }
+            }
+
+            submitSection() {
+                if (!this.sections || this.sections.length === 0) return;
+                
+                const section = this.sections[this.currentSectionIdx];
+                section.submitted = true;
+                clearInterval(this.sectionTimer);
+                
+                const nextSectionIdx = this.currentSectionIdx + 1;
+                if (nextSectionIdx < this.sections.length) {
+                    this.currentSectionIdx = nextSectionIdx;
+                    this.startSectionTimer();
+                    this.updateSectionInfo();
+                    this.loadQuestion(this.sections[nextSectionIdx].start);
+                } else {
+                    this.submitTest();
+                }
+                
+                this.updateNavigator();
+            }
+
+            confirmSubmit() {
+                if (this.sections && this.sections.length > 0) {
+                    const section = this.sections[this.currentSectionIdx];
+                    const unanswered = this.answers.slice(section.start, section.end + 1)
+                        .filter(a => a === null).length;
+                    
+                    let msg = unanswered > 0 
+                        ? `You have ${unanswered} unanswered questions in this section. Submit Section?`
+                        : 'Submit this section?';
+                    
+                    if (confirm(msg)) this.submitSection();
+                } else {
+                    const unanswered = this.answers.filter(a => a === null).length;
+                    let msg = unanswered > 0 
+                        ? `You have ${unanswered} unanswered questions. Submit entire test?`
+                        : 'Submit test?';
+                    
+                    if (confirm(msg)) this.submitTest();
+                }
+            }
+
+            submitTest() {
+                if (this.isSubmitted) return;
+                
+                const now = Date.now();
+                this.timeSpent[this.currentQuestion] += (now - this.lastQuestionTime) / 1000;
+                
+                this.isSubmitted = true;
+                clearInterval(this.mainTimer);
+                if (this.sectionTimer) clearInterval(this.sectionTimer);
+                
+                document.getElementById('submitBtn').style.display = 'none';
+                document.getElementById('submitBtnDesktop').style.display = 'none';
+                document.getElementById('reviewBtn').style.display = 'none';
+                
+                if (this.sections && this.sections.length > 0) {
+                    this.els.sectionBadge.style.display = 'none';
+                }
+                
+                const results = this.calculateResults();
+                this.showResults(results);
+                this.loadQuestion(this.currentQuestion);
+                this.updateNavigator();
+            }
+
+            calculateResults() {
+                const timeTaken = Math.round((Date.now() - this.startTime) / 60000);
+                let correct = 0, incorrect = 0, unattempted = 0, score = 0;
+                
+                const sectionResults = [];
+                
+                if (this.sections && this.sections.length > 0) {
+                    for (const section of this.sections) {
+                        let secCorrect = 0, secIncorrect = 0, secUnattempted = 0, secScore = 0;
+                        const subsecResults = [];
+                        
+                        if (section.subsections) {
+                            for (const subsec of section.subsections) {
+                                let subCorrect = 0, subIncorrect = 0, subUnattempted = 0, subScore = 0;
+                                
+                                for (let i = subsec.start; i <= subsec.end; i++) {
+                                    const userAns = this.answers[i];
+                                    const correctAns = this.questions[i].correct_option_id;
+                                    
+                                    if (userAns === null) {
+                                        subUnattempted++;
+                                    } else if (correctAns !== undefined && userAns === correctAns) {
+                                        subCorrect++;
+                                        subScore += subsec.marks_per_q;
+                                    } else {
+                                        subIncorrect++;
+                                        subScore -= negMarks;
+                                    }
+                                }
+                                
+                                subsecResults.push({
+                                    name: subsec.name,
+                                    attempted: subCorrect + subIncorrect,
+                                    correct: subCorrect,
+                                    incorrect: subIncorrect,
+                                    unattempted: subUnattempted,
+                                    score: Math.max(0, subScore)
+                                });
+                                
+                                secCorrect += subCorrect;
+                                secIncorrect += subIncorrect;
+                                secUnattempted += subUnattempted;
+                                secScore += subScore;
+                            }
+                        } else {
+                            for (let i = section.start; i <= section.end; i++) {
+                                const userAns = this.answers[i];
+                                const correctAns = this.questions[i].correct_option_id;
+                                
+                                if (userAns === null) {
+                                    secUnattempted++;
+                                } else if (correctAns !== undefined && userAns === correctAns) {
+                                    secCorrect++;
+                                    secScore += marksPerQ;
+                                } else {
+                                    secIncorrect++;
+                                    secScore -= negMarks;
+                                }
+                            }
+                        }
+                        
+                        sectionResults.push({
+                            name: section.name,
+                            attempted: secCorrect + secIncorrect,
+                            correct: secCorrect,
+                            incorrect: secIncorrect,
+                            unattempted: secUnattempted,
+                            score: Math.max(0, secScore),
+                            subsections: subsecResults.length > 0 ? subsecResults : null
+                        });
+                        
+                        correct += secCorrect;
+                        incorrect += secIncorrect;
+                        unattempted += secUnattempted;
+                        score += secScore;
+                    }
+                } else {
+                    this.questions.forEach((q, i) => {
+                        const userAns = this.answers[i];
+                        const correctAns = q.correct_option_id;
+                        
+                        if (userAns === null) {
+                            unattempted++;
+                        } else if (correctAns !== undefined && userAns === correctAns) {
+                            correct++;
+                            score += marksPerQ;
+                        } else {
+                            incorrect++;
+                            score -= negMarks;
+                        }
+                    });
+                }
+                
+                return {
+                    score: Math.max(0, score),
+                    correct,
+                    incorrect,
+                    unattempted,
+                    timeTaken,
+                    sectionResults: sectionResults.length > 0 ? sectionResults : null
+                };
+            }
+
+            showResults(results) {
+                this.els.resultScore.textContent = `${results.score.toFixed(2)}/${(this.questions.length * marksPerQ).toFixed(1)}`;
+                this.els.correctCount.textContent = results.correct;
+                this.els.incorrectCount.textContent = results.incorrect;
+                this.els.unattemptedCount.textContent = results.unattempted;
+                this.els.timeTaken.textContent = results.timeTaken;
+                
+                if (results.sectionResults) {
+                    this.els.sectionResults.style.display = 'block';
+                    this.els.sectionResultsBody.innerHTML = '';
+                    
+                    results.sectionResults.forEach(section => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td><strong>${section.name}</strong></td>
+                            <td>${section.attempted}</td>
+                            <td>${section.correct}</td>
+                            <td>${section.incorrect}</td>
+                            <td><strong>${section.score.toFixed(2)}</strong></td>
+                        `;
+                        this.els.sectionResultsBody.appendChild(row);
+                        
+                        if (section.subsections) {
+                            section.subsections.forEach(subsec => {
+                                const subRow = document.createElement('tr');
+                                subRow.className = 'subsection-row';
+                                subRow.innerHTML = `
+                                    <td style="padding-left: 20px;">${subsec.name}</td>
+                                    <td>${subsec.attempted}</td>
+                                    <td>${subsec.correct}</td>
+                                    <td>${subsec.incorrect}</td>
+                                    <td>${subsec.score.toFixed(2)}</td>
+                                `;
+                                this.els.sectionResultsBody.appendChild(subRow);
+                            });
+                        }
+                    });
+                } else {
+                    this.els.sectionResults.style.display = 'none';
+                }
+                
+                this.els.resultModal.classList.add('show');
+            }
+
+            closeResultModal() {
+                this.els.resultModal.classList.remove('show');
+            }
+
+            reviewAnswers() {
+                this.closeResultModal();
+                this.loadQuestion(0);
+            }
+
+            openMobileNav() {
+                this.els.mobileNav.classList.add('open');
+            }
+
+            closeMobileNav() {
+                this.els.mobileNav.classList.remove('open');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.app = new CBTExamApp();
+        });
+    </script>
+</body>
+</html>
