@@ -5,23 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DEDSEC // MOCK_DECRYPTOR</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
 
     :root {
       color-scheme: dark;
-      --primary-neon: #00f3ff; /* Watch Dogs cyan */
-      --accent-warning: #dfff00; /* Cyber yellow */
-      --accent-danger: #ff2a5f; /* DedSec red */
+      --primary-neon: #00f3ff; /* Watch Dogs Cyan */
+      --accent-warning: #dfff00; /* Caution Yellow */
+      --accent-danger: #ff2a5f; /* DedSec Red */
       --bg-dark: #07080b;
       --bg-panel: #0f1117;
       --bg-panel-soft: #161922;
-      --border-neon: rgba(0, 243, 255, 0.2);
-      --border-neon-strong: rgba(0, 243, 255, 0.7);
+      --border-neon: rgba(0, 243, 255, 0.15);
+      --border-neon-strong: rgba(0, 243, 255, 0.6);
       --text-primary: #e2e8f0;
-      --text-muted: #627284;
+      --text-muted: #8090a0;
       --font-header: 'Orbitron', sans-serif;
+      --font-sans: 'Space Grotesk', sans-serif;
       --font-mono: 'Share Tech Mono', monospace;
-      --radius: 0px; /* Monolithic sharp design */
+      --radius: 6px; /* User-friendly border radius */
     }
 
     * {
@@ -37,38 +38,37 @@
     }
 
     body {
-      font-family: var(--font-mono);
+      font-family: var(--font-sans);
       color: var(--text-primary);
       background-image: 
-        linear-gradient(rgba(15, 17, 23, 0.9) 50%, rgba(7, 8, 11, 0.95) 50%),
-        linear-gradient(90deg, rgba(0, 243, 255, 0.04) 1px, transparent 1px),
-        linear-gradient(0deg, rgba(0, 243, 255, 0.04) 1px, transparent 1px);
+        linear-gradient(rgba(15, 17, 23, 0.95) 50%, rgba(7, 8, 11, 0.98) 50%),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(0, 243, 255, 0.015) 1px, transparent 1px);
       background-size: 4px 4px, 24px 24px, 24px 24px;
       position: relative;
     }
 
-    /* Scanline Animation */
+    /* Soft top scanner beam that isn't visually intrusive */
     @keyframes scan {
-      0% { transform: translateY(-100vh); }
-      100% { transform: translateY(100vh); }
+      0% { transform: translateY(-10px); opacity: 0.2; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(12px); opacity: 0.2; }
     }
-    .scanline {
-      position: fixed;
+    .scanner-header-accent {
+      position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      height: 4px;
-      background: rgba(0, 243, 255, 0.15);
-      box-shadow: 0 0 12px var(--primary-neon);
-      z-index: 9999;
-      pointer-events: none;
-      animation: scan 8s linear infinite;
+      height: 2px;
+      background: var(--primary-neon);
+      box-shadow: 0 0 10px var(--primary-neon);
+      animation: scan 4s ease-in-out infinite alternate;
     }
 
     button,
     input,
     select {
-      font: inherit;
+      font-family: var(--font-sans);
       border-radius: var(--radius);
     }
 
@@ -79,26 +79,25 @@
     .app {
       min-height: 100vh;
       display: grid;
-      grid-template-columns: 300px minmax(0, 1fr);
+      grid-template-columns: 310px minmax(0, 1fr);
     }
 
-    /* Sidebar Hacking Interface */
+    /* Sidebar Interface */
     .sidebar {
       position: sticky;
       top: 0;
       height: 100vh;
-      padding: 24px 18px;
-      border-right: 2px solid var(--primary-neon);
+      padding: 24px;
+      border-right: 1px solid var(--border-neon-strong);
       background: rgba(15, 17, 23, 0.95);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
       overflow-y: auto;
-      box-shadow: 5px 0 25px rgba(0, 243, 255, 0.05);
     }
 
     .brandmark {
-      margin-bottom: 30px;
+      margin-bottom: 24px;
       border-bottom: 1px solid var(--border-neon);
-      padding-bottom: 20px;
+      padding-bottom: 16px;
       position: relative;
     }
 
@@ -108,6 +107,7 @@
       top: -12px;
       right: 0;
       font-size: 10px;
+      font-family: var(--font-mono);
       color: var(--accent-warning);
       letter-spacing: 1px;
     }
@@ -129,17 +129,8 @@
       font-family: var(--font-header);
       font-weight: 900;
       font-size: 18px;
-      box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
-      position: relative;
-    }
-
-    .brandmark-icon::after {
-      content: "";
-      position: absolute;
-      inset: -4px;
-      border: 1px solid var(--accent-warning);
-      opacity: 0.5;
-      pointer-events: none;
+      border-radius: var(--radius);
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.25);
     }
 
     .brandmark h1 {
@@ -149,15 +140,15 @@
       font-weight: 900;
       letter-spacing: 1px;
       color: #fff;
-      text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
     }
 
     .brandmark p {
-      margin: 5px 0 0;
+      margin: 4px 0 0;
       color: var(--primary-neon);
       font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
+      font-family: var(--font-mono);
     }
 
     .side-section {
@@ -171,6 +162,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 2px;
+      font-family: var(--font-header);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -203,11 +195,12 @@
       color: var(--text-primary);
       cursor: pointer;
       text-align: left;
-      position: relative;
+      border-radius: var(--radius);
     }
 
     .filter-button::before {
       content: ">";
+      font-family: var(--font-mono);
       color: var(--primary-neon);
       margin-right: 6px;
       opacity: 0;
@@ -216,9 +209,8 @@
     }
 
     .filter-button:hover {
-      background: rgba(0, 243, 255, 0.06);
+      background: rgba(0, 243, 255, 0.08);
       border-color: var(--primary-neon);
-      box-shadow: 0 0 8px rgba(0, 243, 255, 0.15);
     }
 
     .filter-button:hover::before {
@@ -230,8 +222,8 @@
       background: rgba(0, 243, 255, 0.12);
       border-color: var(--primary-neon);
       color: var(--primary-neon);
-      box-shadow: 0 0 12px rgba(0, 243, 255, 0.25);
-      font-weight: 700;
+      box-shadow: 0 0 8px rgba(0, 243, 255, 0.2);
+      font-weight: 600;
     }
 
     .filter-button.is-active::before {
@@ -241,25 +233,27 @@
     }
 
     .count-pill {
-      padding: 2px 6px;
+      padding: 2px 8px;
       background: var(--bg-dark);
       border: 1px solid var(--border-neon);
       color: var(--accent-warning);
       font-size: 11px;
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
     }
 
     .filter-button.is-active .count-pill {
       border-color: var(--primary-neon);
-      background: rgba(0, 0, 0, 0.4);
     }
 
-    /* Main Decryption HUD */
+    /* Main Content Area */
     .main {
       min-width: 0;
       padding: 30px;
       display: flex;
       flex-direction: column;
       gap: 20px;
+      position: relative;
     }
 
     .topbar {
@@ -271,8 +265,9 @@
 
     .headline {
       padding: 24px;
-      border: 2px solid var(--border-neon);
+      border: 1px solid var(--border-neon-strong);
       background: rgba(15, 17, 23, 0.85);
+      border-radius: var(--radius);
       position: relative;
       overflow: hidden;
     }
@@ -290,15 +285,15 @@
     .headline h2 {
       margin: 0;
       font-family: var(--font-header);
-      font-size: 26px;
+      font-size: 24px;
       font-weight: 900;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
       color: #fff;
       text-transform: uppercase;
     }
 
     .headline p {
-      margin: 12px 0 0;
+      margin: 10px 0 0;
       color: var(--text-primary);
       line-height: 1.6;
       font-size: 14px;
@@ -321,16 +316,16 @@
       background: transparent;
       color: var(--primary-neon);
       text-decoration: none;
-      font-weight: 700;
-      letter-spacing: 1px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
       cursor: pointer;
-      position: relative;
+      border-radius: var(--radius);
     }
 
     .action:hover {
       background: rgba(0, 243, 255, 0.1);
-      box-shadow: 0 0 12px rgba(0, 243, 255, 0.3);
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.25);
     }
 
     .action.primary {
@@ -341,10 +336,10 @@
 
     .action.primary:hover {
       background: #00d2dd;
-      box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+      box-shadow: 0 0 12px rgba(0, 243, 255, 0.4);
     }
 
-    /* Diagnostic Telemetry Widgets */
+    /* Diagnostics Telemetry Widgets */
     .stats {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -355,17 +350,8 @@
       padding: 16px;
       border: 1px solid var(--border-neon);
       background: rgba(15, 17, 23, 0.9);
+      border-radius: var(--radius);
       position: relative;
-    }
-
-    .stat::before {
-      content: "";
-      position: absolute;
-      top: -1px;
-      left: 10px;
-      width: 15px;
-      height: 3px;
-      background: var(--primary-neon);
     }
 
     .stat strong {
@@ -378,14 +364,13 @@
 
     .stat span {
       display: block;
-      margin-top: 8px;
+      margin-top: 6px;
       color: var(--text-muted);
       font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 1px;
     }
 
-    /* Unique Watch Dogs warning accents on stats */
     .stat:nth-child(1) { border-left: 3px solid var(--accent-warning); }
     .stat:nth-child(1) strong { color: var(--accent-warning); }
     .stat:nth-child(2) { border-left: 3px solid var(--primary-neon); }
@@ -393,18 +378,19 @@
     .stat:nth-child(3) strong { color: var(--accent-danger); }
     .stat:nth-child(4) { border-left: 3px solid var(--primary-neon); }
 
-    /* Decryption Terminal Log Console Widget */
+    /* Hacking Terminal Console Widget */
     .console-panel {
       border: 1px solid var(--border-neon-strong);
       background: rgba(7, 8, 11, 0.9);
       font-family: var(--font-mono);
       display: flex;
       flex-direction: column;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+      border-radius: var(--radius);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
     }
 
     .console-header {
-      background: rgba(0, 243, 255, 0.1);
+      background: rgba(0, 243, 255, 0.08);
       padding: 8px 14px;
       font-size: 12px;
       text-transform: uppercase;
@@ -415,6 +401,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-top-left-radius: var(--radius);
+      border-top-right-radius: var(--radius);
     }
 
     .console-header .pulse-dot {
@@ -433,7 +421,7 @@
     .console-body {
       padding: 12px 14px;
       font-size: 12px;
-      height: 120px;
+      height: 110px;
       overflow-y: auto;
       color: var(--text-primary);
       display: flex;
@@ -463,7 +451,7 @@
       color: var(--accent-danger);
     }
 
-    /* Toolbar Filter Row */
+    /* Toolbar Filter Controls */
     .toolbar {
       position: sticky;
       top: 0;
@@ -473,14 +461,17 @@
       gap: 12px;
       align-items: center;
       padding: 12px;
-      border: 1px solid var(--primary-neon);
+      border: 1px solid var(--border-neon-strong);
       background: rgba(15, 17, 23, 0.95);
       backdrop-filter: blur(8px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
 
     .searchbox {
       position: relative;
+      display: block;
+      width: 100%;
     }
 
     .searchbox span {
@@ -500,6 +491,7 @@
       color: var(--text-primary);
       padding: 0 12px;
       outline: none;
+      border-radius: var(--radius);
     }
 
     .searchbox input {
@@ -509,7 +501,7 @@
     .searchbox input:focus,
     .toolbar select:focus {
       border-color: var(--primary-neon);
-      box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
     }
 
     .results-header {
@@ -525,10 +517,10 @@
 
     #activeFilters {
       color: var(--accent-warning);
-      font-weight: 700;
+      font-weight: 600;
     }
 
-    /* Result Grid with Encrypted Data Cards */
+    /* Decrypted Node Cards */
     .result-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -536,15 +528,16 @@
     }
 
     .mock-card {
-      padding: 16px;
+      padding: 18px;
       border: 1px solid var(--border-neon);
-      background: rgba(15, 17, 23, 0.8);
+      background: rgba(15, 17, 23, 0.85);
+      border-radius: var(--radius);
       position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 175px;
+      min-height: 180px;
     }
 
     .mock-card::after {
@@ -560,10 +553,9 @@
 
     .mock-card:hover {
       border-color: var(--primary-neon);
-      background: rgba(22, 25, 34, 0.9);
-      box-shadow: 0 0 15px rgba(0, 243, 255, 0.25);
+      background: rgba(22, 25, 34, 0.95);
+      box-shadow: 0 5px 15px rgba(0, 243, 255, 0.15);
       transform: translateY(-2px);
-      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
     .mock-title {
@@ -572,13 +564,10 @@
       overflow: hidden;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
-      font-family: var(--font-header);
       font-size: 15px;
-      font-weight: 700;
-      line-height: 1.4;
+      font-weight: 600;
+      line-height: 1.45;
       color: #fff;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .mock-meta {
@@ -594,16 +583,17 @@
       border: 1px solid var(--border-neon);
       color: var(--text-primary);
       font-size: 11px;
+      border-radius: 4px;
     }
 
     .tag.brand {
-      background: rgba(0, 243, 255, 0.1);
+      background: rgba(0, 243, 255, 0.08);
       color: var(--primary-neon);
       border-color: var(--primary-neon);
     }
 
     .tag.pdf {
-      background: rgba(255, 42, 95, 0.1);
+      background: rgba(255, 42, 95, 0.08);
       color: var(--accent-danger);
       border-color: var(--accent-danger);
     }
@@ -621,14 +611,15 @@
       align-items: center;
       justify-content: center;
       min-height: 34px;
-      padding: 6px 14px;
+      padding: 6px 16px;
       background: var(--primary-neon);
       color: var(--bg-dark);
       text-decoration: none;
       font-size: 12px;
-      font-weight: 900;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
+      border-radius: var(--radius);
     }
 
     .open-link:hover {
@@ -639,7 +630,7 @@
     .path-text {
       min-width: 0;
       color: var(--text-muted);
-      font-size: 10px;
+      font-size: 10.5px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -654,7 +645,8 @@
       text-align: center;
       text-transform: uppercase;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
+      border-radius: var(--radius);
     }
 
     .pager {
@@ -673,25 +665,26 @@
       text-transform: uppercase;
       font-weight: 700;
       letter-spacing: 1px;
+      border-radius: var(--radius);
     }
 
     .load-more:hover {
-      background: rgba(0, 243, 255, 0.1);
-      box-shadow: 0 0 12px rgba(0, 243, 255, 0.3);
+      background: rgba(0, 243, 255, 0.08);
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
     }
 
     .load-more[hidden] {
       display: none;
     }
 
-    /* Responsiveness matching hacker layouts */
+    /* Responsiveness layout adjustments */
     @media (max-width: 1100px) {
       .app { grid-template-columns: 1fr; }
       .sidebar {
         position: relative;
         height: auto;
         border-right: 0;
-        border-bottom: 2px solid var(--primary-neon);
+        border-bottom: 1px solid var(--border-neon-strong);
       }
       .brand-list,
       .type-list {
@@ -730,7 +723,7 @@
   </style>
 </head>
 <body>
-  <div class="scanline"></div>
+  <div class="scanner-header-accent"></div>
   <div class="app">
     <aside class="sidebar">
       <div class="brandmark">
@@ -774,7 +767,7 @@
       </section>
 
       <section class="toolbar" aria-label="Catalog controls">
-        <label class="searchbox">
+        <label for="searchInput" class="searchbox">
           <span aria-hidden="true">></span>
           <input id="searchInput" type="search" placeholder="SEARCH SYSTEMS, TOPICS, NODES, DOMAINS..." autocomplete="off" />
         </label>
@@ -798,14 +791,14 @@
         <button id="loadMore" class="load-more" type="button">LOAD MORE ENTRIES</button>
       </div>
 
-      <!-- Real-time Hacking Terminal Console Simulator -->
+      <!-- Live region terminal logging panel -->
       <section class="console-panel">
         <div class="console-header">
           <span>CONSOLE // TERMINAL_OUTPUT</span>
           <span class="pulse-dot"></span>
         </div>
-        <div class="console-body" id="consoleLogs">
-          <!-- Terminal lines go here -->
+        <div class="console-body" id="consoleLogs" aria-live="polite">
+          <!-- Live logged strings will appear here -->
         </div>
       </section>
     </main>
@@ -999,11 +992,15 @@
 
     function filteredFiles() {
       const query = state.query.toLowerCase().trim();
+      const queryTokens = query ? query.split(/\s+/) : [];
       let items = files.filter((item) => {
         if (state.brand !== 'All' && item.brand !== state.brand) return false;
         if (state.type !== 'All' && item.type !== state.type) return false;
         if (state.section !== 'All' && item.section !== state.section) return false;
-        if (query && !item.search.includes(query)) return false;
+        if (queryTokens.length > 0) {
+          // All tokens must be found inside target file metadata string
+          return queryTokens.every(token => item.search.includes(token));
+        }
         return true;
       });
 
@@ -1033,7 +1030,6 @@
         </div>
       `;
 
-      // Log when decrypting/opening a file
       article.querySelector('.open-link').addEventListener('click', () => {
         logToConsole(`Request decrypt stream for node: ${item.name}`, 'warn');
       });
