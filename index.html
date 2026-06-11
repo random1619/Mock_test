@@ -2856,6 +2856,7 @@
 
       const isSolved = solvedSet.has(item.path);
       const isStarred = starredSet.has(item.path);
+      const existingScore = attemptedScores.find(s => s.path === item.path);
 
       let statusHtml = '';
       if (isSolved) statusHtml += '<i class="fa-solid fa-circle-check status-dot solved" title="Solved"></i>';
@@ -2871,11 +2872,14 @@
       if (accessB) metaHtml += accessB;
 
       let statsHtml = '';
-      if (q || time || marks) {
+      if (q || time || marks || existingScore) {
         statsHtml = '<div class="mock-card-stats">';
         if (q) statsHtml += `<span class="stat-pill"><i class="fa-solid fa-list-check"></i> ${q} Qs</span>`;
         if (marks) statsHtml += `<span class="stat-pill"><i class="fa-solid fa-award"></i> ${marks} Marks</span>`;
         if (time) statsHtml += `<span class="stat-pill"><i class="fa-regular fa-clock"></i> ${time} Mins</span>`;
+        if (existingScore) {
+          statsHtml += `<span class="stat-pill score-pill" style="color:var(--amber);background:rgba(245, 158, 11, 0.08);border:1px solid rgba(245, 158, 11, 0.15);font-weight:600;"><i class="fa-solid fa-trophy"></i> ${existingScore.score}/${existingScore.maxScore}</span>`;
+        }
         statsHtml += '</div>';
       }
 
@@ -2917,6 +2921,9 @@
         
         let listMeta = metaHtml;
         if (q) listMeta += ` <span class="badge badge-default" style="font-size:9px">Q${q}</span>`;
+        if (existingScore) {
+          listMeta += ` <span class="badge" style="background:rgba(245,158,11,0.08); border-color:rgba(245,158,11,0.25); color:var(--amber); font-weight:600;"><i class="fa-solid fa-trophy" style="font-size:10px;margin-right:2px"></i>${existingScore.score}/${existingScore.maxScore}</span>`;
+        }
 
         card.innerHTML = `
           <div class="mock-list-left">
