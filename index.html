@@ -2049,6 +2049,11 @@
                 <option value="name-asc">Sort: A-Z</option>
                 <option value="name-desc">Sort: Z-A</option>
                 <option value="questions">Sort: Question Count</option>
+                <option value="time-desc">Sort: Time (High to Low)</option>
+                <option value="time-asc">Sort: Time (Low to High)</option>
+                <option value="marks-desc">Sort: Marks (High to Low)</option>
+                <option value="score-desc">Sort: Highest Score</option>
+                <option value="subject-asc">Sort: Subject Category</option>
               </select>
 
               <div class="view-toggles">
@@ -2079,6 +2084,26 @@
       <div class="welcome-section">
         <h2 class="welcome-title"><i class="fa-solid fa-bookmark" style="color:var(--amber);margin-right:8px;"></i>Bookmarked Materials</h2>
         <div class="welcome-desc">Files you marked for later study or review.</div>
+      </div>
+
+      <div class="catalog-toolbar" style="margin-top: 20px; padding: 0 16px;">
+        <div class="catalog-title" style="font-size: 15px; font-weight: 600;">Saved Items</div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="view-toggles">
+            <button class="icon-btn active" id="star-btn-grid" onclick="setCatalogView('grid')" title="Grid Card View">
+              <i class="fa-solid fa-table-cells-large"></i>
+            </button>
+            <button class="icon-btn" id="star-btn-list" onclick="setCatalogView('list')" title="Detailed List View">
+              <i class="fa-solid fa-list"></i>
+            </button>
+            <button class="icon-btn" id="star-btn-compact" onclick="setCatalogView('compact')" title="Compact List View">
+              <i class="fa-solid fa-align-justify"></i>
+            </button>
+            <button class="icon-btn" id="star-btn-table" onclick="setCatalogView('table')" title="Table Database View">
+              <i class="fa-solid fa-table"></i>
+            </button>
+          </div>
+        </div>
       </div>
 
       <div id="starred-container" class="catalog-grid">
@@ -2924,9 +2949,43 @@
         return;
       }
 
-      bookmarkedItems.forEach(i => {
-        container.appendChild(createMockView(i, true));
+      const view = state.catalogView;
+      const views = ['grid', 'list', 'compact', 'table'];
+      views.forEach(v => {
+        const btn = document.getElementById(`star-btn-${v}`);
+        if (btn) btn.classList.toggle('active', v === view);
       });
+
+      if (view === 'table') {
+        container.className = 'table-wrapper';
+        container.innerHTML = `
+          <table class="catalog-table-view">
+            <thead>
+              <tr>
+                <th onclick="handleTableHeaderSort('title')" style="cursor:pointer">Title <i class="fa-solid fa-sort" style="font-size:10px;opacity:0.6;margin-left:4px"></i></th>
+                <th onclick="handleTableHeaderSort('q')" style="cursor:pointer">Questions <i class="fa-solid fa-sort" style="font-size:10px;opacity:0.6;margin-left:4px"></i></th>
+                <th onclick="handleTableHeaderSort('time')" style="cursor:pointer">Time <i class="fa-solid fa-sort" style="font-size:10px;opacity:0.6;margin-left:4px"></i></th>
+                <th onclick="handleTableHeaderSort('marks')" style="cursor:pointer">Marks <i class="fa-solid fa-sort" style="font-size:10px;opacity:0.6;margin-left:4px"></i></th>
+                <th onclick="handleTableHeaderSort('score')" style="cursor:pointer">Score <i class="fa-solid fa-sort" style="font-size:10px;opacity:0.6;margin-left:4px"></i></th>
+                <th onclick="handleTableHeaderSort('subject')" style="cursor:pointer">Subject <i class="fa-solid fa-sort" style="font-size:10px;opacity:0.6;margin-left:4px"></i></th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        `;
+        const tbody = container.querySelector('tbody');
+        bookmarkedItems.forEach(item => {
+          tbody.appendChild(createMockView(item, 'table'));
+        });
+      } else {
+        container.className = view === 'grid' 
+          ? 'catalog-grid' 
+          : (view === 'compact' ? 'catalog-compact' : 'catalog-list');
+        bookmarkedItems.forEach(item => {
+          container.appendChild(createMockView(item, view));
+        });
+      }
     }
 
     /* ── 9. Render: Browse Catalog ──────────────────────────── */
@@ -3123,10 +3182,35 @@
     window.setCatalogView = function(view) {
       state.catalogView = view;
       localStorage.setItem('portal_view_style', view);
-      document.getElementById('cat-btn-grid').classList.toggle('active', view === 'grid');
-      document.getElementById('cat-btn-list').classList.toggle('active', view === 'list');
-      document.getElementById('cat-btn-compact').classList.toggle('active', view === 'compact');
-      document.getElementById('cat-btn-table').classList.toggle('active', view === 'table');
+      
+      const views = ['grid', 'list', 'compact', 'table'];
+      views.forEach(v => {
+        const catBtn = document.getElementById(`cat-btn-${v}`);
+        if (catBtn) catBtn.classList.toggle('active', v === view);
+        const starBtn = document.getElementById(`star-btn-${v}`);
+        if (starBtn) starBtn.classList.toggle('active', v === view);
+      });
+      
+      renderCatalog();
+      renderStarred();
+    };
+
+    window.handleTableHeaderSort = function(type) {
+      const select = document.getElementById('catalog-sort');
+      if (!select) return;
+      if (type === 'title') {
+        select.value = select.value === 'name-asc' ? 'name-desc' : 'name-asc';
+      } else if (type === 'q') {
+        select.value = 'questions';
+      } else if (type === 'time') {
+        select.value = select.value === 'time-desc' ? 'time-asc' : 'time-desc';
+      } else if (type === 'marks') {
+        select.value = 'marks-desc';
+      } else if (type === 'score') {
+        select.value = 'score-desc';
+      } else if (type === 'subject') {
+        select.value = 'subject-asc';
+      }
       renderCatalog();
     };
 
@@ -3179,6 +3263,26 @@
           const metaA = parseTestMeta(a.fileName).q || 0;
           const metaB = parseTestMeta(b.fileName).q || 0;
           return metaB - metaA;
+        } else if (sortVal === 'time-desc') {
+          const metaA = parseTestMeta(a.fileName).time || 0;
+          const metaB = parseTestMeta(b.fileName).time || 0;
+          return metaB - metaA;
+        } else if (sortVal === 'time-asc') {
+          const metaA = parseTestMeta(a.fileName).time || 0;
+          const metaB = parseTestMeta(b.fileName).time || 0;
+          return metaA - metaB;
+        } else if (sortVal === 'marks-desc') {
+          const metaA = parseTestMeta(a.fileName).marks || 0;
+          const metaB = parseTestMeta(b.fileName).marks || 0;
+          return metaB - metaA;
+        } else if (sortVal === 'score-desc') {
+          const scoreA = (attemptedScores.find(s => s.path === a.path) || { score: -1 }).score;
+          const scoreB = (attemptedScores.find(s => s.path === b.path) || { score: -1 }).score;
+          return scoreB - scoreA;
+        } else if (sortVal === 'subject-asc') {
+          const classA = classifyMock(a).badge || '';
+          const classB = classifyMock(b).badge || '';
+          return classA.localeCompare(classB);
         }
         return 0;
       });
@@ -3240,12 +3344,12 @@
             <table class="catalog-table-view">
               <thead>
                 <tr>
-                  <th>Title</th>
-                  <th>Questions</th>
-                  <th>Time</th>
-                  <th>Marks</th>
-                  <th>Score</th>
-                  <th>Subject</th>
+                  <th onclick="handleTableHeaderSort('title')" style="cursor:pointer">Title <i class="fa-solid fa-sort" style="font-size:10px;opacity:0.6;margin-left:4px"></i></th>
+                  <th onclick="handleTableHeaderSort('q')" style="cursor:pointer">Questions <i class="fa-solid fa-sort" style="font-size:10px;opacity:0.6;margin-left:4px"></i></th>
+                  <th onclick="handleTableHeaderSort('time')" style="cursor:pointer">Time <i class="fa-solid fa-sort" style="font-size:10px;opacity:0.6;margin-left:4px"></i></th>
+                  <th onclick="handleTableHeaderSort('marks')" style="cursor:pointer">Marks <i class="fa-solid fa-sort" style="font-size:10px;opacity:0.6;margin-left:4px"></i></th>
+                  <th onclick="handleTableHeaderSort('score')" style="cursor:pointer">Score <i class="fa-solid fa-sort" style="font-size:10px;opacity:0.6;margin-left:4px"></i></th>
+                  <th onclick="handleTableHeaderSort('subject')" style="cursor:pointer">Subject <i class="fa-solid fa-sort" style="font-size:10px;opacity:0.6;margin-left:4px"></i></th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -4013,6 +4117,7 @@
       updateTimestamp();
       buildCatalogData();
       initCatalogSidebar();
+      setCatalogView(state.catalogView);
       switchTab('dashboard');
     }
 
