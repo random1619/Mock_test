@@ -40,22 +40,30 @@ files.forEach(filepath => {
   
   const fileIssues = [];
   
-  // 1. Check JS Variables
-  const hasTest = content.includes('const test =') || content.includes('let test =') || content.includes('var test =');
-  const hasQuestions = content.includes('const questions =') || content.includes('let questions =') || content.includes('var questions =');
-  if (!hasTest && !hasQuestions) {
-    fileIssues.push('Missing mock JSON metadata (test or questions array not found)');
+  // 1. Check JS Variables (test, questions or qs array)
+  const hasTest = content.includes('const test =') || content.includes('let test =') || content.includes('var test =') || content.includes('const test=') || content.includes('let test=');
+  const hasQuestions = content.includes('const questions =') || content.includes('let questions =') || content.includes('var questions =') || content.includes('const questions=') || content.includes('let questions=');
+  const hasQs = content.includes('const qs =') || content.includes('let qs =') || content.includes('var qs =') || content.includes('const qs=') || content.includes('let qs=');
+  
+  if (!hasTest && !hasQuestions && !hasQs) {
+    fileIssues.push('Missing mock JSON metadata (test, questions or qs array not found)');
     stats.missingJSVariables++;
   }
   
-  // 2. Check Absolute Paths (e.g. file:/// or local Windows drive paths)
-  if (content.match(/(file:\/\/\/|[a-zA-Z]:\\)/i)) {
-    fileIssues.push('Contains hardcoded absolute local file path references');
+  // 2. Check Absolute Paths (e.g. file:/// or local Windows drive paths, ignoring CSS/quotes escapes)
+  const absMatch = content.match(/(file:\/\/\/|[a-zA-Z]:\\[Uu]sers\\[a-zA-Z0-9_.-]+\\)/i);
+  if (absMatch) {
+    fileIssues.push('Contains hardcoded absolute local file path references: ' + absMatch[0]);
     stats.absolutePaths++;
   }
   
-  // 3. Telegram Link Spam / Ads
-  if (content.includes('t.me/') || content.includes('telegram.me/') || content.includes('devgagan')) {
+  // 3. Telegram Link Spam / Ads (ignore code definitions/CSS comment references)
+  const cleanText = content
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/<style[\s\S]*?<\/style>/gi, '')
+    .replace(/<!--[\s\S]*?-->/g, '');
+    
+  if (cleanText.includes('t.me/') || cleanText.includes('telegram.me/') || cleanText.includes('telegram.dog/')) {
     fileIssues.push('Contains external promotional ads or Telegram links');
     stats.telegramSpam++;
   }
@@ -68,9 +76,10 @@ files.forEach(filepath => {
     stats.hasMathsNoKaTeX++;
   }
   
-  // 5. Dark Mode Contrastclashes (hardcoded style="color: #000" or similar)
-  if (content.match(/style\s*=\s*"[^"]*color\s*:\s*(#000|#111|black|#222)/i)) {
-    fileIssues.push('Potential contrast issue: hardcoded dark/black text styling clashing with dark mode');
+  // 5. Dark Mode Contrast clashes (excluding border-color properties)
+  const contrastMatch = content.match(/(?<!border-)(?<!border-top-)(?<!border-right-)(?<!border-bottom-)(?<!border-left-)\bcolor\s*:\s*(#000|#111|black|#222)/gi);
+  if (contrastMatch) {
+    fileIssues.push('Potential contrast issue: hardcoded dark/black text styling clashing with dark mode: ' + contrastMatch[0]);
     stats.potentialDarkModeContrastIssues++;
   }
   

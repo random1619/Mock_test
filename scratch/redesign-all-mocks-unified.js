@@ -154,12 +154,43 @@ function generateCSS(brandColor, brandColorHover) {
         .option, .option *,
         .comprehension, .comprehension *,
         .solution-box, .solution-box *,
+        .explanation, .explanation *,
+        .analysis-panel, .analysis-panel *,
         .candidate-bar *,
         .exam-title, .exam-title *,
         .timer-box, .timer-box *,
         .nav-question,
         table, tr, td, th {
             color: #e5e7eb !important;
+        }
+
+        /* Force light text color on elements with hardcoded dark text inline styling */
+        [style*="color: #000"], [style*="color:#000"], 
+        [style*="color: #111"], [style*="color:#111"],
+        [style*="color: #222"], [style*="color:#222"],
+        [style*="color: black"], [style*="color:black"],
+        [style*="color: #000000"], [style*="color:#000000"] {
+            color: #e5e7eb !important;
+        }
+
+        /* Custom explanation and analysis panel background override for dark mode */
+        .explanation {
+            background: rgba(99, 102, 241, 0.05) !important;
+            border-left: 4px solid var(--primary) !important;
+            border-top: 1px solid var(--border) !important;
+            border-right: 1px solid var(--border) !important;
+            border-bottom: 1px solid var(--border) !important;
+            border-radius: var(--radius) !important;
+            padding: 15px !important;
+            margin-top: 15px !important;
+        }
+
+        .analysis-panel {
+            background: rgba(255, 255, 255, 0.02) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: var(--radius) !important;
+            padding: 15px !important;
+            margin-top: 20px !important;
         }
 
         /* Comprehension & Solution Box Cards */
