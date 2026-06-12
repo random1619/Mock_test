@@ -2712,11 +2712,18 @@
 
     /* ── 4. App State ───────────────────────────────────────── */
     const state = {
-      activeTab: 'dashboard',
-      catalogCategory: 'ALL', // 'ALL' | {type:'root', name} | {type:'sub', root, sub}
-      catalogSubject: 'ALL',  // 'ALL' | 'full-length' | 'quant' | 'english' | 'gs' | 'pdf'
-      catalogSubSubject: 'ALL', // 'ALL' | specific subtype
-      catalogStatus: 'ALL',   // 'ALL' | 'SOLVED' | 'UNSOLVED'
+      activeTab: localStorage.getItem('portal_active_tab') || 'dashboard',
+      catalogCategory: (() => {
+        try {
+          const val = localStorage.getItem('portal_catalog_category');
+          return val ? JSON.parse(val) : 'ALL';
+        } catch (e) {
+          return 'ALL';
+        }
+      })(),
+      catalogSubject: localStorage.getItem('portal_catalog_subject') || 'ALL',
+      catalogSubSubject: localStorage.getItem('portal_catalog_subsubject') || 'ALL',
+      catalogStatus: localStorage.getItem('portal_catalog_status') || 'ALL',
       catalogView: localStorage.getItem('portal_view_style') || 'grid',
       currentPreviewPath: null
     };
@@ -2782,6 +2789,7 @@
     /* ── 5. Tab Controller ──────────────────────────────────── */
     window.switchTab = function(tabName) {
       state.activeTab = tabName;
+      localStorage.setItem('portal_active_tab', tabName);
       document.querySelectorAll('.nav-tabs .nav-tab').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tab === tabName);
       });
@@ -3101,6 +3109,7 @@
 
     window.selectCat = function(category) {
       state.catalogCategory = category;
+      localStorage.setItem('portal_catalog_category', JSON.stringify(category));
       
       document.querySelectorAll('#cat-folder-list .category-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -3129,6 +3138,8 @@
     window.setSubjectFilter = function(subj) {
       state.catalogSubject = subj;
       state.catalogSubSubject = 'ALL';
+      localStorage.setItem('portal_catalog_subject', subj);
+      localStorage.setItem('portal_catalog_subsubject', 'ALL');
       document.querySelectorAll('#mock-subject-filters .filter-opt-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.subject === subj);
       });
@@ -3193,6 +3204,7 @@
     
     window.setSubSubjectFilter = function(subSubj) {
       state.catalogSubSubject = subSubj;
+      localStorage.setItem('portal_catalog_subsubject', subSubj);
       document.querySelectorAll('#mock-subsubject-filters .sub-filter-opt-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.subsubject === subSubj);
       });
@@ -3201,6 +3213,7 @@
 
     window.setStatusFilter = function(status) {
       state.catalogStatus = status;
+      localStorage.setItem('portal_catalog_status', status);
       document.querySelectorAll('[data-status]').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.status === status);
       });
@@ -4151,7 +4164,26 @@
       buildCatalogData();
       initCatalogSidebar();
       setCatalogView(state.catalogView);
-      switchTab('dashboard');
+      
+      // Restore previous catalog category and filter selections
+      if (state.catalogCategory && state.catalogCategory !== 'ALL') {
+        selectCat(state.catalogCategory);
+      } else {
+        selectCat('ALL');
+      }
+      
+      if (state.catalogSubject && state.catalogSubject !== 'ALL') {
+        setSubjectFilter(state.catalogSubject);
+        if (state.catalogSubSubject && state.catalogSubSubject !== 'ALL') {
+          setSubSubjectFilter(state.catalogSubSubject);
+        }
+      }
+      
+      if (state.catalogStatus && state.catalogStatus !== 'ALL') {
+        setStatusFilter(state.catalogStatus);
+      }
+
+      switchTab(state.activeTab);
 
       if (window.location.protocol === 'file:' && !sessionStorage.getItem('dismissed-file-banner')) {
         const header = document.querySelector('.header');
