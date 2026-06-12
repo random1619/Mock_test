@@ -1846,275 +1846,7 @@ a[href*="youtube.com/@"],
 }
 </style>
 <script>
-/* ── Fix 1: Auto-fix generic page titles ───────────────────── */
-(function fixPageTitle() {
-  const genericTitles = ['devgagan', 'CBT Exam - pundits', 'CBT Exam'];
-  const currentTitle = document.title || '';
-  const isGeneric = genericTitles.some(g => currentTitle.toLowerCase() === g.toLowerCase());
-  if (isGeneric) {
-    // Try to get title from welcome header h1
-    document.addEventListener('DOMContentLoaded', function() {
-      const h1 = document.querySelector('.welcome-header h1, .welcome-header h2');
-      if (h1 && h1.textContent.trim()) {
-        document.title = h1.textContent.trim().substring(0, 80);
-      }
-    });
-  }
-})();
-</script>
 
-</head>
-<body>
-    <!-- Welcome Screen -->
-    <div class="welcome-screen" id="welcomeScreen">
-        <div class="welcome-container">
-            <div class="welcome-header">
-                <h1><i class="fas fa-graduation-cap"></i> pundits</h1>
-                <p>Computer Based Test</p>
-            </div>
-            
-            <div class="test-details">
-                <div class="detail-item">
-                    <div class="detail-label">Test ID</div>
-                    <div class="detail-value">77185</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Total Questions</div>
-                    <div class="detail-value">25</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Total Marks</div>
-                    <div class="detail-value">50.0</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Duration</div>
-                    <div class="detail-value">30 mins</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Marking Scheme</div>
-                    <div class="detail-value">+2.0 / -0.5</div>
-                </div>
-            </div>
-            
-            
-        <div class="welcome-instructions">
-            <h3>Instructions</h3>
-            <ul>
-                <li>Read each question carefully before answering</li>
-                <li>You can mark questions for review and come back later</li>
-                <li>The timer will automatically submit the test when time is up</li>
-                <li>Negative marking applies for wrong answers</li>
-            </ul>
-        </div>
-        
-            
-            <div class="welcome-actions">
-                <button class="start-btn" id="startBtn">
-                    <i class="fas fa-play"></i> Start Test
-                </button>
-                
-            </div>
-        </div>
-    </div>
-    
-    <!-- Main Exam Interface -->
-    <div class="exam-container" id="examContainer">
-        <!-- Top Header -->
-        <div class="exam-header">
-            <div class="exam-title">pundits</div>
-            <div class="exam-timer">
-                <div class="timer-box" id="mainTimer">30:00</div>
-                <button class="nav-btn btn-submit mobile-only" id="submitBtn">Submit</button>
-            </div>
-        </div>
-        
-        <!-- Candidate Info Bar -->
-        <div class="candidate-bar">
-            <div class="candidate-info">
-                <div class="candidate-photo">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="candidate-details">
-                    <div class="candidate-name">Candidate</div>
-                    <div class="candidate-id">Test ID: 77185</div>
-                </div>
-            </div>
-            <div class="section-badge" id="sectionBadge">
-                <span id="sectionName"></span>
-                <span id="sectionTimer"></span>
-            </div>
-        </div>
-        
-        <!-- Main Content -->
-        <div class="exam-main">
-            <!-- Question Area -->
-            <div class="question-area">
-                <div class="question-scroll">
-                    <div class="question-card">
-                        <div class="question-header">
-                            <div>
-                                <div class="question-number" id="questionNum">Question 1 of 25</div>
-                                <div class="question-marks" id="questionMarks">Marks: 2.0</div>
-                            </div>
-                            <div class="lang-toggle">
-                                <button class="lang-btn active" id="engBtn">English</button>
-                                <button class="lang-btn" id="hinBtn">हिंदी</button>
-                            </div>
-                        </div>
-                        
-                        <div class="comprehension" id="comprehension" style="display:none;">
-                            <h4><i class="fas fa-book-open"></i> Comprehension</h4>
-                            <div id="comprehensionText"></div>
-                        </div>
-                        
-                        <div class="question-text" id="questionText"></div>
-                        
-                        <div class="options-list" id="optionsList"></div>
-                        
-                        <div class="solution-box" id="solutionBox">
-                            <div class="solution-header">
-                                <i class="fas fa-lightbulb"></i> Solution
-                            </div>
-                            <div class="solution-stats" id="solutionStats"></div>
-                            <div id="solutionText"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Navigation Bar inside Question Area -->
-                <div class="navigation-bar">
-                    <button class="nav-btn btn-prev" id="prevBtn">
-                        <i class="fas fa-chevron-left"></i> Previous
-                    </button>
-                    
-                    <div class="progress-info">
-                        <div id="progressText">Question 1 of 25</div>
-                        <div style="font-size:11px;margin-top:4px">
-                            Answered: <span id="answeredCount">0</span> | 
-                            
-                        </div>
-                    </div>
-                    
-                    <button class="nav-btn btn-review" id="reviewBtn">
-                        <i class="fas fa-flag"></i>
-                    </button>
-                    
-                    <button class="nav-btn mobile-only" id="navigatorBtn">
-                        <i class="fas fa-th"></i> Questions
-                    </button>
-                    
-                    <button class="nav-btn btn-submit desktop-only" id="submitBtnDesktop">Submit</button>
-                    
-                    <button class="nav-btn btn-next" id="nextBtn">
-                        Next <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Desktop Navigator Sidebar -->
-            <div class="navigator-sidebar desktop-only">
-                <div class="navigator-header">Question Navigator</div>
-                <div class="navigator-grid" id="desktopNav"></div>
-                <div class="navigator-legend">
-                    <div class="legend-item">
-                        <div class="legend-box" style="background:var(--success)"></div>
-                        <span>Answered</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box" style="background:var(--warning)"></div>
-                        <span>Marked for Review</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box" style="background:var(--danger)"></div>
-                        <span>Incorrect</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box" style="background:white;border:2px solid var(--border)"></div>
-                        <span>Not Visited</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Mobile Navigator Panel -->
-    <div class="mobile-navigator" id="mobileNav">
-        <div class="mobile-nav-header">
-            <h3>Question Navigator</h3>
-            <button class="close-nav" id="closeNav">&times;</button>
-        </div>
-        <div class="navigator-grid" id="mobileNavGrid"></div>
-        <div class="navigator-legend">
-            <div class="legend-item">
-                <div class="legend-box" style="background:var(--success)"></div>
-                <span>Answered</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-box" style="background:var(--warning)"></div>
-                <span>Marked for Review</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-box" style="background:var(--danger)"></div>
-                <span>Incorrect</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-box" style="background:white;border:2px solid var(--border)"></div>
-                <span>Not Visited</span>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Result Modal -->
-    <div class="result-modal" id="resultModal">
-        <div class="result-container">
-            <div class="result-header">
-                <h2>Test Completed!</h2>
-                <div class="result-score" id="resultScore">0/50.0</div>
-            </div>
-            
-            <div class="result-grid">
-                <div class="result-stat correct">
-                    <div class="result-stat-value" id="correctCount">0</div>
-                    <div class="result-stat-label">Correct</div>
-                </div>
-                <div class="result-stat incorrect">
-                    <div class="result-stat-value" id="incorrectCount">0</div>
-                    <div class="result-stat-label">Incorrect</div>
-                </div>
-                <div class="result-stat">
-                    <div class="result-stat-value" id="unattemptedCount">0</div>
-                    <div class="result-stat-label">Unattempted</div>
-                </div>
-                <div class="result-stat">
-                    <div class="result-stat-value" id="timeTaken">0</div>
-                    <div class="result-stat-label">Minutes</div>
-                </div>
-            </div>
-            
-            <div class="section-results" id="sectionResults" style="display:none;">
-                <h3>Section-wise Performance</h3>
-                <table class="section-results-table" id="sectionResultsTable">
-                    <thead>
-                        <tr>
-                            <th>Section</th>
-                            <th>Attempted</th>
-                            <th>Correct</th>
-                            <th>Wrong</th>
-                            <th>Score</th>
-                        </tr>
-                    </thead>
-                    <tbody id="sectionResultsBody"></tbody>
-                </table>
-            </div>
-            
-            <div class="result-actions">
-                <button class="result-btn btn-close" id="closeResult">Close</button>
-                <button class="result-btn btn-review-ans" id="reviewAnswers">Review Answers</button>
-            </div>
-        </div>
-    </div>
-    
-    <script>
         const questions = [
   {
     "question": "<span class=\"eqt\">\n<span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">\n</span></span></span><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">Two\nnumbers differ by 10. If their LCM is 120 and HCF is 10, then the sum\nof the number is:</span></span><br/></span><span class=\"hqt\">\n<span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\"/></span></span><span style=\"font-family: Mangal\"><span lang=\"ar-SA\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">दो\nसंख्याओं में\n</span></span></span></span></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">10\n</span></span></span><span style=\"font-family: Mangal\"><span lang=\"ar-SA\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">का\nअंतर है। यदि\nउनका </span></span></span></span></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">LCM\n120 </span></span></span><span style=\"font-family: Mangal\"><span lang=\"ar-SA\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">और\n</span></span></span></span></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">HCF\n10 </span></span></span><span style=\"font-family: Mangal\"><span lang=\"ar-SA\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">है</span></span></span></span></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">,\n</span></span></span><span style=\"font-family: Mangal\"><span lang=\"ar-SA\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">तो\nसंख्या का योग\nहै</span></span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">:</span></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\"/></span></span><br/></span>",
@@ -2291,7 +2023,7 @@ a[href*="youtube.com/@"],
       "<span class=\"eqt\"><p><span style=\"color: #000000;\"><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">&nbsp;&nbsp;&nbsp;&nbsp;50</span></span></span></p></span><span class=\"hqt\"><p>50</p></span>"
     ],
     "correct_option_id": 2,
-    "solution": "<span class=\"eqt\"><p><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">Average of cube of first </span></span> <img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_69880bffbcfb24.35513921.gif\" align=\"absmiddle\" /> <span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\"> natural numbers</span></span><br /><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">=&nbsp;</span></span><!-- [if gte msEquation 12]><m:oMathPara><m:oMath><m:f><m:fPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-hansi-font-family:\"Cambria Math\"'><m:ctrlPr></m:ctrlPr></span></m:fPr><m:num><i\n    style='mso-bidi-font-style:normal'><span lang=EN-IN style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:Calibri;\n    mso-fareast-theme-font:minor-latin;mso-bidi-font-family:Mangal;mso-bidi-theme-fon#    minor-bidi;mso-ansi-language:EN-IN;mso-fareast-language:EN-US;mso-bidi-languag#    AR-SA'><m:r>n</m:r></span></i><span lang=EN-IN style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:Calibri;\n    mso-fareast-theme-font:minor-latin;mso-bidi-font-family:Mangal;mso-bidi-theme-fon#    minor-bidi;mso-ansi-language:EN-IN;mso-fareast-language:EN-US;mso-bidi-languag#    AR-SA'><m:r><m:rPr><m:scr m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>(</m:r><m:r><i\n     style='mso-bidi-font-style:normal'>n</i></m:r><m:r><m:rPr><m:scr m:val=\"roman\"/><m:sty\n       m:val=\"p\"/></m:rPr>+1</m:r></span><m:sSup><m:sSupPr><span\n      style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-siz#      14.0pt;font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n      mso-hansi-font-family:\"Cambria Math\"'><m:ctrlPr></m:ctrlPr></span></m:sSupPr><m:e><span\n      lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n      mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n      mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-languag#      EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n         m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>)</m:r></span></m:e><m:sup><span\n      lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n      mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n      mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-languag#      EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n         m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>2</m:r></span></m:sup></m:sSup></m:num><m:den><span\n    lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n    mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n    mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-languag#    EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n       m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>4</m:r></span></m:den></m:f></m:oMath></m:oMathPara><![endif]--><!-- [if !msEquation]--><span lang=\"EN-IN\" style=\"font-size: 12.0pt; font-family: 'Calibri',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-font-kerning: 0pt; mso-ligatures: none; mso-ansi-language: EN-IN; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\"><!-- [if gte vml 1]><v:shapetype\n id=\"_x0000_t75\" coordsize=\"21600,21600\" o:spt=\"75\" o:preferrelative=\"t\"\n path=\"m@4@5l@4@11@9@11@9@5xe\" filled=\"f\" stroked=\"f\">\n <v:stroke  1 0\"/>\n  <v:f eqn=\"sum 0 0 @1\"/>\n  <v:f eqn=\"prod @2 1 2\"/>\n  <v:f eqn=\"prod @3 21600 pixelWidth\"/>\n  <v:f eqn=\"prod @3 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @0 0 1\"/>\n  <v:f eqn=\"prod @6 1 2\"/>\n  <v:f eqn=\"prod @7 21600 pixelWidth\"/>\n  <v:f eqn=\"sum @8 21600 0\"/>\n  <v:f eqn=\"prod @7 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @10 21600 0\"/>\n </v:formulas>\n <v:path o:extrusionok=\"f\" gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n <o:lock v:ext=\"edit\" aspectratio=\"t\"/>\n</v:shapetype><v:shape id=\"_x0000_i1025\" type=\"#_x0000_t75\" style='width:59.25pt;\n height:33.75pt'>\n <v:imagedata src=\"https://www.thepunditsofficial.in/admin/uploads/questions/#"\n  o:title=\"\" chromakey=\"white\"/>\n</v:shape><![endif]--><!-- [if !vml]--><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_69880bffcf5d35.06481140.png\" width=\"79\" height=\"45\" /><!--[endif]--></span><!--[endif]--><br /><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">If n = 5, then,</span></span><br /><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">Avg =&nbsp;</span></span><!-- [if gte msEquation 12]><m:oMathPara><m:oMath><m:f><m:fPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-hansi-font-family:\"Cambria Math\"'><m:ctrlPr></m:ctrlPr></span></m:fPr><m:num><span\n    lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n    mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n    mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-languag#    EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n       m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>5(5+1</m:r></span><m:sSup><m:sSupPr><span\n      style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-siz#      14.0pt;font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n      mso-hansi-font-family:\"Cambria Math\"'><m:ctrlPr></m:ctrlPr></span></m:sSupPr><m:e><span\n      lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n      mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n      mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-languag#      EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n         m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>)</m:r></span></m:e><m:sup><span\n      lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n      mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n      mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-languag#      EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n         m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>2</m:r></span></m:sup></m:sSup></m:num><m:den><span\n    lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n    mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n    mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-languag#    EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n       m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>4</m:r></span></m:den></m:f></m:oMath></m:oMathPara><![endif]--><!-- [if !msEquation]--><span lang=\"EN-IN\" style=\"font-size: 12.0pt; font-family: 'Calibri',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-font-kerning: 0pt; mso-ligatures: none; mso-ansi-language: EN-IN; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\"><!-- [if gte vml 1]><v:shapetype\n id=\"_x0000_t75\" coordsize=\"21600,21600\" o:spt=\"75\" o:preferrelative=\"t\"\n path=\"m@4@5l@4@11@9@11@9@5xe\" filled=\"f\" stroked=\"f\">\n <v:stroke  1 0\"/>\n  <v:f eqn=\"sum 0 0 @1\"/>\n  <v:f eqn=\"prod @2 1 2\"/>\n  <v:f eqn=\"prod @3 21600 pixelWidth\"/>\n  <v:f eqn=\"prod @3 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @0 0 1\"/>\n  <v:f eqn=\"prod @6 1 2\"/>\n  <v:f eqn=\"prod @7 21600 pixelWidth\"/>\n  <v:f eqn=\"sum @8 21600 0\"/>\n  <v:f eqn=\"prod @7 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @10 21600 0\"/>\n </v:formulas>\n <v:path o:extrusionok=\"f\" gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n <o:lock v:ext=\"edit\" aspectratio=\"t\"/>\n</v:shapetype><v:shape id=\"_x0000_i1025\" type=\"#_x0000_t75\" style='width:57.75pt;\n height:33.75pt'>\n <v:imagedata src=\"https://www.thepunditsofficial.in/admin/uploads/questions/#"\n  o:title=\"\" chromakey=\"white\"/>\n</v:shape><![endif]--><!-- [if !vml]--><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_69880bffe31978.92656220.png\" width=\"77\" height=\"45\" /><!--[endif]--></span><!--[endif]-->&nbsp;<span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">=</span></span><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_69880c0003bbe3.46037513.gif\" align=\"absmiddle\" /> <br /><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">= 5&times;9 = 45</span></span></p></span><span class=\"hqt\"><p><span style=\"font-family: Mangal;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">प्रथम </span></span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">n </span></span></span><span style=\"font-family: Mangal;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">प्राकृतिक संख्याओं के घन का औसत</span></span></span></span></span></span><br /><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">=&nbsp;</span></span><img style=\"font-family: Calibri, sans-serif;\" src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_69880c0015ee19.23922281.png\" width=\"79\" height=\"45\" /><br /><span style=\"font-family: Mangal;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">यदि</span></span></span></span> </span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">n = 5, </span></span></span><span style=\"font-family: Mangal;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">तो</span></span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">,</span></span></span><br /><span style=\"font-family: Mangal;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">औसत</span></span></span></span> </span></span><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">=&nbsp;</span></span><!-- [if gte msEquation 12]><m:oMathPara><m:oMath><m:f><m:fPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-hansi-font-family:\"Cambria Math\"'><m:ctrlPr></m:ctrlPr></span></m:fPr><m:num><span\n    lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n    mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n    mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-languag#    EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n       m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>5(5+1</m:r></span><m:sSup><m:sSupPr><span\n      style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-siz#      14.0pt;font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n      mso-hansi-font-family:\"Cambria Math\"'><m:ctrlPr></m:ctrlPr></span></m:sSupPr><m:e><span\n      lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n      mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n      mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-languag#      EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n         m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>)</m:r></span></m:e><m:sup><span\n      lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n      mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n      mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-languag#      EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n         m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>2</m:r></span></m:sup></m:sSup></m:num><m:den><span\n    lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n    mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n    mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-languag#    EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n       m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>4</m:r></span></m:den></m:f></m:oMath></m:oMathPara><![endif]--><!-- [if !msEquation]--><span lang=\"EN-IN\" style=\"font-size: 12.0pt; font-family: 'Calibri',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-font-kerning: 0pt; mso-ligatures: none; mso-ansi-language: EN-IN; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\"><!-- [if gte vml 1]><v:shapetype\n id=\"_x0000_t75\" coordsize=\"21600,21600\" o:spt=\"75\" o:preferrelative=\"t\"\n path=\"m@4@5l@4@11@9@11@9@5xe\" filled=\"f\" stroked=\"f\">\n <v:stroke  1 0\"/>\n  <v:f eqn=\"sum 0 0 @1\"/>\n  <v:f eqn=\"prod @2 1 2\"/>\n  <v:f eqn=\"prod @3 21600 pixelWidth\"/>\n  <v:f eqn=\"prod @3 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @0 0 1\"/>\n  <v:f eqn=\"prod @6 1 2\"/>\n  <v:f eqn=\"prod @7 21600 pixelWidth\"/>\n  <v:f eqn=\"sum @8 21600 0\"/>\n  <v:f eqn=\"prod @7 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @10 21600 0\"/>\n </v:formulas>\n <v:path o:extrusionok=\"f\" gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n <o:lock v:ext=\"edit\" aspectratio=\"t\"/>\n</v:shapetype><v:shape id=\"_x0000_i1025\" type=\"#_x0000_t75\" style='width:57.75pt;\n height:33.75pt'>\n <v:imagedata src=\"https://www.thepunditsofficial.in/admin/uploads/questions/#"\n  o:title=\"\" chromakey=\"white\"/>\n</v:shape><![endif]--><!-- [if !vml]--><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_69880c0025b935.51427467.png\" width=\"77\" height=\"45\" /><!--[endif]--></span><!--[endif]-->&nbsp;<span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">=</span></span><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_69880c004d7d11.20982413.gif\" align=\"absmiddle\" /> <br /><span style=\"color: #000000;\"><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">= 5&times;9 = 45</span></span></span></p></span>",
+    "solution": "<span class=\"eqt\"><p><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">Average of cube of first </span></span> <img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_69880bffbcfb24.35513921.gif\" align=\"absmiddle\" /> <span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\"> natural numbers</span></span><br /><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">=&nbsp;</span></span><!-- [if gte msEquation 12]><m:oMathPara><m:oMath><m:f><m:fPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-hansi-font-family:\"Cambria Math\"'><m:ctrlPr></m:ctrlPr></span></m:fPr><m:num><i\n    style='mso-bidi-font-style:normal'><span lang=EN-IN style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:Calibri;\n    mso-fareast-theme-font:minor-latin;mso-bidi-font-family:Mangal;mso-bidi-theme-font:\n    minor-bidi;mso-ansi-language:EN-IN;mso-fareast-language:EN-US;mso-bidi-language:\n    AR-SA'><m:r>n</m:r></span></i><span lang=EN-IN style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:Calibri;\n    mso-fareast-theme-font:minor-latin;mso-bidi-font-family:Mangal;mso-bidi-theme-font:\n    minor-bidi;mso-ansi-language:EN-IN;mso-fareast-language:EN-US;mso-bidi-language:\n    AR-SA'><m:r><m:rPr><m:scr m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>(</m:r><m:r><i\n     style='mso-bidi-font-style:normal'>n</i></m:r><m:r><m:rPr><m:scr m:val=\"roman\"/><m:sty\n       m:val=\"p\"/></m:rPr>+1</m:r></span><m:sSup><m:sSupPr><span\n      style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:\n      14.0pt;font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n      mso-hansi-font-family:\"Cambria Math\"'><m:ctrlPr></m:ctrlPr></span></m:sSupPr><m:e><span\n      lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n      mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n      mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-language:\n      EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n         m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>)</m:r></span></m:e><m:sup><span\n      lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n      mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n      mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-language:\n      EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n         m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>2</m:r></span></m:sup></m:sSup></m:num><m:den><span\n    lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n    mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n    mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-language:\n    EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n       m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>4</m:r></span></m:den></m:f></m:oMath></m:oMathPara><![endif]--><!-- [if !msEquation]--><span lang=\"EN-IN\" style=\"font-size: 12.0pt; font-family: 'Calibri',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-font-kerning: 0pt; mso-ligatures: none; mso-ansi-language: EN-IN; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\"><!-- [if gte vml 1]><v:shapetype\n id=\"_x0000_t75\" coordsize=\"21600,21600\" o:spt=\"75\" o:preferrelative=\"t\"\n path=\"m@4@5l@4@11@9@11@9@5xe\" filled=\"f\" stroked=\"f\">\n <v:stroke  1 0\"/>\n  <v:f eqn=\"sum 0 0 @1\"/>\n  <v:f eqn=\"prod @2 1 2\"/>\n  <v:f eqn=\"prod @3 21600 pixelWidth\"/>\n  <v:f eqn=\"prod @3 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @0 0 1\"/>\n  <v:f eqn=\"prod @6 1 2\"/>\n  <v:f eqn=\"prod @7 21600 pixelWidth\"/>\n  <v:f eqn=\"sum @8 21600 0\"/>\n  <v:f eqn=\"prod @7 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @10 21600 0\"/>\n </v:formulas>\n <v:path o:extrusionok=\"f\" gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n <o:lock v:ext=\"edit\" aspectratio=\"t\"/>\n</v:shapetype><v:shape id=\"_x0000_i1025\" type=\"#_x0000_t75\" style='width:59.25pt;\n height:33.75pt'>\n <v:imagedata src=\"https://www.thepunditsofficial.in/admin/uploads/questions/file:///C:/Users/Admin/AppData/Local/Temp/msohtmlclip1/01/clip_image001.png\"\n  o:title=\"\" chromakey=\"white\"/>\n</v:shape><![endif]--><!-- [if !vml]--><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_69880bffcf5d35.06481140.png\" width=\"79\" height=\"45\" /><!--[endif]--></span><!--[endif]--><br /><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">If n = 5, then,</span></span><br /><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">Avg =&nbsp;</span></span><!-- [if gte msEquation 12]><m:oMathPara><m:oMath><m:f><m:fPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-hansi-font-family:\"Cambria Math\"'><m:ctrlPr></m:ctrlPr></span></m:fPr><m:num><span\n    lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n    mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n    mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-language:\n    EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n       m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>5(5+1</m:r></span><m:sSup><m:sSupPr><span\n      style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:\n      14.0pt;font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n      mso-hansi-font-family:\"Cambria Math\"'><m:ctrlPr></m:ctrlPr></span></m:sSupPr><m:e><span\n      lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n      mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n      mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-language:\n      EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n         m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>)</m:r></span></m:e><m:sup><span\n      lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n      mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n      mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-language:\n      EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n         m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>2</m:r></span></m:sup></m:sSup></m:num><m:den><span\n    lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n    mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n    mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-language:\n    EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n       m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>4</m:r></span></m:den></m:f></m:oMath></m:oMathPara><![endif]--><!-- [if !msEquation]--><span lang=\"EN-IN\" style=\"font-size: 12.0pt; font-family: 'Calibri',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-font-kerning: 0pt; mso-ligatures: none; mso-ansi-language: EN-IN; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\"><!-- [if gte vml 1]><v:shapetype\n id=\"_x0000_t75\" coordsize=\"21600,21600\" o:spt=\"75\" o:preferrelative=\"t\"\n path=\"m@4@5l@4@11@9@11@9@5xe\" filled=\"f\" stroked=\"f\">\n <v:stroke  1 0\"/>\n  <v:f eqn=\"sum 0 0 @1\"/>\n  <v:f eqn=\"prod @2 1 2\"/>\n  <v:f eqn=\"prod @3 21600 pixelWidth\"/>\n  <v:f eqn=\"prod @3 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @0 0 1\"/>\n  <v:f eqn=\"prod @6 1 2\"/>\n  <v:f eqn=\"prod @7 21600 pixelWidth\"/>\n  <v:f eqn=\"sum @8 21600 0\"/>\n  <v:f eqn=\"prod @7 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @10 21600 0\"/>\n </v:formulas>\n <v:path o:extrusionok=\"f\" gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n <o:lock v:ext=\"edit\" aspectratio=\"t\"/>\n</v:shapetype><v:shape id=\"_x0000_i1025\" type=\"#_x0000_t75\" style='width:57.75pt;\n height:33.75pt'>\n <v:imagedata src=\"https://www.thepunditsofficial.in/admin/uploads/questions/file:///C:/Users/Admin/AppData/Local/Temp/msohtmlclip1/01/clip_image001.png\"\n  o:title=\"\" chromakey=\"white\"/>\n</v:shape><![endif]--><!-- [if !vml]--><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_69880bffe31978.92656220.png\" width=\"77\" height=\"45\" /><!--[endif]--></span><!--[endif]-->&nbsp;<span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">=</span></span><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_69880c0003bbe3.46037513.gif\" align=\"absmiddle\" /> <br /><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">= 5&times;9 = 45</span></span></p></span><span class=\"hqt\"><p><span style=\"font-family: Mangal;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">प्रथम </span></span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">n </span></span></span><span style=\"font-family: Mangal;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">प्राकृतिक संख्याओं के घन का औसत</span></span></span></span></span></span><br /><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">=&nbsp;</span></span><img style=\"font-family: Calibri, sans-serif;\" src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_69880c0015ee19.23922281.png\" width=\"79\" height=\"45\" /><br /><span style=\"font-family: Mangal;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">यदि</span></span></span></span> </span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">n = 5, </span></span></span><span style=\"font-family: Mangal;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">तो</span></span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">,</span></span></span><br /><span style=\"font-family: Mangal;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">औसत</span></span></span></span> </span></span><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">=&nbsp;</span></span><!-- [if gte msEquation 12]><m:oMathPara><m:oMath><m:f><m:fPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-hansi-font-family:\"Cambria Math\"'><m:ctrlPr></m:ctrlPr></span></m:fPr><m:num><span\n    lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n    mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n    mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-language:\n    EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n       m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>5(5+1</m:r></span><m:sSup><m:sSupPr><span\n      style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:\n      14.0pt;font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n      mso-hansi-font-family:\"Cambria Math\"'><m:ctrlPr></m:ctrlPr></span></m:sSupPr><m:e><span\n      lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n      mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n      mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-language:\n      EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n         m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>)</m:r></span></m:e><m:sup><span\n      lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n      mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n      mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-language:\n      EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n         m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>2</m:r></span></m:sup></m:sSup></m:num><m:den><span\n    lang=EN-IN style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n    mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;\n    mso-bidi-font-family:Mangal;mso-bidi-theme-font:minor-bidi;mso-ansi-language:\n    EN-IN;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><m:r><m:rPr><m:scr\n       m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>4</m:r></span></m:den></m:f></m:oMath></m:oMathPara><![endif]--><!-- [if !msEquation]--><span lang=\"EN-IN\" style=\"font-size: 12.0pt; font-family: 'Calibri',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: 'Times New Roman'; mso-bidi-theme-font: minor-bidi; mso-font-kerning: 0pt; mso-ligatures: none; mso-ansi-language: EN-IN; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\"><!-- [if gte vml 1]><v:shapetype\n id=\"_x0000_t75\" coordsize=\"21600,21600\" o:spt=\"75\" o:preferrelative=\"t\"\n path=\"m@4@5l@4@11@9@11@9@5xe\" filled=\"f\" stroked=\"f\">\n <v:stroke  1 0\"/>\n  <v:f eqn=\"sum 0 0 @1\"/>\n  <v:f eqn=\"prod @2 1 2\"/>\n  <v:f eqn=\"prod @3 21600 pixelWidth\"/>\n  <v:f eqn=\"prod @3 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @0 0 1\"/>\n  <v:f eqn=\"prod @6 1 2\"/>\n  <v:f eqn=\"prod @7 21600 pixelWidth\"/>\n  <v:f eqn=\"sum @8 21600 0\"/>\n  <v:f eqn=\"prod @7 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @10 21600 0\"/>\n </v:formulas>\n <v:path o:extrusionok=\"f\" gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n <o:lock v:ext=\"edit\" aspectratio=\"t\"/>\n</v:shapetype><v:shape id=\"_x0000_i1025\" type=\"#_x0000_t75\" style='width:57.75pt;\n height:33.75pt'>\n <v:imagedata src=\"https://www.thepunditsofficial.in/admin/uploads/questions/file:///C:/Users/Admin/AppData/Local/Temp/msohtmlclip1/01/clip_image001.png\"\n  o:title=\"\" chromakey=\"white\"/>\n</v:shape><![endif]--><!-- [if !vml]--><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_69880c0025b935.51427467.png\" width=\"77\" height=\"45\" /><!--[endif]--></span><!--[endif]-->&nbsp;<span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">=</span></span><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_69880c004d7d11.20982413.gif\" align=\"absmiddle\" /> <br /><span style=\"color: #000000;\"><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">= 5&times;9 = 45</span></span></span></p></span>",
     "marks": 2,
     "section": "Number System Quiz",
     "series_name": "ProMocks Number System - Quiz 5"
@@ -3149,6 +2881,260 @@ a[href*="youtube.com/@"],
         document.addEventListener('DOMContentLoaded', () => {
             new CBTExam();
         });
-    </script>
+    
+</script>
+
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-container">
+            <div class="welcome-header">
+                <h1><i class="fas fa-graduation-cap"></i> pundits</h1>
+                <p>Computer Based Test</p>
+            </div>
+            
+            <div class="test-details">
+                <div class="detail-item">
+                    <div class="detail-label">Test ID</div>
+                    <div class="detail-value">77185</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Total Questions</div>
+                    <div class="detail-value">25</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Total Marks</div>
+                    <div class="detail-value">50.0</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Duration</div>
+                    <div class="detail-value">30 mins</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Marking Scheme</div>
+                    <div class="detail-value">+2.0 / -0.5</div>
+                </div>
+            </div>
+            
+            
+        <div class="welcome-instructions">
+            <h3>Instructions</h3>
+            <ul>
+                <li>Read each question carefully before answering</li>
+                <li>You can mark questions for review and come back later</li>
+                <li>The timer will automatically submit the test when time is up</li>
+                <li>Negative marking applies for wrong answers</li>
+            </ul>
+        </div>
+        
+            
+            <div class="welcome-actions">
+                <button class="start-btn" id="startBtn">
+                    <i class="fas fa-play"></i> Start Test
+                </button>
+                
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Exam Interface -->
+    <div class="exam-container" id="examContainer">
+        <!-- Top Header -->
+        <div class="exam-header">
+            <div class="exam-title">pundits</div>
+            <div class="exam-timer">
+                <div class="timer-box" id="mainTimer">30:00</div>
+                <button class="nav-btn btn-submit mobile-only" id="submitBtn">Submit</button>
+            </div>
+        </div>
+        
+        <!-- Candidate Info Bar -->
+        <div class="candidate-bar">
+            <div class="candidate-info">
+                <div class="candidate-photo">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="candidate-details">
+                    <div class="candidate-name">Candidate</div>
+                    <div class="candidate-id">Test ID: 77185</div>
+                </div>
+            </div>
+            <div class="section-badge" id="sectionBadge">
+                <span id="sectionName"></span>
+                <span id="sectionTimer"></span>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="exam-main">
+            <!-- Question Area -->
+            <div class="question-area">
+                <div class="question-scroll">
+                    <div class="question-card">
+                        <div class="question-header">
+                            <div>
+                                <div class="question-number" id="questionNum">Question 1 of 25</div>
+                                <div class="question-marks" id="questionMarks">Marks: 2.0</div>
+                            </div>
+                            <div class="lang-toggle">
+                                <button class="lang-btn active" id="engBtn">English</button>
+                                <button class="lang-btn" id="hinBtn">हिंदी</button>
+                            </div>
+                        </div>
+                        
+                        <div class="comprehension" id="comprehension" style="display:none;">
+                            <h4><i class="fas fa-book-open"></i> Comprehension</h4>
+                            <div id="comprehensionText"></div>
+                        </div>
+                        
+                        <div class="question-text" id="questionText"></div>
+                        
+                        <div class="options-list" id="optionsList"></div>
+                        
+                        <div class="solution-box" id="solutionBox">
+                            <div class="solution-header">
+                                <i class="fas fa-lightbulb"></i> Solution
+                            </div>
+                            <div class="solution-stats" id="solutionStats"></div>
+                            <div id="solutionText"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation Bar inside Question Area -->
+                <div class="navigation-bar">
+                    <button class="nav-btn btn-prev" id="prevBtn">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    
+                    <div class="progress-info">
+                        <div id="progressText">Question 1 of 25</div>
+                        <div style="font-size:11px;margin-top:4px">
+                            Answered: <span id="answeredCount">0</span> | 
+                            
+                        </div>
+                    </div>
+                    
+                    <button class="nav-btn btn-review" id="reviewBtn">
+                        <i class="fas fa-flag"></i>
+                    </button>
+                    
+                    <button class="nav-btn mobile-only" id="navigatorBtn">
+                        <i class="fas fa-th"></i> Questions
+                    </button>
+                    
+                    <button class="nav-btn btn-submit desktop-only" id="submitBtnDesktop">Submit</button>
+                    
+                    <button class="nav-btn btn-next" id="nextBtn">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Desktop Navigator Sidebar -->
+            <div class="navigator-sidebar desktop-only">
+                <div class="navigator-header">Question Navigator</div>
+                <div class="navigator-grid" id="desktopNav"></div>
+                <div class="navigator-legend">
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--success)"></div>
+                        <span>Answered</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--warning)"></div>
+                        <span>Marked for Review</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--danger)"></div>
+                        <span>Incorrect</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:white;border:2px solid var(--border)"></div>
+                        <span>Not Visited</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Navigator Panel -->
+    <div class="mobile-navigator" id="mobileNav">
+        <div class="mobile-nav-header">
+            <h3>Question Navigator</h3>
+            <button class="close-nav" id="closeNav">&times;</button>
+        </div>
+        <div class="navigator-grid" id="mobileNavGrid"></div>
+        <div class="navigator-legend">
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--success)"></div>
+                <span>Answered</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--warning)"></div>
+                <span>Marked for Review</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--danger)"></div>
+                <span>Incorrect</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:white;border:2px solid var(--border)"></div>
+                <span>Not Visited</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Result Modal -->
+    <div class="result-modal" id="resultModal">
+        <div class="result-container">
+            <div class="result-header">
+                <h2>Test Completed!</h2>
+                <div class="result-score" id="resultScore">0/50.0</div>
+            </div>
+            
+            <div class="result-grid">
+                <div class="result-stat correct">
+                    <div class="result-stat-value" id="correctCount">0</div>
+                    <div class="result-stat-label">Correct</div>
+                </div>
+                <div class="result-stat incorrect">
+                    <div class="result-stat-value" id="incorrectCount">0</div>
+                    <div class="result-stat-label">Incorrect</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="unattemptedCount">0</div>
+                    <div class="result-stat-label">Unattempted</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="timeTaken">0</div>
+                    <div class="result-stat-label">Minutes</div>
+                </div>
+            </div>
+            
+            <div class="section-results" id="sectionResults" style="display:none;">
+                <h3>Section-wise Performance</h3>
+                <table class="section-results-table" id="sectionResultsTable">
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Attempted</th>
+                            <th>Correct</th>
+                            <th>Wrong</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sectionResultsBody"></tbody>
+                </table>
+            </div>
+            
+            <div class="result-actions">
+                <button class="result-btn btn-close" id="closeResult">Close</button>
+                <button class="result-btn btn-review-ans" id="reviewAnswers">Review Answers</button>
+            </div>
+        </div>
+    </div>
+    
+    
 </body>
 </html>

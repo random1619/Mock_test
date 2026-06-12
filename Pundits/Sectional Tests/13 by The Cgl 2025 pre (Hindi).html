@@ -1814,254 +1814,7 @@ a[href*="youtube.com/@"],
 }
 </style>
 <script>
-/* ── Fix 1: Auto-fix generic page titles ───────────────────── */
-(function fixPageTitle() {
-  const genericTitles = ['devgagan', 'CBT Exam - pundits', 'CBT Exam'];
-  const currentTitle = document.title || '';
-  const isGeneric = genericTitles.some(g => currentTitle.toLowerCase() === g.toLowerCase());
-  if (isGeneric) {
-    // Try to get title from welcome header h1
-    document.addEventListener('DOMContentLoaded', function() {
-      const h1 = document.querySelector('.welcome-header h1, .welcome-header h2');
-      if (h1 && h1.textContent.trim()) {
-        document.title = h1.textContent.trim().substring(0, 80);
-      }
-    });
-  }
-})();
-</script>
 
-</head>
-<body>
-    <!-- Welcome Start page -->
-    <div class="welcome-screen" id="welcomeScreen">
-        <div class="welcome-container">
-            <div class="welcome-header">
-                <h1><i class="fas fa-graduation-cap"></i> CBT Portal</h1>
-                <p>Computer Based Test Environment</p>
-            </div>
-            
-            <div class="test-details">
-                <div class="detail-item">
-                    <div class="detail-label">Total Questions</div>
-                    <div class="detail-value" id="welcomeTotalQs">0</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Total Marks</div>
-                    <div class="detail-value" id="welcomeTotalMarks">0</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Duration</div>
-                    <div class="detail-value" id="welcomeDuration">0 mins</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Marking Scheme</div>
-                    <div class="detail-value" id="welcomeMarksScheme">+0.0 / -0.0</div>
-                </div>
-            </div>
-            
-            <div class="section-info" id="welcomeSectionsBlock" style="display:none;">
-                <h3><i class="fas fa-layer-group"></i> Section Details</h3>
-                <table class="section-table">
-                    <thead>
-                        <tr>
-                            <th>Section Name</th>
-                            <th>Questions</th>
-                            <th>Time</th>
-                        </tr>
-                    </thead>
-                    <tbody id="welcomeSectionsBody"></tbody>
-                </table>
-            </div>
-            
-            <div class="welcome-actions">
-                <button class="start-btn" id="startBtn">
-                    <i class="fas fa-play"></i> Start Test
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Active Exam Interface -->
-    <div class="exam-container" id="examContainer">
-        <div class="exam-header">
-            <div class="exam-title">pundits</div>
-            <div class="exam-timer">
-                <div class="timer-box" id="mainTimer">00:00</div>
-                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
-                <button class="nav-btn btn-submit mobile-only" id="submitBtn">Submit</button>
-            </div>
-        </div>
-        
-        <div class="candidate-bar">
-            <div class="candidate-info">
-                <div class="candidate-photo">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="candidate-details">
-                    <div class="candidate-name">Candidate</div>
-                    <div class="candidate-id">ID: User</div>
-                </div>
-            </div>
-            <div class="section-badge" id="sectionBadge" style="display:none;">
-                <span id="sectionName"></span><span id="sectionTimer"></span>
-            </div>
-        </div>
-
-        <!-- Section tabs for Soft Switching (Tier I) -->
-        <div class="section-tabs" id="sectionTabs" style="display:none;"></div>
-        
-        <div class="exam-main">
-            <div class="question-area">
-                <div class="question-scroll">
-                    <div class="question-card">
-                        <div class="question-header">
-                            <div>
-                                <div class="question-number" id="questionNum">Question 1</div>
-                                <div class="question-marks" id="questionMarks">Marks: 3.0</div>
-                            </div>
-                            <div class="lang-toggle">
-                                <button class="lang-btn active" id="engBtn">English</button>
-                                <button class="lang-btn" id="hinBtn">हिंदी</button>
-                            </div>
-                        </div>
-                        
-                        <div class="comprehension" id="comprehension" style="display:none;">
-                            <h4><i class="fas fa-book-open"></i> Comprehension</h4>
-                            <div id="comprehensionText"></div>
-                        </div>
-                        
-                        <div class="question-text" id="questionText"></div>
-                        <div class="options-list" id="optionsList"></div>
-                        
-                        <div class="solution-box" id="solutionBox">
-                            <div class="solution-header">
-                                <i class="fas fa-lightbulb"></i> Solution
-                            </div>
-                            <div class="solution-stats" id="solutionStats"></div>
-                            <div id="solutionText"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="navigation-bar">
-                    <button class="nav-btn btn-prev" id="prevBtn"><i class="fas fa-chevron-left"></i> Prev</button>
-                    <div class="progress-info">
-                        <div id="progressText">Question 1</div>
-                        <div style="font-size:11px;margin-top:4px">
-                            Answered: <span id="answeredCount">0</span>
-                        </div>
-                    </div>
-                    <button class="nav-btn btn-review" id="reviewBtn"><i class="fas fa-flag"></i> Mark for Review</button>
-                    <button class="nav-btn mobile-only" id="navigatorBtn"><i class="fas fa-th"></i> Grid</button>
-                    <button class="nav-btn btn-submit desktop-only" id="submitBtnDesktop">Submit</button>
-                    <button class="nav-btn btn-next">Next <i class="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
-            
-            <div class="navigator-sidebar desktop-only">
-                <div class="navigator-header">Question Navigator</div>
-                <div class="navigator-grid" id="desktopNav"></div>
-                <div class="navigator-legend">
-                    <div class="legend-item">
-                        <div class="legend-box" style="background:var(--success)"></div>
-                        <span>Answered</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box" style="background:var(--warning)"></div>
-                        <span>Marked for Review</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box" style="background:var(--danger)"></div>
-                        <span>Incorrect</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box" style="background:var(--card);border:2px solid var(--border)"></div>
-                        <span>Unattempted</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Mobile drawer panel -->
-    <div class="mobile-navigator" id="mobileNav">
-        <div class="mobile-nav-header">
-            <h3>Question Navigator</h3>
-            <button class="close-nav" id="closeNav">&times;</button>
-        </div>
-        <div class="navigator-grid" id="mobileNavGrid"></div>
-        <div class="navigator-legend">
-            <div class="legend-item">
-                <div class="legend-box" style="background:var(--success)"></div>
-                <span>Answered</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-box" style="background:var(--warning)"></div>
-                <span>Marked for Review</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-box" style="background:var(--danger)"></div>
-                <span>Incorrect</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-box" style="background:var(--card);border:2px solid var(--border)"></div>
-                <span>Unattempted</span>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Result Overlay -->
-    <div class="result-modal" id="resultModal">
-        <div class="result-container">
-            <div class="result-header">
-                <h2>Test Completed!</h2>
-                <div class="result-score" id="resultScore">0.00</div>
-            </div>
-            
-            <div class="result-grid">
-                <div class="result-stat correct">
-                    <div class="result-stat-value" id="correctCount">0</div>
-                    <div class="result-stat-label">Correct</div>
-                </div>
-                <div class="result-stat incorrect">
-                    <div class="result-stat-value" id="incorrectCount">0</div>
-                    <div class="result-stat-label">Incorrect</div>
-                </div>
-                <div class="result-stat">
-                    <div class="result-stat-value" id="unattemptedCount">0</div>
-                    <div class="result-stat-label">Unattempted</div>
-                </div>
-                <div class="result-stat">
-                    <div class="result-stat-value" id="timeTaken">0</div>
-                    <div class="result-stat-label">Minutes</div>
-                </div>
-            </div>
-            
-            <div class="section-results" id="sectionResults" style="display:none;">
-                <h3>Section-wise Performance</h3>
-                <table class="section-results-table">
-                    <thead>
-                        <tr>
-                            <th>Section</th>
-                            <th>Attempted</th>
-                            <th>Correct</th>
-                            <th>Wrong</th>
-                            <th>Score</th>
-                        </tr>
-                    </thead>
-                    <tbody id="sectionResultsBody"></tbody>
-                </table>
-            </div>
-            
-            <div class="result-actions">
-                <button class="result-btn btn-close" id="closeResult">Close</button>
-                <button class="result-btn btn-review-ans" id="reviewAnswers">Review Answers</button>
-            </div>
-        </div>
-    </div>
-    
-    <script>
         const questions = [
   {
     "question": "<span class=\"eqt\"><a name=\"_Hlk198245269\"/>\n<span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">\nWhat was the day of the week on 23</span></span></span><span style=\"color: #000000\"><sup><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">rd</span></span></sup></span><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">\nFebruary 1995?</span></span></span><br/></span><span class=\"hqt\"><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\"/></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">23\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">फरवरी\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">1995\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">को\nसप्ताह का कौन\nसा दिन था</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">?</span></span></span><br/></span>",
@@ -2184,7 +1937,7 @@ a[href*="youtube.com/@"],
     "series_name": "ProMocks 13 By THE PUNDITS- CGL 2025 PRE"
   },
   {
-    "question": "<span class=\"eqt\"><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">\nSelect the option that is related to the fifth number in the same way\nas the second number is related to the first number and the fourth\nnumber is related to the third number</span></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\"><b>.</b></span></span></span><br/><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">[NOT# should be performed on the whole numbers, without breaking\ndown the numbers into its constituent digits. E.g. 13 –\nOperations on 13 such as adding/deleting/multiplying etc. to 13 can\nbe performed. Breaking down 13 into 1 and 3 and then performing\nmathematical operations on 1 and 3 is not allowed.]</span></span></span><br/><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">13\n: 156  :: 16  : 240  :: 22  : ?</span></span></span><br/></span><span class=\"hqt\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\"/></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">वह\nविकल्प चुनें\nजो पाँचवीं\nसंख्या से उसी\nतरह संबंधित\nहै जिस तरह दूसरी\nसंख्या पहली\nसंख्या से संबंधित\nहै और चौथी संख्या\nतीसरी संख्या\nसे संबंधित है।</span></span></span></span></span><br/><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">[</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">नोट</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">:\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">संख्याओं\nको उसके घटक\nअंकों में तोड़े\nबिना</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">,\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">पूर्ण\nसंख्याओं पर\nसंचालन किया\nजाना चाहिए।\nउदाहरण के लिए\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">13\n- 13 </span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">पर\nसंचालन जैसे\nकि </span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">13\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">में\nजोड़ना</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">/</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">हटाना</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">/</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">गुणा\nकरना आदि किया\nजा सकता है। </span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">13\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">को\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">1\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">और\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">3\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">में\nतोड़ना और फिर\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">1\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">और\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">3\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">पर\nगणितीय संचालन\nकरने की अनुमति\nनहीं है।</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">]</span></span></span><br/><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">13\n: 156  :: 16  : 240  :: 22  : ?</span></span></span><br/></span>",
+    "question": "<span class=\"eqt\"><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">\nSelect the option that is related to the fifth number in the same way\nas the second number is related to the first number and the fourth\nnumber is related to the third number</span></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\"><b>.</b></span></span></span><br/><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">[NOTE:\nOperations should be performed on the whole numbers, without breaking\ndown the numbers into its constituent digits. E.g. 13 –\nOperations on 13 such as adding/deleting/multiplying etc. to 13 can\nbe performed. Breaking down 13 into 1 and 3 and then performing\nmathematical operations on 1 and 3 is not allowed.]</span></span></span><br/><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">13\n: 156  :: 16  : 240  :: 22  : ?</span></span></span><br/></span><span class=\"hqt\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\"/></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">वह\nविकल्प चुनें\nजो पाँचवीं\nसंख्या से उसी\nतरह संबंधित\nहै जिस तरह दूसरी\nसंख्या पहली\nसंख्या से संबंधित\nहै और चौथी संख्या\nतीसरी संख्या\nसे संबंधित है।</span></span></span></span></span><br/><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">[</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">नोट</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">:\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">संख्याओं\nको उसके घटक\nअंकों में तोड़े\nबिना</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">,\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">पूर्ण\nसंख्याओं पर\nसंचालन किया\nजाना चाहिए।\nउदाहरण के लिए\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">13\n- 13 </span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">पर\nसंचालन जैसे\nकि </span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">13\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">में\nजोड़ना</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">/</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">हटाना</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">/</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">गुणा\nकरना आदि किया\nजा सकता है। </span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">13\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">को\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">1\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">और\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">3\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">में\nतोड़ना और फिर\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">1\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">और\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">3\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">पर\nगणितीय संचालन\nकरने की अनुमति\nनहीं है।</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">]</span></span></span><br/><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">13\n: 156  :: 16  : 240  :: 22  : ?</span></span></span><br/></span>",
     "comp": "",
     "options": [
       "<span class=\"eqt\"><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">\n441</span></span></span></span><span class=\"hqt\">411</span>",
@@ -2409,7 +2162,7 @@ a[href*="youtube.com/@"],
     "series_name": "ProMocks 13 By THE PUNDITS- CGL 2025 PRE"
   },
   {
-    "question": "<span class=\"eqt\"><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">\nThree of the following four options are alike in a certain way and\nthus form a group. Which is the one that does NOT belong to that\ngroup?</span></span></span><br/><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">[NOT# should be performed on the whole numbers, without breaking\ndown the numbers into its constituent digits. E.g. 13 –\nOperations on 13 such as adding/subtracting/multiplying etc. to 13\ncan be performed. Breaking down 13 into 1 and 3 and then performing\nmathematical operations on 1 and 3 is not allowed.]</span></span></span><br/><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">[3,\n7, 40] </span></span></span>\n<br/><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">[11,\n1, 30]</span></span></span><br/></span><span class=\"hqt\"><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\"/></span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">निम्नलिखित\nचार विकल्पों\nमें से तीन एक\nनिश्चित तरीके\nसे समान हैं और\nइस प्रकार एक\nसमूह बनाते हैं।\nवह कौन सा है जो\nउस समूह से संबंधित\nनहीं है</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">?\n</span></span></span>\n<br/><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">[</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">नोट</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">:\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">संख्याओं\nको उसके घटक\nअंकों में तोड़े\nबिना</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">,\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">पूर्ण\nसंख्याओं पर\nसंचालन किया\nजाना चाहिए।\nउदाहरण के लिए\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">13\n- 13 </span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">पर\nसंचालन जैसे\nकि </span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">13\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">में\nजोड़ना</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">/</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">घटाना</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">/</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">गुणा\nकरना आदि किया\nजा सकता है। </span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">13\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">को\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">1\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">और\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">3\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">में\nतोड़ना और फिर\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">1\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">और\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">3\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">पर\nगणितीय संचालन\nकरना अनुमत नहीं\nहै।</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">]\n</span></span></span>\n<br/><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">[3,\n7, 40] </span></span></span>\n<br/><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">[11,\n1, 30]</span></span></span><br/></span>",
+    "question": "<span class=\"eqt\"><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">\nThree of the following four options are alike in a certain way and\nthus form a group. Which is the one that does NOT belong to that\ngroup?</span></span></span><br/><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">[NOTE:\nOperations should be performed on the whole numbers, without breaking\ndown the numbers into its constituent digits. E.g. 13 –\nOperations on 13 such as adding/subtracting/multiplying etc. to 13\ncan be performed. Breaking down 13 into 1 and 3 and then performing\nmathematical operations on 1 and 3 is not allowed.]</span></span></span><br/><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">[3,\n7, 40] </span></span></span>\n<br/><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">[11,\n1, 30]</span></span></span><br/></span><span class=\"hqt\"><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\"/></span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">निम्नलिखित\nचार विकल्पों\nमें से तीन एक\nनिश्चित तरीके\nसे समान हैं और\nइस प्रकार एक\nसमूह बनाते हैं।\nवह कौन सा है जो\nउस समूह से संबंधित\nनहीं है</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">?\n</span></span></span>\n<br/><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">[</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">नोट</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">:\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">संख्याओं\nको उसके घटक\nअंकों में तोड़े\nबिना</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">,\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">पूर्ण\nसंख्याओं पर\nसंचालन किया\nजाना चाहिए।\nउदाहरण के लिए\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">13\n- 13 </span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">पर\nसंचालन जैसे\nकि </span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">13\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">में\nजोड़ना</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">/</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">घटाना</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">/</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">गुणा\nकरना आदि किया\nजा सकता है। </span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">13\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">को\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">1\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">और\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">3\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">में\nतोड़ना और फिर\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">1\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">और\n</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">3\n</span></span><span style=\"font-family: Mangal\"><span lang=\"hi-IN\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">पर\nगणितीय संचालन\nकरना अनुमत नहीं\nहै।</span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">]\n</span></span></span>\n<br/><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">[3,\n7, 40] </span></span></span>\n<br/><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">[11,\n1, 30]</span></span></span><br/></span>",
     "comp": "",
     "options": [
       "<span class=\"eqt\"><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">\n[6, 1, 23]</span></span></span></span><span class=\"hqt\">[6, 1, 23]</span>",
@@ -2904,7 +2657,7 @@ a[href*="youtube.com/@"],
     "series_name": "ProMocks 13 By THE PUNDITS- CGL 2025 PRE"
   },
   {
-    "question": "<span class=\"eqt\"><p><span style=\"color: #000000;\"><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\"> A number x when divided by 7 leaves remainder 3. What will be reminder when&nbsp;</span></span></span><!-- [if gte msEquation 12]><m:oMathPara><m:oMath><m:sSup><m:sSupPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Nirmala UI\";\n    mso-bidi-font-family:\"Nirmala UI\";color:black'><m:ctrlPr></m:ctrlPr></span></m:sSupPr><m:e><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-hansi-font-family:\"Nirmala UI\";mso-bidi-font-family:\"Nirmala UI\";\n    color:black;mso-ansi-language:EN-IN;mso-fareast-language:EN-IN;mso-bidi-languag#    AR-SA'><m:r>[</m:r></span><span style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n    mso-fareast-font-family:\"Cambria Math\";mso-bidi-font-family:\"Nirmala UI\";\n    color:black;mso-ansi-language:EN-IN;mso-fareast-language:EN-IN;mso-bidi-languag#    AR-SA'><m:r>x</m:r></span></i></m:e><m:sup><i style='mso-bidi-font-styl#    normal'><span style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Nirmala UI\";\n    mso-bidi-font-family:\"Nirmala UI\";color:black;mso-ansi-language:EN-IN;\n    mso-fareast-language:EN-IN;mso-bidi-language:AR-SA'><m:r>2</m:r></span></i></m:sup></m:sSup><i\n  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-famil#  \"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-famil#  \"Nirmala UI\";mso-bidi-font-family:\"Nirmala UI\";color:black;mso-ansi-languag#  EN-IN;mso-fareast-language:EN-IN;mso-bidi-language:AR-SA'><m:r>+5</m:r></span><span\n  style='font-size:14.0pt;font-family:\"Cambria Math\",serif;mso-fareast-font-famil#  \"Cambria Math\";mso-bidi-font-family:\"Nirmala UI\";color:black;mso-ansi-languag#  EN-IN;mso-fareast-language:EN-IN;mso-bidi-language:AR-SA'><m:r>x</m:r></span><span\n  style='font-size:14.0pt;font-family:\"Cambria Math\",serif;mso-fareast-font-famil#  \"Cambria Math\";mso-hansi-font-family:\"Nirmala UI\";mso-bidi-font-family:\"Nirmala UI\";\n  color:black;mso-ansi-language:EN-IN;mso-fareast-language:EN-IN;mso-bidi-languag#  AR-SA'><m:r>+6]</m:r></span></i></m:oMath></m:oMathPara><![endif]--><!-- [if !msEquation]--><span style=\"font-size: 12.0pt; font-family: 'Calibri',sans-serif; mso-fareast-font-family: Calibri; mso-font-kerning: 0pt; mso-ligatures: none; mso-ansi-language: EN-IN; mso-fareast-language: EN-IN; mso-bidi-language: AR-SA;\"><!-- [if gte vml 1]><v:shapetype\n id=\"_x0000_t75\" coordsize=\"21600,21600\" o:spt=\"75\" o:preferrelative=\"t\"\n path=\"m@4@5l@4@11@9@11@9@5xe\" filled=\"f\" stroked=\"f\">\n <v:stroke  1 0\"/>\n  <v:f eqn=\"sum 0 0 @1\"/>\n  <v:f eqn=\"prod @2 1 2\"/>\n  <v:f eqn=\"prod @3 21600 pixelWidth\"/>\n  <v:f eqn=\"prod @3 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @0 0 1\"/>\n  <v:f eqn=\"prod @6 1 2\"/>\n  <v:f eqn=\"prod @7 21600 pixelWidth\"/>\n  <v:f eqn=\"sum @8 21600 0\"/>\n  <v:f eqn=\"prod @7 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @10 21600 0\"/>\n </v:formulas>\n <v:path o:extrusionok=\"f\" gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n <o:lock v:ext=\"edit\" aspectratio=\"t\"/>\n</v:shapetype><v:shape id=\"_x0000_i1025\" type=\"#_x0000_t75\" style='width:81pt;\n height:16.8pt'>\n <v:imagedata src=\"https://www.thepunditsofficial.in/admin/uploads/questions/#"\n  o:title=\"\" chromakey=\"white\"/>\n</v:shape><![endif]--><!-- [if !vml]--><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_6997054c4dbfe0.66510295.png\" width=\"108\" height=\"22\" /><!--[endif]--></span><!--[endif]-->&nbsp;<span style=\"color: #000000;\"><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">is divided by 7?</span></span></span></p></span><span class=\"hqt\"><p><span style=\"font-family: Calibri;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">एक संख्या </span></span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">x </span></span></span><span style=\"font-family: Calibri;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">को </span></span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">7 </span></span></span><span style=\"font-family: Calibri;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">से विभाजित करने पर शेष </span></span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">3 </span></span></span><span style=\"font-family: Calibri;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">बचता है। जब&nbsp;</span></span></span></span><!-- [if gte msEquation 12]><m:oMathPara><m:oMath><m:sSup><m:sSupPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Nirmala UI\";\n    mso-bidi-font-family:\"Nirmala UI\";color:black'><m:ctrlPr></m:ctrlPr></span></m:sSupPr><m:e><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-hansi-font-family:\"Nirmala UI\";mso-bidi-font-family:\"Nirmala UI\";\n    color:black;mso-ansi-language:EN-IN;mso-fareast-language:EN-IN;mso-bidi-languag#    AR-SA'><m:r>[</m:r></span><span style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n    mso-fareast-font-family:\"Cambria Math\";mso-bidi-font-family:\"Nirmala UI\";\n    color:black;mso-ansi-language:EN-IN;mso-fareast-language:EN-IN;mso-bidi-languag#    AR-SA'><m:r>x</m:r></span></i></m:e><m:sup><i style='mso-bidi-font-styl#    normal'><span style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Nirmala UI\";\n    mso-bidi-font-family:\"Nirmala UI\";color:black;mso-ansi-language:EN-IN;\n    mso-fareast-language:EN-IN;mso-bidi-language:AR-SA'><m:r>2</m:r></span></i></m:sup></m:sSup><i\n  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-famil#  \"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-famil#  \"Nirmala UI\";mso-bidi-font-family:\"Nirmala UI\";color:black;mso-ansi-languag#  EN-IN;mso-fareast-language:EN-IN;mso-bidi-language:AR-SA'><m:r>+5</m:r></span><span\n  style='font-size:14.0pt;font-family:\"Cambria Math\",serif;mso-fareast-font-famil#  \"Cambria Math\";mso-bidi-font-family:\"Nirmala UI\";color:black;mso-ansi-languag#  EN-IN;mso-fareast-language:EN-IN;mso-bidi-language:AR-SA'><m:r>x</m:r></span><span\n  style='font-size:14.0pt;font-family:\"Cambria Math\",serif;mso-fareast-font-famil#  \"Cambria Math\";mso-hansi-font-family:\"Nirmala UI\";mso-bidi-font-family:\"Nirmala UI\";\n  color:black;mso-ansi-language:EN-IN;mso-fareast-language:EN-IN;mso-bidi-languag#  AR-SA'><m:r>+6]</m:r></span></i></m:oMath></m:oMathPara><![endif]--><!-- [if !msEquation]--><span style=\"font-size: 12.0pt; font-family: 'Calibri',sans-serif; mso-fareast-font-family: Calibri; mso-font-kerning: 0pt; mso-ligatures: none; mso-ansi-language: EN-IN; mso-fareast-language: EN-IN; mso-bidi-language: AR-SA;\"><!-- [if gte vml 1]><v:shapetype\n id=\"_x0000_t75\" coordsize=\"21600,21600\" o:spt=\"75\" o:preferrelative=\"t\"\n path=\"m@4@5l@4@11@9@11@9@5xe\" filled=\"f\" stroked=\"f\">\n <v:stroke  1 0\"/>\n  <v:f eqn=\"sum 0 0 @1\"/>\n  <v:f eqn=\"prod @2 1 2\"/>\n  <v:f eqn=\"prod @3 21600 pixelWidth\"/>\n  <v:f eqn=\"prod @3 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @0 0 1\"/>\n  <v:f eqn=\"prod @6 1 2\"/>\n  <v:f eqn=\"prod @7 21600 pixelWidth\"/>\n  <v:f eqn=\"sum @8 21600 0\"/>\n  <v:f eqn=\"prod @7 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @10 21600 0\"/>\n </v:formulas>\n <v:path o:extrusionok=\"f\" gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n <o:lock v:ext=\"edit\" aspectratio=\"t\"/>\n</v:shapetype><v:shape id=\"_x0000_i1025\" type=\"#_x0000_t75\" style='width:81pt;\n height:16.8pt'>\n <v:imagedata src=\"https://www.thepunditsofficial.in/admin/uploads/questions/#"\n  o:title=\"\" chromakey=\"white\"/>\n</v:shape><![endif]--><!-- [if !vml]--><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_6997054c609ca9.23881860.png\" width=\"108\" height=\"22\" /><!--[endif]--></span><!--[endif]-->&nbsp;<span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">को </span></span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">7 </span></span></span><span style=\"font-family: Calibri;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">से विभाजित किया जाए तो शेष क्या होगा</span></span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">?</span></span></span></p></span>",
+    "question": "<span class=\"eqt\"><p><span style=\"color: #000000;\"><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\"> A number x when divided by 7 leaves remainder 3. What will be reminder when&nbsp;</span></span></span><!-- [if gte msEquation 12]><m:oMathPara><m:oMath><m:sSup><m:sSupPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Nirmala UI\";\n    mso-bidi-font-family:\"Nirmala UI\";color:black'><m:ctrlPr></m:ctrlPr></span></m:sSupPr><m:e><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-hansi-font-family:\"Nirmala UI\";mso-bidi-font-family:\"Nirmala UI\";\n    color:black;mso-ansi-language:EN-IN;mso-fareast-language:EN-IN;mso-bidi-language:\n    AR-SA'><m:r>[</m:r></span><span style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n    mso-fareast-font-family:\"Cambria Math\";mso-bidi-font-family:\"Nirmala UI\";\n    color:black;mso-ansi-language:EN-IN;mso-fareast-language:EN-IN;mso-bidi-language:\n    AR-SA'><m:r>x</m:r></span></i></m:e><m:sup><i style='mso-bidi-font-style:\n    normal'><span style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Nirmala UI\";\n    mso-bidi-font-family:\"Nirmala UI\";color:black;mso-ansi-language:EN-IN;\n    mso-fareast-language:EN-IN;mso-bidi-language:AR-SA'><m:r>2</m:r></span></i></m:sup></m:sSup><i\n  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:\n  \"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\n  \"Nirmala UI\";mso-bidi-font-family:\"Nirmala UI\";color:black;mso-ansi-language:\n  EN-IN;mso-fareast-language:EN-IN;mso-bidi-language:AR-SA'><m:r>+5</m:r></span><span\n  style='font-size:14.0pt;font-family:\"Cambria Math\",serif;mso-fareast-font-family:\n  \"Cambria Math\";mso-bidi-font-family:\"Nirmala UI\";color:black;mso-ansi-language:\n  EN-IN;mso-fareast-language:EN-IN;mso-bidi-language:AR-SA'><m:r>x</m:r></span><span\n  style='font-size:14.0pt;font-family:\"Cambria Math\",serif;mso-fareast-font-family:\n  \"Cambria Math\";mso-hansi-font-family:\"Nirmala UI\";mso-bidi-font-family:\"Nirmala UI\";\n  color:black;mso-ansi-language:EN-IN;mso-fareast-language:EN-IN;mso-bidi-language:\n  AR-SA'><m:r>+6]</m:r></span></i></m:oMath></m:oMathPara><![endif]--><!-- [if !msEquation]--><span style=\"font-size: 12.0pt; font-family: 'Calibri',sans-serif; mso-fareast-font-family: Calibri; mso-font-kerning: 0pt; mso-ligatures: none; mso-ansi-language: EN-IN; mso-fareast-language: EN-IN; mso-bidi-language: AR-SA;\"><!-- [if gte vml 1]><v:shapetype\n id=\"_x0000_t75\" coordsize=\"21600,21600\" o:spt=\"75\" o:preferrelative=\"t\"\n path=\"m@4@5l@4@11@9@11@9@5xe\" filled=\"f\" stroked=\"f\">\n <v:stroke  1 0\"/>\n  <v:f eqn=\"sum 0 0 @1\"/>\n  <v:f eqn=\"prod @2 1 2\"/>\n  <v:f eqn=\"prod @3 21600 pixelWidth\"/>\n  <v:f eqn=\"prod @3 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @0 0 1\"/>\n  <v:f eqn=\"prod @6 1 2\"/>\n  <v:f eqn=\"prod @7 21600 pixelWidth\"/>\n  <v:f eqn=\"sum @8 21600 0\"/>\n  <v:f eqn=\"prod @7 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @10 21600 0\"/>\n </v:formulas>\n <v:path o:extrusionok=\"f\" gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n <o:lock v:ext=\"edit\" aspectratio=\"t\"/>\n</v:shapetype><v:shape id=\"_x0000_i1025\" type=\"#_x0000_t75\" style='width:81pt;\n height:16.8pt'>\n <v:imagedata src=\"https://www.thepunditsofficial.in/admin/uploads/questions/file:///C:/Users/thepu/AppData/Local/Temp/msohtmlclip1/01/clip_image001.png\"\n  o:title=\"\" chromakey=\"white\"/>\n</v:shape><![endif]--><!-- [if !vml]--><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_6997054c4dbfe0.66510295.png\" width=\"108\" height=\"22\" /><!--[endif]--></span><!--[endif]-->&nbsp;<span style=\"color: #000000;\"><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">is divided by 7?</span></span></span></p></span><span class=\"hqt\"><p><span style=\"font-family: Calibri;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">एक संख्या </span></span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">x </span></span></span><span style=\"font-family: Calibri;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">को </span></span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">7 </span></span></span><span style=\"font-family: Calibri;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">से विभाजित करने पर शेष </span></span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">3 </span></span></span><span style=\"font-family: Calibri;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">बचता है। जब&nbsp;</span></span></span></span><!-- [if gte msEquation 12]><m:oMathPara><m:oMath><m:sSup><m:sSupPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Nirmala UI\";\n    mso-bidi-font-family:\"Nirmala UI\";color:black'><m:ctrlPr></m:ctrlPr></span></m:sSupPr><m:e><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-hansi-font-family:\"Nirmala UI\";mso-bidi-font-family:\"Nirmala UI\";\n    color:black;mso-ansi-language:EN-IN;mso-fareast-language:EN-IN;mso-bidi-language:\n    AR-SA'><m:r>[</m:r></span><span style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n    mso-fareast-font-family:\"Cambria Math\";mso-bidi-font-family:\"Nirmala UI\";\n    color:black;mso-ansi-language:EN-IN;mso-fareast-language:EN-IN;mso-bidi-language:\n    AR-SA'><m:r>x</m:r></span></i></m:e><m:sup><i style='mso-bidi-font-style:\n    normal'><span style='font-size:14.0pt;font-family:\"Cambria Math\",serif;\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Nirmala UI\";\n    mso-bidi-font-family:\"Nirmala UI\";color:black;mso-ansi-language:EN-IN;\n    mso-fareast-language:EN-IN;mso-bidi-language:AR-SA'><m:r>2</m:r></span></i></m:sup></m:sSup><i\n  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:\n  \"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\n  \"Nirmala UI\";mso-bidi-font-family:\"Nirmala UI\";color:black;mso-ansi-language:\n  EN-IN;mso-fareast-language:EN-IN;mso-bidi-language:AR-SA'><m:r>+5</m:r></span><span\n  style='font-size:14.0pt;font-family:\"Cambria Math\",serif;mso-fareast-font-family:\n  \"Cambria Math\";mso-bidi-font-family:\"Nirmala UI\";color:black;mso-ansi-language:\n  EN-IN;mso-fareast-language:EN-IN;mso-bidi-language:AR-SA'><m:r>x</m:r></span><span\n  style='font-size:14.0pt;font-family:\"Cambria Math\",serif;mso-fareast-font-family:\n  \"Cambria Math\";mso-hansi-font-family:\"Nirmala UI\";mso-bidi-font-family:\"Nirmala UI\";\n  color:black;mso-ansi-language:EN-IN;mso-fareast-language:EN-IN;mso-bidi-language:\n  AR-SA'><m:r>+6]</m:r></span></i></m:oMath></m:oMathPara><![endif]--><!-- [if !msEquation]--><span style=\"font-size: 12.0pt; font-family: 'Calibri',sans-serif; mso-fareast-font-family: Calibri; mso-font-kerning: 0pt; mso-ligatures: none; mso-ansi-language: EN-IN; mso-fareast-language: EN-IN; mso-bidi-language: AR-SA;\"><!-- [if gte vml 1]><v:shapetype\n id=\"_x0000_t75\" coordsize=\"21600,21600\" o:spt=\"75\" o:preferrelative=\"t\"\n path=\"m@4@5l@4@11@9@11@9@5xe\" filled=\"f\" stroked=\"f\">\n <v:stroke  1 0\"/>\n  <v:f eqn=\"sum 0 0 @1\"/>\n  <v:f eqn=\"prod @2 1 2\"/>\n  <v:f eqn=\"prod @3 21600 pixelWidth\"/>\n  <v:f eqn=\"prod @3 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @0 0 1\"/>\n  <v:f eqn=\"prod @6 1 2\"/>\n  <v:f eqn=\"prod @7 21600 pixelWidth\"/>\n  <v:f eqn=\"sum @8 21600 0\"/>\n  <v:f eqn=\"prod @7 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @10 21600 0\"/>\n </v:formulas>\n <v:path o:extrusionok=\"f\" gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n <o:lock v:ext=\"edit\" aspectratio=\"t\"/>\n</v:shapetype><v:shape id=\"_x0000_i1025\" type=\"#_x0000_t75\" style='width:81pt;\n height:16.8pt'>\n <v:imagedata src=\"https://www.thepunditsofficial.in/admin/uploads/questions/file:///C:/Users/thepu/AppData/Local/Temp/msohtmlclip1/01/clip_image001.png\"\n  o:title=\"\" chromakey=\"white\"/>\n</v:shape><![endif]--><!-- [if !vml]--><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_6997054c609ca9.23881860.png\" width=\"108\" height=\"22\" /><!--[endif]--></span><!--[endif]-->&nbsp;<span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">को </span></span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">7 </span></span></span><span style=\"font-family: Calibri;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">से विभाजित किया जाए तो शेष क्या होगा</span></span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">?</span></span></span></p></span>",
     "comp": "",
     "options": [
       "<span class=\"eqt\"><p><span style=\"color: #000000;\"><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">5</span></span></span></p></span><span class=\"hqt\"><p>5</p></span>",
@@ -3033,7 +2786,7 @@ a[href*="youtube.com/@"],
       "<span class=\"eqt\"><p><span style=\"color: #000000;\"><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">&nbsp;&nbsp;&nbsp;&nbsp; 80 km</span></span></span></p></span><span class=\"hqt\"><p>80 km</p></span>"
     ],
     "correct_option_id": 3,
-    "solution": "<span class=\"eqt\"><p><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_6997054fe1dc83.44541105.png\" alt=\"\" width=\"382\" height=\"73\" /></p>\n<p class=\"MsoNormal\" style=\"margin-bottom: 10.0pt; text-align: justify;\"><!-- [if gte msEquation 12]><m:oMathPara><m:oMath><m:f><m:fPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black;font-style:italic;\n    mso-bidi-font-style:normal'><m:ctrlPr></m:ctrlPr></span></m:fPr><m:num><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>Amit</m:r></span></i></m:num><m:den><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>Simran</m:r></span></i></m:den></m:f><i\n  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-famil#  \"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";mso-bidi-font-famil#  \"Cambria Math\";color:black'><m:r>=</m:r></span></i><m:f><m:fPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black;font-style:italic;\n    mso-bidi-font-style:normal'><m:ctrlPr></m:ctrlPr></span></m:fPr><m:num><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>14</m:r></span></i></m:num><m:den><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>10</m:r></span></i></m:den></m:f><i\n  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-famil#  \"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";mso-bidi-font-famil#  \"Cambria Math\";color:black'><m:r>=</m:r></span></i><m:f><m:fPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black;font-style:italic;\n    mso-bidi-font-style:normal'><m:ctrlPr></m:ctrlPr></span></m:fPr><m:num><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>7</m:r></span></i></m:num><m:den><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>5</m:r></span></i></m:den></m:f></m:oMath></m:oMathPara><![endif]--><!-- [if !msEquation]--><span style=\"font-size: 12.0pt; font-family: 'Calibri',sans-serif; mso-fareast-font-family: Calibri; mso-font-kerning: 0pt; mso-ligatures: none; mso-ansi-language: EN-IN; mso-fareast-language: EN-IN; mso-bidi-language: AR-SA;\"><!-- [if gte vml 1]><v:shapetype\n id=\"_x0000_t75\" coordsize=\"21600,21600\" o:spt=\"75\" o:preferrelative=\"t\"\n path=\"m@4@5l@4@11@9@11@9@5xe\" filled=\"f\" stroked=\"f\">\n <v:stroke  1 0\"/>\n  <v:f eqn=\"sum 0 0 @1\"/>\n  <v:f eqn=\"prod @2 1 2\"/>\n  <v:f eqn=\"prod @3 21600 pixelWidth\"/>\n  <v:f eqn=\"prod @3 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @0 0 1\"/>\n  <v:f eqn=\"prod @6 1 2\"/>\n  <v:f eqn=\"prod @7 21600 pixelWidth\"/>\n  <v:f eqn=\"sum @8 21600 0\"/>\n  <v:f eqn=\"prod @7 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @10 21600 0\"/>\n </v:formulas>\n <v:path o:extrusionok=\"f\" gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n <o:lock v:ext=\"edit\" aspectratio=\"t\"/>\n</v:shapetype><v:shape id=\"_x0000_i1025\" type=\"#_x0000_t75\" style='width:106.2pt;\n height:31.8pt'>\n <v:imagedata src=\"https://www.thepunditsofficial.in/admin/uploads/questions/#"\n  o:title=\"\" chromakey=\"white\"/>\n</v:shape><![endif]--><!-- [if !vml]--><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_69970550039d59.13285417.png\" width=\"142\" height=\"42\" /><!--[endif]--></span><!--[endif]--><o:p></o:p></p>\n<p><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">6 unit </span></span><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">⟶</span></span><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">96</span></span><br /><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">1 unit &rarr;16</span></span><br /><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">5 units </span></span><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">⟶</span></span><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">80km</span></span></p></span><span class=\"hqt\"><p><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_699705501689a0.14447346.png\" alt=\"\" width=\"382\" height=\"73\" /></p>\n<p class=\"MsoNormal\" style=\"margin-bottom: 10.0pt; text-align: justify;\"><!-- [if gte msEquation 12]><m:oMathPara><m:oMath><m:f><m:fPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black;font-style:italic;\n    mso-bidi-font-style:normal'><m:ctrlPr></m:ctrlPr></span></m:fPr><m:num><span\n    lang=HI style='font-size:14.0pt;font-family:\"Nirmala UI\",sans-serif;\n    mso-ascii-font-family:\"Cambria Math\";mso-fareast-font-family:\"Cambria Math\";\n    mso-hansi-font-family:\"Cambria Math\";color:black;mso-bidi-language:HI'><m:r><m:rPr><m:scr\n       m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>अमित</m:r></span></m:num><m:den><span\n    lang=HI style='font-size:14.0pt;font-family:\"Nirmala UI\",sans-serif;\n    mso-ascii-font-family:\"Cambria Math\";mso-fareast-font-family:\"Cambria Math\";\n    mso-hansi-font-family:\"Cambria Math\";color:black;mso-bidi-language:HI'><m:r><m:rPr><m:scr\n       m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>सिमरन</m:r></span></m:den></m:f><i\n  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-famil#  \"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";mso-bidi-font-famil#  \"Cambria Math\";color:black'><m:r>=</m:r></span></i><m:f><m:fPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black;font-style:italic;\n    mso-bidi-font-style:normal'><m:ctrlPr></m:ctrlPr></span></m:fPr><m:num><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>14</m:r></span></i></m:num><m:den><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>10</m:r></span></i></m:den></m:f><i\n  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-famil#  \"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";mso-bidi-font-famil#  \"Cambria Math\";color:black'><m:r>=</m:r></span></i><m:f><m:fPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black;font-style:italic;\n    mso-bidi-font-style:normal'><m:ctrlPr></m:ctrlPr></span></m:fPr><m:num><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>7</m:r></span></i></m:num><m:den><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>5</m:r></span></i></m:den></m:f></m:oMath></m:oMathPara><![endif]--><!-- [if !msEquation]--><span style=\"font-size: 12.0pt; font-family: 'Calibri',sans-serif; mso-fareast-font-family: Calibri; mso-font-kerning: 0pt; mso-ligatures: none; mso-ansi-language: EN-IN; mso-fareast-language: EN-IN; mso-bidi-language: AR-SA;\"><!-- [if gte vml 1]><v:shapetype\n id=\"_x0000_t75\" coordsize=\"21600,21600\" o:spt=\"75\" o:preferrelative=\"t\"\n path=\"m@4@5l@4@11@9@11@9@5xe\" filled=\"f\" stroked=\"f\">\n <v:stroke  1 0\"/>\n  <v:f eqn=\"sum 0 0 @1\"/>\n  <v:f eqn=\"prod @2 1 2\"/>\n  <v:f eqn=\"prod @3 21600 pixelWidth\"/>\n  <v:f eqn=\"prod @3 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @0 0 1\"/>\n  <v:f eqn=\"prod @6 1 2\"/>\n  <v:f eqn=\"prod @7 21600 pixelWidth\"/>\n  <v:f eqn=\"sum @8 21600 0\"/>\n  <v:f eqn=\"prod @7 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @10 21600 0\"/>\n </v:formulas>\n <v:path o:extrusionok=\"f\" gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n <o:lock v:ext=\"edit\" aspectratio=\"t\"/>\n</v:shapetype><v:shape id=\"_x0000_i1025\" type=\"#_x0000_t75\" style='width:98.4pt;\n height:39.6pt'>\n <v:imagedata src=\"https://www.thepunditsofficial.in/admin/uploads/questions/#"\n  o:title=\"\" chromakey=\"white\"/>\n</v:shape><![endif]--><!-- [if !vml]--><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_699705501cdf29.89294166.png\" width=\"131\" height=\"53\" /><!--[endif]--></span><!--[endif]--><o:p></o:p></p>\n<p><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">6</span></span></span><span style=\"color: #000000;\"> <span style=\"font-family: Calibri;\"><span lang=\"ar-SA\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">यूनिट </span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\">⟶</span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">96</span></span></span><br /><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">1</span></span></span><span style=\"color: #000000;\"> <span style=\"font-family: Calibri;\"><span lang=\"ar-SA\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">यूनिट </span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\">&rarr;</span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">16</span></span></span><br /><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">5 </span></span></span><span style=\"font-family: Calibri;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">यूनिट </span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\">⟶</span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">80</span></span></span><span style=\"font-family: Calibri;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">किमी</span></span></span></span></span></span></p></span>",
+    "solution": "<span class=\"eqt\"><p><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_6997054fe1dc83.44541105.png\" alt=\"\" width=\"382\" height=\"73\" /></p>\n<p class=\"MsoNormal\" style=\"margin-bottom: 10.0pt; text-align: justify;\"><!-- [if gte msEquation 12]><m:oMathPara><m:oMath><m:f><m:fPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black;font-style:italic;\n    mso-bidi-font-style:normal'><m:ctrlPr></m:ctrlPr></span></m:fPr><m:num><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>Amit</m:r></span></i></m:num><m:den><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>Simran</m:r></span></i></m:den></m:f><i\n  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:\n  \"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";mso-bidi-font-family:\n  \"Cambria Math\";color:black'><m:r>=</m:r></span></i><m:f><m:fPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black;font-style:italic;\n    mso-bidi-font-style:normal'><m:ctrlPr></m:ctrlPr></span></m:fPr><m:num><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>14</m:r></span></i></m:num><m:den><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>10</m:r></span></i></m:den></m:f><i\n  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:\n  \"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";mso-bidi-font-family:\n  \"Cambria Math\";color:black'><m:r>=</m:r></span></i><m:f><m:fPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black;font-style:italic;\n    mso-bidi-font-style:normal'><m:ctrlPr></m:ctrlPr></span></m:fPr><m:num><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>7</m:r></span></i></m:num><m:den><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>5</m:r></span></i></m:den></m:f></m:oMath></m:oMathPara><![endif]--><!-- [if !msEquation]--><span style=\"font-size: 12.0pt; font-family: 'Calibri',sans-serif; mso-fareast-font-family: Calibri; mso-font-kerning: 0pt; mso-ligatures: none; mso-ansi-language: EN-IN; mso-fareast-language: EN-IN; mso-bidi-language: AR-SA;\"><!-- [if gte vml 1]><v:shapetype\n id=\"_x0000_t75\" coordsize=\"21600,21600\" o:spt=\"75\" o:preferrelative=\"t\"\n path=\"m@4@5l@4@11@9@11@9@5xe\" filled=\"f\" stroked=\"f\">\n <v:stroke  1 0\"/>\n  <v:f eqn=\"sum 0 0 @1\"/>\n  <v:f eqn=\"prod @2 1 2\"/>\n  <v:f eqn=\"prod @3 21600 pixelWidth\"/>\n  <v:f eqn=\"prod @3 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @0 0 1\"/>\n  <v:f eqn=\"prod @6 1 2\"/>\n  <v:f eqn=\"prod @7 21600 pixelWidth\"/>\n  <v:f eqn=\"sum @8 21600 0\"/>\n  <v:f eqn=\"prod @7 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @10 21600 0\"/>\n </v:formulas>\n <v:path o:extrusionok=\"f\" gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n <o:lock v:ext=\"edit\" aspectratio=\"t\"/>\n</v:shapetype><v:shape id=\"_x0000_i1025\" type=\"#_x0000_t75\" style='width:106.2pt;\n height:31.8pt'>\n <v:imagedata src=\"https://www.thepunditsofficial.in/admin/uploads/questions/file:///C:/Users/thepu/AppData/Local/Temp/msohtmlclip1/01/clip_image001.png\"\n  o:title=\"\" chromakey=\"white\"/>\n</v:shape><![endif]--><!-- [if !vml]--><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_69970550039d59.13285417.png\" width=\"142\" height=\"42\" /><!--[endif]--></span><!--[endif]--><o:p></o:p></p>\n<p><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">6 unit </span></span><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">⟶</span></span><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">96</span></span><br /><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">1 unit &rarr;16</span></span><br /><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">5 units </span></span><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">⟶</span></span><span style=\"font-family: 'Cambria Math',serif;\"><span style=\"font-size: 19px;\">80km</span></span></p></span><span class=\"hqt\"><p><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_699705501689a0.14447346.png\" alt=\"\" width=\"382\" height=\"73\" /></p>\n<p class=\"MsoNormal\" style=\"margin-bottom: 10.0pt; text-align: justify;\"><!-- [if gte msEquation 12]><m:oMathPara><m:oMath><m:f><m:fPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black;font-style:italic;\n    mso-bidi-font-style:normal'><m:ctrlPr></m:ctrlPr></span></m:fPr><m:num><span\n    lang=HI style='font-size:14.0pt;font-family:\"Nirmala UI\",sans-serif;\n    mso-ascii-font-family:\"Cambria Math\";mso-fareast-font-family:\"Cambria Math\";\n    mso-hansi-font-family:\"Cambria Math\";color:black;mso-bidi-language:HI'><m:r><m:rPr><m:scr\n       m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>अमित</m:r></span></m:num><m:den><span\n    lang=HI style='font-size:14.0pt;font-family:\"Nirmala UI\",sans-serif;\n    mso-ascii-font-family:\"Cambria Math\";mso-fareast-font-family:\"Cambria Math\";\n    mso-hansi-font-family:\"Cambria Math\";color:black;mso-bidi-language:HI'><m:r><m:rPr><m:scr\n       m:val=\"roman\"/><m:sty m:val=\"p\"/></m:rPr>सिमरन</m:r></span></m:den></m:f><i\n  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:\n  \"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";mso-bidi-font-family:\n  \"Cambria Math\";color:black'><m:r>=</m:r></span></i><m:f><m:fPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black;font-style:italic;\n    mso-bidi-font-style:normal'><m:ctrlPr></m:ctrlPr></span></m:fPr><m:num><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>14</m:r></span></i></m:num><m:den><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>10</m:r></span></i></m:den></m:f><i\n  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:\n  \"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";mso-bidi-font-family:\n  \"Cambria Math\";color:black'><m:r>=</m:r></span></i><m:f><m:fPr><span\n    style='font-size:14.0pt;mso-ansi-font-size:14.0pt;mso-bidi-font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-ascii-font-family:\"Cambria Math\";\n    mso-fareast-font-family:\"Cambria Math\";mso-hansi-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black;font-style:italic;\n    mso-bidi-font-style:normal'><m:ctrlPr></m:ctrlPr></span></m:fPr><m:num><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>7</m:r></span></i></m:num><m:den><i\n    style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;\n    font-family:\"Cambria Math\",serif;mso-fareast-font-family:\"Cambria Math\";\n    mso-bidi-font-family:\"Cambria Math\";color:black'><m:r>5</m:r></span></i></m:den></m:f></m:oMath></m:oMathPara><![endif]--><!-- [if !msEquation]--><span style=\"font-size: 12.0pt; font-family: 'Calibri',sans-serif; mso-fareast-font-family: Calibri; mso-font-kerning: 0pt; mso-ligatures: none; mso-ansi-language: EN-IN; mso-fareast-language: EN-IN; mso-bidi-language: AR-SA;\"><!-- [if gte vml 1]><v:shapetype\n id=\"_x0000_t75\" coordsize=\"21600,21600\" o:spt=\"75\" o:preferrelative=\"t\"\n path=\"m@4@5l@4@11@9@11@9@5xe\" filled=\"f\" stroked=\"f\">\n <v:stroke  1 0\"/>\n  <v:f eqn=\"sum 0 0 @1\"/>\n  <v:f eqn=\"prod @2 1 2\"/>\n  <v:f eqn=\"prod @3 21600 pixelWidth\"/>\n  <v:f eqn=\"prod @3 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @0 0 1\"/>\n  <v:f eqn=\"prod @6 1 2\"/>\n  <v:f eqn=\"prod @7 21600 pixelWidth\"/>\n  <v:f eqn=\"sum @8 21600 0\"/>\n  <v:f eqn=\"prod @7 21600 pixelHeight\"/>\n  <v:f eqn=\"sum @10 21600 0\"/>\n </v:formulas>\n <v:path o:extrusionok=\"f\" gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n <o:lock v:ext=\"edit\" aspectratio=\"t\"/>\n</v:shapetype><v:shape id=\"_x0000_i1025\" type=\"#_x0000_t75\" style='width:98.4pt;\n height:39.6pt'>\n <v:imagedata src=\"https://www.thepunditsofficial.in/admin/uploads/questions/file:///C:/Users/thepu/AppData/Local/Temp/msohtmlclip1/01/clip_image001.png\"\n  o:title=\"\" chromakey=\"white\"/>\n</v:shape><![endif]--><!-- [if !vml]--><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_699705501cdf29.89294166.png\" width=\"131\" height=\"53\" /><!--[endif]--></span><!--[endif]--><o:p></o:p></p>\n<p><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">6</span></span></span><span style=\"color: #000000;\"> <span style=\"font-family: Calibri;\"><span lang=\"ar-SA\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">यूनिट </span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\">⟶</span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">96</span></span></span><br /><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">1</span></span></span><span style=\"color: #000000;\"> <span style=\"font-family: Calibri;\"><span lang=\"ar-SA\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">यूनिट </span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\">&rarr;</span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">16</span></span></span><br /><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">5 </span></span></span><span style=\"font-family: Calibri;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">यूनिट </span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\">⟶</span></span></span></span></span><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI',serif;\"><span style=\"font-size: 19px;\">80</span></span></span><span style=\"font-family: Calibri;\"><span lang=\"ar-SA\"><span style=\"color: #000000;\"><span style=\"font-family: 'Nirmala UI';\"><span style=\"font-size: 19px;\"><span lang=\"hi-IN\">किमी</span></span></span></span></span></span></p></span>",
     "marks": 2,
     "section": "Quantitative Apti",
     "series_name": "ProMocks 13 By THE PUNDITS- CGL 2025 PRE"
@@ -3565,11 +3318,11 @@ a[href*="youtube.com/@"],
   }
 ];
         const sectionsData = [{"name": "REASONING", "timer": 900, "start": 0, "end": 24, "submitted": false, "time_left": 900, "subsections": null}, {"name": "GENERAL AWARENESS", "timer": 900, "start": 25, "end": 49, "submitted": false, "time_left": 900, "subsections": null}, {"name": "Quantitative Apti", "timer": 900, "start": 50, "end": 74, "submitted": false, "time_left": 900, "subsections": null}, {"name": "ENGLISH", "timer": 900, "start": 75, "end": 99, "submitted": false, "time_left": 900, "subsections": null}];
-        const marksPerQ = 3.0;
-        const negMarks = 1.0;
+        const marksPerQ = 2.0;
+        const negMarks = 0.5;
         const totalDuration = 60;
         
-        class CBTExamApp {
+        class CBTExam {
             constructor() {
                 this.questions = questions;
                 this.sections = sectionsData;
@@ -3583,15 +3336,11 @@ a[href*="youtube.com/@"],
                 this.lastQuestionTime = null;
                 this.mainTimer = null;
                 this.sectionTimer = null;
-                
-                // Determine active section index for hard locks, or custom segment tabs
-                this.currentSectionIdx = 0;
-                
+                this.currentSection = this.sections ? 0 : null;
                 this.totalTimeLeft = totalDuration * 60;
                 
                 this.initElements();
                 this.setupWelcomeScreen();
-                this.setupThemeToggle();
                 this.setupBeforeUnload();
             }
             
@@ -3603,7 +3352,6 @@ a[href*="youtube.com/@"],
                     sectionBadge: document.getElementById('sectionBadge'),
                     sectionName: document.getElementById('sectionName'),
                     sectionTimer: document.getElementById('sectionTimer'),
-                    sectionTabs: document.getElementById('sectionTabs'),
                     questionNum: document.getElementById('questionNum'),
                     questionMarks: document.getElementById('questionMarks'),
                     questionText: document.getElementById('questionText'),
@@ -3628,45 +3376,15 @@ a[href*="youtube.com/@"],
                     sectionResultsBody: document.getElementById('sectionResultsBody')
                 };
             }
-
+            
             setupWelcomeScreen() {
-                document.getElementById('welcomeTotalQs').textContent = this.questions.length;
-                document.getElementById('welcomeTotalMarks').textContent = (this.questions.length * marksPerQ).toFixed(1);
-                document.getElementById('welcomeDuration').textContent = totalDuration;
-                document.getElementById('welcomeMarksScheme').textContent = `+${marksPerQ.toFixed(1)} / -${negMarks.toFixed(1)}`;
-                
-                if (this.sections && this.sections.length > 0) {
-                    const sBlock = document.getElementById('welcomeSectionsBlock');
-                    const sBody = document.getElementById('welcomeSectionsBody');
-                    sBlock.style.display = 'block';
-                    sBody.innerHTML = this.sections.map(s => `
-                        <tr>
-                            <td>
-                                <strong>${s.name}</strong>
-                                ${s.subsections ? `<div class="subsec-container">${s.subsections.map(sub => `<div class="subsec-row">${sub.name}: Q${sub.start+1}-Q${sub.end+1}</div>`).join('')}</div>` : ''}
-                            </td>
-                            <td>Q${s.start+1} - Q${s.end+1}</td>
-                            <td>${Math.round(s.timer / 60)} mins</td>
-                        </tr>
-                    `).join('');
-                }
-
                 document.getElementById('startBtn').addEventListener('click', () => {
                     this.els.welcomeScreen.classList.add('hidden');
                     this.els.examContainer.classList.add('active');
-                    this.startExam();
+                    setTimeout(() => this.startExam(), 100);
                 });
             }
-
-            setupThemeToggle() {
-                const btn = document.getElementById('themeToggle');
-                btn.addEventListener('click', () => {
-                    document.body.classList.toggle('dark-mode');
-                    const isDark = document.body.classList.contains('dark-mode');
-                    btn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-                });
-            }
-
+            
             setupBeforeUnload() {
                 window.addEventListener('beforeunload', (e) => {
                     if (!this.isSubmitted) {
@@ -3676,73 +3394,25 @@ a[href*="youtube.com/@"],
                     }
                 });
             }
-
+            
             startExam() {
                 this.startTime = Date.now();
                 this.lastQuestionTime = this.startTime;
-                
-                // If it is Tier I (no hard sectionsData), construct segment switcher bar dynamically
-                if (!this.sections || this.sections.length === 0) {
-                    this.buildSoftSections();
-                }
-                
                 this.createNavigator();
                 this.startMainTimer();
-                
-                if (this.sections && this.sections.length > 0) {
+                if (this.sections) {
                     this.startSectionTimer();
                     this.updateSectionInfo();
                 }
-                
                 this.loadQuestion(0);
                 this.setupEventListeners();
             }
-
-            // Dynamically construct Tier I segments (Reasoning, GK, Maths, English)
-            buildSoftSections() {
-                if (this.questions.length === 100) {
-                    this.softSections = [
-                        { name: "REASONING", start: 0, end: 24 },
-                        { name: "GENERAL AWARENESS", start: 25, end: 49 },
-                        { name: "QUANTITATIVE APTITUDE", start: 50, end: 74 },
-                        { name: "ENGLISH COMPREHENSION", start: 75, end: 99 }
-                    ];
-                } else {
-                    // Fallback division by 4
-                    const part = Math.floor(this.questions.length / 4);
-                    this.softSections = [
-                        { name: "SECTION A", start: 0, end: part - 1 },
-                        { name: "SECTION B", start: part, end: (part * 2) - 1 },
-                        { name: "SECTION C", start: part * 2, end: (part * 3) - 1 },
-                        { name: "SECTION D", start: part * 3, end: this.questions.length - 1 }
-                    ];
-                }
-                
-                this.els.sectionTabs.style.display = 'flex';
-                this.renderSoftSectionTabs();
-            }
-
-            renderSoftSectionTabs() {
-                this.els.sectionTabs.innerHTML = this.softSections.map((sec, idx) => {
-                    const isActive = this.currentQuestion >= sec.start && this.currentQuestion <= sec.end;
-                    return `<button class="section-tab${isActive ? ' active' : ''}" onclick="window.app.goToQuestion(${sec.start})">${sec.name}</button>`;
-                }).join('');
-            }
-
-            updateSoftSectionTabs() {
-                if (!this.softSections) return;
-                const tabs = this.els.sectionTabs.querySelectorAll('.section-tab');
-                this.softSections.forEach((sec, idx) => {
-                    const isActive = this.currentQuestion >= sec.start && this.currentQuestion <= sec.end;
-                    tabs[idx].classList.toggle('active', isActive);
-                });
-            }
-
+            
             setupEventListeners() {
                 document.getElementById('engBtn').onclick = () => this.setLanguage(true);
                 document.getElementById('hinBtn').onclick = () => this.setLanguage(false);
                 document.getElementById('prevBtn').onclick = () => this.navigate(-1);
-                document.querySelector('.navigation-bar .btn-next').onclick = () => this.navigate(1);
+                document.getElementById('nextBtn').onclick = () => this.navigate(1);
                 document.getElementById('reviewBtn').onclick = () => this.toggleReview();
                 document.getElementById('submitBtn').onclick = () => this.confirmSubmit();
                 document.getElementById('submitBtnDesktop').onclick = () => this.confirmSubmit();
@@ -3751,7 +3421,7 @@ a[href*="youtube.com/@"],
                 document.getElementById('closeResult').onclick = () => this.closeResultModal();
                 document.getElementById('reviewAnswers').onclick = () => this.reviewAnswers();
             }
-
+            
             createNavigator() {
                 [this.els.desktopNav, this.els.mobileNavGrid].forEach(container => {
                     container.innerHTML = '';
@@ -3764,7 +3434,7 @@ a[href*="youtube.com/@"],
                     });
                 });
             }
-
+            
             extractText(html, isEng) {
                 if (!html) return '';
                 const temp = document.createElement('div');
@@ -3782,9 +3452,10 @@ a[href*="youtube.com/@"],
                 
                 return temp.innerHTML;
             }
-
+            
             getQuestionMarks(qIdx) {
                 if (!this.sections) return marksPerQ;
+                
                 for (const section of this.sections) {
                     if (qIdx >= section.start && qIdx <= section.end) {
                         if (section.subsections) {
@@ -3799,7 +3470,7 @@ a[href*="youtube.com/@"],
                 }
                 return marksPerQ;
             }
-
+            
             loadQuestion(idx) {
                 if (this.currentQuestion !== idx) {
                     const now = Date.now();
@@ -3812,13 +3483,12 @@ a[href*="youtube.com/@"],
                 const qMarks = this.getQuestionMarks(idx);
                 
                 this.els.questionNum.textContent = `Question ${idx + 1} of ${this.questions.length}`;
-                this.els.questionMarks.textContent = `Marks: ${qMarks.toFixed(1)}`;
+                this.els.questionMarks.textContent = `Marks: ${qMarks}`;
                 this.els.progressText.textContent = `Question ${idx + 1} of ${this.questions.length}`;
                 this.updateAnsweredCount();
                 this.updateNavigator();
                 this.updateNavigationButtons();
                 this.updateReviewButton();
-                this.updateSoftSectionTabs();
                 
                 if (q.comp) {
                     this.els.comprehension.style.display = 'block';
@@ -3837,16 +3507,21 @@ a[href*="youtube.com/@"],
                     const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
                     
                     this.els.solutionStats.innerHTML = `
-                        <span><i class="fas fa-clock"></i> Time spent: ${timeStr}</span>
-                        <span><i class="fas fa-check-circle"></i> Correct Option: ${String.fromCharCode(65 + q.correct_option_id)}</span>
+                        <span><i class="fas fa-clock"></i> Time: ${timeStr}</span>
+                        <span><i class="fas fa-check-circle"></i> Correct: ${String.fromCharCode(65 + q.correct_option_id)}</span>
                     `;
                     this.els.solutionText.innerHTML = this.extractText(q.solution, this.isEnglish);
                     this.els.solutionBox.classList.add('show');
                 } else {
                     this.els.solutionBox.classList.remove('show');
                 }
+                
+                // Render LaTeX in all updated elements
+                renderMath(this.els.questionText);
+                renderMath(this.els.comprehensionText);
+                renderMath(this.els.solutionText);
             }
-
+            
             loadOptions(q, qIdx) {
                 this.els.optionsList.innerHTML = '';
                 const userAnswer = this.answers[qIdx];
@@ -3871,7 +3546,7 @@ a[href*="youtube.com/@"],
                     
                     div.className = className;
                     
-                    let indicator = String.fromCharCode(65 + i);
+                    let indicator = '';
                     if (this.isSubmitted && correctAnswer !== undefined) {
                         if (i === correctAnswer) {
                             indicator = '✓';
@@ -3893,8 +3568,10 @@ a[href*="youtube.com/@"],
                     
                     this.els.optionsList.appendChild(div);
                 });
+                // Render LaTeX in options
+                renderMath(this.els.optionsList);
             }
-
+            
             selectOption(optIdx, qIdx) {
                 if (this.isSubmitted) return;
                 this.answers[qIdx] = this.answers[qIdx] === optIdx ? null : optIdx;
@@ -3902,14 +3579,14 @@ a[href*="youtube.com/@"],
                 this.updateAnsweredCount();
                 this.updateNavigator();
             }
-
+            
             toggleReview() {
                 if (this.isSubmitted) return;
                 this.markedForReview[this.currentQuestion] = !this.markedForReview[this.currentQuestion];
                 this.updateNavigator();
                 this.updateReviewButton();
             }
-
+            
             updateReviewButton() {
                 const btn = document.getElementById('reviewBtn');
                 if (this.markedForReview[this.currentQuestion]) {
@@ -3920,9 +3597,10 @@ a[href*="youtube.com/@"],
                     btn.innerHTML = '<i class="fas fa-flag"></i> Mark for Review';
                 }
             }
-
+            
             navigate(dir) {
                 const newIdx = this.currentQuestion + dir;
+                
                 if (this.isSubmitted) {
                     if (newIdx >= 0 && newIdx < this.questions.length) {
                         this.loadQuestion(newIdx);
@@ -3930,8 +3608,8 @@ a[href*="youtube.com/@"],
                     return;
                 }
                 
-                if (this.sections && this.sections.length > 0) {
-                    const currentSection = this.sections[this.currentSectionIdx];
+                if (this.sections) {
+                    const currentSection = this.sections[this.currentSection];
                     if (newIdx < currentSection.start || newIdx > currentSection.end) {
                         return;
                     }
@@ -3941,7 +3619,7 @@ a[href*="youtube.com/@"],
                     this.loadQuestion(newIdx);
                 }
             }
-
+            
             goToQuestion(idx) {
                 if (this.isSubmitted) {
                     this.loadQuestion(idx);
@@ -3949,8 +3627,8 @@ a[href*="youtube.com/@"],
                     return;
                 }
                 
-                if (this.sections && this.sections.length > 0) {
-                    const currentSection = this.sections[this.currentSectionIdx];
+                if (this.sections) {
+                    const currentSection = this.sections[this.currentSection];
                     if (idx < currentSection.start || idx > currentSection.end) {
                         return;
                     }
@@ -3959,7 +3637,7 @@ a[href*="youtube.com/@"],
                 this.loadQuestion(idx);
                 this.closeMobileNav();
             }
-
+            
             updateNavigator() {
                 [this.els.desktopNav, this.els.mobileNavGrid].forEach(container => {
                     const btns = container.querySelectorAll('.nav-question');
@@ -3983,8 +3661,8 @@ a[href*="youtube.com/@"],
                                 btn.classList.add('answered');
                             }
                             
-                            if (this.sections && this.sections.length > 0) {
-                                const currentSection = this.sections[this.currentSectionIdx];
+                            if (this.sections) {
+                                const currentSection = this.sections[this.currentSection];
                                 if (i < currentSection.start || i > currentSection.end) {
                                     btn.classList.add('disabled');
                                 }
@@ -3993,10 +3671,10 @@ a[href*="youtube.com/@"],
                     });
                 });
             }
-
+            
             updateNavigationButtons() {
                 const prevBtn = document.getElementById('prevBtn');
-                const nextBtn = document.querySelector('.navigation-bar .btn-next');
+                const nextBtn = document.getElementById('nextBtn');
                 const reviewBtn = document.getElementById('reviewBtn');
                 
                 prevBtn.disabled = this.currentQuestion === 0;
@@ -4008,25 +3686,25 @@ a[href*="youtube.com/@"],
                     reviewBtn.style.display = 'inline-flex';
                 }
                 
-                if (this.sections && this.sections.length > 0 && !this.isSubmitted) {
-                    const currentSection = this.sections[this.currentSectionIdx];
+                if (this.sections && !this.isSubmitted) {
+                    const currentSection = this.sections[this.currentSection];
                     prevBtn.disabled = prevBtn.disabled || (this.currentQuestion === currentSection.start);
                     nextBtn.disabled = nextBtn.disabled || (this.currentQuestion === currentSection.end);
                 }
             }
-
+            
             updateAnsweredCount() {
                 const count = this.answers.filter(a => a !== null).length;
                 this.els.answeredCount.textContent = count;
             }
-
+            
             setLanguage(isEng) {
                 this.isEnglish = isEng;
                 document.getElementById('engBtn').classList.toggle('active', isEng);
                 document.getElementById('hinBtn').classList.toggle('active', !isEng);
                 this.loadQuestion(this.currentQuestion);
             }
-
+            
             startMainTimer() {
                 this.mainTimer = setInterval(() => {
                     this.totalTimeLeft--;
@@ -4040,28 +3718,20 @@ a[href*="youtube.com/@"],
                     this.els.mainTimer.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
                 }, 1000);
             }
-
+            
             startSectionTimer() {
-                if (!this.sections || this.sections.length === 0) return;
+                if (!this.sections) return;
                 
                 if (this.sectionTimer) clearInterval(this.sectionTimer);
                 
-                const section = this.sections[this.currentSectionIdx];
-                if (section.time_left === undefined) {
-                    section.time_left = section.timer;
-                }
-                
-                const updateTimerDisplay = () => {
-                    const mins = Math.floor(section.time_left / 60);
-                    const secs = section.time_left % 60;
-                    this.els.sectionTimer.textContent = ` | ${mins}:${secs.toString().padStart(2, '0')}`;
-                };
-                
-                updateTimerDisplay();
+                const section = this.sections[this.currentSection];
+                section.time_left = section.timer;
                 
                 this.sectionTimer = setInterval(() => {
                     section.time_left--;
-                    updateTimerDisplay();
+                    const mins = Math.floor(section.time_left / 60);
+                    const secs = section.time_left % 60;
+                    this.els.sectionTimer.textContent = ` | ${mins}:${secs.toString().padStart(2, '0')}`;
                     
                     if (section.time_left <= 0) {
                         clearInterval(this.sectionTimer);
@@ -4069,30 +3739,24 @@ a[href*="youtube.com/@"],
                     }
                 }, 1000);
             }
-
+            
             updateSectionInfo() {
-                if (!this.sections || this.sections.length === 0) return;
-                const section = this.sections[this.currentSectionIdx];
+                if (!this.sections) return;
+                const section = this.sections[this.currentSection];
                 this.els.sectionName.textContent = section.name;
                 this.els.sectionBadge.style.display = 'block';
-                
-                if (section.time_left !== undefined) {
-                    const mins = Math.floor(section.time_left / 60);
-                    const secs = section.time_left % 60;
-                    this.els.sectionTimer.textContent = ` | ${mins}:${secs.toString().padStart(2, '0')}`;
-                }
             }
-
+            
             submitSection() {
-                if (!this.sections || this.sections.length === 0) return;
+                if (!this.sections) return;
                 
-                const section = this.sections[this.currentSectionIdx];
+                const section = this.sections[this.currentSection];
                 section.submitted = true;
                 clearInterval(this.sectionTimer);
                 
-                const nextSectionIdx = this.currentSectionIdx + 1;
+                const nextSectionIdx = this.currentSection + 1;
                 if (nextSectionIdx < this.sections.length) {
-                    this.currentSectionIdx = nextSectionIdx;
+                    this.currentSection = nextSectionIdx;
                     this.startSectionTimer();
                     this.updateSectionInfo();
                     this.loadQuestion(this.sections[nextSectionIdx].start);
@@ -4102,28 +3766,28 @@ a[href*="youtube.com/@"],
                 
                 this.updateNavigator();
             }
-
+            
             confirmSubmit() {
-                if (this.sections && this.sections.length > 0) {
-                    const section = this.sections[this.currentSectionIdx];
+                if (this.sections) {
+                    const section = this.sections[this.currentSection];
                     const unanswered = this.answers.slice(section.start, section.end + 1)
                         .filter(a => a === null).length;
                     
                     let msg = unanswered > 0 
-                        ? `You have ${unanswered} unanswered questions in this section. Submit Section?`
+                        ? `You have ${unanswered} unanswered questions in this section. Submit anyway?`
                         : 'Submit this section?';
                     
                     if (confirm(msg)) this.submitSection();
                 } else {
                     const unanswered = this.answers.filter(a => a === null).length;
                     let msg = unanswered > 0 
-                        ? `You have ${unanswered} unanswered questions. Submit entire test?`
+                        ? `You have ${unanswered} unanswered questions. Submit test?`
                         : 'Submit test?';
                     
                     if (confirm(msg)) this.submitTest();
                 }
             }
-
+            
             submitTest() {
                 if (this.isSubmitted) return;
                 
@@ -4138,7 +3802,7 @@ a[href*="youtube.com/@"],
                 document.getElementById('submitBtnDesktop').style.display = 'none';
                 document.getElementById('reviewBtn').style.display = 'none';
                 
-                if (this.sections && this.sections.length > 0) {
+                if (this.sections) {
                     this.els.sectionBadge.style.display = 'none';
                 }
                 
@@ -4147,14 +3811,14 @@ a[href*="youtube.com/@"],
                 this.loadQuestion(this.currentQuestion);
                 this.updateNavigator();
             }
-
+            
             calculateResults() {
                 const timeTaken = Math.round((Date.now() - this.startTime) / 60000);
                 let correct = 0, incorrect = 0, unattempted = 0, score = 0;
                 
                 const sectionResults = [];
                 
-                if (this.sections && this.sections.length > 0) {
+                if (this.sections) {
                     for (const section of this.sections) {
                         let secCorrect = 0, secIncorrect = 0, secUnattempted = 0, secScore = 0;
                         const subsecResults = [];
@@ -4250,9 +3914,9 @@ a[href*="youtube.com/@"],
                     sectionResults: sectionResults.length > 0 ? sectionResults : null
                 };
             }
-
+            
             showResults(results) {
-                this.els.resultScore.textContent = `${results.score.toFixed(2)}/${(this.questions.length * marksPerQ).toFixed(1)}`;
+                this.els.resultScore.textContent = `${results.score.toFixed(2)}/${this.questions.length * marksPerQ}`;
                 this.els.correctCount.textContent = results.correct;
                 this.els.incorrectCount.textContent = results.incorrect;
                 this.els.unattemptedCount.textContent = results.unattempted;
@@ -4278,7 +3942,7 @@ a[href*="youtube.com/@"],
                                 const subRow = document.createElement('tr');
                                 subRow.className = 'subsection-row';
                                 subRow.innerHTML = `
-                                    <td style="padding-left: 20px;">${subsec.name}</td>
+                                    <td>${subsec.name}</td>
                                     <td>${subsec.attempted}</td>
                                     <td>${subsec.correct}</td>
                                     <td>${subsec.incorrect}</td>
@@ -4294,28 +3958,281 @@ a[href*="youtube.com/@"],
                 
                 this.els.resultModal.classList.add('show');
             }
-
+            
             closeResultModal() {
                 this.els.resultModal.classList.remove('show');
             }
-
+            
             reviewAnswers() {
                 this.closeResultModal();
                 this.loadQuestion(0);
             }
-
+            
             openMobileNav() {
                 this.els.mobileNav.classList.add('open');
             }
-
+            
             closeMobileNav() {
                 this.els.mobileNav.classList.remove('open');
             }
         }
+        
+        // ── KaTeX auto-render helper ──────────────────────────────────────
+        // Renders any LaTeX found in an element after innerHTML is set.
+        // Handles: \(...\)  \[...\]  $...$  $$...$$
+        function renderMath(el) {
+            if (!el || typeof renderMathInElement === 'undefined') return;
+            try {
+                renderMathInElement(el, {
+                    delimiters: [
+                        {left: '$$',  right: '$$',  display: true},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '$',   right: '$',   display: false},
+                        {left: '\\(', right: '\\)', display: false},
+                    ],
+                    throwOnError: false,
+                    strict: false,
+                });
+            } catch(e) {}
+        }
 
+        // Initialize the exam
         document.addEventListener('DOMContentLoaded', () => {
-            window.app = new CBTExamApp();
+            new CBTExam();
         });
-    </script>
+    
+</script>
+
+</head>
+<body>
+    <!-- Welcome Start page -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-container">
+            <div class="welcome-header">
+                <h1><i class="fas fa-graduation-cap"></i> CBT Portal</h1>
+                <p>Computer Based Test Environment</p>
+            </div>
+            
+            <div class="test-details">
+                <div class="detail-item">
+                    <div class="detail-label">Total Questions</div>
+                    <div class="detail-value" id="welcomeTotalQs">0</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Total Marks</div>
+                    <div class="detail-value" id="welcomeTotalMarks">0</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Duration</div>
+                    <div class="detail-value" id="welcomeDuration">0 mins</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Marking Scheme</div>
+                    <div class="detail-value" id="welcomeMarksScheme">+0.0 / -0.0</div>
+                </div>
+            </div>
+            
+            <div class="section-info" id="welcomeSectionsBlock" style="display:none;">
+                <h3><i class="fas fa-layer-group"></i> Section Details</h3>
+                <table class="section-table">
+                    <thead>
+                        <tr>
+                            <th>Section Name</th>
+                            <th>Questions</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="welcomeSectionsBody"></tbody>
+                </table>
+            </div>
+            
+            <div class="welcome-actions">
+                <button class="start-btn" id="startBtn">
+                    <i class="fas fa-play"></i> Start Test
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Active Exam Interface -->
+    <div class="exam-container" id="examContainer">
+        <div class="exam-header">
+            <div class="exam-title">pundits</div>
+            <div class="exam-timer">
+                <div class="timer-box" id="mainTimer">00:00</div>
+                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <button class="nav-btn btn-submit mobile-only" id="submitBtn">Submit</button>
+            </div>
+        </div>
+        
+        <div class="candidate-bar">
+            <div class="candidate-info">
+                <div class="candidate-photo">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="candidate-details">
+                    <div class="candidate-name">Candidate</div>
+                    <div class="candidate-id">ID: User</div>
+                </div>
+            </div>
+            <div class="section-badge" id="sectionBadge" style="display:none;">
+                <span id="sectionName"></span><span id="sectionTimer"></span>
+            </div>
+        </div>
+
+        <!-- Section tabs for Soft Switching (Tier I) -->
+        <div class="section-tabs" id="sectionTabs" style="display:none;"></div>
+        
+        <div class="exam-main">
+            <div class="question-area">
+                <div class="question-scroll">
+                    <div class="question-card">
+                        <div class="question-header">
+                            <div>
+                                <div class="question-number" id="questionNum">Question 1</div>
+                                <div class="question-marks" id="questionMarks">Marks: 3.0</div>
+                            </div>
+                            <div class="lang-toggle">
+                                <button class="lang-btn active" id="engBtn">English</button>
+                                <button class="lang-btn" id="hinBtn">हिंदी</button>
+                            </div>
+                        </div>
+                        
+                        <div class="comprehension" id="comprehension" style="display:none;">
+                            <h4><i class="fas fa-book-open"></i> Comprehension</h4>
+                            <div id="comprehensionText"></div>
+                        </div>
+                        
+                        <div class="question-text" id="questionText"></div>
+                        <div class="options-list" id="optionsList"></div>
+                        
+                        <div class="solution-box" id="solutionBox">
+                            <div class="solution-header">
+                                <i class="fas fa-lightbulb"></i> Solution
+                            </div>
+                            <div class="solution-stats" id="solutionStats"></div>
+                            <div id="solutionText"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="navigation-bar">
+                    <button class="nav-btn btn-prev" id="prevBtn"><i class="fas fa-chevron-left"></i> Prev</button>
+                    <div class="progress-info">
+                        <div id="progressText">Question 1</div>
+                        <div style="font-size:11px;margin-top:4px">
+                            Answered: <span id="answeredCount">0</span>
+                        </div>
+                    </div>
+                    <button class="nav-btn btn-review" id="reviewBtn"><i class="fas fa-flag"></i> Mark for Review</button>
+                    <button class="nav-btn mobile-only" id="navigatorBtn"><i class="fas fa-th"></i> Grid</button>
+                    <button class="nav-btn btn-submit desktop-only" id="submitBtnDesktop">Submit</button>
+                    <button class="nav-btn btn-next">Next <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            
+            <div class="navigator-sidebar desktop-only">
+                <div class="navigator-header">Question Navigator</div>
+                <div class="navigator-grid" id="desktopNav"></div>
+                <div class="navigator-legend">
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--success)"></div>
+                        <span>Answered</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--warning)"></div>
+                        <span>Marked for Review</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--danger)"></div>
+                        <span>Incorrect</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--card);border:2px solid var(--border)"></div>
+                        <span>Unattempted</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile drawer panel -->
+    <div class="mobile-navigator" id="mobileNav">
+        <div class="mobile-nav-header">
+            <h3>Question Navigator</h3>
+            <button class="close-nav" id="closeNav">&times;</button>
+        </div>
+        <div class="navigator-grid" id="mobileNavGrid"></div>
+        <div class="navigator-legend">
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--success)"></div>
+                <span>Answered</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--warning)"></div>
+                <span>Marked for Review</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--danger)"></div>
+                <span>Incorrect</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--card);border:2px solid var(--border)"></div>
+                <span>Unattempted</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Result Overlay -->
+    <div class="result-modal" id="resultModal">
+        <div class="result-container">
+            <div class="result-header">
+                <h2>Test Completed!</h2>
+                <div class="result-score" id="resultScore">0.00</div>
+            </div>
+            
+            <div class="result-grid">
+                <div class="result-stat correct">
+                    <div class="result-stat-value" id="correctCount">0</div>
+                    <div class="result-stat-label">Correct</div>
+                </div>
+                <div class="result-stat incorrect">
+                    <div class="result-stat-value" id="incorrectCount">0</div>
+                    <div class="result-stat-label">Incorrect</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="unattemptedCount">0</div>
+                    <div class="result-stat-label">Unattempted</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="timeTaken">0</div>
+                    <div class="result-stat-label">Minutes</div>
+                </div>
+            </div>
+            
+            <div class="section-results" id="sectionResults" style="display:none;">
+                <h3>Section-wise Performance</h3>
+                <table class="section-results-table">
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Attempted</th>
+                            <th>Correct</th>
+                            <th>Wrong</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sectionResultsBody"></tbody>
+                </table>
+            </div>
+            
+            <div class="result-actions">
+                <button class="result-btn btn-close" id="closeResult">Close</button>
+                <button class="result-btn btn-review-ans" id="reviewAnswers">Review Answers</button>
+            </div>
+        </div>
+    </div>
+    
+    
 </body>
 </html>

@@ -1814,254 +1814,7 @@ a[href*="youtube.com/@"],
 }
 </style>
 <script>
-/* ── Fix 1: Auto-fix generic page titles ───────────────────── */
-(function fixPageTitle() {
-  const genericTitles = ['devgagan', 'CBT Exam - pundits', 'CBT Exam'];
-  const currentTitle = document.title || '';
-  const isGeneric = genericTitles.some(g => currentTitle.toLowerCase() === g.toLowerCase());
-  if (isGeneric) {
-    // Try to get title from welcome header h1
-    document.addEventListener('DOMContentLoaded', function() {
-      const h1 = document.querySelector('.welcome-header h1, .welcome-header h2');
-      if (h1 && h1.textContent.trim()) {
-        document.title = h1.textContent.trim().substring(0, 80);
-      }
-    });
-  }
-})();
-</script>
 
-</head>
-<body>
-    <!-- Welcome Start page -->
-    <div class="welcome-screen" id="welcomeScreen">
-        <div class="welcome-container">
-            <div class="welcome-header">
-                <h1><i class="fas fa-graduation-cap"></i> CBT Portal</h1>
-                <p>Computer Based Test Environment</p>
-            </div>
-            
-            <div class="test-details">
-                <div class="detail-item">
-                    <div class="detail-label">Total Questions</div>
-                    <div class="detail-value" id="welcomeTotalQs">0</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Total Marks</div>
-                    <div class="detail-value" id="welcomeTotalMarks">0</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Duration</div>
-                    <div class="detail-value" id="welcomeDuration">0 mins</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Marking Scheme</div>
-                    <div class="detail-value" id="welcomeMarksScheme">+0.0 / -0.0</div>
-                </div>
-            </div>
-            
-            <div class="section-info" id="welcomeSectionsBlock" style="display:none;">
-                <h3><i class="fas fa-layer-group"></i> Section Details</h3>
-                <table class="section-table">
-                    <thead>
-                        <tr>
-                            <th>Section Name</th>
-                            <th>Questions</th>
-                            <th>Time</th>
-                        </tr>
-                    </thead>
-                    <tbody id="welcomeSectionsBody"></tbody>
-                </table>
-            </div>
-            
-            <div class="welcome-actions">
-                <button class="start-btn" id="startBtn">
-                    <i class="fas fa-play"></i> Start Test
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Active Exam Interface -->
-    <div class="exam-container" id="examContainer">
-        <div class="exam-header">
-            <div class="exam-title">pundits</div>
-            <div class="exam-timer">
-                <div class="timer-box" id="mainTimer">00:00</div>
-                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
-                <button class="nav-btn btn-submit mobile-only" id="submitBtn">Submit</button>
-            </div>
-        </div>
-        
-        <div class="candidate-bar">
-            <div class="candidate-info">
-                <div class="candidate-photo">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="candidate-details">
-                    <div class="candidate-name">Candidate</div>
-                    <div class="candidate-id">ID: User</div>
-                </div>
-            </div>
-            <div class="section-badge" id="sectionBadge" style="display:none;">
-                <span id="sectionName"></span><span id="sectionTimer"></span>
-            </div>
-        </div>
-
-        <!-- Section tabs for Soft Switching (Tier I) -->
-        <div class="section-tabs" id="sectionTabs" style="display:none;"></div>
-        
-        <div class="exam-main">
-            <div class="question-area">
-                <div class="question-scroll">
-                    <div class="question-card">
-                        <div class="question-header">
-                            <div>
-                                <div class="question-number" id="questionNum">Question 1</div>
-                                <div class="question-marks" id="questionMarks">Marks: 3.0</div>
-                            </div>
-                            <div class="lang-toggle">
-                                <button class="lang-btn active" id="engBtn">English</button>
-                                <button class="lang-btn" id="hinBtn">हिंदी</button>
-                            </div>
-                        </div>
-                        
-                        <div class="comprehension" id="comprehension" style="display:none;">
-                            <h4><i class="fas fa-book-open"></i> Comprehension</h4>
-                            <div id="comprehensionText"></div>
-                        </div>
-                        
-                        <div class="question-text" id="questionText"></div>
-                        <div class="options-list" id="optionsList"></div>
-                        
-                        <div class="solution-box" id="solutionBox">
-                            <div class="solution-header">
-                                <i class="fas fa-lightbulb"></i> Solution
-                            </div>
-                            <div class="solution-stats" id="solutionStats"></div>
-                            <div id="solutionText"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="navigation-bar">
-                    <button class="nav-btn btn-prev" id="prevBtn"><i class="fas fa-chevron-left"></i> Prev</button>
-                    <div class="progress-info">
-                        <div id="progressText">Question 1</div>
-                        <div style="font-size:11px;margin-top:4px">
-                            Answered: <span id="answeredCount">0</span>
-                        </div>
-                    </div>
-                    <button class="nav-btn btn-review" id="reviewBtn"><i class="fas fa-flag"></i> Mark for Review</button>
-                    <button class="nav-btn mobile-only" id="navigatorBtn"><i class="fas fa-th"></i> Grid</button>
-                    <button class="nav-btn btn-submit desktop-only" id="submitBtnDesktop">Submit</button>
-                    <button class="nav-btn btn-next">Next <i class="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
-            
-            <div class="navigator-sidebar desktop-only">
-                <div class="navigator-header">Question Navigator</div>
-                <div class="navigator-grid" id="desktopNav"></div>
-                <div class="navigator-legend">
-                    <div class="legend-item">
-                        <div class="legend-box" style="background:var(--success)"></div>
-                        <span>Answered</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box" style="background:var(--warning)"></div>
-                        <span>Marked for Review</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box" style="background:var(--danger)"></div>
-                        <span>Incorrect</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box" style="background:var(--card);border:2px solid var(--border)"></div>
-                        <span>Unattempted</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Mobile drawer panel -->
-    <div class="mobile-navigator" id="mobileNav">
-        <div class="mobile-nav-header">
-            <h3>Question Navigator</h3>
-            <button class="close-nav" id="closeNav">&times;</button>
-        </div>
-        <div class="navigator-grid" id="mobileNavGrid"></div>
-        <div class="navigator-legend">
-            <div class="legend-item">
-                <div class="legend-box" style="background:var(--success)"></div>
-                <span>Answered</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-box" style="background:var(--warning)"></div>
-                <span>Marked for Review</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-box" style="background:var(--danger)"></div>
-                <span>Incorrect</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-box" style="background:var(--card);border:2px solid var(--border)"></div>
-                <span>Unattempted</span>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Result Overlay -->
-    <div class="result-modal" id="resultModal">
-        <div class="result-container">
-            <div class="result-header">
-                <h2>Test Completed!</h2>
-                <div class="result-score" id="resultScore">0.00</div>
-            </div>
-            
-            <div class="result-grid">
-                <div class="result-stat correct">
-                    <div class="result-stat-value" id="correctCount">0</div>
-                    <div class="result-stat-label">Correct</div>
-                </div>
-                <div class="result-stat incorrect">
-                    <div class="result-stat-value" id="incorrectCount">0</div>
-                    <div class="result-stat-label">Incorrect</div>
-                </div>
-                <div class="result-stat">
-                    <div class="result-stat-value" id="unattemptedCount">0</div>
-                    <div class="result-stat-label">Unattempted</div>
-                </div>
-                <div class="result-stat">
-                    <div class="result-stat-value" id="timeTaken">0</div>
-                    <div class="result-stat-label">Minutes</div>
-                </div>
-            </div>
-            
-            <div class="section-results" id="sectionResults" style="display:none;">
-                <h3>Section-wise Performance</h3>
-                <table class="section-results-table">
-                    <thead>
-                        <tr>
-                            <th>Section</th>
-                            <th>Attempted</th>
-                            <th>Correct</th>
-                            <th>Wrong</th>
-                            <th>Score</th>
-                        </tr>
-                    </thead>
-                    <tbody id="sectionResultsBody"></tbody>
-                </table>
-            </div>
-            
-            <div class="result-actions">
-                <button class="result-btn btn-close" id="closeResult">Close</button>
-                <button class="result-btn btn-review-ans" id="reviewAnswers">Review Answers</button>
-            </div>
-        </div>
-    </div>
-    
-    <script>
         const questions = [
   {
     "question": "<span class=\"eqt\">\n<span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">\n</span></span></span><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">x\n, y and z are three positive numbers such that y is</span></span><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_698808e6768571.45875407.gif\" align=\"bottom\">\n<span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">times\nof x and z is </span></span>\n<img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_698808e6899ee4.18716695.gif\" align=\"bottom\">\n<span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">times\nof y. If the average of reciprocals of the numbers x, y and z is</span></span><img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_698808e6a469f7.87411432.gif\" align=\"bottom\">\n<span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">then\nthe average of 3 times of x and 5 times of y will be:</span></span></img></img></img><br/></span><span class=\"hqt\">\n<span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\">x</span></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">,\ny </span></span></span><span style=\"font-family: Mangal\"><span lang=\"ar-SA\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">और\n</span></span></span></span></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">z\n</span></span></span><span style=\"font-family: Mangal\"><span lang=\"ar-SA\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">तीन\nधनात्मक संख्याएँ\nहैं जैसे कि </span></span></span></span></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">y,\nx </span></span></span><span style=\"font-family: Mangal\"><span lang=\"ar-SA\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">का\n</span></span></span></span>\n<img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_698808e6bc7140.08214998.gif\" align=\"bottom\">\n<span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">गुना\nहै और </span></span></span></span></img></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">z,\ny </span></span></span><span style=\"font-family: Mangal\"><span lang=\"ar-SA\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">का\n</span></span></span></span>\n<img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_698808e6d71e97.57906504.gif\" align=\"bottom\">\n<span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">गुना\nहै। यदि </span></span></span></span></img></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">x,\ny </span></span></span><span style=\"font-family: Mangal\"><span lang=\"ar-SA\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">और\n</span></span></span></span></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">z\n</span></span></span><span style=\"font-family: Mangal\"><span lang=\"ar-SA\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">के\nव्युत्क्रमों\nका औसत </span></span></span></span>\n<img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_698808e6ef2c55.31926219.gif\" align=\"bottom\">\n<sub><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\">\n</span></span></sub><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">है</span></span></span></span></img></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">,\n</span></span></span><span style=\"font-family: Mangal\"><span lang=\"ar-SA\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">तो\n</span></span></span></span></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">x\n</span></span></span><span style=\"font-family: Mangal\"><span lang=\"ar-SA\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">के\n</span></span></span></span></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">3\n</span></span></span><span style=\"font-family: Mangal\"><span lang=\"ar-SA\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">गुना\nऔर </span></span></span></span></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">y\n</span></span></span><span style=\"font-family: Mangal\"><span lang=\"ar-SA\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">के\n</span></span></span></span></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">5\n</span></span></span><span style=\"font-family: Mangal\"><span lang=\"ar-SA\"><span style=\"color: #000000\"><span style=\"font-family: 'Nirmala UI'\"><span style=\"font-size: 19px\"><span lang=\"hi-IN\">गुना\nका औसत होगा</span></span></span></span></span><span style=\"font-family: 'Nirmala UI',serif\"><span style=\"font-size: 19px\">:</span></span></span><span style=\"color: #000000\"><span style=\"font-family: 'Cambria Math',serif\"><span style=\"font-size: 19px\"/></span></span><br/></span>",
@@ -2388,13 +2141,18 @@ a[href*="youtube.com/@"],
       "<span class=\"eqt\"><p><span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">&nbsp;&nbsp;&nbsp;&nbsp;</span></span></span><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">36 years</span></span></p>\r\n</span><span class=\"hqt\"><p><span style=\"color:#000000\"><span style=\"font-family:'Nirmala UI',serif\"><span style=\"font-size:19px\">36 </span></span></span><span style=\"font-family:Mangal\"><span style=\"color:#000000\"><span style=\"font-family:'Nirmala UI'\"><span style=\"font-size:19px\">वर्ष</span></span></span></span></p>\r\n</span>"
     ],
     "correct_option_id": 0,
-    "solution": "<span class=\"eqt\"><p><span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">F </span></span></span> <img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_698808f5f37938.57410426.gif\" /> <span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">n = S&mdash;{i}</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">F = 4[S </span></span></span> <img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_698808f6142829.30841306.gif\" /> <span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">n]&mdash;{ii}</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">F + S =130&mdash;{iii}</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">From {i} &amp; {ii}</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">S + n = 4S -</span></span></span>&nbsp;<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">4n</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">3S = 5n</span></span></span><br />\r\n<img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_698808f6311771.66646659.gif\" /> <span style=\"color:#000000\"> <span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">= </span></span></span> <img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_698808f648d674.77168384.gif\" /><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">let S = 5x &amp; n = 3x</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">From {ii} &amp; {iii];
+    "solution": "<span class=\"eqt\"><p><span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">F </span></span></span> <img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_698808f5f37938.57410426.gif\" /> <span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">n = S&mdash;{i}</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">F = 4[S </span></span></span> <img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_698808f6142829.30841306.gif\" /> <span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">n]&mdash;{ii}</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">F + S =130&mdash;{iii}</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">From {i} &amp; {ii}</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">S + n = 4S -</span></span></span>&nbsp;<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">4n</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">3S = 5n</span></span></span><br />\r\n<img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_698808f6311771.66646659.gif\" /> <span style=\"color:#000000\"> <span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">= </span></span></span> <img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_698808f648d674.77168384.gif\" /><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">let S = 5x &amp; n = 3x</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">From {ii} &amp; {iii]</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">F + S=130</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">S + n + S =130</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">2S + n =130 &rarr;2 &times; 5x + 3x =130</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">13x =130</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">X =10</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">Now son&rsquo;s age = 5x =50</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">Father age F + 50=130</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">F = 80</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">Difference = 80 -</span></span></span>&nbsp;<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">50 = 30yrs.</span></span></span></p>\r\n</span><span class=\"hqt\"><div style=\"position:relative\"><span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">F &ndash;n = S&mdash;{i}</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">F = 4[S &ndash;n]&mdash;{ii}</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">F + S =130&mdash;{iii}</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">{i} </span></span></span><span style=\"font-family:Mangal\"><span style=\"color:#000000\"><span style=\"font-family:'Nirmala UI'\"><span style=\"font-size:19px\">और</span></span></span><span style=\"color:#000000\"><span style=\"font-family:Mangal\"><span style=\"font-size:19px\"> </span></span></span></span><span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">{ii} </span></span></span><span style=\"font-family:Mangal\"><span style=\"color:#000000\"><span style=\"font-family:'Nirmala UI'\"><span style=\"font-size:19px\">से</span></span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">S + n = 4S -4n</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">3S = 5n</span></span></span><br />\r\n<img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_698808f662ea54.13503496.gif\" /> <span style=\"color:#000000\"> <span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">= </span></span></span> <img src=\"https://www.thepunditsofficial.in/admin/uploads/questions/q_698808f67243b2.90341413.gif\" /><br />\r\n<span style=\"font-family:Mangal\"><span style=\"color:#000000\"><span style=\"font-family:'Nirmala UI'\"><span style=\"font-size:19px\">मान लीजिए</span></span></span><span style=\"color:#000000\"><span style=\"font-family:Mangal\"><span style=\"font-size:19px\"> </span></span></span></span><span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">S = 5x </span></span></span><span style=\"font-family:Mangal\"><span style=\"color:#000000\"><span style=\"font-family:'Nirmala UI'\"><span style=\"font-size:19px\">और</span></span></span><span style=\"color:#000000\"><span style=\"font-family:Mangal\"><span style=\"font-size:19px\"> </span></span></span></span><span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">n = 3x</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">{ii} </span></span></span><span style=\"font-family:Mangal\"><span style=\"color:#000000\"><span style=\"font-family:'Nirmala UI'\"><span style=\"font-size:19px\">और</span></span></span><span style=\"color:#000000\"><span style=\"font-family:Mangal\"><span style=\"font-size:19px\"> </span></span></span></span><span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">{iii] </span></span></span><span style=\"font-family:Mangal\"><span style=\"color:#000000\"><span style=\"font-family:'Nirmala UI'\"><span style=\"font-size:19px\">से</span></span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">F + S=130</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">S + n + S =130</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">2S + n =130 &rarr;2 &times; 5x + 3x =130</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">13x =130</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">X =10</span></span></span><br />\r\n<span style=\"font-family:Mangal\"><span style=\"color:#000000\"><span style=\"font-family:'Nirmala UI'\"><span style=\"font-size:19px\">अब बेटे की उम्र</span></span></span><span style=\"color:#000000\"><span style=\"font-family:Mangal\"><span style=\"font-size:19px\"> </span></span></span></span><span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">= </span></span></span><span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">5x =50</span></span></span><br />\r\n<span style=\"font-family:Mangal\"><span style=\"color:#000000\"><span style=\"font-family:'Nirmala UI'\"><span style=\"font-size:19px\">पिता की उम्र</span></span></span><span style=\"color:#000000\"><span style=\"font-family:Mangal\"><span style=\"font-size:19px\"> </span></span></span></span><span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">F + 50=130</span></span></span><br />\r\n<span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">F = 80</span></span></span><br />\r\n<span style=\"font-family:Mangal\"><span style=\"color:#000000\"><span style=\"font-family:'Nirmala UI'\"><span style=\"font-size:19px\">अंतर</span></span></span><span style=\"color:#000000\"><span style=\"font-family:Mangal\"><span style=\"font-size:19px\"> </span></span></span></span><span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">= </span></span></span><span style=\"color:#000000\"><span style=\"font-family:'Cambria Math',serif\"><span style=\"font-size:19px\">80 -50 = 30 </span></span></span><span style=\"font-family:Mangal\"><span style=\"color:#000000\"><span style=\"font-family:'Nirmala UI'\"><span style=\"font-size:19px\">वर्ष</span></span></span><span style=\"color:#000000\"><span style=\"font-family:Mangal\"><span style=\"font-size:19px\">।</span></span></span></span></div>\r\n</span>",
+    "marks": 2,
+    "section": "Average Quiz",
+    "series_name": "ProMocks Average - Quiz 4"
+  }
+];
         const sectionsData = null;
-        const marksPerQ = 3.0;
-        const negMarks = 1.0;
+        const marksPerQ = 2.0;
+        const negMarks = 0.5;
         const totalDuration = 25;
         
-        class CBTExamApp {
+        class CBTExam {
             constructor() {
                 this.questions = questions;
                 this.sections = sectionsData;
@@ -2408,15 +2166,11 @@ a[href*="youtube.com/@"],
                 this.lastQuestionTime = null;
                 this.mainTimer = null;
                 this.sectionTimer = null;
-                
-                // Determine active section index for hard locks, or custom segment tabs
-                this.currentSectionIdx = 0;
-                
+                this.currentSection = this.sections ? 0 : null;
                 this.totalTimeLeft = totalDuration * 60;
                 
                 this.initElements();
                 this.setupWelcomeScreen();
-                this.setupThemeToggle();
                 this.setupBeforeUnload();
             }
             
@@ -2428,7 +2182,6 @@ a[href*="youtube.com/@"],
                     sectionBadge: document.getElementById('sectionBadge'),
                     sectionName: document.getElementById('sectionName'),
                     sectionTimer: document.getElementById('sectionTimer'),
-                    sectionTabs: document.getElementById('sectionTabs'),
                     questionNum: document.getElementById('questionNum'),
                     questionMarks: document.getElementById('questionMarks'),
                     questionText: document.getElementById('questionText'),
@@ -2453,45 +2206,15 @@ a[href*="youtube.com/@"],
                     sectionResultsBody: document.getElementById('sectionResultsBody')
                 };
             }
-
+            
             setupWelcomeScreen() {
-                document.getElementById('welcomeTotalQs').textContent = this.questions.length;
-                document.getElementById('welcomeTotalMarks').textContent = (this.questions.length * marksPerQ).toFixed(1);
-                document.getElementById('welcomeDuration').textContent = totalDuration;
-                document.getElementById('welcomeMarksScheme').textContent = `+${marksPerQ.toFixed(1)} / -${negMarks.toFixed(1)}`;
-                
-                if (this.sections && this.sections.length > 0) {
-                    const sBlock = document.getElementById('welcomeSectionsBlock');
-                    const sBody = document.getElementById('welcomeSectionsBody');
-                    sBlock.style.display = 'block';
-                    sBody.innerHTML = this.sections.map(s => `
-                        <tr>
-                            <td>
-                                <strong>${s.name}</strong>
-                                ${s.subsections ? `<div class="subsec-container">${s.subsections.map(sub => `<div class="subsec-row">${sub.name}: Q${sub.start+1}-Q${sub.end+1}</div>`).join('')}</div>` : ''}
-                            </td>
-                            <td>Q${s.start+1} - Q${s.end+1}</td>
-                            <td>${Math.round(s.timer / 60)} mins</td>
-                        </tr>
-                    `).join('');
-                }
-
                 document.getElementById('startBtn').addEventListener('click', () => {
                     this.els.welcomeScreen.classList.add('hidden');
                     this.els.examContainer.classList.add('active');
-                    this.startExam();
+                    setTimeout(() => this.startExam(), 100);
                 });
             }
-
-            setupThemeToggle() {
-                const btn = document.getElementById('themeToggle');
-                btn.addEventListener('click', () => {
-                    document.body.classList.toggle('dark-mode');
-                    const isDark = document.body.classList.contains('dark-mode');
-                    btn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-                });
-            }
-
+            
             setupBeforeUnload() {
                 window.addEventListener('beforeunload', (e) => {
                     if (!this.isSubmitted) {
@@ -2501,73 +2224,25 @@ a[href*="youtube.com/@"],
                     }
                 });
             }
-
+            
             startExam() {
                 this.startTime = Date.now();
                 this.lastQuestionTime = this.startTime;
-                
-                // If it is Tier I (no hard sectionsData), construct segment switcher bar dynamically
-                if (!this.sections || this.sections.length === 0) {
-                    this.buildSoftSections();
-                }
-                
                 this.createNavigator();
                 this.startMainTimer();
-                
-                if (this.sections && this.sections.length > 0) {
+                if (this.sections) {
                     this.startSectionTimer();
                     this.updateSectionInfo();
                 }
-                
                 this.loadQuestion(0);
                 this.setupEventListeners();
             }
-
-            // Dynamically construct Tier I segments (Reasoning, GK, Maths, English)
-            buildSoftSections() {
-                if (this.questions.length === 100) {
-                    this.softSections = [
-                        { name: "REASONING", start: 0, end: 24 },
-                        { name: "GENERAL AWARENESS", start: 25, end: 49 },
-                        { name: "QUANTITATIVE APTITUDE", start: 50, end: 74 },
-                        { name: "ENGLISH COMPREHENSION", start: 75, end: 99 }
-                    ];
-                } else {
-                    // Fallback division by 4
-                    const part = Math.floor(this.questions.length / 4);
-                    this.softSections = [
-                        { name: "SECTION A", start: 0, end: part - 1 },
-                        { name: "SECTION B", start: part, end: (part * 2) - 1 },
-                        { name: "SECTION C", start: part * 2, end: (part * 3) - 1 },
-                        { name: "SECTION D", start: part * 3, end: this.questions.length - 1 }
-                    ];
-                }
-                
-                this.els.sectionTabs.style.display = 'flex';
-                this.renderSoftSectionTabs();
-            }
-
-            renderSoftSectionTabs() {
-                this.els.sectionTabs.innerHTML = this.softSections.map((sec, idx) => {
-                    const isActive = this.currentQuestion >= sec.start && this.currentQuestion <= sec.end;
-                    return `<button class="section-tab${isActive ? ' active' : ''}" onclick="window.app.goToQuestion(${sec.start})">${sec.name}</button>`;
-                }).join('');
-            }
-
-            updateSoftSectionTabs() {
-                if (!this.softSections) return;
-                const tabs = this.els.sectionTabs.querySelectorAll('.section-tab');
-                this.softSections.forEach((sec, idx) => {
-                    const isActive = this.currentQuestion >= sec.start && this.currentQuestion <= sec.end;
-                    tabs[idx].classList.toggle('active', isActive);
-                });
-            }
-
+            
             setupEventListeners() {
                 document.getElementById('engBtn').onclick = () => this.setLanguage(true);
                 document.getElementById('hinBtn').onclick = () => this.setLanguage(false);
                 document.getElementById('prevBtn').onclick = () => this.navigate(-1);
-                document.querySelector('.navigation-bar .btn-next').onclick = () => this.navigate(1);
+                document.getElementById('nextBtn').onclick = () => this.navigate(1);
                 document.getElementById('reviewBtn').onclick = () => this.toggleReview();
                 document.getElementById('submitBtn').onclick = () => this.confirmSubmit();
                 document.getElementById('submitBtnDesktop').onclick = () => this.confirmSubmit();
@@ -2576,7 +2251,7 @@ a[href*="youtube.com/@"],
                 document.getElementById('closeResult').onclick = () => this.closeResultModal();
                 document.getElementById('reviewAnswers').onclick = () => this.reviewAnswers();
             }
-
+            
             createNavigator() {
                 [this.els.desktopNav, this.els.mobileNavGrid].forEach(container => {
                     container.innerHTML = '';
@@ -2589,7 +2264,7 @@ a[href*="youtube.com/@"],
                     });
                 });
             }
-
+            
             extractText(html, isEng) {
                 if (!html) return '';
                 const temp = document.createElement('div');
@@ -2607,9 +2282,10 @@ a[href*="youtube.com/@"],
                 
                 return temp.innerHTML;
             }
-
+            
             getQuestionMarks(qIdx) {
                 if (!this.sections) return marksPerQ;
+                
                 for (const section of this.sections) {
                     if (qIdx >= section.start && qIdx <= section.end) {
                         if (section.subsections) {
@@ -2624,7 +2300,7 @@ a[href*="youtube.com/@"],
                 }
                 return marksPerQ;
             }
-
+            
             loadQuestion(idx) {
                 if (this.currentQuestion !== idx) {
                     const now = Date.now();
@@ -2637,13 +2313,12 @@ a[href*="youtube.com/@"],
                 const qMarks = this.getQuestionMarks(idx);
                 
                 this.els.questionNum.textContent = `Question ${idx + 1} of ${this.questions.length}`;
-                this.els.questionMarks.textContent = `Marks: ${qMarks.toFixed(1)}`;
+                this.els.questionMarks.textContent = `Marks: ${qMarks}`;
                 this.els.progressText.textContent = `Question ${idx + 1} of ${this.questions.length}`;
                 this.updateAnsweredCount();
                 this.updateNavigator();
                 this.updateNavigationButtons();
                 this.updateReviewButton();
-                this.updateSoftSectionTabs();
                 
                 if (q.comp) {
                     this.els.comprehension.style.display = 'block';
@@ -2662,8 +2337,8 @@ a[href*="youtube.com/@"],
                     const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
                     
                     this.els.solutionStats.innerHTML = `
-                        <span><i class="fas fa-clock"></i> Time spent: ${timeStr}</span>
-                        <span><i class="fas fa-check-circle"></i> Correct Option: ${String.fromCharCode(65 + q.correct_option_id)}</span>
+                        <span><i class="fas fa-clock"></i> Time: ${timeStr}</span>
+                        <span><i class="fas fa-check-circle"></i> Correct: ${String.fromCharCode(65 + q.correct_option_id)}</span>
                     `;
                     this.els.solutionText.innerHTML = this.extractText(q.solution, this.isEnglish);
                     this.els.solutionBox.classList.add('show');
@@ -2671,7 +2346,7 @@ a[href*="youtube.com/@"],
                     this.els.solutionBox.classList.remove('show');
                 }
             }
-
+            
             loadOptions(q, qIdx) {
                 this.els.optionsList.innerHTML = '';
                 const userAnswer = this.answers[qIdx];
@@ -2696,7 +2371,7 @@ a[href*="youtube.com/@"],
                     
                     div.className = className;
                     
-                    let indicator = String.fromCharCode(65 + i);
+                    let indicator = '';
                     if (this.isSubmitted && correctAnswer !== undefined) {
                         if (i === correctAnswer) {
                             indicator = '✓';
@@ -2719,7 +2394,7 @@ a[href*="youtube.com/@"],
                     this.els.optionsList.appendChild(div);
                 });
             }
-
+            
             selectOption(optIdx, qIdx) {
                 if (this.isSubmitted) return;
                 this.answers[qIdx] = this.answers[qIdx] === optIdx ? null : optIdx;
@@ -2727,14 +2402,14 @@ a[href*="youtube.com/@"],
                 this.updateAnsweredCount();
                 this.updateNavigator();
             }
-
+            
             toggleReview() {
                 if (this.isSubmitted) return;
                 this.markedForReview[this.currentQuestion] = !this.markedForReview[this.currentQuestion];
                 this.updateNavigator();
                 this.updateReviewButton();
             }
-
+            
             updateReviewButton() {
                 const btn = document.getElementById('reviewBtn');
                 if (this.markedForReview[this.currentQuestion]) {
@@ -2745,9 +2420,10 @@ a[href*="youtube.com/@"],
                     btn.innerHTML = '<i class="fas fa-flag"></i> Mark for Review';
                 }
             }
-
+            
             navigate(dir) {
                 const newIdx = this.currentQuestion + dir;
+                
                 if (this.isSubmitted) {
                     if (newIdx >= 0 && newIdx < this.questions.length) {
                         this.loadQuestion(newIdx);
@@ -2755,8 +2431,8 @@ a[href*="youtube.com/@"],
                     return;
                 }
                 
-                if (this.sections && this.sections.length > 0) {
-                    const currentSection = this.sections[this.currentSectionIdx];
+                if (this.sections) {
+                    const currentSection = this.sections[this.currentSection];
                     if (newIdx < currentSection.start || newIdx > currentSection.end) {
                         return;
                     }
@@ -2766,7 +2442,7 @@ a[href*="youtube.com/@"],
                     this.loadQuestion(newIdx);
                 }
             }
-
+            
             goToQuestion(idx) {
                 if (this.isSubmitted) {
                     this.loadQuestion(idx);
@@ -2774,8 +2450,8 @@ a[href*="youtube.com/@"],
                     return;
                 }
                 
-                if (this.sections && this.sections.length > 0) {
-                    const currentSection = this.sections[this.currentSectionIdx];
+                if (this.sections) {
+                    const currentSection = this.sections[this.currentSection];
                     if (idx < currentSection.start || idx > currentSection.end) {
                         return;
                     }
@@ -2784,7 +2460,7 @@ a[href*="youtube.com/@"],
                 this.loadQuestion(idx);
                 this.closeMobileNav();
             }
-
+            
             updateNavigator() {
                 [this.els.desktopNav, this.els.mobileNavGrid].forEach(container => {
                     const btns = container.querySelectorAll('.nav-question');
@@ -2808,8 +2484,8 @@ a[href*="youtube.com/@"],
                                 btn.classList.add('answered');
                             }
                             
-                            if (this.sections && this.sections.length > 0) {
-                                const currentSection = this.sections[this.currentSectionIdx];
+                            if (this.sections) {
+                                const currentSection = this.sections[this.currentSection];
                                 if (i < currentSection.start || i > currentSection.end) {
                                     btn.classList.add('disabled');
                                 }
@@ -2818,10 +2494,10 @@ a[href*="youtube.com/@"],
                     });
                 });
             }
-
+            
             updateNavigationButtons() {
                 const prevBtn = document.getElementById('prevBtn');
-                const nextBtn = document.querySelector('.navigation-bar .btn-next');
+                const nextBtn = document.getElementById('nextBtn');
                 const reviewBtn = document.getElementById('reviewBtn');
                 
                 prevBtn.disabled = this.currentQuestion === 0;
@@ -2833,25 +2509,25 @@ a[href*="youtube.com/@"],
                     reviewBtn.style.display = 'inline-flex';
                 }
                 
-                if (this.sections && this.sections.length > 0 && !this.isSubmitted) {
-                    const currentSection = this.sections[this.currentSectionIdx];
+                if (this.sections && !this.isSubmitted) {
+                    const currentSection = this.sections[this.currentSection];
                     prevBtn.disabled = prevBtn.disabled || (this.currentQuestion === currentSection.start);
                     nextBtn.disabled = nextBtn.disabled || (this.currentQuestion === currentSection.end);
                 }
             }
-
+            
             updateAnsweredCount() {
                 const count = this.answers.filter(a => a !== null).length;
                 this.els.answeredCount.textContent = count;
             }
-
+            
             setLanguage(isEng) {
                 this.isEnglish = isEng;
                 document.getElementById('engBtn').classList.toggle('active', isEng);
                 document.getElementById('hinBtn').classList.toggle('active', !isEng);
                 this.loadQuestion(this.currentQuestion);
             }
-
+            
             startMainTimer() {
                 this.mainTimer = setInterval(() => {
                     this.totalTimeLeft--;
@@ -2865,28 +2541,20 @@ a[href*="youtube.com/@"],
                     this.els.mainTimer.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
                 }, 1000);
             }
-
+            
             startSectionTimer() {
-                if (!this.sections || this.sections.length === 0) return;
+                if (!this.sections) return;
                 
                 if (this.sectionTimer) clearInterval(this.sectionTimer);
                 
-                const section = this.sections[this.currentSectionIdx];
-                if (section.time_left === undefined) {
-                    section.time_left = section.timer;
-                }
-                
-                const updateTimerDisplay = () => {
-                    const mins = Math.floor(section.time_left / 60);
-                    const secs = section.time_left % 60;
-                    this.els.sectionTimer.textContent = ` | ${mins}:${secs.toString().padStart(2, '0')}`;
-                };
-                
-                updateTimerDisplay();
+                const section = this.sections[this.currentSection];
+                section.time_left = section.timer;
                 
                 this.sectionTimer = setInterval(() => {
                     section.time_left--;
-                    updateTimerDisplay();
+                    const mins = Math.floor(section.time_left / 60);
+                    const secs = section.time_left % 60;
+                    this.els.sectionTimer.textContent = ` | ${mins}:${secs.toString().padStart(2, '0')}`;
                     
                     if (section.time_left <= 0) {
                         clearInterval(this.sectionTimer);
@@ -2894,30 +2562,24 @@ a[href*="youtube.com/@"],
                     }
                 }, 1000);
             }
-
+            
             updateSectionInfo() {
-                if (!this.sections || this.sections.length === 0) return;
-                const section = this.sections[this.currentSectionIdx];
+                if (!this.sections) return;
+                const section = this.sections[this.currentSection];
                 this.els.sectionName.textContent = section.name;
                 this.els.sectionBadge.style.display = 'block';
-                
-                if (section.time_left !== undefined) {
-                    const mins = Math.floor(section.time_left / 60);
-                    const secs = section.time_left % 60;
-                    this.els.sectionTimer.textContent = ` | ${mins}:${secs.toString().padStart(2, '0')}`;
-                }
             }
-
+            
             submitSection() {
-                if (!this.sections || this.sections.length === 0) return;
+                if (!this.sections) return;
                 
-                const section = this.sections[this.currentSectionIdx];
+                const section = this.sections[this.currentSection];
                 section.submitted = true;
                 clearInterval(this.sectionTimer);
                 
-                const nextSectionIdx = this.currentSectionIdx + 1;
+                const nextSectionIdx = this.currentSection + 1;
                 if (nextSectionIdx < this.sections.length) {
-                    this.currentSectionIdx = nextSectionIdx;
+                    this.currentSection = nextSectionIdx;
                     this.startSectionTimer();
                     this.updateSectionInfo();
                     this.loadQuestion(this.sections[nextSectionIdx].start);
@@ -2927,28 +2589,28 @@ a[href*="youtube.com/@"],
                 
                 this.updateNavigator();
             }
-
+            
             confirmSubmit() {
-                if (this.sections && this.sections.length > 0) {
-                    const section = this.sections[this.currentSectionIdx];
+                if (this.sections) {
+                    const section = this.sections[this.currentSection];
                     const unanswered = this.answers.slice(section.start, section.end + 1)
                         .filter(a => a === null).length;
                     
                     let msg = unanswered > 0 
-                        ? `You have ${unanswered} unanswered questions in this section. Submit Section?`
+                        ? `You have ${unanswered} unanswered questions in this section. Submit anyway?`
                         : 'Submit this section?';
                     
                     if (confirm(msg)) this.submitSection();
                 } else {
                     const unanswered = this.answers.filter(a => a === null).length;
                     let msg = unanswered > 0 
-                        ? `You have ${unanswered} unanswered questions. Submit entire test?`
+                        ? `You have ${unanswered} unanswered questions. Submit test?`
                         : 'Submit test?';
                     
                     if (confirm(msg)) this.submitTest();
                 }
             }
-
+            
             submitTest() {
                 if (this.isSubmitted) return;
                 
@@ -2963,7 +2625,7 @@ a[href*="youtube.com/@"],
                 document.getElementById('submitBtnDesktop').style.display = 'none';
                 document.getElementById('reviewBtn').style.display = 'none';
                 
-                if (this.sections && this.sections.length > 0) {
+                if (this.sections) {
                     this.els.sectionBadge.style.display = 'none';
                 }
                 
@@ -2972,14 +2634,14 @@ a[href*="youtube.com/@"],
                 this.loadQuestion(this.currentQuestion);
                 this.updateNavigator();
             }
-
+            
             calculateResults() {
                 const timeTaken = Math.round((Date.now() - this.startTime) / 60000);
                 let correct = 0, incorrect = 0, unattempted = 0, score = 0;
                 
                 const sectionResults = [];
                 
-                if (this.sections && this.sections.length > 0) {
+                if (this.sections) {
                     for (const section of this.sections) {
                         let secCorrect = 0, secIncorrect = 0, secUnattempted = 0, secScore = 0;
                         const subsecResults = [];
@@ -3075,9 +2737,9 @@ a[href*="youtube.com/@"],
                     sectionResults: sectionResults.length > 0 ? sectionResults : null
                 };
             }
-
+            
             showResults(results) {
-                this.els.resultScore.textContent = `${results.score.toFixed(2)}/${(this.questions.length * marksPerQ).toFixed(1)}`;
+                this.els.resultScore.textContent = `${results.score.toFixed(2)}/${this.questions.length * marksPerQ}`;
                 this.els.correctCount.textContent = results.correct;
                 this.els.incorrectCount.textContent = results.incorrect;
                 this.els.unattemptedCount.textContent = results.unattempted;
@@ -3103,7 +2765,7 @@ a[href*="youtube.com/@"],
                                 const subRow = document.createElement('tr');
                                 subRow.className = 'subsection-row';
                                 subRow.innerHTML = `
-                                    <td style="padding-left: 20px;">${subsec.name}</td>
+                                    <td>${subsec.name}</td>
                                     <td>${subsec.attempted}</td>
                                     <td>${subsec.correct}</td>
                                     <td>${subsec.incorrect}</td>
@@ -3119,28 +2781,262 @@ a[href*="youtube.com/@"],
                 
                 this.els.resultModal.classList.add('show');
             }
-
+            
             closeResultModal() {
                 this.els.resultModal.classList.remove('show');
             }
-
+            
             reviewAnswers() {
                 this.closeResultModal();
                 this.loadQuestion(0);
             }
-
+            
             openMobileNav() {
                 this.els.mobileNav.classList.add('open');
             }
-
+            
             closeMobileNav() {
                 this.els.mobileNav.classList.remove('open');
             }
         }
-
+        
+        // Initialize the exam
         document.addEventListener('DOMContentLoaded', () => {
-            window.app = new CBTExamApp();
+            new CBTExam();
         });
-    </script>
+    
+</script>
+
+</head>
+<body>
+    <!-- Welcome Start page -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-container">
+            <div class="welcome-header">
+                <h1><i class="fas fa-graduation-cap"></i> CBT Portal</h1>
+                <p>Computer Based Test Environment</p>
+            </div>
+            
+            <div class="test-details">
+                <div class="detail-item">
+                    <div class="detail-label">Total Questions</div>
+                    <div class="detail-value" id="welcomeTotalQs">0</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Total Marks</div>
+                    <div class="detail-value" id="welcomeTotalMarks">0</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Duration</div>
+                    <div class="detail-value" id="welcomeDuration">0 mins</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Marking Scheme</div>
+                    <div class="detail-value" id="welcomeMarksScheme">+0.0 / -0.0</div>
+                </div>
+            </div>
+            
+            <div class="section-info" id="welcomeSectionsBlock" style="display:none;">
+                <h3><i class="fas fa-layer-group"></i> Section Details</h3>
+                <table class="section-table">
+                    <thead>
+                        <tr>
+                            <th>Section Name</th>
+                            <th>Questions</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="welcomeSectionsBody"></tbody>
+                </table>
+            </div>
+            
+            <div class="welcome-actions">
+                <button class="start-btn" id="startBtn">
+                    <i class="fas fa-play"></i> Start Test
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Active Exam Interface -->
+    <div class="exam-container" id="examContainer">
+        <div class="exam-header">
+            <div class="exam-title">pundits</div>
+            <div class="exam-timer">
+                <div class="timer-box" id="mainTimer">00:00</div>
+                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <button class="nav-btn btn-submit mobile-only" id="submitBtn">Submit</button>
+            </div>
+        </div>
+        
+        <div class="candidate-bar">
+            <div class="candidate-info">
+                <div class="candidate-photo">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="candidate-details">
+                    <div class="candidate-name">Candidate</div>
+                    <div class="candidate-id">ID: User</div>
+                </div>
+            </div>
+            <div class="section-badge" id="sectionBadge" style="display:none;">
+                <span id="sectionName"></span><span id="sectionTimer"></span>
+            </div>
+        </div>
+
+        <!-- Section tabs for Soft Switching (Tier I) -->
+        <div class="section-tabs" id="sectionTabs" style="display:none;"></div>
+        
+        <div class="exam-main">
+            <div class="question-area">
+                <div class="question-scroll">
+                    <div class="question-card">
+                        <div class="question-header">
+                            <div>
+                                <div class="question-number" id="questionNum">Question 1</div>
+                                <div class="question-marks" id="questionMarks">Marks: 3.0</div>
+                            </div>
+                            <div class="lang-toggle">
+                                <button class="lang-btn active" id="engBtn">English</button>
+                                <button class="lang-btn" id="hinBtn">हिंदी</button>
+                            </div>
+                        </div>
+                        
+                        <div class="comprehension" id="comprehension" style="display:none;">
+                            <h4><i class="fas fa-book-open"></i> Comprehension</h4>
+                            <div id="comprehensionText"></div>
+                        </div>
+                        
+                        <div class="question-text" id="questionText"></div>
+                        <div class="options-list" id="optionsList"></div>
+                        
+                        <div class="solution-box" id="solutionBox">
+                            <div class="solution-header">
+                                <i class="fas fa-lightbulb"></i> Solution
+                            </div>
+                            <div class="solution-stats" id="solutionStats"></div>
+                            <div id="solutionText"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="navigation-bar">
+                    <button class="nav-btn btn-prev" id="prevBtn"><i class="fas fa-chevron-left"></i> Prev</button>
+                    <div class="progress-info">
+                        <div id="progressText">Question 1</div>
+                        <div style="font-size:11px;margin-top:4px">
+                            Answered: <span id="answeredCount">0</span>
+                        </div>
+                    </div>
+                    <button class="nav-btn btn-review" id="reviewBtn"><i class="fas fa-flag"></i> Mark for Review</button>
+                    <button class="nav-btn mobile-only" id="navigatorBtn"><i class="fas fa-th"></i> Grid</button>
+                    <button class="nav-btn btn-submit desktop-only" id="submitBtnDesktop">Submit</button>
+                    <button class="nav-btn btn-next">Next <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            
+            <div class="navigator-sidebar desktop-only">
+                <div class="navigator-header">Question Navigator</div>
+                <div class="navigator-grid" id="desktopNav"></div>
+                <div class="navigator-legend">
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--success)"></div>
+                        <span>Answered</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--warning)"></div>
+                        <span>Marked for Review</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--danger)"></div>
+                        <span>Incorrect</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--card);border:2px solid var(--border)"></div>
+                        <span>Unattempted</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile drawer panel -->
+    <div class="mobile-navigator" id="mobileNav">
+        <div class="mobile-nav-header">
+            <h3>Question Navigator</h3>
+            <button class="close-nav" id="closeNav">&times;</button>
+        </div>
+        <div class="navigator-grid" id="mobileNavGrid"></div>
+        <div class="navigator-legend">
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--success)"></div>
+                <span>Answered</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--warning)"></div>
+                <span>Marked for Review</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--danger)"></div>
+                <span>Incorrect</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--card);border:2px solid var(--border)"></div>
+                <span>Unattempted</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Result Overlay -->
+    <div class="result-modal" id="resultModal">
+        <div class="result-container">
+            <div class="result-header">
+                <h2>Test Completed!</h2>
+                <div class="result-score" id="resultScore">0.00</div>
+            </div>
+            
+            <div class="result-grid">
+                <div class="result-stat correct">
+                    <div class="result-stat-value" id="correctCount">0</div>
+                    <div class="result-stat-label">Correct</div>
+                </div>
+                <div class="result-stat incorrect">
+                    <div class="result-stat-value" id="incorrectCount">0</div>
+                    <div class="result-stat-label">Incorrect</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="unattemptedCount">0</div>
+                    <div class="result-stat-label">Unattempted</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="timeTaken">0</div>
+                    <div class="result-stat-label">Minutes</div>
+                </div>
+            </div>
+            
+            <div class="section-results" id="sectionResults" style="display:none;">
+                <h3>Section-wise Performance</h3>
+                <table class="section-results-table">
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Attempted</th>
+                            <th>Correct</th>
+                            <th>Wrong</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sectionResultsBody"></tbody>
+                </table>
+            </div>
+            
+            <div class="result-actions">
+                <button class="result-btn btn-close" id="closeResult">Close</button>
+                <button class="result-btn btn-review-ans" id="reviewAnswers">Review Answers</button>
+            </div>
+        </div>
+    </div>
+    
+    
 </body>
 </html>

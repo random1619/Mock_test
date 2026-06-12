@@ -1814,21 +1814,548 @@ a[href*="youtube.com/@"],
 }
 </style>
 <script>
-/* ── Fix 1: Auto-fix generic page titles ───────────────────── */
-(function fixPageTitle() {
-  const genericTitles = ['devgagan', 'CBT Exam - pundits', 'CBT Exam'];
-  const currentTitle = document.title || '';
-  const isGeneric = genericTitles.some(g => currentTitle.toLowerCase() === g.toLowerCase());
-  if (isGeneric) {
-    // Try to get title from welcome header h1
-    document.addEventListener('DOMContentLoaded', function() {
-      const h1 = document.querySelector('.welcome-header h1, .welcome-header h2');
-      if (h1 && h1.textContent.trim()) {
-        document.title = h1.textContent.trim().substring(0, 80);
-      }
-    });
-  }
-})();
+
+        // Test configuration
+        const TOTAL_TIME_MINUTES = 50;
+        const MAX_MARKS = 84;
+        const NEGATIVE_MARKING_FACTOR = 0.25; // 1/4th negative marking
+        
+        // Questions data
+        const questions = [{"id": "5859", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">\"One thing scientists    have discovered,\" note Thomas Dreier, \"is </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that    often-praised children become more... (1)... than often blamed    ones. There's a creative element in praise.\"Good leaders know    that. Fundamentally, their job is to help others make the most of    themselves. Viewed in strictly ... (2)... terms, that is their    greater contribution to their companies. People, employees, are a    great untapped ... (3)... of energy.</span><span><span style=\"font-size:13pt\">    </span></span><span style=\"font-size:13pt\"><span>Leaders    who can tap this source are valuable to any organization. </span></span><span style=\"font-size:13pt\">It    doesn't require elaborate...(4)\u2026 to bring out the best in    people. </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">If you ...    (5)... their work, they'll probably give you the best </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that's in    them.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.1.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">adamant</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">notorious</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">rebellious</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">intelligent</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "4", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">intelligent</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5860", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">\"One thing scientists    have discovered,\" note Thomas Dreier, \"is </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that    often-praised children become more... (1)... than often blamed    ones. There's a creative element in praise.\"Good leaders know    that. Fundamentally, their job is to help others make the most of    themselves. Viewed in strictly ... (2)... terms, that is their    greater contribution to their companies. People, employees, are a    great untapped ... (3)... of energy.</span><span><span style=\"font-size:13pt\">    </span></span><span style=\"font-size:13pt\"><span>Leaders    who can tap this source are valuable to any organization. </span></span><span style=\"font-size:13pt\">It    doesn't require elaborate...(4)\u2026 to bring out the best in    people. </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">If you ...    (5)... their work, they'll probably give you the best </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that's in    them.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.2.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">useful</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">remedial</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">cultural</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">commercial</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "4", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">commercial</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5861", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">\"One thing scientists    have discovered,\" note Thomas Dreier, \"is </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that    often-praised children become more... (1)... than often blamed    ones. There's a creative element in praise.\"Good leaders know    that. Fundamentally, their job is to help others make the most of    themselves. Viewed in strictly ... (2)... terms, that is their    greater contribution to their companies. People, employees, are a    great untapped ... (3)... of energy.</span><span><span style=\"font-size:13pt\">    </span></span><span style=\"font-size:13pt\"><span>Leaders    who can tap this source are valuable to any organization. </span></span><span style=\"font-size:13pt\">It    doesn't require elaborate...(4)\u2026 to bring out the best in    people. </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">If you ...    (5)... their work, they'll probably give you the best </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that's in    them.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.3.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">wastage</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">reservoir</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">utilization</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">conservation</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "2", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">reservoir</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5862", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">\"One thing scientists    have discovered,\" note Thomas Dreier, \"is </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that    often-praised children become more... (1)... than often blamed    ones. There's a creative element in praise.\"Good leaders know    that. Fundamentally, their job is to help others make the most of    themselves. Viewed in strictly ... (2)... terms, that is their    greater contribution to their companies. People, employees, are a    great untapped ... (3)... of energy.</span><span><span style=\"font-size:13pt\">    </span></span><span style=\"font-size:13pt\"><span>Leaders    who can tap this source are valuable to any organization. </span></span><span style=\"font-size:13pt\">It    doesn't require elaborate...(4)\u2026 to bring out the best in    people. </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">If you ...    (5)... their work, they'll probably give you the best </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that's in    them.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.4.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">pains</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">troubles</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">features</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">incentives</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "4", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">incentives</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5863", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">\"One thing scientists    have discovered,\" note Thomas Dreier, \"is </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that    often-praised children become more... (1)... than often blamed    ones. There's a creative element in praise.\"Good leaders know    that. Fundamentally, their job is to help others make the most of    themselves. Viewed in strictly ... (2)... terms, that is their    greater contribution to their companies. People, employees, are a    great untapped ... (3)... of energy.</span><span><span style=\"font-size:13pt\">    </span></span><span style=\"font-size:13pt\"><span>Leaders    who can tap this source are valuable to any organization. </span></span><span style=\"font-size:13pt\">It    doesn't require elaborate...(4)\u2026 to bring out the best in    people. </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">If you ...    (5)... their work, they'll probably give you the best </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that's in    them.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.5.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">share</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">ignore</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">perform</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">recognize</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "4", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">recognize</span></span></p>    <p>    <span><span style=\"font-size:13pt\">Adamant=    determined not to change your mind or to be </span></span>    </p>    <p>    <span><span style=\"font-size:13pt\">persuaded    about something</span></span></p>    <p>    <span><span style=\"font-size:13pt\">Rebellious=    unwilling to obey rules or follow generally </span></span>    </p>    <p>    <span><span style=\"font-size:13pt\">accepted    standards of behaviour, dress, etc.</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5864", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">With the Himalayas looming    over Dharamshala, India scaled fresh heights in its evolving    journey in Twenty20 Internationals. After winning the inaugural    2007 ICC World T20 in South Africa, the Men in Blue flattered to    deceive in cricket\u2019s shortest version, specifically in global    events. However, India largely does (6)______</span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in bilateral    series and the latest triumph was the 3-0 sweep against the    visiting Sri Lankans in a clash that had its </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">final episode    at Dharamshala on Sunday night. After (7)_______ </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">the opening    fixture at Lucknow, India extended that winning-act </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in the next    two games under the mountain skies. Having recently swept past the    West Indies at 3-0 each in ODIs </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">and T20Is,    Rohit Sharma\u2019s cup of joy continues to brim. The </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">latest squad    missed Virat Kohli and Rishabh Pant, who were given a bio-bubble    break, while the injured duo of K.L. Rahul and Hardik Pandya    remain on the recovery path. Yet, India papered over the    (8)_______ and found men who could fill these vacant boots. Even    Rohit after a 44 at Lucknow, managed just one and five in the last    two encounters. The absence of key personnel and the (9)_______    batting returns from the captain were tided past. The West Indies    earlier and Sri Lanka now are essentially outfits in transition,    (10)________ India deserves credit for the way it </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">drove home    its advantage with emphatic performances.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.6.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">Infuse</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">Excel</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">Boot</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">Attest</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "2", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">Excel</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5865", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">With the Himalayas looming    over Dharamshala, India scaled fresh heights in its evolving    journey in Twenty20 Internationals. After winning the inaugural    2007 ICC World T20 in South Africa, the Men in Blue flattered to    deceive in cricket\u2019s shortest version, specifically in global    events. However, India largely does (6)______</span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in bilateral    series and the latest triumph was the 3-0 sweep against the    visiting Sri Lankans in a clash that had its </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">final episode    at Dharamshala on Sunday night. After (7)_______ </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">the opening    fixture at Lucknow, India extended that winning-act </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in the next    two games under the mountain skies. Having recently swept past the    West Indies at 3-0 each in ODIs </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">and T20Is,    Rohit Sharma\u2019s cup of joy continues to brim. The </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">latest squad    missed Virat Kohli and Rishabh Pant, who were given a bio-bubble    break, while the injured duo of K.L. Rahul and Hardik Pandya    remain on the recovery path. Yet, India papered over the    (8)_______ and found men who could fill these vacant boots. Even    Rohit after a 44 at Lucknow, managed just one and five in the last    two encounters. The absence of key personnel and the (9)_______    batting returns from the captain were tided past. The West Indies    earlier and Sri Lanka now are essentially outfits in transition,    (10)________ India deserves credit for the way it </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">drove home    its advantage with emphatic performances.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.7.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">Switching</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">Hailing</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">Emerging</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">Clinching</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "4", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">Clinching</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5866", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">With the Himalayas looming    over Dharamshala, India scaled fresh heights in its evolving    journey in Twenty20 Internationals. After winning the inaugural    2007 ICC World T20 in South Africa, the Men in Blue flattered to    deceive in cricket\u2019s shortest version, specifically in global    events. However, India largely does (6)______</span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in bilateral    series and the latest triumph was the 3-0 sweep against the    visiting Sri Lankans in a clash that had its </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">final episode    at Dharamshala on Sunday night. After (7)_______ </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">the opening    fixture at Lucknow, India extended that winning-act </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in the next    two games under the mountain skies. Having recently swept past the    West Indies at 3-0 each in ODIs </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">and T20Is,    Rohit Sharma\u2019s cup of joy continues to brim. The </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">latest squad    missed Virat Kohli and Rishabh Pant, who were given a bio-bubble    break, while the injured duo of K.L. Rahul and Hardik Pandya    remain on the recovery path. Yet, India papered over the    (8)_______ and found men who could fill these vacant boots. Even    Rohit after a 44 at Lucknow, managed just one and five in the last    two encounters. The absence of key personnel and the (9)_______    batting returns from the captain were tided past. The West Indies    earlier and Sri Lanka now are essentially outfits in transition,    (10)________ India deserves credit for the way it </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">drove home    its advantage with emphatic performances.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.8.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">Cracks</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">chords</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">Credits</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">Cores</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "1", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">Cracks</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5867", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">With the Himalayas looming    over Dharamshala, India scaled fresh heights in its evolving    journey in Twenty20 Internationals. After winning the inaugural    2007 ICC World T20 in South Africa, the Men in Blue flattered to    deceive in cricket\u2019s shortest version, specifically in global    events. However, India largely does (6)______</span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in bilateral    series and the latest triumph was the 3-0 sweep against the    visiting Sri Lankans in a clash that had its </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">final episode    at Dharamshala on Sunday night. After (7)_______ </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">the opening    fixture at Lucknow, India extended that winning-act </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in the next    two games under the mountain skies. Having recently swept past the    West Indies at 3-0 each in ODIs </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">and T20Is,    Rohit Sharma\u2019s cup of joy continues to brim. The </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">latest squad    missed Virat Kohli and Rishabh Pant, who were given a bio-bubble    break, while the injured duo of K.L. Rahul and Hardik Pandya    remain on the recovery path. Yet, India papered over the    (8)_______ and found men who could fill these vacant boots. Even    Rohit after a 44 at Lucknow, managed just one and five in the last    two encounters. The absence of key personnel and the (9)_______    batting returns from the captain were tided past. The West Indies    earlier and Sri Lanka now are essentially outfits in transition,    (10)________ India deserves credit for the way it </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">drove home    its advantage with emphatic performances.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.9.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">Evident</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">Meagre</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">Ample</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">Wary</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "2", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">Meagre</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5868", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">With the Himalayas looming    over Dharamshala, India scaled fresh heights in its evolving    journey in Twenty20 Internationals. After winning the inaugural    2007 ICC World T20 in South Africa, the Men in Blue flattered to    deceive in cricket\u2019s shortest version, specifically in global    events. However, India largely does (6)______</span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in bilateral    series and the latest triumph was the 3-0 sweep against the    visiting Sri Lankans in a clash that had its </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">final episode    at Dharamshala on Sunday night. After (7)_______ </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">the opening    fixture at Lucknow, India extended that winning-act </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in the next    two games under the mountain skies. Having recently swept past the    West Indies at 3-0 each in ODIs </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">and T20Is,    Rohit Sharma\u2019s cup of joy continues to brim. The </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">latest squad    missed Virat Kohli and Rishabh Pant, who were given a bio-bubble    break, while the injured duo of K.L. Rahul and Hardik Pandya    remain on the recovery path. Yet, India papered over the    (8)_______ and found men who could fill these vacant boots. Even    Rohit after a 44 at Lucknow, managed just one and five in the last    two encounters. The absence of key personnel and the (9)_______    batting returns from the captain were tided past. The West Indies    earlier and Sri Lanka now are essentially outfits in transition,    (10)________ India deserves credit for the way it </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">drove home    its advantage with emphatic performances.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.10.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">Unless</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">But</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">Whereas</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">And</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "2", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">but</span></span></p>    <p>    <span><span style=\"font-size:13pt\">Infuse=    to make somebody/something have a particular</span></span></p>    <p>    <span><span style=\"font-size:13pt\">quality</span></span></p>    <p>    <span><span style=\"font-size:13pt\">Hailing=    to describe somebody/something as being very </span></span>    </p>    <p>    <span><span style=\"font-size:13pt\">good    or special, especially in newspapers, etc.</span></span></p>    <p>    <span><span style=\"font-size:13pt\">Meagre=    small in quantity and poor in quality</span></span></p>    <p>    <span><span style=\"font-size:13pt\">Ample=    enough or more than enough</span></span></p>    <p>    <span><span style=\"font-size:13pt\">Wary=    careful when dealing with somebody/something </span></span>    </p>    <p>    <span><span style=\"font-size:13pt\">because    you think that there may be a danger or problem</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5869", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">India\u2019s big moment as    host of the G-20 Summit will arrive this weekend, as world leaders    gather in New Delhi for the main </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">event marking    the year of its presidency. The -face { font-family: 'Tahoma';src: url('https://appxcontent.classx.co.in/fonts/Tahoma.TTF') format('truetype');} </style><p>    <span><span><span style=\"font-family:'Tahoma'\"><span style=\"font-size:13pt\">\ufeff</span></span></span></span><span style=\"font-size:13pt\">A.    The effects of climate change are evident in the increasing    frequency and severity of natural disasters, such as hurricanes,    wildfires, and floods. </span>    </p>    <p>    <span style=\"font-size:13pt\">B. Climate scientists    emphasize the urgency of reducing greenhouse gas emissions to    mitigate these impacts. </span>    </p>    <p>    <span style=\"font-size:13pt\">C. While some skeptics    question the science behind climate change, the consensus among    experts is clear. </span>    </p>    <p><span style=\"font-size:13pt\">D.    Governments and individuals must take immediate action to    transition to sustainable energy sources and reduce our carbon    footprint. </span>    </p>", "option_1": "<p>    <span style=\"font-size:13pt\">BCDA   </span>    </p>", "option_2": "<p>    <span style=\"font-size:13pt\">ACBD    </span>    </p>", "option_3": "<p>    <span style=\"font-size:13pt\">ABDC    </span>    </p>", "option_4": "<p>    <span style=\"font-size:13pt\">CDBA</span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "3", "solution_heading": "Full Solution", "solution_text": "<p>    <span style=\"font-size:13pt\">ABDC    </span>    </p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5885", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">A. The concept of    artificial intelligence (AI) has fascinated humanity for decades,    and its potential applications are continually expanding. </span>    </p>    <p>    <span style=\"font-size:13pt\">B. Machine learning, a    subset of AI, enables computers to learn and make decisions    without explicit programming. </span>    </p>    <p>    <span style=\"font-size:13pt\">C. Today, AI is used in    fields as diverse as healthcare, finance, and transportation,    revolutionizing how we live and work. </span>    </p>    <p><span style=\"font-size:13pt\">D.    As AI becomes more integrated into our daily lives, questions    about ethics and accountability become increasingly important. </span>    </p>", "option_1": "<p>    <span style=\"font-size:13pt\">ABCD     </span>    </p>", "option_2": "<p>    <span style=\"font-size:13pt\">DCBA    </span>    </p>", "option_3": "<p>    <span style=\"font-size:13pt\">CDBA     </span>    </p>", "option_4": "<p>    <span style=\"font-size:13pt\">BCAD</span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "1", "solution_heading": "Full Solution", "solution_text": "<p>    <span style=\"font-size:13pt\">ABCD     </span>    </p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5886", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">1. My friend Peter went to    live in a village. </span>    </p>    <p>    <span style=\"font-size:13pt\">P. But it was a very slow    animal. </span>    </p>    <p>    <span style=\"font-size:13pt\">Q. So Peter bought a donkey    for five hundred rupees. </span>    </p>    <p>    <span style=\"font-size:13pt\">R. One day his neighbour    told him that he must buy a donkey. </span>    </p>    <p>    <span style=\"font-size:13pt\">S. Every family there had a    donkey to carry things for them. </span>    </p>    <p><span style=\"font-size:13pt\">6.    It did not like to work. </span>    </p>", "option_1": "<p>    <span style=\"font-size:13pt\">RSPQ </span>    </p>", "option_2": "<p>     <span style=\"font-size:13pt\">QPSR </span>    </p>", "option_3": "<p>     <span style=\"font-size:13pt\">SRQP </span>    </p>", "option_4": "<p>     <span style=\"font-size:13pt\">RSQP </span>    </p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "3", "solution_heading": "Full Solution", "solution_text": "<p>    <span style=\"font-size:13pt\">SRQP</span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}];
+        
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let bookmarkedQuestions = new Set();
+        let timeLeft;
+        let timerInterval;
+        let reviewedQuestions = new Set();
+        let questionTimers = new Array(questions.length).fill(0); // Track time spent on each question
+        let currentQuestionStartTime; // To track when a question was opened
+
+        // Initialize timer
+        function startTimer() {
+            timeLeft = TOTAL_TIME_MINUTES * 60;
+            updateTimer(); // Update immediately
+            timerInterval = setInterval(updateTimer, 1000);
+            
+            // Start the current question timer
+            startQuestionTimer();
+        }
+
+        function startQuestionTimer() {
+            // Record start time for current question
+            currentQuestionStartTime = Date.now();
+            
+            // Initialize display
+            updateQuestionTimerDisplay();
+            
+            // Update the timer display every second
+            if (window.questionTimerInterval) {
+                clearInterval(window.questionTimerInterval);
+            }
+            
+            window.questionTimerInterval = setInterval(() => {
+                updateQuestionTimerDisplay();
+            }, 1000);
+        }
+        
+        function updateQuestionTimerDisplay() {
+            const elapsedSeconds = Math.floor((Date.now() - currentQuestionStartTime) / 1000) + questionTimers[currentQuestionIndex];
+            const minutes = Math.floor(elapsedSeconds / 60);
+            const seconds = elapsedSeconds % 60;
+            
+            const questionTimerElement = document.getElementById('questionTimer');
+            if (questionTimerElement) {
+                questionTimerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+
+        function pauseQuestionTimer() {
+            if (window.questionTimerInterval) {
+                clearInterval(window.questionTimerInterval);
+                
+                // Calculate time spent on this question and store it
+                const timeSpent = Math.floor((Date.now() - currentQuestionStartTime) / 1000);
+                questionTimers[currentQuestionIndex] += timeSpent;
+                
+                currentQuestionStartTime = null; // Reset start time
+            }
+        }
+
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                if (window.questionTimerInterval) {
+                    clearInterval(window.questionTimerInterval);
+                }
+                showResults();
+                return;
+            }
+            
+            timeLeft--;
+            const hours = Math.floor(timeLeft / 3600);
+            const minutes = Math.floor((timeLeft % 3600) / 60);
+            const seconds = timeLeft % 60;
+            
+            const timerElement = document.getElementById('timer');
+            timerElement.textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Add warning colors
+            const timerContainer = document.querySelector('.timer-container');
+            timerContainer.classList.remove('timer-warning', 'timer-danger');
+            
+            if (timeLeft <= 300) { // Last 5 minutes
+                timerContainer.classList.add('timer-danger');
+            } else if (timeLeft <= 600) { // Last 10 minutes
+                timerContainer.classList.add('timer-warning');
+            }
+        }
+
+        function calculateScore() {
+            let score = 0;
+            const marksPerQuestion = MAX_MARKS / questions.length;
+            
+            userAnswers.forEach((answer, index) => {
+                if (answer !== null) {
+                    if (answer.toString() === questions[index].answer) {
+                        score += marksPerQuestion;
+                    } else {
+                        score -= marksPerQuestion * NEGATIVE_MARKING_FACTOR;
+                    }
+                }
+            });
+            
+            return Math.max(0, score);
+        }
+
+        function showResults() {
+            // Pause the current question timer when showing results
+            pauseQuestionTimer();
+            clearInterval(timerInterval);
+            if (window.questionTimerInterval) {
+                clearInterval(window.questionTimerInterval);
+            }
+            
+            const resultsContainer = document.getElementById('resultsContainer');
+            
+            // Calculate stats
+            let correct = 0;
+            let incorrect = 0;
+            let unattempted = 0;
+            let bookmarked = bookmarkedQuestions.size;
+            
+            userAnswers.forEach((answer, index) => {
+                if (answer === null) {
+                    unattempted++;
+                } else if (answer.toString() === questions[index].answer) {
+                    correct++;
+                } else {
+                    incorrect++;
+                }
+            });
+            
+            const finalScore = calculateScore();
+            const accuracy = correct > 0 ? ((correct / (correct + incorrect)) * 100).toFixed(1) : 0;
+            const attempted = correct + incorrect;
+            const attemptRate = ((attempted / questions.length) * 100).toFixed(1);
+            
+            // Update stats
+            const statsContainer = document.getElementById('resultsStats');
+            statsContainer.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-value">${finalScore.toFixed(2)}</div>
+                    <div class="stat-label"><i class="fas fa-star"></i> Total Score</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${accuracy}%</div>
+                    <div class="stat-label"><i class="fas fa-bullseye"></i> Accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${correct}</div>
+                    <div class="stat-label"><i class="fas fa-check-circle"></i> Correct</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${incorrect}</div>
+                    <div class="stat-label"><i class="fas fa-times-circle"></i> Incorrect</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${attemptRate}%</div>
+                    <div class="stat-label"><i class="fas fa-tasks"></i> Attempt Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${bookmarked}</div>
+                    <div class="stat-label"><i class="fas fa-bookmark"></i> Bookmarked</div>
+                </div>
+            `;
+            
+            // Display question review with time spent per question
+            const reviewContainer = document.getElementById('questionReview');
+            reviewContainer.innerHTML = `
+                <div class="question-review-header">
+                    <h3>Detailed Analysis</h3>
+                    <div class="results-filter">
+                        <button class="filter-btn active" onclick="filterReviewItems('all')">
+                            <i class="fas fa-list"></i> All Questions
+                        </button>
+                        <button class="filter-btn" onclick="filterReviewItems('correct')">
+                            <i class="fas fa-check"></i> Correct
+                        </button>
+                        <button class="filter-btn" onclick="filterReviewItems('incorrect')">
+                            <i class="fas fa-times"></i> Incorrect
+                        </button>
+                        <button class="filter-btn" onclick="filterReviewItems('unattempted')">
+                            <i class="fas fa-minus"></i> Unattempted
+                        </button>
+                    </div>
+                </div>
+                ${questions.map((q, index) => {
+                    const isCorrect = userAnswers[index]?.toString() === q.answer;
+                    const isBookmarked = bookmarkedQuestions.has(index);
+                    const status = userAnswers[index] === null ? 'unattempted' : 
+                                 isCorrect ? 'correct' : 'incorrect';
+                    
+                    const statusIcon = status === 'correct' ? 'check-circle' :
+                                     status === 'incorrect' ? 'times-circle' : 'minus-circle';
+                    
+                    // Format time spent on question
+                    const timeSpent = questionTimers[index];
+                    const timeMinutes = Math.floor(timeSpent / 60);
+                    const timeSeconds = timeSpent % 60;
+                    
+                    return `
+                        <div class="review-item ${status}" data-status="${status}">
+                            <div class="review-header">
+                                <h4>
+                                    Question ${index + 1}
+                                    ${isBookmarked ? '<i class="fas fa-bookmark" style="color: var(--warning);"></i>' : ''}
+                                    <span style="color: var(--text-light); font-size: 0.875rem;">
+                                        <i class="fas fa-clock"></i>
+                                        ${timeMinutes}:${timeSeconds.toString().padStart(2, '0')}
+                                    </span>
+                                </h4>
+                                <span class="review-status ${status}">
+                                    <i class="fas fa-${statusIcon}"></i>
+                                    ${status.charAt(0).toUpperCase() + status.slice(1)}
+                                </span>
+                                <button class="review-toggle" onclick="toggleReviewContent(this)" title="Expand/Collapse">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="review-content">
+                                <div class="review-question">${q.question}</div>
+                                <div class="review-answer">
+                                    <strong><i class="fas fa-user"></i> Your Answer</strong>
+                                    <div>${userAnswers[index] === null ? 'Not attempted' : q['option_' + userAnswers[index]]}</div>
+                                </div>
+                                <div class="review-correct">
+                                    <strong><i class="fas fa-check"></i> Correct Answer</strong>
+                                    <div>${q['option_' + q.answer]}</div>
+                                </div>
+                                <div class="review-solution">
+                                    <strong><i class="fas fa-lightbulb"></i> ${q.solution_heading || 'Solution'}</strong>
+                                    <div>${q.solution_text || 'No solution provided'}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            `;
+            
+            // Show the results container
+            resultsContainer.style.display = 'flex';
+        }
+
+        function closeResults() {
+            document.getElementById('resultsContainer').style.display = 'none';
+        }
+
+        function navigateToQuestion(index) {
+            currentQuestionIndex = index;
+            displayQuestion(index);
+        }
+
+        function displayQuestion(index) {
+            const question = questions[index];
+            const container = document.getElementById('questionContainer');
+            
+            container.innerHTML = `
+                <div class="question-header">
+                    <div class="question-info">
+                        <div class="question-number">Question ${index + 1} of ${questions.length}</div>
+                    </div>
+                    <button class="bookmark-btn ${bookmarkedQuestions.has(index) ? 'active' : ''}" onclick="toggleBookmark()" title="Bookmark this question">
+                        <i class="fas fa-bookmark"></i>
+                    </button>
+                </div>
+                <div class="question-text">${question.question}</div>
+                <div class="options-container">
+                    ${[1, 2, 3, 4].map(optionNum => `
+                        <div class="option ${userAnswers[index] === optionNum ? 'selected' : ''}" 
+                             onclick="selectOption(${optionNum})"
+                             role="button"
+                             tabindex="0">
+                            <div class="option-marker">${String.fromCharCode(64 + optionNum)}</div>
+                            <div class="option-text">${question['option_' + optionNum]}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="navigation-buttons">
+                    <button class="nav-btn" 
+                            onclick="previousQuestion()" 
+                            ${index === 0 ? 'disabled' : ''}>
+                        <i class="fas fa-arrow-left"></i>
+                        Previous
+                    </button>
+                    <button class="nav-btn" onclick="clearSelection()">
+                        <i class="fas fa-eraser"></i>
+                        Mark as Clear
+                    </button>
+                    <button class="nav-btn" onclick="markAsReview()">
+                        <i class="fas fa-flag"></i>
+                        Mark for Review
+                    </button>
+                    ${index === questions.length - 1 ? 
+                        `<button class="nav-btn" onclick="showResults()">
+                            <i class="fas fa-flag-checkered"></i>
+                            Submit Test
+                        </button>` :
+                        `<button class="nav-btn" onclick="nextQuestion()">
+                            Next
+                            <i class="fas fa-arrow-right"></i>
+                        </button>`
+                    }
+                </div>
+            `;
+
+            const progress = ((index + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            updatePalette();
+        }
+
+        function selectOption(optionNum) {
+            userAnswers[currentQuestionIndex] = optionNum;
+            displayQuestion(currentQuestionIndex);
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const themeIcon = document.querySelector('.theme-toggle i');
+            if (document.body.classList.contains('dark-mode')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        }
+
+        function togglePalette() {
+            const palette = document.getElementById('questionPalette');
+            if (palette.style.display === 'none' || !palette.style.display) {
+                palette.style.display = 'block';
+            } else {
+                palette.style.display = 'none';
+            }
+        }
+
+        function updatePalette() {
+            const paletteGrid = document.getElementById('paletteGrid');
+            paletteGrid.innerHTML = '';
+            // Initialize counters
+            let answeredCount = 0;
+            let notAnsweredCount = questions.length;
+            let reviewCount = 0;
+            let bookmarkedCount = 0;
+            
+            for (let i = 0; i < questions.length; i++) {
+                const item = document.createElement('div');
+                item.className = 'palette-item';
+                if (i === currentQuestionIndex) item.classList.add('current');
+                if (userAnswers[i] !== null) {
+                    item.classList.add('answered');
+                    answeredCount++;
+                    notAnsweredCount--;
+                }
+                if (bookmarkedQuestions.has(i)) {
+                    item.classList.add('bookmarked');
+                    bookmarkedCount++;
+                }
+                if (reviewedQuestions && reviewedQuestions.has(i)) {
+                    item.classList.add('review');
+                    reviewCount++;
+                }
+                item.textContent = i + 1;
+                item.onclick = () => navigateToQuestion(i);
+                paletteGrid.appendChild(item);
+            }
+            // Update counters in the status summary
+            document.getElementById('answeredCount').textContent = answeredCount;
+            document.getElementById('notAnsweredCount').textContent = notAnsweredCount;
+            document.getElementById('reviewCount').textContent = reviewCount;
+            document.getElementById('bookmarkedCount').textContent = bookmarkedCount;
+        }
+        function toggleBookmark() {
+            if (bookmarkedQuestions.has(currentQuestionIndex)) {
+                bookmarkedQuestions.delete(currentQuestionIndex);
+            } else {
+                bookmarkedQuestions.add(currentQuestionIndex);
+            }
+            displayQuestion(currentQuestionIndex);
+            updatePalette();
+        }
+
+        function clearSelection() {
+            userAnswers[currentQuestionIndex] = null;
+            displayQuestion(currentQuestionIndex);
+            updatePalette();
+        }
+
+        function markAsReview() {
+            if (!reviewedQuestions) {
+                reviewedQuestions = new Set();
+            }
+            
+            if (reviewedQuestions.has(currentQuestionIndex)) {
+                reviewedQuestions.delete(currentQuestionIndex);
+            } else {
+                reviewedQuestions.add(currentQuestionIndex);
+            }
+            
+            displayQuestion(currentQuestionIndex);
+            updatePalette();
+        }
+
+        // Add double-click functionality to uncheck answers
+        document.addEventListener('click', (e) => {
+            const option = e.target.closest('.option');
+            if (option) {
+                if (e.detail === 2) { // Check if it's a double click
+                    clearSelection();
+                }
+            }
+            
+            const palette = document.getElementById('questionPalette');
+            const paletteToggle = document.querySelector('.palette-toggle');
+            
+            if (window.innerWidth <= 768 && 
+                !palette.contains(e.target) && 
+                !paletteToggle.contains(e.target) &&
+                palette.style.display === 'block') {
+                palette.style.display = 'none';
+            }
+        });
+
+        // Initialize
+        startTimer();
+        displayQuestion(0);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Prevent default behavior for arrow keys to avoid scrolling
+            if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+            }
+            
+            // Handle navigation and shortcuts
+            switch (e.key) {
+                case 'ArrowRight':
+                case 'n':
+                    nextQuestion();
+                    break;
+                case 'ArrowLeft':
+                case 'p':
+                    previousQuestion();
+                    break;
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                    selectOption(parseInt(e.key));
+                    break;
+                case 'b':
+                    toggleBookmark();
+                    break;
+                case ' ':
+                    e.preventDefault();
+                    togglePalette();
+                    break;
+            }
+        });
+
+        // Add keyboard shortcut help
+        function showKeyboardShortcuts() {
+            alert(`
+Keyboard Shortcuts:
+- Arrow Right or 'N': Next question
+- Arrow Left or 'P': Previous question
+- 1-4: Select answer option
+- 'B': Bookmark/Unbookmark current question
+- 'Space': Toggle question palette
+            `.trim());
+        }
+
+        function filterReviewItems(status) {
+            // Update active state of filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.onclick.toString().includes(`'${status}'`)) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Show/hide review items based on status
+            const reviewItems = document.querySelectorAll('.review-item');
+            let visibleCount = 0;
+            
+            reviewItems.forEach(item => {
+                if (status === 'all' || item.dataset.status === status) {
+                    item.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // Show "no items" message if no items are visible
+            const noItemsMessage = document.getElementById('noItemsMessage') || (() => {
+                const msg = document.createElement('div');
+                msg.id = 'noItemsMessage';
+                msg.className = 'no-items-message';
+                document.querySelector('.question-review').appendChild(msg);
+                return msg;
+            })();
+
+            if (visibleCount === 0) {
+                noItemsMessage.style.display = 'block';
+                noItemsMessage.textContent = `No ${status === 'all' ? '' : status} questions found`;
+            } else {
+                noItemsMessage.style.display = 'none';
+            }
+        }
+
+        // Clean up all intervals when page is unloaded
+        window.addEventListener('beforeunload', () => {
+            clearInterval(timerInterval);
+            if (window.questionTimerInterval) {
+                clearInterval(window.questionTimerInterval);
+            }
+        });
+    
 </script>
 
 </head>
@@ -2061,760 +2588,6 @@ a[href*="youtube.com/@"],
         </div>
     </div>
     
-    <script>
-        const questions = [{"id": "5859", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">\"One thing scientists    have discovered,\" note Thomas Dreier, \"is </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that    often-praised children become more... (1)... than often blamed    ones. There's a creative element in praise.\"Good leaders know    that. Fundamentally, their job is to help others make the most of    themselves. Viewed in strictly ... (2)... terms, that is their    greater contribution to their companies. People, employees, are a    great untapped ... (3)... of energy.</span><span><span style=\"font-size:13pt\">    </span></span><span style=\"font-size:13pt\"><span>Leaders    who can tap this source are valuable to any organization. </span></span><span style=\"font-size:13pt\">It    doesn't require elaborate...(4)\u2026 to bring out the best in    people. </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">If you ...    (5)... their work, they'll probably give you the best </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that's in    them.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.1.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">adamant</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">notorious</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">rebellious</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">intelligent</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "4", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">intelligent</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5860", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">\"One thing scientists    have discovered,\" note Thomas Dreier, \"is </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that    often-praised children become more... (1)... than often blamed    ones. There's a creative element in praise.\"Good leaders know    that. Fundamentally, their job is to help others make the most of    themselves. Viewed in strictly ... (2)... terms, that is their    greater contribution to their companies. People, employees, are a    great untapped ... (3)... of energy.</span><span><span style=\"font-size:13pt\">    </span></span><span style=\"font-size:13pt\"><span>Leaders    who can tap this source are valuable to any organization. </span></span><span style=\"font-size:13pt\">It    doesn't require elaborate...(4)\u2026 to bring out the best in    people. </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">If you ...    (5)... their work, they'll probably give you the best </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that's in    them.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.2.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">useful</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">remedial</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">cultural</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">commercial</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "4", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">commercial</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5861", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">\"One thing scientists    have discovered,\" note Thomas Dreier, \"is </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that    often-praised children become more... (1)... than often blamed    ones. There's a creative element in praise.\"Good leaders know    that. Fundamentally, their job is to help others make the most of    themselves. Viewed in strictly ... (2)... terms, that is their    greater contribution to their companies. People, employees, are a    great untapped ... (3)... of energy.</span><span><span style=\"font-size:13pt\">    </span></span><span style=\"font-size:13pt\"><span>Leaders    who can tap this source are valuable to any organization. </span></span><span style=\"font-size:13pt\">It    doesn't require elaborate...(4)\u2026 to bring out the best in    people. </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">If you ...    (5)... their work, they'll probably give you the best </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that's in    them.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.3.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">wastage</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">reservoir</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">utilization</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">conservation</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "2", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">reservoir</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5862", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">\"One thing scientists    have discovered,\" note Thomas Dreier, \"is </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that    often-praised children become more... (1)... than often blamed    ones. There's a creative element in praise.\"Good leaders know    that. Fundamentally, their job is to help others make the most of    themselves. Viewed in strictly ... (2)... terms, that is their    greater contribution to their companies. People, employees, are a    great untapped ... (3)... of energy.</span><span><span style=\"font-size:13pt\">    </span></span><span style=\"font-size:13pt\"><span>Leaders    who can tap this source are valuable to any organization. </span></span><span style=\"font-size:13pt\">It    doesn't require elaborate...(4)\u2026 to bring out the best in    people. </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">If you ...    (5)... their work, they'll probably give you the best </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that's in    them.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.4.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">pains</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">troubles</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">features</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">incentives</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "4", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">incentives</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5863", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">\"One thing scientists    have discovered,\" note Thomas Dreier, \"is </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that    often-praised children become more... (1)... than often blamed    ones. There's a creative element in praise.\"Good leaders know    that. Fundamentally, their job is to help others make the most of    themselves. Viewed in strictly ... (2)... terms, that is their    greater contribution to their companies. People, employees, are a    great untapped ... (3)... of energy.</span><span><span style=\"font-size:13pt\">    </span></span><span style=\"font-size:13pt\"><span>Leaders    who can tap this source are valuable to any organization. </span></span><span style=\"font-size:13pt\">It    doesn't require elaborate...(4)\u2026 to bring out the best in    people. </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">If you ...    (5)... their work, they'll probably give you the best </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">that's in    them.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.5.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">share</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">ignore</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">perform</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">recognize</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "4", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">recognize</span></span></p>    <p>    <span><span style=\"font-size:13pt\">Adamant=    determined not to change your mind or to be </span></span>    </p>    <p>    <span><span style=\"font-size:13pt\">persuaded    about something</span></span></p>    <p>    <span><span style=\"font-size:13pt\">Rebellious=    unwilling to obey rules or follow generally </span></span>    </p>    <p>    <span><span style=\"font-size:13pt\">accepted    standards of behaviour, dress, etc.</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5864", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">With the Himalayas looming    over Dharamshala, India scaled fresh heights in its evolving    journey in Twenty20 Internationals. After winning the inaugural    2007 ICC World T20 in South Africa, the Men in Blue flattered to    deceive in cricket\u2019s shortest version, specifically in global    events. However, India largely does (6)______</span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in bilateral    series and the latest triumph was the 3-0 sweep against the    visiting Sri Lankans in a clash that had its </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">final episode    at Dharamshala on Sunday night. After (7)_______ </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">the opening    fixture at Lucknow, India extended that winning-act </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in the next    two games under the mountain skies. Having recently swept past the    West Indies at 3-0 each in ODIs </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">and T20Is,    Rohit Sharma\u2019s cup of joy continues to brim. The </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">latest squad    missed Virat Kohli and Rishabh Pant, who were given a bio-bubble    break, while the injured duo of K.L. Rahul and Hardik Pandya    remain on the recovery path. Yet, India papered over the    (8)_______ and found men who could fill these vacant boots. Even    Rohit after a 44 at Lucknow, managed just one and five in the last    two encounters. The absence of key personnel and the (9)_______    batting returns from the captain were tided past. The West Indies    earlier and Sri Lanka now are essentially outfits in transition,    (10)________ India deserves credit for the way it </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">drove home    its advantage with emphatic performances.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.6.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">Infuse</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">Excel</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">Boot</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">Attest</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "2", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">Excel</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5865", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">With the Himalayas looming    over Dharamshala, India scaled fresh heights in its evolving    journey in Twenty20 Internationals. After winning the inaugural    2007 ICC World T20 in South Africa, the Men in Blue flattered to    deceive in cricket\u2019s shortest version, specifically in global    events. However, India largely does (6)______</span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in bilateral    series and the latest triumph was the 3-0 sweep against the    visiting Sri Lankans in a clash that had its </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">final episode    at Dharamshala on Sunday night. After (7)_______ </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">the opening    fixture at Lucknow, India extended that winning-act </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in the next    two games under the mountain skies. Having recently swept past the    West Indies at 3-0 each in ODIs </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">and T20Is,    Rohit Sharma\u2019s cup of joy continues to brim. The </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">latest squad    missed Virat Kohli and Rishabh Pant, who were given a bio-bubble    break, while the injured duo of K.L. Rahul and Hardik Pandya    remain on the recovery path. Yet, India papered over the    (8)_______ and found men who could fill these vacant boots. Even    Rohit after a 44 at Lucknow, managed just one and five in the last    two encounters. The absence of key personnel and the (9)_______    batting returns from the captain were tided past. The West Indies    earlier and Sri Lanka now are essentially outfits in transition,    (10)________ India deserves credit for the way it </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">drove home    its advantage with emphatic performances.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.7.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">Switching</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">Hailing</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">Emerging</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">Clinching</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "4", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">Clinching</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5866", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">With the Himalayas looming    over Dharamshala, India scaled fresh heights in its evolving    journey in Twenty20 Internationals. After winning the inaugural    2007 ICC World T20 in South Africa, the Men in Blue flattered to    deceive in cricket\u2019s shortest version, specifically in global    events. However, India largely does (6)______</span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in bilateral    series and the latest triumph was the 3-0 sweep against the    visiting Sri Lankans in a clash that had its </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">final episode    at Dharamshala on Sunday night. After (7)_______ </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">the opening    fixture at Lucknow, India extended that winning-act </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in the next    two games under the mountain skies. Having recently swept past the    West Indies at 3-0 each in ODIs </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">and T20Is,    Rohit Sharma\u2019s cup of joy continues to brim. The </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">latest squad    missed Virat Kohli and Rishabh Pant, who were given a bio-bubble    break, while the injured duo of K.L. Rahul and Hardik Pandya    remain on the recovery path. Yet, India papered over the    (8)_______ and found men who could fill these vacant boots. Even    Rohit after a 44 at Lucknow, managed just one and five in the last    two encounters. The absence of key personnel and the (9)_______    batting returns from the captain were tided past. The West Indies    earlier and Sri Lanka now are essentially outfits in transition,    (10)________ India deserves credit for the way it </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">drove home    its advantage with emphatic performances.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.8.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">Cracks</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">chords</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">Credits</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">Cores</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "1", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">Cracks</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5867", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">With the Himalayas looming    over Dharamshala, India scaled fresh heights in its evolving    journey in Twenty20 Internationals. After winning the inaugural    2007 ICC World T20 in South Africa, the Men in Blue flattered to    deceive in cricket\u2019s shortest version, specifically in global    events. However, India largely does (6)______</span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in bilateral    series and the latest triumph was the 3-0 sweep against the    visiting Sri Lankans in a clash that had its </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">final episode    at Dharamshala on Sunday night. After (7)_______ </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">the opening    fixture at Lucknow, India extended that winning-act </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in the next    two games under the mountain skies. Having recently swept past the    West Indies at 3-0 each in ODIs </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">and T20Is,    Rohit Sharma\u2019s cup of joy continues to brim. The </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">latest squad    missed Virat Kohli and Rishabh Pant, who were given a bio-bubble    break, while the injured duo of K.L. Rahul and Hardik Pandya    remain on the recovery path. Yet, India papered over the    (8)_______ and found men who could fill these vacant boots. Even    Rohit after a 44 at Lucknow, managed just one and five in the last    two encounters. The absence of key personnel and the (9)_______    batting returns from the captain were tided past. The West Indies    earlier and Sri Lanka now are essentially outfits in transition,    (10)________ India deserves credit for the way it </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">drove home    its advantage with emphatic performances.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.9.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">Evident</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">Meagre</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">Ample</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">Wary</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "2", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">Meagre</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5868", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">With the Himalayas looming    over Dharamshala, India scaled fresh heights in its evolving    journey in Twenty20 Internationals. After winning the inaugural    2007 ICC World T20 in South Africa, the Men in Blue flattered to    deceive in cricket\u2019s shortest version, specifically in global    events. However, India largely does (6)______</span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in bilateral    series and the latest triumph was the 3-0 sweep against the    visiting Sri Lankans in a clash that had its </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">final episode    at Dharamshala on Sunday night. After (7)_______ </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">the opening    fixture at Lucknow, India extended that winning-act </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in the next    two games under the mountain skies. Having recently swept past the    West Indies at 3-0 each in ODIs </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">and T20Is,    Rohit Sharma\u2019s cup of joy continues to brim. The </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">latest squad    missed Virat Kohli and Rishabh Pant, who were given a bio-bubble    break, while the injured duo of K.L. Rahul and Hardik Pandya    remain on the recovery path. Yet, India papered over the    (8)_______ and found men who could fill these vacant boots. Even    Rohit after a 44 at Lucknow, managed just one and five in the last    two encounters. The absence of key personnel and the (9)_______    batting returns from the captain were tided past. The West Indies    earlier and Sri Lanka now are essentially outfits in transition,    (10)________ India deserves credit for the way it </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">drove home    its advantage with emphatic performances.</span></p>    <p><span style=\"font-size:13pt\"><span>Select    the most appropriate option fill in the blank.10.</span></span></p>", "option_1": "<p>    <span><span style=\"font-size:13pt\">Unless</span></span></p>", "option_2": "<p>    <span><span style=\"font-size:13pt\">But</span></span></p>", "option_3": "<p>    <span><span style=\"font-size:13pt\">Whereas</span></span></p>", "option_4": "<p>    <span><span style=\"font-size:13pt\">And</span></span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "2", "solution_heading": "Full Solution", "solution_text": "<p>    <span><span style=\"font-size:13pt\">but</span></span></p>    <p>    <span><span style=\"font-size:13pt\">Infuse=    to make somebody/something have a particular</span></span></p>    <p>    <span><span style=\"font-size:13pt\">quality</span></span></p>    <p>    <span><span style=\"font-size:13pt\">Hailing=    to describe somebody/something as being very </span></span>    </p>    <p>    <span><span style=\"font-size:13pt\">good    or special, especially in newspapers, etc.</span></span></p>    <p>    <span><span style=\"font-size:13pt\">Meagre=    small in quantity and poor in quality</span></span></p>    <p>    <span><span style=\"font-size:13pt\">Ample=    enough or more than enough</span></span></p>    <p>    <span><span style=\"font-size:13pt\">Wary=    careful when dealing with somebody/something </span></span>    </p>    <p>    <span><span style=\"font-size:13pt\">because    you think that there may be a danger or problem</span></span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5869", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">India\u2019s big moment as    host of the G-20 Summit will arrive this weekend, as world leaders    gather in New Delhi for the main </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">event marking    the year of its presidency. The group is seen as a more    egalitarian version of the G-7 as it includes the leadership </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">of the    developing world, and is now the \u201cpre-eminent forum for global    economic cooperation\u201d. At the start of its presidency last    December, it was clear that India would be hamstrung by several    events. The global economic headwinds, exacerbated by the COVID-19    pandemic, meant a challenging environment for New Delhi in    ensuring that all countries were willing to contribute resources    for imperatives such as climate finance, and </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">investment in    health and poverty alleviation.The Ukraine conflict and the    sanctions against Russia were </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">next,    practically splitting the G-20 down the middle. This made forging    a joint statement even last year difficult. But Indonesian    President Joko Widodo was able to ensure a tenuous consensus </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">by travelling    to Moscow and Kyiv and enlisting India\u2019s support. India\u2019s    presidency also came amidst continuing bilateral tensions with    China over its border moves. This has become an additional problem    for India\u2019s G-20 Sherpa team as China has played </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">spoiler at    many a meeting. The government\u2019s decision to hold </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">the G-20    summit two months early, instead of in November, the practice, has    given officials less time to ensure that the Leaders\u2019    declaration is ready; some of the heavy lifting on building</span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">consensus    will now be left to Prime Minister Narendra Modi to handle. In the    face of such odds, India\u2019s efforts to ensure the </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">vitality of    the G-20 process have been valiant and also a well thought-out    one. Mr. Modi made it clear from the beginning that India would    not take sides in the Ukraine conflict, and </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">instead    focused on issues affecting the global south, holding a summit of    developing countries, putting issues of food, fertilizer and    energy security, multilateral reform and global governance above    geopolitical issues. India even hosted the </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">Voice of    Global South Summit. Mr. Modi also championed the induction of the    African Union into the G-20, which will be a feather in India\u2019s    cap if it goes through. Internally, the Indian G-20 presidency has    been marked by a distinct effort to \u201cdemocratise\u201d the process    by holding 220 </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">meetings    across 60 Indian cities, which, though colossally expensive, has    ensured a showcasing of India\u2019s diversity. India\u2019s </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">G-20 moment    is already memorable, but the days ahead will be crucial in    cementing its legacy. That legacy hinges on ensuring a truce among    its fractious members, that allows for a consensus over the vision    of \u201cOne Earth, One Family, One Future\u201d in the next few days.</span></p>    <p><span style=\"font-size:13pt\">What    is a suitable title for this passage?</span></p>", "option_1": "<p>    <span style=\"font-size:13pt\">\"The Challenges and    Triumphs of India's G-20 Presidency\u201c</span></p>", "option_2": "<p>    <span style=\"font-size:13pt\">\"The Role of    Developing Nations in the G-20 Summit\" </span>    </p>", "option_3": "<p>    <span style=\"font-size:13pt\">\"India's Diplomatic    Efforts on the Global Stage\u201c</span></p>", "option_4": "<p>    <span style=\"font-size:13pt\">\"The Ongoing Ukraine    Conflict's Impact on the G-20\"</span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "1", "solution_heading": "Full Solution", "solution_text": "<p>    <span style=\"font-size:13pt\">\"The Challenges and    Triumphs of India's G-20 Presidency\u201c</span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5870", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">India\u2019s big moment as    host of the G-20 Summit will arrive this weekend, as world leaders    gather in New Delhi for the main </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">event marking    the year of its presidency. The group is seen as a more    egalitarian version of the G-7 as it includes the leadership </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">of the    developing world, and is now the \u201cpre-eminent forum for global    economic cooperation\u201d. At the start of its presidency last    December, it was clear that India would be hamstrung by several    events. The global economic headwinds, exacerbated by the COVID-19    pandemic, meant a challenging environment for New Delhi in    ensuring that all countries were willing to contribute resources    for imperatives such as climate finance, and </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">investment in    health and poverty alleviation.The Ukraine conflict and the    sanctions against Russia were </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">next,    practically splitting the G-20 down the middle. This made forging    a joint statement even last year difficult. But Indonesian    President Joko Widodo was able to ensure a tenuous consensus </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">by travelling    to Moscow and Kyiv and enlisting India\u2019s support. India\u2019s    presidency also came amidst continuing bilateral tensions with    China over its border moves. This has become an additional problem    for India\u2019s G-20 Sherpa team as China has played </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">spoiler at    many a meeting. The government\u2019s decision to hold </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">the G-20    summit two months early, instead of in November, the practice, has    given officials less time to ensure that the Leaders\u2019    declaration is ready; some of the heavy lifting on building</span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">consensus    will now be left to Prime Minister Narendra Modi to handle. In the    face of such odds, India\u2019s efforts to ensure the </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">vitality of    the G-20 process have been valiant and also a well thought-out    one. Mr. Modi made it clear from the beginning that India would    not take sides in the Ukraine conflict, and </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">instead    focused on issues affecting the global south, holding a summit of    developing countries, putting issues of food, fertilizer and    energy security, multilateral reform and global governance above    geopolitical issues. India even hosted the </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">Voice of    Global South Summit. Mr. Modi also championed the induction of the    African Union into the G-20, which will be a feather in India\u2019s    cap if it goes through. Internally, the Indian G-20 presidency has    been marked by a distinct effort to \u201cdemocratise\u201d the process    by holding 220 </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">meetings    across 60 Indian cities, which, though colossally expensive, has    ensured a showcasing of India\u2019s diversity. India\u2019s </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">G-20 moment    is already memorable, but the days ahead will be crucial in    cementing its legacy. That legacy hinges on ensuring a truce among    its fractious members, that allows for a consensus over the vision    of \u201cOne Earth, One Family, One Future\u201d in the next few days.</span></p>    <p><span style=\"font-size:13pt\">Which    of the following statements is true according to the passage?</span></p>", "option_1": "<p>    <span style=\"font-size:13pt\">The G-20 Summit is seen as    a more egalitarian version of the G-7.</span></p>", "option_2": "<p>    <span style=\"font-size:13pt\">India's G-20 presidency was    marked by taking sides in the Ukraine conflict. </span>    </p>", "option_3": "<p>    <span style=\"font-size:13pt\">The Indian government    decided to hold the G-20 summit in November.  </span>    </p>", "option_4": "<p>    <span style=\"font-size:13pt\">China's cooperation in the    G-20 process has been exemplary.</span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "1", "solution_heading": "Full Solution", "solution_text": "<p>    <span style=\"font-size:13pt\">The G-20 Summit is seen as    a more egalitarian version of the G-7.</span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5871", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">India\u2019s big moment as    host of the G-20 Summit will arrive this weekend, as world leaders    gather in New Delhi for the main </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">event marking    the year of its presidency. The group is seen as a more    egalitarian version of the G-7 as it includes the leadership </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">of the    developing world, and is now the \u201cpre-eminent forum for global    economic cooperation\u201d. At the start of its presidency last    December, it was clear that India would be hamstrung by several    events. The global economic headwinds, exacerbated by the COVID-19    pandemic, meant a challenging environment for New Delhi in    ensuring that all countries were willing to contribute resources    for imperatives such as climate finance, and </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">investment in    health and poverty alleviation.The Ukraine conflict and the    sanctions against Russia were </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">next,    practically splitting the G-20 down the middle. This made forging    a joint statement even last year difficult. But Indonesian    President Joko Widodo was able to ensure a tenuous consensus </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">by travelling    to Moscow and Kyiv and enlisting India\u2019s support. India\u2019s    presidency also came amidst continuing bilateral tensions with    China over its border moves. This has become an additional problem    for India\u2019s G-20 Sherpa team as China has played </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">spoiler at    many a meeting. The government\u2019s decision to hold </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">the G-20    summit two months early, instead of in November, the practice, has    given officials less time to ensure that the Leaders\u2019    declaration is ready; some of the heavy lifting on building</span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">consensus    will now be left to Prime Minister Narendra Modi to handle. In the    face of such odds, India\u2019s efforts to ensure the </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">vitality of    the G-20 process have been valiant and also a well thought-out    one. Mr. Modi made it clear from the beginning that India would    not take sides in the Ukraine conflict, and </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">instead    focused on issues affecting the global south, holding a summit of    developing countries, putting issues of food, fertilizer and    energy security, multilateral reform and global governance above    geopolitical issues. India even hosted the </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">Voice of    Global South Summit. Mr. Modi also championed the induction of the    African Union into the G-20, which will be a feather in India\u2019s    cap if it goes through. Internally, the Indian G-20 presidency has    been marked by a distinct effort to \u201cdemocratise\u201d the process    by holding 220 </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">meetings    across 60 Indian cities, which, though colossally expensive, has    ensured a showcasing of India\u2019s diversity. India\u2019s </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">G-20 moment    is already memorable, but the days ahead will be crucial in    cementing its legacy. That legacy hinges on ensuring a truce among    its fractious members, that allows for a consensus over the vision    of \u201cOne Earth, One Family, One Future\u201d in the next few days.</span></p>    <p><span style=\"font-size:13pt\">What    is the tone of the passage?  </span>    </p>", "option_1": "<p>    <span style=\"font-size:13pt\">Optimistic </span>    </p>", "option_2": "<p>    <span style=\"font-size:13pt\">Cautious </span>    </p>", "option_3": "<p>    <span style=\"font-size:13pt\">Critical</span></p>", "option_4": "<p>    <span style=\"font-size:13pt\">Indifferent</span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "2", "solution_heading": "Full Solution", "solution_text": "<p>    <span style=\"font-size:13pt\">Cautious</span></p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5872", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">India\u2019s big moment as    host of the G-20 Summit will arrive this weekend, as world leaders    gather in New Delhi for the main </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">event marking    the year of its presidency. The group is seen as a more    egalitarian version of the G-7 as it includes the leadership </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">of the    developing world, and is now the \u201cpre-eminent forum for global    economic cooperation\u201d. At the start of its presidency last    December, it was clear that India would be hamstrung by several    events. The global economic headwinds, exacerbated by the COVID-19    pandemic, meant a challenging environment for New Delhi in    ensuring that all countries were willing to contribute resources    for imperatives such as climate finance, and </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">investment in    health and poverty alleviation.The Ukraine conflict and the    sanctions against Russia were </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">next,    practically splitting the G-20 down the middle. This made forging    a joint statement even last year difficult. But Indonesian    President Joko Widodo was able to ensure a tenuous consensus </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">by travelling    to Moscow and Kyiv and enlisting India\u2019s support. India\u2019s    presidency also came amidst continuing bilateral tensions with    China over its border moves. This has become an additional problem    for India\u2019s G-20 Sherpa team as China has played </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">spoiler at    many a meeting. The government\u2019s decision to hold </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">the G-20    summit two months early, instead of in November, the practice, has    given officials less time to ensure that the Leaders\u2019    declaration is ready; some of the heavy lifting on building</span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">consensus    will now be left to Prime Minister Narendra Modi to handle. In the    face of such odds, India\u2019s efforts to ensure the </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">vitality of    the G-20 process have been valiant and also a well thought-out    one. Mr. Modi made it clear from the beginning that India would    not take sides in the Ukraine conflict, and </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">instead    focused on issues affecting the global south, holding a summit of    developing countries, putting issues of food, fertilizer and    energy security, multilateral reform and global governance above    geopolitical issues. India even hosted the </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">Voice of    Global South Summit. Mr. Modi also championed the induction of the    African Union into the G-20, which will be a feather in India\u2019s    cap if it goes through. Internally, the Indian G-20 presidency has    been marked by a distinct effort to \u201cdemocratise\u201d the process    by holding 220 </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">meetings    across 60 Indian cities, which, though colossally expensive, has    ensured a showcasing of India\u2019s diversity. India\u2019s </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">G-20 moment    is already memorable, but the days ahead will be crucial in    cementing its legacy. That legacy hinges on ensuring a truce among    its fractious members, that allows for a consensus over the vision    of \u201cOne Earth, One Family, One Future\u201d in the next few days.</span></p>    <p><span style=\"font-size:13pt\">What    can be inferred from the passage?  </span>    </p>", "option_1": "<p>    <span style=\"font-size:13pt\">India's G-20 presidency    faced no challenges or obstacles. </span>    </p>", "option_2": "<p>    <span style=\"font-size:13pt\">The G-20 Summit primarily    focused on geopolitical issues.  </span>    </p>", "option_3": "<p>    <span style=\"font-size:13pt\">Indonesia's President    played a crucial role in achieving consensus. </span>    </p>", "option_4": "<p>    <span style=\"font-size:13pt\">India's G-20 presidency did    not prioritize issues affecting the global south.</span></p>", "option_5": "", "option_6": "", "option_7": "", "option_8": "", "option_9": "", "option_10": "", "option_image_1": "", "option_image_2": "", "option_image_3": "", "option_image_4": "", "option_image_5": "", "option_image_6": "", "option_image_7": "", "option_image_8": "", "option_image_9": "", "option_image_10": "", "image_link_1": "", "image_link_2": "", "image_link_3": "", "answer": "3", "solution_heading": "Full Solution", "solution_text": "<p>    <span style=\"font-size:13pt\">Indonesia's President    played a crucial role in achieving consensus. </span>    </p>", "solution_image_1": "", "solution_image_2": "", "solution_video": "", "difficulty_level": "3", "topic": "", "exam": "1", "section_id": "207", "subject": "", "concept": "", "report_count": "0", "positive_marks": "3.00", "negative_marks": "1.00", "sortingparam": "0.00", "question_heading": "", "directive": "", "deleted": "0", "image_check": "0"}, {"id": "5873", "test_series_id": "3", "test_id": "186", "question_type": "1", "question_ui_type": "1", "question": "<p>    <span style=\"font-size:13pt\">Russia\u2019s announcement    that it is pulling back some troops from Ukraine\u2019s borders is    the strongest signal of de-escalation </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">from Moscow.    Russia has always maintained that it had no plans </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">to attack    Ukraine. But the massive troop mobilisation on the </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">three flanks    of Ukraine, which included combat aircraft, </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">warships and    S400 missile defence systems, had raised fears of </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">war. Besides,    the U.S.\u2019s warning that a Russian invasion could </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">come \u201cany    day\u201d and its decision to shut the American embassy </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">in Kiev added    to the frenzy. The Russian approach appeared to have been rooted    in building military pressure around Ukraine </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">to gain    diplomatic leverage in talks with the West. In the last </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">few weeks,    European leaders, Hungary\u2019s Viktor Orb\u00e1n, </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">France\u2019s    Emmanuel Macron and Germany\u2019s Olaf Scholz, have visited Moscow.    Of these, the diplomatic interventions by Mr. Macron, who called    for respecting Russian security concerns </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">and sought to    revive the Minsk agreement on Ukraine\u2019s civil </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">strife, and    Mr. Scholz, who said in Kiev that Ukraine\u2019s entry </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">into NATO was    \u201cnot on the agenda right now\u201d, were significant. Their talks    with Russian President Vladimir Putin opened a diplomatic path    towards de-escalation. It is too early to say that </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">the crisis is    over. The complex issue is rooted in Russia\u2019s security concerns    and NATO\u2019s expansionary open-door policy with no quick    solutions. But the suggestions from the talks Russia and the West    have had point to a formula for peace. Russia\u2019s three</span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">concerns are:    one, it does not want neighbours Georgia and Ukraine to be members    of NATO. Two, it wants NATO (read </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">the U.S.) to    roll back its military presence and drills from </span><span style=\"font-size:13pt\"><span>    </span></span><span style=\"font-size:13pt\">Eastern    Europe and the Black Sea. Three, it wants the Ukraine crisis \u2014    the civil conflict between Kiev and the Russia-backed ];
-        const sectionsData = null;
-        const marksPerQ = 3.0;
-        const negMarks = 1.0;
-        const totalDuration = 60;
-        
-        class CBTExamApp {
-            constructor() {
-                this.questions = questions;
-                this.sections = sectionsData;
-                this.currentQuestion = 0;
-                this.answers = new Array(this.questions.length).fill(null);
-                this.markedForReview = new Array(this.questions.length).fill(false);
-                this.timeSpent = new Array(this.questions.length).fill(0);
-                this.isEnglish = true;
-                this.isSubmitted = false;
-                this.startTime = null;
-                this.lastQuestionTime = null;
-                this.mainTimer = null;
-                this.sectionTimer = null;
-                
-                // Determine active section index for hard locks, or custom segment tabs
-                this.currentSectionIdx = 0;
-                
-                this.totalTimeLeft = totalDuration * 60;
-                
-                this.initElements();
-                this.setupWelcomeScreen();
-                this.setupThemeToggle();
-                this.setupBeforeUnload();
-            }
-            
-            initElements() {
-                this.els = {
-                    welcomeScreen: document.getElementById('welcomeScreen'),
-                    examContainer: document.getElementById('examContainer'),
-                    mainTimer: document.getElementById('mainTimer'),
-                    sectionBadge: document.getElementById('sectionBadge'),
-                    sectionName: document.getElementById('sectionName'),
-                    sectionTimer: document.getElementById('sectionTimer'),
-                    sectionTabs: document.getElementById('sectionTabs'),
-                    questionNum: document.getElementById('questionNum'),
-                    questionMarks: document.getElementById('questionMarks'),
-                    questionText: document.getElementById('questionText'),
-                    comprehension: document.getElementById('comprehension'),
-                    comprehensionText: document.getElementById('comprehensionText'),
-                    optionsList: document.getElementById('optionsList'),
-                    solutionBox: document.getElementById('solutionBox'),
-                    solutionStats: document.getElementById('solutionStats'),
-                    solutionText: document.getElementById('solutionText'),
-                    progressText: document.getElementById('progressText'),
-                    answeredCount: document.getElementById('answeredCount'),
-                    desktopNav: document.getElementById('desktopNav'),
-                    mobileNav: document.getElementById('mobileNav'),
-                    mobileNavGrid: document.getElementById('mobileNavGrid'),
-                    resultModal: document.getElementById('resultModal'),
-                    resultScore: document.getElementById('resultScore'),
-                    correctCount: document.getElementById('correctCount'),
-                    incorrectCount: document.getElementById('incorrectCount'),
-                    unattemptedCount: document.getElementById('unattemptedCount'),
-                    timeTaken: document.getElementById('timeTaken'),
-                    sectionResults: document.getElementById('sectionResults'),
-                    sectionResultsBody: document.getElementById('sectionResultsBody')
-                };
-            }
-
-            setupWelcomeScreen() {
-                document.getElementById('welcomeTotalQs').textContent = this.questions.length;
-                document.getElementById('welcomeTotalMarks').textContent = (this.questions.length * marksPerQ).toFixed(1);
-                document.getElementById('welcomeDuration').textContent = totalDuration;
-                document.getElementById('welcomeMarksScheme').textContent = `+${marksPerQ.toFixed(1)} / -${negMarks.toFixed(1)}`;
-                
-                if (this.sections && this.sections.length > 0) {
-                    const sBlock = document.getElementById('welcomeSectionsBlock');
-                    const sBody = document.getElementById('welcomeSectionsBody');
-                    sBlock.style.display = 'block';
-                    sBody.innerHTML = this.sections.map(s => `
-                        <tr>
-                            <td>
-                                <strong>${s.name}</strong>
-                                ${s.subsections ? `<div class="subsec-container">${s.subsections.map(sub => `<div class="subsec-row">${sub.name}: Q${sub.start+1}-Q${sub.end+1}</div>`).join('')}</div>` : ''}
-                            </td>
-                            <td>Q${s.start+1} - Q${s.end+1}</td>
-                            <td>${Math.round(s.timer / 60)} mins</td>
-                        </tr>
-                    `).join('');
-                }
-
-                document.getElementById('startBtn').addEventListener('click', () => {
-                    this.els.welcomeScreen.classList.add('hidden');
-                    this.els.examContainer.classList.add('active');
-                    this.startExam();
-                });
-            }
-
-            setupThemeToggle() {
-                const btn = document.getElementById('themeToggle');
-                btn.addEventListener('click', () => {
-                    document.body.classList.toggle('dark-mode');
-                    const isDark = document.body.classList.contains('dark-mode');
-                    btn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-                });
-            }
-
-            setupBeforeUnload() {
-                window.addEventListener('beforeunload', (e) => {
-                    if (!this.isSubmitted) {
-                        e.preventDefault();
-                        e.returnValue = 'Your test is in progress. Are you sure you want to leave?';
-                        return e.returnValue;
-                    }
-                });
-            }
-
-            startExam() {
-                this.startTime = Date.now();
-                this.lastQuestionTime = this.startTime;
-                
-                // If it is Tier I (no hard sectionsData), construct segment switcher bar dynamically
-                if (!this.sections || this.sections.length === 0) {
-                    this.buildSoftSections();
-                }
-                
-                this.createNavigator();
-                this.startMainTimer();
-                
-                if (this.sections && this.sections.length > 0) {
-                    this.startSectionTimer();
-                    this.updateSectionInfo();
-                }
-                
-                this.loadQuestion(0);
-                this.setupEventListeners();
-            }
-
-            // Dynamically construct Tier I segments (Reasoning, GK, Maths, English)
-            buildSoftSections() {
-                if (this.questions.length === 100) {
-                    this.softSections = [
-                        { name: "REASONING", start: 0, end: 24 },
-                        { name: "GENERAL AWARENESS", start: 25, end: 49 },
-                        { name: "QUANTITATIVE APTITUDE", start: 50, end: 74 },
-                        { name: "ENGLISH COMPREHENSION", start: 75, end: 99 }
-                    ];
-                } else {
-                    // Fallback division by 4
-                    const part = Math.floor(this.questions.length / 4);
-                    this.softSections = [
-                        { name: "SECTION A", start: 0, end: part - 1 },
-                        { name: "SECTION B", start: part, end: (part * 2) - 1 },
-                        { name: "SECTION C", start: part * 2, end: (part * 3) - 1 },
-                        { name: "SECTION D", start: part * 3, end: this.questions.length - 1 }
-                    ];
-                }
-                
-                this.els.sectionTabs.style.display = 'flex';
-                this.renderSoftSectionTabs();
-            }
-
-            renderSoftSectionTabs() {
-                this.els.sectionTabs.innerHTML = this.softSections.map((sec, idx) => {
-                    const isActive = this.currentQuestion >= sec.start && this.currentQuestion <= sec.end;
-                    return `<button class="section-tab${isActive ? ' active' : ''}" onclick="window.app.goToQuestion(${sec.start})">${sec.name}</button>`;
-                }).join('');
-            }
-
-            updateSoftSectionTabs() {
-                if (!this.softSections) return;
-                const tabs = this.els.sectionTabs.querySelectorAll('.section-tab');
-                this.softSections.forEach((sec, idx) => {
-                    const isActive = this.currentQuestion >= sec.start && this.currentQuestion <= sec.end;
-                    tabs[idx].classList.toggle('active', isActive);
-                });
-            }
-
-            setupEventListeners() {
-                document.getElementById('engBtn').onclick = () => this.setLanguage(true);
-                document.getElementById('hinBtn').onclick = () => this.setLanguage(false);
-                document.getElementById('prevBtn').onclick = () => this.navigate(-1);
-                document.querySelector('.navigation-bar .btn-next').onclick = () => this.navigate(1);
-                document.getElementById('reviewBtn').onclick = () => this.toggleReview();
-                document.getElementById('submitBtn').onclick = () => this.confirmSubmit();
-                document.getElementById('submitBtnDesktop').onclick = () => this.confirmSubmit();
-                document.getElementById('navigatorBtn').onclick = () => this.openMobileNav();
-                document.getElementById('closeNav').onclick = () => this.closeMobileNav();
-                document.getElementById('closeResult').onclick = () => this.closeResultModal();
-                document.getElementById('reviewAnswers').onclick = () => this.reviewAnswers();
-            }
-
-            createNavigator() {
-                [this.els.desktopNav, this.els.mobileNavGrid].forEach(container => {
-                    container.innerHTML = '';
-                    this.questions.forEach((_, i) => {
-                        const btn = document.createElement('div');
-                        btn.className = 'nav-question';
-                        btn.textContent = i + 1;
-                        btn.onclick = () => this.goToQuestion(i);
-                        container.appendChild(btn);
-                    });
-                });
-            }
-
-            extractText(html, isEng) {
-                if (!html) return '';
-                const temp = document.createElement('div');
-                temp.innerHTML = html;
-                
-                const langSpans = temp.querySelectorAll('span.eqt, span.hqt');
-                langSpans.forEach(span => {
-                    if ((isEng && span.classList.contains('hqt')) || 
-                        (!isEng && span.classList.contains('eqt'))) {
-                        span.style.display = 'none';
-                    } else {
-                        span.style.display = '';
-                    }
-                });
-                
-                return temp.innerHTML;
-            }
-
-            getQuestionMarks(qIdx) {
-                if (!this.sections) return marksPerQ;
-                for (const section of this.sections) {
-                    if (qIdx >= section.start && qIdx <= section.end) {
-                        if (section.subsections) {
-                            for (const subsec of section.subsections) {
-                                if (qIdx >= subsec.start && qIdx <= subsec.end) {
-                                    return subsec.marks_per_q;
-                                }
-                            }
-                        }
-                        return marksPerQ;
-                    }
-                }
-                return marksPerQ;
-            }
-
-            loadQuestion(idx) {
-                if (this.currentQuestion !== idx) {
-                    const now = Date.now();
-                    this.timeSpent[this.currentQuestion] += (now - this.lastQuestionTime) / 1000;
-                    this.lastQuestionTime = now;
-                }
-                
-                this.currentQuestion = idx;
-                const q = this.questions[idx];
-                const qMarks = this.getQuestionMarks(idx);
-                
-                this.els.questionNum.textContent = `Question ${idx + 1} of ${this.questions.length}`;
-                this.els.questionMarks.textContent = `Marks: ${qMarks.toFixed(1)}`;
-                this.els.progressText.textContent = `Question ${idx + 1} of ${this.questions.length}`;
-                this.updateAnsweredCount();
-                this.updateNavigator();
-                this.updateNavigationButtons();
-                this.updateReviewButton();
-                this.updateSoftSectionTabs();
-                
-                if (q.comp) {
-                    this.els.comprehension.style.display = 'block';
-                    this.els.comprehensionText.innerHTML = this.extractText(q.comp, this.isEnglish);
-                } else {
-                    this.els.comprehension.style.display = 'none';
-                }
-                
-                this.els.questionText.innerHTML = this.extractText(q.question, this.isEnglish);
-                this.loadOptions(q, idx);
-                
-                if (this.isSubmitted && q.solution) {
-                    const timeSpent = Math.round(this.timeSpent[idx]);
-                    const mins = Math.floor(timeSpent / 60);
-                    const secs = timeSpent % 60;
-                    const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
-                    
-                    this.els.solutionStats.innerHTML = `
-                        <span><i class="fas fa-clock"></i> Time spent: ${timeStr}</span>
-                        <span><i class="fas fa-check-circle"></i> Correct Option: ${String.fromCharCode(65 + q.correct_option_id)}</span>
-                    `;
-                    this.els.solutionText.innerHTML = this.extractText(q.solution, this.isEnglish);
-                    this.els.solutionBox.classList.add('show');
-                } else {
-                    this.els.solutionBox.classList.remove('show');
-                }
-            }
-
-            loadOptions(q, qIdx) {
-                this.els.optionsList.innerHTML = '';
-                const userAnswer = this.answers[qIdx];
-                const correctAnswer = q.correct_option_id;
-                
-                if (!q.options || !Array.isArray(q.options)) return;
-                
-                q.options.forEach((opt, i) => {
-                    const div = document.createElement('div');
-                    let className = 'option';
-                    
-                    if (this.isSubmitted) className += ' submitted';
-                    if (userAnswer === i) className += ' selected';
-                    
-                    if (this.isSubmitted && correctAnswer !== undefined) {
-                        if (i === correctAnswer) {
-                            className += ' correct';
-                        } else if (userAnswer === i && userAnswer !== correctAnswer) {
-                            className += ' wrong';
-                        }
-                    }
-                    
-                    div.className = className;
-                    
-                    let indicator = String.fromCharCode(65 + i);
-                    if (this.isSubmitted && correctAnswer !== undefined) {
-                        if (i === correctAnswer) {
-                            indicator = '✓';
-                        } else if (userAnswer === i) {
-                            indicator = '✗';
-                        }
-                    } else if (userAnswer === i) {
-                        indicator = '✓';
-                    }
-                    
-                    div.innerHTML = `
-                        <div class="option-indicator">${indicator}</div>
-                        <div class="option-text">${this.extractText(opt, this.isEnglish)}</div>
-                    `;
-                    
-                    if (!this.isSubmitted) {
-                        div.onclick = () => this.selectOption(i, qIdx);
-                    }
-                    
-                    this.els.optionsList.appendChild(div);
-                });
-            }
-
-            selectOption(optIdx, qIdx) {
-                if (this.isSubmitted) return;
-                this.answers[qIdx] = this.answers[qIdx] === optIdx ? null : optIdx;
-                this.loadOptions(this.questions[qIdx], qIdx);
-                this.updateAnsweredCount();
-                this.updateNavigator();
-            }
-
-            toggleReview() {
-                if (this.isSubmitted) return;
-                this.markedForReview[this.currentQuestion] = !this.markedForReview[this.currentQuestion];
-                this.updateNavigator();
-                this.updateReviewButton();
-            }
-
-            updateReviewButton() {
-                const btn = document.getElementById('reviewBtn');
-                if (this.markedForReview[this.currentQuestion]) {
-                    btn.classList.add('marked');
-                    btn.innerHTML = '<i class="fas fa-flag"></i> Marked';
-                } else {
-                    btn.classList.remove('marked');
-                    btn.innerHTML = '<i class="fas fa-flag"></i> Mark for Review';
-                }
-            }
-
-            navigate(dir) {
-                const newIdx = this.currentQuestion + dir;
-                if (this.isSubmitted) {
-                    if (newIdx >= 0 && newIdx < this.questions.length) {
-                        this.loadQuestion(newIdx);
-                    }
-                    return;
-                }
-                
-                if (this.sections && this.sections.length > 0) {
-                    const currentSection = this.sections[this.currentSectionIdx];
-                    if (newIdx < currentSection.start || newIdx > currentSection.end) {
-                        return;
-                    }
-                }
-                
-                if (newIdx >= 0 && newIdx < this.questions.length) {
-                    this.loadQuestion(newIdx);
-                }
-            }
-
-            goToQuestion(idx) {
-                if (this.isSubmitted) {
-                    this.loadQuestion(idx);
-                    this.closeMobileNav();
-                    return;
-                }
-                
-                if (this.sections && this.sections.length > 0) {
-                    const currentSection = this.sections[this.currentSectionIdx];
-                    if (idx < currentSection.start || idx > currentSection.end) {
-                        return;
-                    }
-                }
-                
-                this.loadQuestion(idx);
-                this.closeMobileNav();
-            }
-
-            updateNavigator() {
-                [this.els.desktopNav, this.els.mobileNavGrid].forEach(container => {
-                    const btns = container.querySelectorAll('.nav-question');
-                    btns.forEach((btn, i) => {
-                        btn.className = 'nav-question';
-                        
-                        if (i === this.currentQuestion) {
-                            btn.classList.add('current');
-                        } else if (this.isSubmitted) {
-                            if (this.answers[i] !== null && this.questions[i].correct_option_id !== undefined) {
-                                if (this.answers[i] === this.questions[i].correct_option_id) {
-                                    btn.classList.add('answered');
-                                } else {
-                                    btn.classList.add('wrong');
-                                }
-                            }
-                        } else {
-                            if (this.markedForReview[i]) {
-                                btn.classList.add('review');
-                            } else if (this.answers[i] !== null) {
-                                btn.classList.add('answered');
-                            }
-                            
-                            if (this.sections && this.sections.length > 0) {
-                                const currentSection = this.sections[this.currentSectionIdx];
-                                if (i < currentSection.start || i > currentSection.end) {
-                                    btn.classList.add('disabled');
-                                }
-                            }
-                        }
-                    });
-                });
-            }
-
-            updateNavigationButtons() {
-                const prevBtn = document.getElementById('prevBtn');
-                const nextBtn = document.querySelector('.navigation-bar .btn-next');
-                const reviewBtn = document.getElementById('reviewBtn');
-                
-                prevBtn.disabled = this.currentQuestion === 0;
-                nextBtn.disabled = this.currentQuestion === this.questions.length - 1;
-                
-                if (this.isSubmitted) {
-                    reviewBtn.style.display = 'none';
-                } else {
-                    reviewBtn.style.display = 'inline-flex';
-                }
-                
-                if (this.sections && this.sections.length > 0 && !this.isSubmitted) {
-                    const currentSection = this.sections[this.currentSectionIdx];
-                    prevBtn.disabled = prevBtn.disabled || (this.currentQuestion === currentSection.start);
-                    nextBtn.disabled = nextBtn.disabled || (this.currentQuestion === currentSection.end);
-                }
-            }
-
-            updateAnsweredCount() {
-                const count = this.answers.filter(a => a !== null).length;
-                this.els.answeredCount.textContent = count;
-            }
-
-            setLanguage(isEng) {
-                this.isEnglish = isEng;
-                document.getElementById('engBtn').classList.toggle('active', isEng);
-                document.getElementById('hinBtn').classList.toggle('active', !isEng);
-                this.loadQuestion(this.currentQuestion);
-            }
-
-            startMainTimer() {
-                this.mainTimer = setInterval(() => {
-                    this.totalTimeLeft--;
-                    if (this.totalTimeLeft <= 0) {
-                        clearInterval(this.mainTimer);
-                        this.submitTest();
-                        return;
-                    }
-                    const mins = Math.floor(this.totalTimeLeft / 60);
-                    const secs = this.totalTimeLeft % 60;
-                    this.els.mainTimer.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
-                }, 1000);
-            }
-
-            startSectionTimer() {
-                if (!this.sections || this.sections.length === 0) return;
-                
-                if (this.sectionTimer) clearInterval(this.sectionTimer);
-                
-                const section = this.sections[this.currentSectionIdx];
-                if (section.time_left === undefined) {
-                    section.time_left = section.timer;
-                }
-                
-                const updateTimerDisplay = () => {
-                    const mins = Math.floor(section.time_left / 60);
-                    const secs = section.time_left % 60;
-                    this.els.sectionTimer.textContent = ` | ${mins}:${secs.toString().padStart(2, '0')}`;
-                };
-                
-                updateTimerDisplay();
-                
-                this.sectionTimer = setInterval(() => {
-                    section.time_left--;
-                    updateTimerDisplay();
-                    
-                    if (section.time_left <= 0) {
-                        clearInterval(this.sectionTimer);
-                        this.submitSection();
-                    }
-                }, 1000);
-            }
-
-            updateSectionInfo() {
-                if (!this.sections || this.sections.length === 0) return;
-                const section = this.sections[this.currentSectionIdx];
-                this.els.sectionName.textContent = section.name;
-                this.els.sectionBadge.style.display = 'block';
-                
-                if (section.time_left !== undefined) {
-                    const mins = Math.floor(section.time_left / 60);
-                    const secs = section.time_left % 60;
-                    this.els.sectionTimer.textContent = ` | ${mins}:${secs.toString().padStart(2, '0')}`;
-                }
-            }
-
-            submitSection() {
-                if (!this.sections || this.sections.length === 0) return;
-                
-                const section = this.sections[this.currentSectionIdx];
-                section.submitted = true;
-                clearInterval(this.sectionTimer);
-                
-                const nextSectionIdx = this.currentSectionIdx + 1;
-                if (nextSectionIdx < this.sections.length) {
-                    this.currentSectionIdx = nextSectionIdx;
-                    this.startSectionTimer();
-                    this.updateSectionInfo();
-                    this.loadQuestion(this.sections[nextSectionIdx].start);
-                } else {
-                    this.submitTest();
-                }
-                
-                this.updateNavigator();
-            }
-
-            confirmSubmit() {
-                if (this.sections && this.sections.length > 0) {
-                    const section = this.sections[this.currentSectionIdx];
-                    const unanswered = this.answers.slice(section.start, section.end + 1)
-                        .filter(a => a === null).length;
-                    
-                    let msg = unanswered > 0 
-                        ? `You have ${unanswered} unanswered questions in this section. Submit Section?`
-                        : 'Submit this section?';
-                    
-                    if (confirm(msg)) this.submitSection();
-                } else {
-                    const unanswered = this.answers.filter(a => a === null).length;
-                    let msg = unanswered > 0 
-                        ? `You have ${unanswered} unanswered questions. Submit entire test?`
-                        : 'Submit test?';
-                    
-                    if (confirm(msg)) this.submitTest();
-                }
-            }
-
-            submitTest() {
-                if (this.isSubmitted) return;
-                
-                const now = Date.now();
-                this.timeSpent[this.currentQuestion] += (now - this.lastQuestionTime) / 1000;
-                
-                this.isSubmitted = true;
-                clearInterval(this.mainTimer);
-                if (this.sectionTimer) clearInterval(this.sectionTimer);
-                
-                document.getElementById('submitBtn').style.display = 'none';
-                document.getElementById('submitBtnDesktop').style.display = 'none';
-                document.getElementById('reviewBtn').style.display = 'none';
-                
-                if (this.sections && this.sections.length > 0) {
-                    this.els.sectionBadge.style.display = 'none';
-                }
-                
-                const results = this.calculateResults();
-                this.showResults(results);
-                this.loadQuestion(this.currentQuestion);
-                this.updateNavigator();
-            }
-
-            calculateResults() {
-                const timeTaken = Math.round((Date.now() - this.startTime) / 60000);
-                let correct = 0, incorrect = 0, unattempted = 0, score = 0;
-                
-                const sectionResults = [];
-                
-                if (this.sections && this.sections.length > 0) {
-                    for (const section of this.sections) {
-                        let secCorrect = 0, secIncorrect = 0, secUnattempted = 0, secScore = 0;
-                        const subsecResults = [];
-                        
-                        if (section.subsections) {
-                            for (const subsec of section.subsections) {
-                                let subCorrect = 0, subIncorrect = 0, subUnattempted = 0, subScore = 0;
-                                
-                                for (let i = subsec.start; i <= subsec.end; i++) {
-                                    const userAns = this.answers[i];
-                                    const correctAns = this.questions[i].correct_option_id;
-                                    
-                                    if (userAns === null) {
-                                        subUnattempted++;
-                                    } else if (correctAns !== undefined && userAns === correctAns) {
-                                        subCorrect++;
-                                        subScore += subsec.marks_per_q;
-                                    } else {
-                                        subIncorrect++;
-                                        subScore -= negMarks;
-                                    }
-                                }
-                                
-                                subsecResults.push({
-                                    name: subsec.name,
-                                    attempted: subCorrect + subIncorrect,
-                                    correct: subCorrect,
-                                    incorrect: subIncorrect,
-                                    unattempted: subUnattempted,
-                                    score: Math.max(0, subScore)
-                                });
-                                
-                                secCorrect += subCorrect;
-                                secIncorrect += subIncorrect;
-                                secUnattempted += subUnattempted;
-                                secScore += subScore;
-                            }
-                        } else {
-                            for (let i = section.start; i <= section.end; i++) {
-                                const userAns = this.answers[i];
-                                const correctAns = this.questions[i].correct_option_id;
-                                
-                                if (userAns === null) {
-                                    secUnattempted++;
-                                } else if (correctAns !== undefined && userAns === correctAns) {
-                                    secCorrect++;
-                                    secScore += marksPerQ;
-                                } else {
-                                    secIncorrect++;
-                                    secScore -= negMarks;
-                                }
-                            }
-                        }
-                        
-                        sectionResults.push({
-                            name: section.name,
-                            attempted: secCorrect + secIncorrect,
-                            correct: secCorrect,
-                            incorrect: secIncorrect,
-                            unattempted: secUnattempted,
-                            score: Math.max(0, secScore),
-                            subsections: subsecResults.length > 0 ? subsecResults : null
-                        });
-                        
-                        correct += secCorrect;
-                        incorrect += secIncorrect;
-                        unattempted += secUnattempted;
-                        score += secScore;
-                    }
-                } else {
-                    this.questions.forEach((q, i) => {
-                        const userAns = this.answers[i];
-                        const correctAns = q.correct_option_id;
-                        
-                        if (userAns === null) {
-                            unattempted++;
-                        } else if (correctAns !== undefined && userAns === correctAns) {
-                            correct++;
-                            score += marksPerQ;
-                        } else {
-                            incorrect++;
-                            score -= negMarks;
-                        }
-                    });
-                }
-                
-                return {
-                    score: Math.max(0, score),
-                    correct,
-                    incorrect,
-                    unattempted,
-                    timeTaken,
-                    sectionResults: sectionResults.length > 0 ? sectionResults : null
-                };
-            }
-
-            showResults(results) {
-                this.els.resultScore.textContent = `${results.score.toFixed(2)}/${(this.questions.length * marksPerQ).toFixed(1)}`;
-                this.els.correctCount.textContent = results.correct;
-                this.els.incorrectCount.textContent = results.incorrect;
-                this.els.unattemptedCount.textContent = results.unattempted;
-                this.els.timeTaken.textContent = results.timeTaken;
-                
-                if (results.sectionResults) {
-                    this.els.sectionResults.style.display = 'block';
-                    this.els.sectionResultsBody.innerHTML = '';
-                    
-                    results.sectionResults.forEach(section => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td><strong>${section.name}</strong></td>
-                            <td>${section.attempted}</td>
-                            <td>${section.correct}</td>
-                            <td>${section.incorrect}</td>
-                            <td><strong>${section.score.toFixed(2)}</strong></td>
-                        `;
-                        this.els.sectionResultsBody.appendChild(row);
-                        
-                        if (section.subsections) {
-                            section.subsections.forEach(subsec => {
-                                const subRow = document.createElement('tr');
-                                subRow.className = 'subsection-row';
-                                subRow.innerHTML = `
-                                    <td style="padding-left: 20px;">${subsec.name}</td>
-                                    <td>${subsec.attempted}</td>
-                                    <td>${subsec.correct}</td>
-                                    <td>${subsec.incorrect}</td>
-                                    <td>${subsec.score.toFixed(2)}</td>
-                                `;
-                                this.els.sectionResultsBody.appendChild(subRow);
-                            });
-                        }
-                    });
-                } else {
-                    this.els.sectionResults.style.display = 'none';
-                }
-                
-                this.els.resultModal.classList.add('show');
-            }
-
-            closeResultModal() {
-                this.els.resultModal.classList.remove('show');
-            }
-
-            reviewAnswers() {
-                this.closeResultModal();
-                this.loadQuestion(0);
-            }
-
-            openMobileNav() {
-                this.els.mobileNav.classList.add('open');
-            }
-
-            closeMobileNav() {
-                this.els.mobileNav.classList.remove('open');
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            window.app = new CBTExamApp();
-        });
-    </script>
+    
 </body>
 </html>
