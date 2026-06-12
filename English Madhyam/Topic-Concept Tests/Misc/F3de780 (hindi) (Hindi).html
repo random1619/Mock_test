@@ -1002,6 +1002,7 @@ a[href*="youtube.com/@"],
 <div class="hdr-left">
 <div class="ttl">Mocks Wallah</div>
 <div class="tmr" id="tmr">5:00</div>
+<button id="pauseBtn" title="Pause Test" style="margin-left:8px;background:transparent;border:none;color:inherit;font-size:18px;cursor:pointer;vertical-align:middle;">⏸</button>
 </div>
 <button class="sub" onclick="sub()" id="sub-btn">Submit</button>
 </div>
@@ -1019,6 +1020,13 @@ a[href*="youtube.com/@"],
 <div class="nav">
 <button class="nb prv" id="pb" onclick="prv()">← Previous</button>
 <button class="nb nxt" id="nb" onclick="nxt()">Next →</button>
+</div>
+<div id="pauseModal" class="modal" style="display:none;align-items:center;justify-content:center;">
+<div class="modal-content" style="text-align:center;padding:32px 24px;">
+<h2 style="font-size:24px;font-weight:700;color:var(--primary,#6c63ff);">⏸ Test Paused</h2>
+<p style="margin-top:10px;color:#666;">Your progress has been frozen. Timer is stopped.</p>
+<button id="resumeBtn" onclick="togglePause()" style="margin-top:24px;padding:12px 28px;border:none;border-radius:12px;font-weight:600;cursor:pointer;background:var(--primary,#6c63ff);color:white;font-size:16px;">▶ Resume Test</button>
+</div>
 </div>
 <div id="modal" class="modal">
 <div class="modal-content">
@@ -1060,10 +1068,12 @@ a[href*="youtube.com/@"],
 const qs=[{"id": "132892", "question": "<strong>Select the best express synonym of the given underlined word.</strong></p> <p>Students from low-income families were <ins><strong>exempt</strong> </ins>from the new school fees to ensure that education remained accessible.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Minute", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Notorious", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Absolved", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Novel"], "correct_answer": 2, "solution": "<strong>Synonym</strong>: <strong>Absolved</strong> (verb) – Set or declare (someone) free from blame, guilt, or responsibility. मुक्त किया हुआ"}, {"id": "132887", "question": "<strong>Select the most appropriate Antonym of the given underlined word.</strong></p> <p>The company's <ins><strong>inefficiency</strong> </ins>in handling projects led to significant delays and cost overruns, highlighting a need for better management practices.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Proficiency", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Bitter", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Nasty", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Aggressive"], "correct_answer": 0, "solution": "<strong>Antonym:</strong> <strong>Proficiency</strong> (noun) – Competence, skill, expertise, adeptness. कुशलता"}, {"id": "132893", "question": "<strong>Select the best express synonym of the given underlined word.</strong></p> <p>Before making an investment, it is crucial to <ins><strong>assess</strong> </ins>the risks and potential returns carefully.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Noble", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Evaluate", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Redeem", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Violate"], "correct_answer": 1, "solution": "<strong>Synonym</strong>: <strong>Evaluate</strong> (verb) – Form an idea of the amount, number, or value of; assess. मूल्यांकन करना"}, {"id": "132888", "question": "<strong>Select the most appropriate Antonym of the given underlined word.</strong></p> <p>The <ins><strong>soaring</strong> </ins>prices of real estate in the city have made it increasingly difficult for average-income families to buy homes.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Hostile", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Tolerant", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Hospitable", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Plummeting"], "correct_answer": 3, "solution": "<strong>Antonym:</strong> <strong>Plummeting</strong> (adjective) – Falling sharply, dropping rapidly, declining. तेजी से गिरना"}, {"id": "132894", "question": "<strong>Select the best express synonym of the given underlined word.</strong></p> <p>The new restaurant aims to <ins><strong>cater</strong> </ins>to the growing demand for vegan and gluten-free options.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Screaming", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Premises", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Shouting", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Serve"], "correct_answer": 3, "solution": "<strong>Synonym</strong>: <strong>Serve</strong> (verb) – Perform duties or services for (another person or an organization). सेवा करना"}, {"id": "132889", "question": "<strong>Select the most appropriate Antonym of the given underlined word.</strong></p> <p>Their lives were <ins><strong>inextricably</strong> </ins>linked by shared experiences and deep emotional bonds that shaped their perspectives.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Immobile", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Permanent", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Separately", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Stable"], "correct_answer": 2, "solution": "<strong>Antonym:</strong> <strong>Separately</strong> (adverb) – Individually, distinctly, apart, independently. अलग से"}, {"id": "132895", "question": "<strong>Select the best express synonym of the given underlined word.</strong></p> <p>The <ins><strong>curative</strong> </ins>properties of the new drug were evident, showing significant improvement in patient recovery rates.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Therapeutic", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Deceit", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Treachery", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Terseness"], "correct_answer": 0, "solution": "<strong>Synonym</strong>: <strong>Therapeutic</strong> (adjective) – Relating to the healing of disease. चिकित्सीय"}, {"id": "132890", "question": "<strong>Select the most appropriate Antonym of the given underlined word.</strong></p> <p>The committee's decision was criticized for having a <ins><strong>bias</strong> </ins>towards candidates from certain backgrounds.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Violent", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Neutrality", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Radical", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Ultra"], "correct_answer": 1, "solution": "<strong>Antonym:</strong> <strong>Neutrality</strong> (noun) – Impartiality, objectivity, fairness, disinterest. तटस्थता"}, {"id": "132896", "question": "<strong>Select the best express synonym of the given underlined word.</strong></p> <p>The wellness program at work focuses on improving <ins><strong>wellness</strong> </ins>by promoting regular exercise and a balanced diet.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Vengeance", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Humility", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Well-being", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Candour"], "correct_answer": 2, "solution": "<strong>Synonym</strong>: <strong>Well-being</strong> (noun) – a state of being healthy and happy ख़ैरियत"}, {"id": "132891", "question": "<strong>Select the most appropriate Antonym of the given underlined word.</strong></p> <p>The job market in the region had become <ins><strong>stagnant</strong></ins>, with few opportunities for advancement and innovation.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Dynamic", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Revolutionary", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Mean", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Moderate"], "correct_answer": 0, "solution": "<strong>Antonym:</strong> <strong>Dynamic</strong> (adjective) – Active, vibrant, energetic, forceful. गतिशील"}],ans={};
 const posMarks=1.0, negMarks=0.25;
 let ci=0,tl=5*60,ti,fin=0,solMode=0,totalTime=0;
+let isPaused=false;
 
 function ini(){
     disQ();
     strT();
+    document.getElementById('pauseBtn').onclick=togglePause;
 }
 
 function disQ(){
@@ -1158,6 +1168,31 @@ function nxt(){
         ci++;
         disQ();
     }else sub();
+}
+
+function togglePause(){
+    isPaused=!isPaused;
+    if(isPaused){
+        clearInterval(ti);
+        const pm=document.getElementById('pauseModal');
+        pm.style.display='flex';
+        pm.style.alignItems='center';
+        pm.style.justifyContent='center';
+        pm.style.position='fixed';
+        pm.style.top='0';
+        pm.style.left='0';
+        pm.style.width='100%';
+        pm.style.height='100%';
+        pm.style.background='rgba(0,0,0,0.85)';
+        pm.style.zIndex='10000';
+        document.getElementById('pauseBtn').innerHTML='▶';
+        document.getElementById('pauseBtn').title='Resume Test';
+    }else{
+        document.getElementById('pauseModal').style.display='none';
+        document.getElementById('pauseBtn').innerHTML='⏸';
+        document.getElementById('pauseBtn').title='Pause Test';
+        strT();
+    }
 }
 
 function strT(){

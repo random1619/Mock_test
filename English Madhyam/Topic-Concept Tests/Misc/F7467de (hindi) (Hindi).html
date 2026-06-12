@@ -1002,6 +1002,7 @@ a[href*="youtube.com/@"],
 <div class="hdr-left">
 <div class="ttl">Mocks Wallah</div>
 <div class="tmr" id="tmr">5:00</div>
+<button id="pauseBtn" title="Pause Test" style="margin-left:8px;background:transparent;border:none;color:inherit;font-size:18px;cursor:pointer;vertical-align:middle;">⏸</button>
 </div>
 <button class="sub" onclick="sub()" id="sub-btn">Submit</button>
 </div>
@@ -1019,6 +1020,13 @@ a[href*="youtube.com/@"],
 <div class="nav">
 <button class="nb prv" id="pb" onclick="prv()">← Previous</button>
 <button class="nb nxt" id="nb" onclick="nxt()">Next →</button>
+</div>
+<div id="pauseModal" class="modal" style="display:none;align-items:center;justify-content:center;">
+<div class="modal-content" style="text-align:center;padding:32px 24px;">
+<h2 style="font-size:24px;font-weight:700;color:var(--primary,#6c63ff);">⏸ Test Paused</h2>
+<p style="margin-top:10px;color:#666;">Your progress has been frozen. Timer is stopped.</p>
+<button id="resumeBtn" onclick="togglePause()" style="margin-top:24px;padding:12px 28px;border:none;border-radius:12px;font-weight:600;cursor:pointer;background:var(--primary,#6c63ff);color:white;font-size:16px;">▶ Resume Test</button>
+</div>
 </div>
 <div id="modal" class="modal">
 <div class="modal-content">
@@ -1060,10 +1068,12 @@ a[href*="youtube.com/@"],
 const qs=[{"id": "147685", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>The court <ins><strong>enjoin</strong> </ins>the company from disposing of its assets during the trial.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Allow", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Order", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Permit", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Encourage"], "correct_answer": 1, "solution": "<strong>Synonym: Order</strong> (verb) – Command, Instruct (हुक्म देना)"}, {"id": "147678", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>We must <ins><strong>honour</strong> </ins>our commitments to maintain trust in any relationship.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Disregard", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Praise", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Celebrate", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Admire"], "correct_answer": 0, "solution": "<strong>Antonym: Disregard</strong> (verb) – Ignore, neglect, overlook, dismiss (उपेक्षा करना)"}, {"id": "147686", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>The government launched a campaign to <ins><strong>wipe out</strong></ins> corruption in public offices.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Eliminate", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Create", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Build", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Protect"], "correct_answer": 0, "solution": "<strong>Synonym: Eliminate</strong> (verb) – Eradicate, Annihilate (खत्म करना)"}, {"id": "147679", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>The committee decided to <ins><strong>censure</strong> </ins>the minister for his unethical behavior.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Criticize", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Condemn", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Rebuke", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Applaud"], "correct_answer": 3, "solution": "<strong>Antonym: Applaud</strong> (verb) – Praise, commend, approve (सराहना करना)"}, {"id": "147687", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>The judge decided to <ins><strong>set aside</strong></ins> the previous verdict for a fresh trial.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Waste", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Spend", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Ignore", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Reserve"], "correct_answer": 3, "solution": "<strong>Synonym: Reserve</strong> (verb) – Save, Keep aside (सुरक्षित रखना)"}, {"id": "147680", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>The report <ins><strong>grossly</strong> </ins>exaggerated the impact of the new policy.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Extremely", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Excessively", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Slightly", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Enormously"], "correct_answer": 2, "solution": "<strong>Antonym: Slightly</strong> (adverb) – Moderately, a little, minimally (थोड़ा)"}, {"id": "147683", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>She presented a compelling <ins><strong>proposition</strong> </ins>to expand the business overseas.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Rejection", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Denial", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Proposal", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Refusal"], "correct_answer": 2, "solution": "<strong>Synonym: Proposal</strong> (noun) – Offer, Scheme (सुझाव)"}, {"id": "147681", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>The king’s sudden <ins><strong>abdication</strong> </ins>shocked the entire nation.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Surrender", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Acceptance", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Resignation", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Renunciation"], "correct_answer": 1, "solution": "<strong>Antonym: Acceptance</strong> (noun) – Approval, agreement, acknowledgment (स्वीकृति)"}, {"id": "147684", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>His argument was <ins><strong>ill-founded</strong></ins> and lacked any credible evidence.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Proven", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Valid", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Justified", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Baseless"], "correct_answer": 3, "solution": "<strong>Synonym: Baseless</strong> (adjective) – False, Unsubstantiated (निराधार)"}, {"id": "147682", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>If you break the rules, you may <ins><strong>forfeit</strong> </ins>your right to participate.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Retain", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Lose", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Surrender", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Sacrifice"], "correct_answer": 0, "solution": "<strong>Antonym: Retain</strong> (verb) – Keep, hold, preserve (बनाए रखना)"}],ans={};
 const posMarks=2.0, negMarks=0.5;
 let ci=0,tl=5*60,ti,fin=0,solMode=0,totalTime=0;
+let isPaused=false;
 
 function ini(){
     disQ();
     strT();
+    document.getElementById('pauseBtn').onclick=togglePause;
 }
 
 function disQ(){
@@ -1158,6 +1168,31 @@ function nxt(){
         ci++;
         disQ();
     }else sub();
+}
+
+function togglePause(){
+    isPaused=!isPaused;
+    if(isPaused){
+        clearInterval(ti);
+        const pm=document.getElementById('pauseModal');
+        pm.style.display='flex';
+        pm.style.alignItems='center';
+        pm.style.justifyContent='center';
+        pm.style.position='fixed';
+        pm.style.top='0';
+        pm.style.left='0';
+        pm.style.width='100%';
+        pm.style.height='100%';
+        pm.style.background='rgba(0,0,0,0.85)';
+        pm.style.zIndex='10000';
+        document.getElementById('pauseBtn').innerHTML='▶';
+        document.getElementById('pauseBtn').title='Resume Test';
+    }else{
+        document.getElementById('pauseModal').style.display='none';
+        document.getElementById('pauseBtn').innerHTML='⏸';
+        document.getElementById('pauseBtn').title='Pause Test';
+        strT();
+    }
 }
 
 function strT(){

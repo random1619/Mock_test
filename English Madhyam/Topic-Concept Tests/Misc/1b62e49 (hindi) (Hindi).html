@@ -1002,6 +1002,7 @@ a[href*="youtube.com/@"],
 <div class="hdr-left">
 <div class="ttl">Mocks Wallah</div>
 <div class="tmr" id="tmr">5:00</div>
+<button id="pauseBtn" title="Pause Test" style="margin-left:8px;background:transparent;border:none;color:inherit;font-size:18px;cursor:pointer;vertical-align:middle;">⏸</button>
 </div>
 <button class="sub" onclick="sub()" id="sub-btn">Submit</button>
 </div>
@@ -1019,6 +1020,13 @@ a[href*="youtube.com/@"],
 <div class="nav">
 <button class="nb prv" id="pb" onclick="prv()">← Previous</button>
 <button class="nb nxt" id="nb" onclick="nxt()">Next →</button>
+</div>
+<div id="pauseModal" class="modal" style="display:none;align-items:center;justify-content:center;">
+<div class="modal-content" style="text-align:center;padding:32px 24px;">
+<h2 style="font-size:24px;font-weight:700;color:var(--primary,#6c63ff);">⏸ Test Paused</h2>
+<p style="margin-top:10px;color:#666;">Your progress has been frozen. Timer is stopped.</p>
+<button id="resumeBtn" onclick="togglePause()" style="margin-top:24px;padding:12px 28px;border:none;border-radius:12px;font-weight:600;cursor:pointer;background:var(--primary,#6c63ff);color:white;font-size:16px;">▶ Resume Test</button>
+</div>
 </div>
 <div id="modal" class="modal">
 <div class="modal-content">
@@ -1060,10 +1068,12 @@ a[href*="youtube.com/@"],
 const qs=[{"id": "125990", "question": "<strong>Select the most appropriate synonym of the given phrasal verb.</strong></p> <p>The government plans to <strong>pump in</strong> more funds to improve rural infrastructure.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Inject", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Amend", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Satisfaction", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Apathy"], "correct_answer": 0, "solution": "<strong>Amend</strong> (verb) – To make changes to improve or correct something, modify, revise. संशोधित करना"}, {"id": "125985", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>She decided to <strong>champion</strong> the rights of underprivileged children.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Assure", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Daunt", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Opposed", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Bitch"], "correct_answer": 2, "solution": "<strong>Antonym:</strong> <strong>Opposed </strong>(verb) – Resisted, defied, contested, objected<strong>. </strong>विरोध करना"}, {"id": "125989", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>With hard work and dedication, you can <strong>attain</strong> your goals.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Perseverance", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Accomplish", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Ambition", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Doggedness"], "correct_answer": 1, "solution": "<strong>Perseverance</strong> (noun) – Persistence, determination, tenacity, steadfastness. दृढ़ता"}, {"id": "125984", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>There is a lot of <strong>buzz</strong> around the new movie releasing this weekend.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Silence", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Paramount", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Celebrate", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Supreme"], "correct_answer": 0, "solution": "<strong>Antonym:</strong> <strong>Silence</strong> (noun) – Stillness, quietness, calm, muteness. शांति"}, {"id": "125988", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>The architect could <strong>envision</strong> a magnificent structure even before it was built.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Imagine", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Reluctance", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Ignorance", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Monotonous"], "correct_answer": 0, "solution": "<strong>Reluctance</strong> (noun) – Unwillingness, hesitation, resistance. अनिच्छा"}, {"id": "125983", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>The company faced a financial <strong>crunch</strong> during the economic downturn.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Trivial", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Collateral", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Inferior", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Abundance"], "correct_answer": 3, "solution": "<strong>Antonym:</strong> <strong>Abundance</strong> (noun) – Plenty, profusion, overflow, surplus. प्रचुरत"}, {"id": "125986", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>His latest <strong>endeavour</strong> to start a new business has been quite successful.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Rejoice", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Leisure", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Recreation", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Effort"], "correct_answer": 3, "solution": "<strong>Rejoice</strong> (verb) – Feel or show great joy or delight, celebrate, be happy. आनंदित होना।"}, {"id": "125982", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>Parents should <strong>nurture</strong> their children's creativity to help them excel in life.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Vague", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Inarticulate", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Suppress", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Short"], "correct_answer": 2, "solution": "<strong>Antonym:</strong> <strong>Suppress</strong> (verb) – Subdue, restrain, stifle, hold back. दबाना"}, {"id": "125987", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>The conference was held at a beautiful <strong>venue</strong> in the city center.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Languish", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Main", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Location", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Lead"], "correct_answer": 2, "solution": "<strong>Languish</strong> (verb) – To become weak or feeble, to lose strength, deteriorate. कमज़ोर होना"}, {"id": "125981", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>The <strong>stature</strong> of the scientist grew immensely after his groundbreaking discovery.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Crux", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Ignominy", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Eloquent", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Essence"], "correct_answer": 1, "solution": "<strong>Antonym:</strong> <strong>Ignominy</strong> (noun) – Disgrace, shame, dishonor, humiliation. अपमान"}],ans={};
 const posMarks=2.0, negMarks=0.5;
 let ci=0,tl=5*60,ti,fin=0,solMode=0,totalTime=0;
+let isPaused=false;
 
 function ini(){
     disQ();
     strT();
+    document.getElementById('pauseBtn').onclick=togglePause;
 }
 
 function disQ(){
@@ -1158,6 +1168,31 @@ function nxt(){
         ci++;
         disQ();
     }else sub();
+}
+
+function togglePause(){
+    isPaused=!isPaused;
+    if(isPaused){
+        clearInterval(ti);
+        const pm=document.getElementById('pauseModal');
+        pm.style.display='flex';
+        pm.style.alignItems='center';
+        pm.style.justifyContent='center';
+        pm.style.position='fixed';
+        pm.style.top='0';
+        pm.style.left='0';
+        pm.style.width='100%';
+        pm.style.height='100%';
+        pm.style.background='rgba(0,0,0,0.85)';
+        pm.style.zIndex='10000';
+        document.getElementById('pauseBtn').innerHTML='▶';
+        document.getElementById('pauseBtn').title='Resume Test';
+    }else{
+        document.getElementById('pauseModal').style.display='none';
+        document.getElementById('pauseBtn').innerHTML='⏸';
+        document.getElementById('pauseBtn').title='Pause Test';
+        strT();
+    }
 }
 
 function strT(){

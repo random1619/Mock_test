@@ -1002,6 +1002,7 @@ a[href*="youtube.com/@"],
 <div class="hdr-left">
 <div class="ttl">Mocks Wallah</div>
 <div class="tmr" id="tmr">5:00</div>
+<button id="pauseBtn" title="Pause Test" style="margin-left:8px;background:transparent;border:none;color:inherit;font-size:18px;cursor:pointer;vertical-align:middle;">⏸</button>
 </div>
 <button class="sub" onclick="sub()" id="sub-btn">Submit</button>
 </div>
@@ -1019,6 +1020,13 @@ a[href*="youtube.com/@"],
 <div class="nav">
 <button class="nb prv" id="pb" onclick="prv()">← Previous</button>
 <button class="nb nxt" id="nb" onclick="nxt()">Next →</button>
+</div>
+<div id="pauseModal" class="modal" style="display:none;align-items:center;justify-content:center;">
+<div class="modal-content" style="text-align:center;padding:32px 24px;">
+<h2 style="font-size:24px;font-weight:700;color:var(--primary,#6c63ff);">⏸ Test Paused</h2>
+<p style="margin-top:10px;color:#666;">Your progress has been frozen. Timer is stopped.</p>
+<button id="resumeBtn" onclick="togglePause()" style="margin-top:24px;padding:12px 28px;border:none;border-radius:12px;font-weight:600;cursor:pointer;background:var(--primary,#6c63ff);color:white;font-size:16px;">▶ Resume Test</button>
+</div>
 </div>
 <div id="modal" class="modal">
 <div class="modal-content">
@@ -1060,10 +1068,12 @@ a[href*="youtube.com/@"],
 const qs=[{"id": "147875", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>His <ins><strong>apprehension</strong></ins> about the exam kept him awake all night.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Excitement", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Confidence", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Joy", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Fear"], "correct_answer": 3, "solution": "<strong>Synonym: Fear </strong>(noun) – Dread, anxiety, worry (डर)"}, {"id": "147868", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>The <ins><strong>barbaric</strong> </ins>acts of violence during the war shocked the entire world.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Civilized", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Cruel", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Violent", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Brutal"], "correct_answer": 0, "solution": "<strong>Antonym: Civilized </strong>(adjective) – Cultured, refined, polite, advanced. (सभ्य)"}, {"id": "147874", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>The diplomat worked hard to <ins><strong>defuse</strong> </ins>the tension between the two countries.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Escalate", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Calm", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Intensify", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Ignite"], "correct_answer": 1, "solution": "<strong>Synonym: Calm</strong> (verb) – Soothe, relax, pacify (शांत करना)"}, {"id": "147869", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>She presented a <ins><strong>reasoned</strong> </ins>argument that convinced everyone in the room.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Analytical", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Rational", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Thoughtful", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Illogical"], "correct_answer": 3, "solution": "<strong>Antonym: Illogical</strong> (adjective) – Irrational, unreasonable, absurd. (अतर्कसंगत)"}, {"id": "147876", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>The two nations decided to <ins><strong>forge</strong> </ins>a stronger alliance for mutual benefit.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Break", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Destroy", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Create", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Weaken"], "correct_answer": 2, "solution": "<strong>Synonym: Create</strong> (verb) – Form, establish, produce (रचना करना)"}, {"id": "147871", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>One major <ins><strong>pitfall</strong> </ins>of investing without research is losing money unnecessarily.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Danger", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Advantage", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Risk", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Hazard"], "correct_answer": 1, "solution": "<strong>Antonym: Advantage</strong> (noun) – Benefit, gain, upside. (फायदा)"}, {"id": "147873", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>Quick thinking helped the driver <ins><strong>avert</strong> </ins>a major accident on the highway.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Ignore", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Encourage", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Prevent", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Delay"], "correct_answer": 2, "solution": "<strong>Synonym: Prevent</strong> (verb) – Stop, avoid, hinder (रोकना)"}, {"id": "147872", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>The CEO gave an <ins><strong>unequivocal</strong> </ins>statement that there would be no layoffs this year.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Ambiguous", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Clear", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Definite", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Certain"], "correct_answer": 0, "solution": "<strong>Antonym: Ambiguous</strong> (adjective) – Vague, unclear, uncertain. (अस्पष्ट)"}, {"id": "147877", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>Corruption is a <ins><strong>scourge</strong> </ins>that hinders the progress of many developing nations.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Curse", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Blessing", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Advantage", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Benefit"], "correct_answer": 0, "solution": "<strong>Synonym: Curse</strong> (noun) – Misfortune, bane, evil (शाप)"}, {"id": "147870", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>It’s important to make <ins><strong>rational</strong> </ins>decisions rather than emotional ones in critical situations.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Sensible", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Coherent", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Irrational", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Sound"], "correct_answer": 2, "solution": "<strong>Antonym: Irrational</strong> (adjective) – Illogical, unreasonable, absurd. (तर्कहीन)"}],ans={};
 const posMarks=2.0, negMarks=0.5;
 let ci=0,tl=5*60,ti,fin=0,solMode=0,totalTime=0;
+let isPaused=false;
 
 function ini(){
     disQ();
     strT();
+    document.getElementById('pauseBtn').onclick=togglePause;
 }
 
 function disQ(){
@@ -1158,6 +1168,31 @@ function nxt(){
         ci++;
         disQ();
     }else sub();
+}
+
+function togglePause(){
+    isPaused=!isPaused;
+    if(isPaused){
+        clearInterval(ti);
+        const pm=document.getElementById('pauseModal');
+        pm.style.display='flex';
+        pm.style.alignItems='center';
+        pm.style.justifyContent='center';
+        pm.style.position='fixed';
+        pm.style.top='0';
+        pm.style.left='0';
+        pm.style.width='100%';
+        pm.style.height='100%';
+        pm.style.background='rgba(0,0,0,0.85)';
+        pm.style.zIndex='10000';
+        document.getElementById('pauseBtn').innerHTML='▶';
+        document.getElementById('pauseBtn').title='Resume Test';
+    }else{
+        document.getElementById('pauseModal').style.display='none';
+        document.getElementById('pauseBtn').innerHTML='⏸';
+        document.getElementById('pauseBtn').title='Pause Test';
+        strT();
+    }
 }
 
 function strT(){

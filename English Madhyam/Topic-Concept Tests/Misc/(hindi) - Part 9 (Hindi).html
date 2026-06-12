@@ -1002,6 +1002,7 @@ a[href*="youtube.com/@"],
 <div class="hdr-left">
 <div class="ttl">Mocks Wallah</div>
 <div class="tmr" id="tmr">5:00</div>
+<button id="pauseBtn" title="Pause Test" style="margin-left:8px;background:transparent;border:none;color:inherit;font-size:18px;cursor:pointer;vertical-align:middle;">⏸</button>
 </div>
 <button class="sub" onclick="sub()" id="sub-btn">Submit</button>
 </div>
@@ -1019,6 +1020,13 @@ a[href*="youtube.com/@"],
 <div class="nav">
 <button class="nb prv" id="pb" onclick="prv()">← Previous</button>
 <button class="nb nxt" id="nb" onclick="nxt()">Next →</button>
+</div>
+<div id="pauseModal" class="modal" style="display:none;align-items:center;justify-content:center;">
+<div class="modal-content" style="text-align:center;padding:32px 24px;">
+<h2 style="font-size:24px;font-weight:700;color:var(--primary,#6c63ff);">⏸ Test Paused</h2>
+<p style="margin-top:10px;color:#666;">Your progress has been frozen. Timer is stopped.</p>
+<button id="resumeBtn" onclick="togglePause()" style="margin-top:24px;padding:12px 28px;border:none;border-radius:12px;font-weight:600;cursor:pointer;background:var(--primary,#6c63ff);color:white;font-size:16px;">▶ Resume Test</button>
+</div>
 </div>
 <div id="modal" class="modal">
 <div class="modal-content">
@@ -1060,10 +1068,12 @@ a[href*="youtube.com/@"],
 const qs=[{"id": "147662", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>The <strong>rigid</strong> rules of the school left no room for creativity, making the students feel trapped.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Flexible", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Strict", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Lenient", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Gentle"], "correct_answer": 1, "solution": "<strong>Synonym: Strict</strong> (adjective) – Firm, harsh, rigid, uncompromising. (सख्त)"}, {"id": "147657", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>The workers filed a <strong>grievance</strong> against the management for unfair treatment.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Complaint", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Objection", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Praise", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Concern"], "correct_answer": 2, "solution": "<strong>Antonym: Praise</strong> (noun) – Approval, admiration, commendation. (प्रशंसा)"}, {"id": "147666", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>Children are especially <strong>vulnerable</strong> to infections during the flu season.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Defenseless", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Protected", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Strong", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Secure"], "correct_answer": 0, "solution": "<strong>Synonym: Defenseless</strong> (adjective) – Vulnerable, helpless, unguarded. (असहाय)"}, {"id": "147658", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>It is an <strong>imperative</strong> to address climate change before it becomes irreversible.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Essential", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Optional", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Urgent", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Necessary"], "correct_answer": 1, "solution": "<strong>Antonym: Optional</strong> (adjective) – Voluntary, non-compulsory, discretionary. (वैकल्पिक)"}, {"id": "147665", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>Prolonged illness can <strong>debilitate</strong> even the strongest individuals, leaving them exhausted.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Strengthen", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Energize", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Weaken", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Motivate"], "correct_answer": 2, "solution": "<strong>Synonym: Weaken </strong>(verb) – Debilitate, enfeeble, sap. (कमजोर करना)"}, {"id": "147659", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>Companies must <strong>optimise</strong> their resources to stay competitive in the market.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Worsen", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Improve", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Enhance", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Maximize"], "correct_answer": 0, "solution": "<strong>Antonym: Worsen</strong> (verb) – Deteriorate, decline, degrade. (बिगाड़ना)"}, {"id": "147663", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>The <strong>brutal</strong> winter storm caused severe damage to the village, leaving many without shelter.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Cruel", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Mild", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Pleasant", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Gentle"], "correct_answer": 0, "solution": "<strong>Synonym: Cruel</strong> (adjective) – Brutal, savage, vicious. (निर्दयी)"}, {"id": "147660", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p> The government took strict measures to control the <strong>epidemic</strong> before it spread further.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Outbreak", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Spread", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Surge", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Containment"], "correct_answer": 3, "solution": "<strong>D) Epidemic</strong> (noun) – outbreak, surge, spread, crisis, plague महामारी"}, {"id": "147664", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>After months of <strong>isolation</strong>, she struggled to reconnect with friends and family.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Connection", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Crowd", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Gathering", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Loneliness"], "correct_answer": 3, "solution": "<strong>Synonym: Loneliness</strong> (noun) – Solitude, isolation, seclusion. (अकेलापन)"}, {"id": "147661", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>Surviving the shipwreck was an <strong>ordeal</strong> that changed his outlook on life forever.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Hardship", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Struggle", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Pleasure", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Suffering"], "correct_answer": 2, "solution": "<strong>Antonym: Pleasure</strong> (noun) – Enjoyment, delight, happiness. (आनंद)"}],ans={};
 const posMarks=1.0, negMarks=0.25;
 let ci=0,tl=5*60,ti,fin=0,solMode=0,totalTime=0;
+let isPaused=false;
 
 function ini(){
     disQ();
     strT();
+    document.getElementById('pauseBtn').onclick=togglePause;
 }
 
 function disQ(){
@@ -1158,6 +1168,31 @@ function nxt(){
         ci++;
         disQ();
     }else sub();
+}
+
+function togglePause(){
+    isPaused=!isPaused;
+    if(isPaused){
+        clearInterval(ti);
+        const pm=document.getElementById('pauseModal');
+        pm.style.display='flex';
+        pm.style.alignItems='center';
+        pm.style.justifyContent='center';
+        pm.style.position='fixed';
+        pm.style.top='0';
+        pm.style.left='0';
+        pm.style.width='100%';
+        pm.style.height='100%';
+        pm.style.background='rgba(0,0,0,0.85)';
+        pm.style.zIndex='10000';
+        document.getElementById('pauseBtn').innerHTML='▶';
+        document.getElementById('pauseBtn').title='Resume Test';
+    }else{
+        document.getElementById('pauseModal').style.display='none';
+        document.getElementById('pauseBtn').innerHTML='⏸';
+        document.getElementById('pauseBtn').title='Pause Test';
+        strT();
+    }
 }
 
 function strT(){

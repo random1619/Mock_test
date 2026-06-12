@@ -1002,6 +1002,7 @@ a[href*="youtube.com/@"],
 <div class="hdr-left">
 <div class="ttl">Mocks Wallah</div>
 <div class="tmr" id="tmr">5:00</div>
+<button id="pauseBtn" title="Pause Test" style="margin-left:8px;background:transparent;border:none;color:inherit;font-size:18px;cursor:pointer;vertical-align:middle;">⏸</button>
 </div>
 <button class="sub" onclick="sub()" id="sub-btn">Submit</button>
 </div>
@@ -1019,6 +1020,13 @@ a[href*="youtube.com/@"],
 <div class="nav">
 <button class="nb prv" id="pb" onclick="prv()">← Previous</button>
 <button class="nb nxt" id="nb" onclick="nxt()">Next →</button>
+</div>
+<div id="pauseModal" class="modal" style="display:none;align-items:center;justify-content:center;">
+<div class="modal-content" style="text-align:center;padding:32px 24px;">
+<h2 style="font-size:24px;font-weight:700;color:var(--primary,#6c63ff);">⏸ Test Paused</h2>
+<p style="margin-top:10px;color:#666;">Your progress has been frozen. Timer is stopped.</p>
+<button id="resumeBtn" onclick="togglePause()" style="margin-top:24px;padding:12px 28px;border:none;border-radius:12px;font-weight:600;cursor:pointer;background:var(--primary,#6c63ff);color:white;font-size:16px;">▶ Resume Test</button>
+</div>
 </div>
 <div id="modal" class="modal">
 <div class="modal-content">
@@ -1060,10 +1068,12 @@ a[href*="youtube.com/@"],
 const qs=[{"id": "123230", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>The board reached a <strong>unanimous</strong> decision to expand the company, with all members agreeing on the proposed direction.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Consensual", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Responsible", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Wane", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Achieve"], "correct_answer": 0, "solution": "<strong>Responsible</strong> (adjective) – Having an obligation to do something, dependable. जिम्मेदार"}, {"id": "123225", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>The company's hiring policy showed a clear <strong>bias</strong> toward candidates with prior industry experience, making it hard for fresh graduates to get a chance.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Impartiality", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Confidential", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Abscond", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Secret"], "correct_answer": 0, "solution": "<strong>Antonym</strong>: <strong>Impartiality</strong> (noun) – Fairness, lack of bias, neutrality, objectivity निष्पक्षता"}, {"id": "123231", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>Growing up in a remote area, she felt <strong>deprived of</strong> many educational opportunities her peers had in the city.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Insist", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Denied", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Proclamation", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Inertia"], "correct_answer": 1, "solution": "<strong>Insist</strong> (verb) – Demand something forcefully, not accepting refusal. जोर देना"}, {"id": "123226", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>It became <strong>evident</strong> that the new project would need more resources than initially estimated to succeed.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Equanimity", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Obscure", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Monitor", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Cessation"], "correct_answer": 1, "solution": "<strong>Antonym</strong>: <strong>Obscure</strong> (adjective) – Unclear, hidden, ambiguous, concealed अस्पष्ट"}, {"id": "123232", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>Travel can help people <strong>broaden</strong> their perspectives and develop a more comprehensive understanding of other cultures.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Explicate", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Barbarous", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Enlarge", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Equalise"], "correct_answer": 2, "solution": "<strong>Explicate</strong> (verb) – To analyze and develop (an idea or principle) in detail, to explain, to clarify. विश्लेषण करना, स्पष्ट करना"}, {"id": "123227", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>The team's excitement was <strong>contained</strong> as they awaited the final results, maintaining a professional demeanor throughout.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Unrestrained", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Voluntary", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Shrewd", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Insightful"], "correct_answer": 0, "solution": "<strong>Antonym</strong>: <strong>Unrestrained</strong> (adjective) – Free, uncontrolled, uninhibited अनियंत्रित"}, {"id": "123233", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>Since its <strong>inception</strong>, the program has helped thousands of students gain essential skills for the workforce.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Descend", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Punishment", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Retribution", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Initiation"], "correct_answer": 3, "solution": "<strong>Descend</strong> (on) (verb) – Arrive suddenly, come down, attack, swoop, alight उतरना"}, {"id": "123228", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>The organization’s mission is to <strong>foster</strong> a positive learning environment that encourages students to explore their potential.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Remove", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Apply", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Offer", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Neglect"], "correct_answer": 3, "solution": "<strong>Antonym</strong>: <strong>Neglect</strong> (verb) – Ignore, disregard, abandon उपेक्षा करना"}, {"id": "123234", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>The <strong>prospect</strong> of joining an international team excited her, as it promised new experiences and learning opportunities.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Likelihood", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Overlook", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Innuendo", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Prose"], "correct_answer": 0, "solution": "<strong>Overlook</strong> (verb) – Fail to notice (something); disregard or ignore. अनदेखी करना"}, {"id": "123229", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>Financial <strong>constraints</strong> limited the scope of the charity event, though the organizers did their best with what was available.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Uptick", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Dispensable", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Freedom", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Impossible"], "correct_answer": 2, "solution": "<strong>Antonym</strong>: <strong>Freedom</strong> (noun) – Liberty, absence of restriction, independence स्वतंत्रता"}],ans={};
 const posMarks=1.0, negMarks=0.25;
 let ci=0,tl=5*60,ti,fin=0,solMode=0,totalTime=0;
+let isPaused=false;
 
 function ini(){
     disQ();
     strT();
+    document.getElementById('pauseBtn').onclick=togglePause;
 }
 
 function disQ(){
@@ -1158,6 +1168,31 @@ function nxt(){
         ci++;
         disQ();
     }else sub();
+}
+
+function togglePause(){
+    isPaused=!isPaused;
+    if(isPaused){
+        clearInterval(ti);
+        const pm=document.getElementById('pauseModal');
+        pm.style.display='flex';
+        pm.style.alignItems='center';
+        pm.style.justifyContent='center';
+        pm.style.position='fixed';
+        pm.style.top='0';
+        pm.style.left='0';
+        pm.style.width='100%';
+        pm.style.height='100%';
+        pm.style.background='rgba(0,0,0,0.85)';
+        pm.style.zIndex='10000';
+        document.getElementById('pauseBtn').innerHTML='▶';
+        document.getElementById('pauseBtn').title='Resume Test';
+    }else{
+        document.getElementById('pauseModal').style.display='none';
+        document.getElementById('pauseBtn').innerHTML='⏸';
+        document.getElementById('pauseBtn').title='Pause Test';
+        strT();
+    }
 }
 
 function strT(){

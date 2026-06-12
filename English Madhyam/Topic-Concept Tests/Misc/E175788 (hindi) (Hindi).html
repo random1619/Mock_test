@@ -1002,6 +1002,7 @@ a[href*="youtube.com/@"],
 <div class="hdr-left">
 <div class="ttl">Mocks Wallah</div>
 <div class="tmr" id="tmr">5:00</div>
+<button id="pauseBtn" title="Pause Test" style="margin-left:8px;background:transparent;border:none;color:inherit;font-size:18px;cursor:pointer;vertical-align:middle;">⏸</button>
 </div>
 <button class="sub" onclick="sub()" id="sub-btn">Submit</button>
 </div>
@@ -1019,6 +1020,13 @@ a[href*="youtube.com/@"],
 <div class="nav">
 <button class="nb prv" id="pb" onclick="prv()">← Previous</button>
 <button class="nb nxt" id="nb" onclick="nxt()">Next →</button>
+</div>
+<div id="pauseModal" class="modal" style="display:none;align-items:center;justify-content:center;">
+<div class="modal-content" style="text-align:center;padding:32px 24px;">
+<h2 style="font-size:24px;font-weight:700;color:var(--primary,#6c63ff);">⏸ Test Paused</h2>
+<p style="margin-top:10px;color:#666;">Your progress has been frozen. Timer is stopped.</p>
+<button id="resumeBtn" onclick="togglePause()" style="margin-top:24px;padding:12px 28px;border:none;border-radius:12px;font-weight:600;cursor:pointer;background:var(--primary,#6c63ff);color:white;font-size:16px;">▶ Resume Test</button>
+</div>
 </div>
 <div id="modal" class="modal">
 <div class="modal-content">
@@ -1060,10 +1068,12 @@ a[href*="youtube.com/@"],
 const qs=[{"id": "128107", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>People who face constant challenges <strong>tend</strong> to develop greater resilience and problem-solving skills.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Haughty", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Incline toward", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Modest", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Indifferent"], "correct_answer": 1, "solution": "<strong>Haughty</strong> (adjective) – Arrogant, disdainful, snobbish, conceited. अहंकारी"}, {"id": "128101", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>As the night wore on, the tension in the room began to <strong>subside</strong>, allowing everyone to relax.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Perilous", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Increase", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Nasty", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Infidelity"], "correct_answer": 1, "solution": "<strong>Antonym:</strong> <strong>Increase</strong> (verb) – Grow, expand, rise, escalate. बढ़ना"}, {"id": "128110", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>Experienced investors <strong>anticipate</strong> market shifts and adjust their portfolios accordingly.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Protected", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Banned", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Expect", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Prevented"], "correct_answer": 2, "solution": "<strong>Protected</strong> (adjective) – Kept safe from harm or injury, secured. सुरक्षित"}, {"id": "128103", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>A well-crafted advertisement can <strong>tempt</strong> even the most cautious consumer into making an impulsive purchase.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Repel", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Dumb", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Cunning", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Shrewd"], "correct_answer": 0, "solution": "<strong>Antonym:</strong> <strong>Repel</strong> (verb) – Drive back, repulse, push away. भगा देना/प्रतिरोध करना"}, {"id": "128109", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>It can be difficult to <strong>endure</strong> repeated setbacks, but persistence often leads to long-term success.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Persist", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Needy", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Forbidden", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Considerate"], "correct_answer": 0, "solution": "<strong>Needy</strong> (adjective) – Lacking the necessities of life; very poor. गरीब"}, {"id": "128102", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>The sudden downpour caused the outdoor market to <strong>stall</strong>, halting all trading activities for the afternoon.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Betrayal", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Jovial", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Loyalty", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Propel"], "correct_answer": 3, "solution": "<strong>Antonym:</strong> <strong>Propel</strong> (verb) – Push, drive forward, move ahead. आगे बढ़ाना"}, {"id": "128106", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>Even after a lengthy discussion, he remained <strong>amenable</strong> to considering new perspectives on the project.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Barren", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Helpful", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Genuine", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Cooperative"], "correct_answer": 3, "solution": "<strong>Barren</strong> (adjective) – Unable to produce much or any vegetation, infertile, unproductive. बंजर"}, {"id": "128104", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>Over the years, her accumulated <strong>wisdom</strong> enabled her to offer valuable guidance to her younger colleagues.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Miserable", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Absurd", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Stupidity", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Reasonable"], "correct_answer": 2, "solution": "<strong>Antonym:</strong> <strong>Stupidity</strong> (noun) – Lack of intelligence, foolishness, dullness. मूर्खता"}, {"id": "128108", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>To achieve the best results, you must <strong>exert</strong> the necessary effort and stay committed to your goals.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Indifferent", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Mean", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Clever", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Exercise"], "correct_answer": 3, "solution": "<strong>Generous</strong> (adjective) – Showing a readiness to give more of something, especially money, than is strictly necessary or expected. उदार/ प्रचुर"}, {"id": "128105", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>His unwavering <strong>conviction</strong> that the company’s strategy would succeed inspired the entire team.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Foolish", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Doubt", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Nonsensical", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Insane"], "correct_answer": 1, "solution": "<strong>Antonym:</strong> <strong>Doubt</strong> (noun) – Uncertainty, hesitation, mistrust. संदेह"}],ans={};
 const posMarks=1.0, negMarks=0.25;
 let ci=0,tl=5*60,ti,fin=0,solMode=0,totalTime=0;
+let isPaused=false;
 
 function ini(){
     disQ();
     strT();
+    document.getElementById('pauseBtn').onclick=togglePause;
 }
 
 function disQ(){
@@ -1158,6 +1168,31 @@ function nxt(){
         ci++;
         disQ();
     }else sub();
+}
+
+function togglePause(){
+    isPaused=!isPaused;
+    if(isPaused){
+        clearInterval(ti);
+        const pm=document.getElementById('pauseModal');
+        pm.style.display='flex';
+        pm.style.alignItems='center';
+        pm.style.justifyContent='center';
+        pm.style.position='fixed';
+        pm.style.top='0';
+        pm.style.left='0';
+        pm.style.width='100%';
+        pm.style.height='100%';
+        pm.style.background='rgba(0,0,0,0.85)';
+        pm.style.zIndex='10000';
+        document.getElementById('pauseBtn').innerHTML='▶';
+        document.getElementById('pauseBtn').title='Resume Test';
+    }else{
+        document.getElementById('pauseModal').style.display='none';
+        document.getElementById('pauseBtn').innerHTML='⏸';
+        document.getElementById('pauseBtn').title='Pause Test';
+        strT();
+    }
 }
 
 function strT(){

@@ -1002,6 +1002,7 @@ a[href*="youtube.com/@"],
 <div class="hdr-left">
 <div class="ttl">Mocks Wallah</div>
 <div class="tmr" id="tmr">5:00</div>
+<button id="pauseBtn" title="Pause Test" style="margin-left:8px;background:transparent;border:none;color:inherit;font-size:18px;cursor:pointer;vertical-align:middle;">⏸</button>
 </div>
 <button class="sub" onclick="sub()" id="sub-btn">Submit</button>
 </div>
@@ -1019,6 +1020,13 @@ a[href*="youtube.com/@"],
 <div class="nav">
 <button class="nb prv" id="pb" onclick="prv()">← Previous</button>
 <button class="nb nxt" id="nb" onclick="nxt()">Next →</button>
+</div>
+<div id="pauseModal" class="modal" style="display:none;align-items:center;justify-content:center;">
+<div class="modal-content" style="text-align:center;padding:32px 24px;">
+<h2 style="font-size:24px;font-weight:700;color:var(--primary,#6c63ff);">⏸ Test Paused</h2>
+<p style="margin-top:10px;color:#666;">Your progress has been frozen. Timer is stopped.</p>
+<button id="resumeBtn" onclick="togglePause()" style="margin-top:24px;padding:12px 28px;border:none;border-radius:12px;font-weight:600;cursor:pointer;background:var(--primary,#6c63ff);color:white;font-size:16px;">▶ Resume Test</button>
+</div>
 </div>
 <div id="modal" class="modal">
 <div class="modal-content">
@@ -1060,10 +1068,12 @@ a[href*="youtube.com/@"],
 const qs=[{"id": "129745", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>The ancient manuscript was shrouded in <strong>obscurity</strong>, its origins and meanings unclear to modern scholars.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Inconspicuousness", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Brisk", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Confusing", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Gnawing"], "correct_answer": 0, "solution": "<strong>Synonym</strong>: <strong>Inconspicuousness</strong> (noun) – Unnoticeable, hidden, obscure. अगोचरता"}, {"id": "129740", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>The <strong>renowned</strong> artist's exhibition attracted visitors from all over the world, eager to witness her celebrated works.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Great", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Found", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Sanctuaries", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Unrecognized"], "correct_answer": 3, "solution": "<strong>Antonym: Unrecognized</strong> (adjective) – Not recognized or acknowledged. अप्रसिद्ध"}, {"id": "129748", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>The use of smartphones is <strong>prevalent</strong> among teenagers, becoming a common sight in schools worldwide.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Deflect", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Fickle", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Vacillate", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Pervasive"], "correct_answer": 3, "solution": "<strong>Synonym</strong>: <strong>Pervasive</strong> (adjective) – Extensive, prevalent, widespread. व्यापक"}, {"id": "129741", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>The movie's <strong>appeal</strong> lies not only in its star-studded cast but also in its captivating storyline that draws audiences of all ages.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Repulsion", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Pious", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Precarious", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Threatening"], "correct_answer": 0, "solution": "<strong>Antonym: Repulsion (noun)</strong> – Disgust, aversion, repugnance, unattractiveness. विराग"}, {"id": "129746", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>A <strong>stalwart</strong> of the community, she has always been a backbone of support during times of need.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Elliptical", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Adherent", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Abrupt", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Twinkled"], "correct_answer": 1, "solution": "<strong>Synonym</strong>: <strong>Adherent</strong> (noun) – Follower, supporter, devotee, stalwart. अनुयायी"}, {"id": "129744", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>The project was a success due to the <strong>concerted</strong> efforts of all team members, who worked together seamlessly.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Freezing", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Tropical", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Summery", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Isolated"], "correct_answer": 3, "solution": "<strong>Antonym: Isolated (adjective)</strong> – Alone, separate, solitary, independent. अलग"}, {"id": "129747", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>The signed document served as a <strong>testament</strong> to their agreement, providing proof of the commitments made.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Convalesce", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Collapse", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Proof", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Conceal"], "correct_answer": 2, "solution": "<strong>Synonym</strong>: <strong>Proof</strong> (noun) – Confirmation, evidence, verification, testament. प्रमाण"}, {"id": "129742", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>Mathematics is an <strong>integral</strong> part of the engineering curriculum, essential for understanding complex concepts.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Monotonous", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Profound", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Nonessential", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Interesting"], "correct_answer": 2, "solution": "<strong>Antonym: Nonessential (adjective)</strong> – Unnecessary, dispensable, superfluous, unimportant. अनावश्यक"}, {"id": "129749", "question": "<strong>Select the most appropriate synonym of the given word.</strong></p> <p>The cottage is nestled in a quiet area, with beautiful woods and lakes in the immediate <strong>surrounding</strong> environment.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Adjacent", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Fluctuate", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Rapid", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Stabilise"], "correct_answer": 0, "solution": "<strong>Synonym</strong>: <strong>Adjacent</strong> (adjective) – Next to, beside, near, surrounding. सटा हुआ"}, {"id": "129743", "question": "<strong>Select the most appropriate Antonym of the given word.</strong></p> <p>His <strong>ardent</strong> support for environmental conservation inspires others to take action and protect natural habitats.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Shallow", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Indifferent", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Inventive", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Occult"], "correct_answer": 1, "solution": "<strong>Antonym: Indifferent (adjective)</strong> – Uninterested, apathetic, unconcerned, nonchalant. उदासीन"}],ans={};
 const posMarks=2.0, negMarks=0.5;
 let ci=0,tl=5*60,ti,fin=0,solMode=0,totalTime=0;
+let isPaused=false;
 
 function ini(){
     disQ();
     strT();
+    document.getElementById('pauseBtn').onclick=togglePause;
 }
 
 function disQ(){
@@ -1158,6 +1168,31 @@ function nxt(){
         ci++;
         disQ();
     }else sub();
+}
+
+function togglePause(){
+    isPaused=!isPaused;
+    if(isPaused){
+        clearInterval(ti);
+        const pm=document.getElementById('pauseModal');
+        pm.style.display='flex';
+        pm.style.alignItems='center';
+        pm.style.justifyContent='center';
+        pm.style.position='fixed';
+        pm.style.top='0';
+        pm.style.left='0';
+        pm.style.width='100%';
+        pm.style.height='100%';
+        pm.style.background='rgba(0,0,0,0.85)';
+        pm.style.zIndex='10000';
+        document.getElementById('pauseBtn').innerHTML='▶';
+        document.getElementById('pauseBtn').title='Resume Test';
+    }else{
+        document.getElementById('pauseModal').style.display='none';
+        document.getElementById('pauseBtn').innerHTML='⏸';
+        document.getElementById('pauseBtn').title='Pause Test';
+        strT();
+    }
 }
 
 function strT(){

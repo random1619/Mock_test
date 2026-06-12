@@ -1692,6 +1692,7 @@ a[href*="youtube.com/@"],
             <div class="timer">
                 <i class="fas fa-clock" style="margin-right: 8px;"></i>
                 <div id="test-timer">00:20:00</div>
+                <button id="pauseBtn" class="btn" onclick="togglePause()" title="Pause Test" style="margin-left:8px;">⏸</button>
             </div>
             <button id="theme-toggle" class="btn" onclick="toggleTheme()">
                 <i class="fas fa-moon"></i>
@@ -3073,6 +3074,16 @@ no. </span></span></span>
             </div>
         </div>
     </div>
+    <div class="modal-overlay" id="pauseModal" style="display:none;align-items:center;justify-content:center;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:10001;">
+        <div style="text-align:center;max-width:400px;width:100%;padding:32px 24px;border-radius:12px;background:var(--card,#1e1e1e);">
+            <h2 style="font-weight:700;font-size:24px;margin-bottom:8px;color:var(--primary,#6c63ff);">⏸ Test Paused</h2>
+            <p style="margin-top:10px;color:var(--text-light,#aaa);font-size:15px;">Your progress has been frozen. Timer is stopped.</p>
+            <div style="display:flex;justify-content:center;margin-top:24px;">
+                <button class="btn" onclick="togglePause()" style="background:var(--primary,#6c63ff);color:white;padding:12px 24px;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:15px;">▶ Resume Test</button>
+            </div>
+        </div>
+    </div>
+
     
     <div class="modal-overlay" id="results-modal">
         <div class="results-card">
@@ -3435,22 +3446,42 @@ function toggleTheme() {
     icon.classList.toggle('fa-sun');
 }
 
+// Pause functionality
+function togglePause() {
+    if (!test.isPaused) {
+        test.isPaused = true;
+        clearInterval(test.timerInterval);
+        document.getElementById('pauseModal').style.display = 'flex';
+        document.getElementById('pauseBtn').innerHTML = '▶';
+        document.getElementById('pauseBtn').title = 'Resume Test';
+    } else {
+        test.isPaused = false;
+        document.getElementById('pauseModal').style.display = 'none';
+        document.getElementById('pauseBtn').innerHTML = '⏸';
+        document.getElementById('pauseBtn').title = 'Pause Test';
+        startTimer();
+    }
+}
+
 // Timer functionality
 function startTimer() {
     const timer = document.getElementById('test-timer');
     let timeLeft = test.timer;
     
-    const interval = setInterval(() => {
+    test.timeLeft = test.timeLeft || timeLeft;
+    timeLeft = test.timeLeft;
+    test.timerInterval = setInterval(() => {
         if (test.submitted) {
-            clearInterval(interval);
+            clearInterval(test.timerInterval);
             return;
         }
         
         timeLeft--;
         test.timeSpent++;
+        test.timeLeft = timeLeft;
         
         if (timeLeft <= 0) {
-            clearInterval(interval);
+            clearInterval(test.timerInterval);
             submitTest();
             return;
         }

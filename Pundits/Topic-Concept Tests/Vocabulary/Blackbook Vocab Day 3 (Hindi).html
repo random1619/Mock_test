@@ -982,6 +982,7 @@ a[href*="youtube.com/@"],
                         <i class="fas fa-clock me-2"></i>
                         <span id="minutes">00</span>:<span id="seconds">00</span>
                     </div>
+                <button class="btn btn-sm" id="pauseBtn" onclick="togglePause()" title="Pause Test" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:inherit;cursor:pointer;padding:4px 10px;border-radius:6px;font-size:16px;">⏸</button>
                 </div>
                 <div class="mt-2 mb-2">
                     <h5 class="m-0">BLACKBOOK VOCAB DAY 3</h5>
@@ -1975,6 +1976,36 @@ a[href*="youtube.com/@"],
                 animation.onfinish = () => confetti.remove();
             }
         }
-    </script>
+    
+function togglePause() {
+    if (!window._isPaused) {
+        window._isPaused = true;
+        // Stop timer
+        if (typeof state.timerInterval !== 'undefined') clearInterval(state.timerInterval);
+        // Show overlay
+        const pm = document.getElementById('pauseModal');
+        if (pm) { pm.style.display = 'flex'; pm.style.alignItems = 'center'; pm.style.justifyContent = 'center'; }
+        const btn = document.getElementById('pauseBtn');
+        if (btn) { btn.innerHTML = '▶'; btn.title = 'Resume Test'; }
+    } else {
+        window._isPaused = false;
+        const pm = document.getElementById('pauseModal');
+        if (pm) pm.style.display = 'none';
+        const btn = document.getElementById('pauseBtn');
+        if (btn) { btn.innerHTML = '⏸'; btn.title = 'Pause Test'; }
+        // Restart timer
+        if (typeof startTimer === 'function') startTimer();
+    }
+}
+</script>
+
+    <div id="pauseModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:10000;align-items:center;justify-content:center;">
+        <div style="background:#1e1e1e;padding:32px 24px;border-radius:12px;text-align:center;max-width:400px;width:90%;color:white;">
+            <h2 style="color:#6c63ff;font-size:24px;margin-bottom:12px;">⏸ Test Paused</h2>
+            <p style="color:#aaa;font-size:15px;margin-top:8px;">Your progress has been frozen. Timer is stopped.</p>
+            <button id="resumeBtn" onclick="togglePause()" style="margin-top:24px;padding:12px 28px;background:#6c63ff;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:15px;">▶ Resume Test</button>
+        </div>
+    </div>
+
 </body>
 </html>

@@ -1002,6 +1002,7 @@ a[href*="youtube.com/@"],
 <div class="hdr-left">
 <div class="ttl">Mocks Wallah</div>
 <div class="tmr" id="tmr">5:00</div>
+<button id="pauseBtn" title="Pause Test" style="margin-left:8px;background:transparent;border:none;color:inherit;font-size:18px;cursor:pointer;vertical-align:middle;">⏸</button>
 </div>
 <button class="sub" onclick="sub()" id="sub-btn">Submit</button>
 </div>
@@ -1019,6 +1020,13 @@ a[href*="youtube.com/@"],
 <div class="nav">
 <button class="nb prv" id="pb" onclick="prv()">← Previous</button>
 <button class="nb nxt" id="nb" onclick="nxt()">Next →</button>
+</div>
+<div id="pauseModal" class="modal" style="display:none;align-items:center;justify-content:center;">
+<div class="modal-content" style="text-align:center;padding:32px 24px;">
+<h2 style="font-size:24px;font-weight:700;color:var(--primary,#6c63ff);">⏸ Test Paused</h2>
+<p style="margin-top:10px;color:#666;">Your progress has been frozen. Timer is stopped.</p>
+<button id="resumeBtn" onclick="togglePause()" style="margin-top:24px;padding:12px 28px;border:none;border-radius:12px;font-weight:600;cursor:pointer;background:var(--primary,#6c63ff);color:white;font-size:16px;">▶ Resume Test</button>
+</div>
 </div>
 <div id="modal" class="modal">
 <div class="modal-content">
@@ -1060,10 +1068,12 @@ a[href*="youtube.com/@"],
 const qs=[{"id": "139863", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>She has a natural <ins><strong>flair</strong></ins> for languages, quickly picking up phrases and accents wherever she travels.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Skill", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Discontented", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Content", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Evident"], "correct_answer": 0, "solution": "<strong>Synonym: Skill</strong> (noun) – Ability, proficiency, expertise, talent, flair कौशल"}, {"id": "139855", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>The lake appeared particularly <ins><strong>murky</strong></ins> after the storm, making it difficult to see the fish swimming below.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Dim", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Hazy", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Foggy", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Bright"], "correct_answer": 3, "solution": "<strong>Antonym</strong>: <strong>Bright</strong> (adjective) – Full of light, shining, illuminated. उज्ज्वल<br> <strong>Dim</strong> (adjective) – Not bright or clear. मद्धम<br> <strong>Hazy</strong> (adjective) – Unclear, misty, foggy, cloudy. धुंधला<br> <strong>Foggy</strong> (adjective) – Filled with thick mist or low clouds. कोहरा भरा"}, {"id": "139864", "question": "<strong>Select the best express Synonym of the given underlined phrasal verb.</strong></p> <p>Everyone decided to<ins> <strong>pitch in</strong></ins> and clean up the park after the festival, restoring its beauty by the afternoon.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Apparent", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Visible", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Noticeable", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Contribute"], "correct_answer": 3, "solution": "<strong>Synonym: Contribute</strong> (verb) – Add to, give, pitch in, assist, support योगदान देना"}, {"id": "139856", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>His comments were criticized as <ins><strong>derogatory</strong></ins>, leading to a heated debate about respect in public discourse.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Complimentary", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Disrespectful", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Insulting", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Belittling"], "correct_answer": 0, "solution": "<strong>Antonym</strong>: <strong>Complimentary</strong> (adjective) – Expressing praise or admiration, flattering. प्रशंसात्मक<br> <strong>Disrespectful</strong> (adjective) – Showing lack of respect or courtesy. अनादरपूर्ण<br> <strong>Insulting</strong> (adjective) – Offensive, disrespectful. अपमानजनक<br> <strong>Belittling</strong> (adjective) – Dismissive, making someone or something seem less important. हीन करना"}, {"id": "139861", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>The sudden change in company policy left many employees <ins><strong>nonplussed</strong> </ins>and seeking clarification", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Negligence", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Carefulness", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Bewildered", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Effort"], "correct_answer": 2, "solution": "<strong>Synonym: Bewildered</strong> (adjective) – Confused, perplexed, puzzled, baffled, nonplussed भ्रमित"}, {"id": "139857", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>She felt <ins><strong>indignant</strong> </ins>when she discovered that her project idea had been dismissed without consideration.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Furious", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Resentful", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Pleased", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Angry"], "correct_answer": 2, "solution": "<strong>Antonym</strong>: <strong>Pleased</strong> (adjective) – Feeling or showing happiness and satisfaction. प्रसन्न<br> <strong>Furious</strong> (adjective) – Extremely angry, raging. क्रोधित<br> <strong>Resentful</strong> (adjective) – Feeling or expressing bitterness or indignation at having been treated unfairly. नाराज़<br> <strong>Angry</strong> (adjective) – Feeling or showing strong annoyance, displeasure, or hostility. क्रुद्ध"}, {"id": "139862", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>It was <ins><strong>expedient</strong> </ins>to take the highway instead of the scenic route during rush hour to save time.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Happy", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Advantageous", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Pleased", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Fulfilled"], "correct_answer": 1, "solution": "<strong>Synonym: Advantageous</strong> (adjective) – Beneficial, profitable, favorable, expedient, advantageous फायदेमंद"}, {"id": "139858", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>Despite his <ins><strong>timid</strong> </ins>nature, he gathered enough courage to speak up during the meeting.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Shy", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Confident", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Bashful", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Nervous"], "correct_answer": 1, "solution": "<strong>Antonym</strong>: <strong>Confident</strong> (adjective) – Feeling or showing confidence in oneself; self-assured. आत्मविश्वासी<br> <strong>Shy</strong> (adjective) – Nervous or timid in the company of other people. शर्मीला<br> <strong>Bashful</strong> (adjective) – Reluctant to draw attention to oneself; shy. लज्जालु<br> <strong>Nervous</strong> (adjective) – Easily agitated or alarmed; tending to be anxious. चिंतित"}, {"id": "139860", "question": "<strong>Select the best express Synonym of the given underlined word.</strong></p> <p>Their relationship was <ins><strong>harmonious</strong></ins>, characterized by mutual respect and a pleasant atmosphere.", "options": ["<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Heed", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Persistence", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Ignore", "<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Peaceful"], "correct_answer": 3, "solution": "<strong>Synonym: Peaceful</strong> (adjective) – Calm, tranquil, serene, harmonious, placid शांत"}, {"id": "139859", "question": "<strong>Select the best express Antonym of the given underlined word.</strong></p> <p>The loss of his lifelong friend filled him with deep <ins><strong>anguish</strong> </ins>that was difficult to articulate.", "options": ["<p style=\"display:none\"><img alt=\"check\" src=\"https://englishmadhyam.info/public/exam-panel/img/check.png\"/></p> Joy", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Pain", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Suffering", "<p style=\"display:none\"><img alt=\"reload\" src=\"https://englishmadhyam.info/public/exam-panel/img/reload.png\"/></p> Distress"], "correct_answer": 0, "solution": "<strong>Antonym</strong>: <strong>Joy</strong> (noun) – A feeling of great pleasure and happiness. आनंद<br> <strong>Pain</strong> (noun) – Physical suffering or discomfort caused by illness or injury. पीड़ा<br> <strong>Suffering</strong> (noun) – The state of undergoing pain, distress, or hardship. कष्ट<br> <strong>Distress</strong> (noun) – Extreme anxiety, sorrow, or pain. व्यथा"}],ans={};
 const posMarks=2.0, negMarks=0.5;
 let ci=0,tl=5*60,ti,fin=0,solMode=0,totalTime=0;
+let isPaused=false;
 
 function ini(){
     disQ();
     strT();
+    document.getElementById('pauseBtn').onclick=togglePause;
 }
 
 function disQ(){
@@ -1158,6 +1168,31 @@ function nxt(){
         ci++;
         disQ();
     }else sub();
+}
+
+function togglePause(){
+    isPaused=!isPaused;
+    if(isPaused){
+        clearInterval(ti);
+        const pm=document.getElementById('pauseModal');
+        pm.style.display='flex';
+        pm.style.alignItems='center';
+        pm.style.justifyContent='center';
+        pm.style.position='fixed';
+        pm.style.top='0';
+        pm.style.left='0';
+        pm.style.width='100%';
+        pm.style.height='100%';
+        pm.style.background='rgba(0,0,0,0.85)';
+        pm.style.zIndex='10000';
+        document.getElementById('pauseBtn').innerHTML='▶';
+        document.getElementById('pauseBtn').title='Resume Test';
+    }else{
+        document.getElementById('pauseModal').style.display='none';
+        document.getElementById('pauseBtn').innerHTML='⏸';
+        document.getElementById('pauseBtn').title='Pause Test';
+        strT();
+    }
 }
 
 function strT(){

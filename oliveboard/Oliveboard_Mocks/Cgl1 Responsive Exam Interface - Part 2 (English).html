@@ -1483,6 +1483,7 @@ a[href*="youtube.com/@"],
                 <div id="qInfo">Q1/100</div>
                 <div>cgl1</div>
                 <div class="timer" id="timer">60:00</div>
+            <button class="btn" id="pauseBtn" onclick="togglePause()" title="Pause Test" style="background:transparent;border:none;color:inherit;font-size:18px;cursor:pointer;">⏸</button>
             </div>
             <div class="controls-bar">
                 <div class="lang-toggle">
@@ -1552,6 +1553,14 @@ a[href*="youtube.com/@"],
         </div>
     </div>
     <!-- Result Screen -->
+    
+    <div id="pauseModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:10000;align-items:center;justify-content:center;">
+        <div style="background:#1e1e1e;padding:32px 24px;border-radius:12px;text-align:center;max-width:400px;width:90%;color:white;">
+            <h2 style="color:#6c63ff;font-size:24px;margin-bottom:12px;">⏸ Test Paused</h2>
+            <p style="color:#aaa;font-size:15px;margin-top:8px;">Your progress has been frozen. Timer is stopped.</p>
+            <button id="resumeBtn" onclick="togglePause()" style="margin-top:24px;padding:12px 28px;background:#6c63ff;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:15px;">▶ Resume Test</button>
+        </div>
+    </div>
     <div class="modal" id="resultModal">
         <div class="modal-content" id="resultContent">
             <!-- Result content will be injected by JS -->
@@ -3410,6 +3419,27 @@ a[href*="youtube.com/@"],
             const app = new ExamApp();
             app.init();
         });
-    </script>
+    
+function togglePause() {
+    if (!window._isPaused) {
+        window._isPaused = true;
+        // Stop timer
+        if (typeof window._pauseInterval !== 'undefined') clearInterval(window._pauseInterval);
+        // Show overlay
+        const pm = document.getElementById('pauseModal');
+        if (pm) { pm.style.display = 'flex'; pm.style.alignItems = 'center'; pm.style.justifyContent = 'center'; }
+        const btn = document.getElementById('pauseBtn');
+        if (btn) { btn.innerHTML = '▶'; btn.title = 'Resume Test'; }
+    } else {
+        window._isPaused = false;
+        const pm = document.getElementById('pauseModal');
+        if (pm) pm.style.display = 'none';
+        const btn = document.getElementById('pauseBtn');
+        if (btn) { btn.innerHTML = '⏸'; btn.title = 'Pause Test'; }
+        // Restart timer
+        if (typeof startTimer === 'function') startTimer();
+    }
+}
+</script>
 </body>
 </html>
