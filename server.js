@@ -111,8 +111,12 @@ app.post('/api/progress', (req, res) => {
   }
 });
 
-// Serve everything statically (including mocks and pdfs)
-app.use(express.static(__dirname));
+// Serve everything statically with caching disabled to prevent stale cache issues
+app.use(express.static(__dirname, {
+  setHeaders: (res, path, stat) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  }
+}));
 
 // Single Page Portal fallback
 app.get('/', (req, res) => {
