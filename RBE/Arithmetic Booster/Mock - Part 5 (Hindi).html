@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock (Hindi)</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--p:#4F46E5;--s:#10B981;--d:#EF4444;--w:#F59E0B;--bg:#F8FAFC;--card:#FFF;--txt:#1F2937;--txtL:#6B7280;--brd:#E5E7EB}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);line-height:1.5;padding-bottom:80px}
+        
+        /* Image containment styles */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 8px 0;
+            border-radius: 4px;
+        }
+        
+        /* Ensure images don't overflow in any container */
+        .q-txt img, .opt-txt img, .sol img, .comp img {
+            max-width: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+        
+        /* Specific image containers */
+        .img-container {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+        
+        .hdr{background:var(--card);border-bottom:1px solid var(--brd);padding:12px 16px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;position:sticky;top:0;z-index:100}
+        .hdr-l{display:flex;align-items:center;gap:12px;justify-self:start}
+        .hdr-c{text-align:center;font-weight:600;font-size:15px}
+        .hdr-r{display:flex;justify-self:end;align-items:center;gap:8px}
+        .q-info{font-size:14px;font-weight:600}
+        .timer{background:#FEF3C7;color:#92400E;padding:6px 12px;border-radius:16px;font-size:13px;font-weight:600}
+        .btn{border:none;border-radius:8px;font-weight:500;cursor:pointer;transition:all .2s;font-size:13px}
+        .btn-sm{padding:8px 12px}
+        .btn-p{background:var(--p);color:white}
+        .btn-o{background:transparent;border:1px solid var(--brd);color:var(--txt)}
+        .btn:active{transform:scale(.98)}
+        .cont{padding:16px;max-width:100%;overflow-x:hidden}
+        .q-card{background:var(--card);border-radius:12px;padding:20px;margin-bottom:16px;border:1px solid var(--brd);overflow:hidden}
+        .lang{display:flex;background:#F3F4F6;border-radius:8px;padding:2px;margin-bottom:16px}
+        .lang-btn{flex:1;padding:8px;border:none;background:transparent;border-radius:6px;font-size:13px;cursor:pointer;transition:all .2s}
+        .lang-btn.active{background:white;color:var(--p);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+        .comp{background:#F0F9FF;border:1px solid #BAE6FD;border-radius:8px;padding:16px;margin-bottom:20px;overflow:hidden}
+        .comp h4{color:#0369A1;font-size:14px;margin-bottom:8px}
+        .q-txt{font-size:16px;line-height:1.6;margin-bottom:20px;color:var(--txt);overflow:hidden;word-wrap:break-word}
+        .opts{display:flex;flex-direction:column;gap:12px}
+        .opt{display:flex;align-items:center;padding:16px;background:var(--card);border:2px solid var(--brd);border-radius:12px;cursor:pointer;transition:all .2s;gap:12px;overflow:hidden}
+        .opt:hover:not(.submitted){border-color:var(--p)}
+        .opt.sel{border-color:var(--p);background:#F0F9FF}
+        .opt.correct{border-color:var(--s);background:#F0FDF4 !important}
+        .opt.wrong{border-color:var(--d);background:#FEF2F2 !important}
+        .opt.submitted{cursor:default}
+        .opt-radio{width:20px;height:20px;border:2px solid var(--brd);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .opt.sel .opt-radio{border-color:var(--p);background:var(--p)}
+        .opt.sel .opt-radio::after{content:'✓';color:white;font-size:12px;font-weight:bold}
+        .opt.correct .opt-radio{border-color:var(--s) !important;background:var(--s) !important}
+        .opt.correct .opt-radio::after{content:'✓';color:white;font-size:12px;font-weight:bold}
+        .opt.wrong .opt-radio{border-color:var(--d) !important;background:var(--d) !important}
+        .opt.wrong .opt-radio::after{content:'✗';color:white;font-size:12px;font-weight:bold}
+        .opt-txt{flex:1;font-size:15px;overflow:hidden;word-wrap:break-word}
+        .sol{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:16px;margin-top:20px;display:none;overflow:hidden}
+        .sol.show{display:block}
+        .sol h4{color:var(--s);font-size:14px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+        .nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--brd);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;z-index:100}
+        .nav-btn{padding:12px 20px;border-radius:8px;font-weight:600;min-width:80px}
+        .nav-btn:disabled{opacity:.5;cursor:not-allowed}
+        .prog{text-align:center;font-size:13px;color:var(--txtL)}
+        .panel{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--card);z-index:200;transform:translateY(100%);transition:transform .3s ease;overflow-y:auto}
+        .panel.open{transform:translateY(0)}
+        .panel-hdr{background:var(--p);color:white;padding:16px;display:flex;justify-content:space-between;align-items:center}
+        .panel-close{background:none;border:none;color:white;font-size:18px;cursor:pointer}
+        .q-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;padding:20px}
+        .q-num{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:#F3F4F6;border-radius:8px;font-weight:600;cursor:pointer;transition:all .2s;font-size:14px}
+        .q-num.cur{background:var(--p);color:white}
+        .q-num.ans{background:var(--s);color:white}
+        .q-num.wrong{background:var(--d);color:white}
+        .q-num:hover{transform:scale(1.05)}
+        .modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:300;display:none;align-items:center;justify-content:center;padding:20px}
+        .modal.show{display:flex}
+        .result{background:var(--card);border-radius:16px;padding:24px;width:100%;max-width:400px;text-align:center}
+        .score{font-size:2rem;font-weight:bold;color:var(--p);margin:16px 0}
+        .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:20px 0}
+        .stat{text-align:center;padding:12px;border-radius:8px;border:1px solid var(--brd)}
+        .stat-val{font-size:1.5rem;font-weight:bold;margin-bottom:4px}
+        .stat-lbl{font-size:12px;color:var(--txtL)}
+        .stat.c{border-color:var(--s);background:#F0FDF4}
+        .stat.c .stat-val{color:var(--s)}
+        .stat.w{border-color:var(--d);background:#FEF2F2}
+        .stat.w .stat-val{color:var(--d)}
+        .modal-acts{display:flex;gap:12px;margin-top:20px}
+        .modal-btn{flex:1;padding:12px;border-radius:8px;font-weight:600}
+        @media (max-width:375px){.hdr{padding:10px 12px}.cont{padding:12px}.q-card{padding:16px}.q-grid{grid-template-columns:repeat(4,1fr)}}
+    </style>
+</head>
+<body>
+    <div class="hdr">
+        <div class="hdr-l">
+            <div class="q-info" id="qInfo">Q1/15</div>
+            <div class="timer" id="timer">60:00</div>
+        </div>
+        <div class="hdr-c">Mocks Wallah</div>
+        <div class="hdr-r">
+            <button class="btn btn-o btn-sm" id="menuBtn"><i class="fas fa-th"></i></button>
+            <button class="btn btn-p btn-sm" id="subBtn">Submit</button>
+        </div>
+    </div>
+
+    <div class="cont">
+        <div class="q-card">
+            <div class="lang">
+                <button class="lang-btn active" id="engBtn">English</button>
+                <button class="lang-btn" id="hinBtn">हिंदी</button>
+            </div>
+
+            <div id="compSec" class="comp" style="display:none">
+                <h4><i class="fas fa-book"></i> Comprehension</h4>
+                <div id="compCont"></div>
+            </div>
+
+            <div class="q-txt" id="qTxt"></div>
+            <div class="opts" id="opts"></div>
+
+            <div class="sol" id="sol">
+                <h4><i class="fas fa-lightbulb"></i> Solution</h4>
+                <div id="solCont"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav">
+        <button class="btn btn-o nav-btn" id="prevBtn"><i class="fas fa-chevron-left"></i> Prev</button>
+        <div class="prog">
+            <div id="progTxt">1 of 15</div>
+            <div style="font-size:11px">Answered: <span id="ansCnt">0</span> | <a href="https://t.me/mocks_wallah">Mocks Wallah</a></div>
+        </div>
+        <button class="btn btn-p nav-btn" id="nextBtn">Next <i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <div class="panel" id="panel">
+        <div class="panel-hdr">
+            <h3>All Questions</h3>
+            <button class="panel-close" id="panelClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="q-grid" id="qGrid"></div>
+        <div style="padding:20px;font-size:12px;color:var(--txtL)">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                <div class="q-num ans" style="width:24px;height:24px">✓</div><span>Answered</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+                <div class="q-num cur" style="width:24px;height:24px">•</div><span>Current</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modalOver">
+        <div class="result">
+            <h2>Test Complete!</h2>
+            <div class="score" id="scoreDisp">0/30</div>
+            <div class="stats">
+                <div class="stat c"><div class="stat-val" id="corrStat">0</div><div class="stat-lbl">Correct</div></div>
+                <div class="stat w"><div class="stat-val" id="incStat">0</div><div class="stat-lbl">Incorrect</div></div>
+                <div class="stat"><div class="stat-val" id="unaStat">0</div><div class="stat-lbl">Unattempted</div></div>
+                <div class="stat"><div class="stat-val" id="timeStat">0</div><div class="stat-lbl">Minutes</div></div>
+            </div>
+            <div class="modal-acts">
+                <button class="btn btn-o modal-btn" id="closeModal">Close</button>
+                <button class="btn btn-p modal-btn" id="revBtn">Review</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class TestApp {
+            constructor() {
+                this.qs = [
+  {
+    "question": "<style> img {max-width:100% !important}  @font-face { font-family: 'Mangal';src: url('https://appxcontent.kaxa.in/fonts/MANGAL.ttf') format('truetype'); } </style><p>    How    many of the following numbers are divisible by 156? <br> 312,    620, 936, 1402, 1872, 3216, 7176, 8108</p>    <p>    <span style=\"font-family:'Mangal'\"><span><span>निम्नलिखित    में से कितनी संख्याएँ </span></span></span>156    <span style=\"font-family:'Mangal'\"><span><span>से    विभाज्य हैं</span></span></span>?</p>    <p>    312,    620, 936, 1402, 1872, 3216, 7176, 8108</p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p>     5</p>",
+      "<style> img {max-width:100% !important} </style><p>     2</p>",
+      "<style> img {max-width:100% !important} </style><p>     4</p>",
+      "<style> img {max-width:100% !important} </style><p>     3</p>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<style> img {max-width:100% !important} </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_a2cf28dc1a460f38.png\" > </p>",
+    "question_index": 0
+  },
+  {
+    "question": "<style> img {max-width:100% !important}  @font-face { font-family: 'Mangal';src: url('https://appxcontent.kaxa.in/fonts/MANGAL.ttf') format('truetype'); } </style><p>    A    policeman sees a thief at a distance of 150 m. He starts chasing    the thief who is running at a speed of 5 m/sec, while the    policeman chases with a speed of 7m/sec. Find the distance covered    by the thief when he is caught by the policeman.</p>    <p>    <span style=\"font-family:'Mangal'\"><span><span>एक    पुलिसकर्मी को </span></span></span>150    <span style=\"font-family:'Mangal'\"><span><span>मीटर    की दूरी पर एक चोर दिखाई देता    है। वह </span></span></span>5    <span style=\"font-family:'Mangal'\"><span><span>मीटर</span></span></span>/<span style=\"font-family:'Mangal'\"><span><span>सेकंड    की गति से भाग रहे चोर का पीछा    करना शुरू कर देता है</span></span></span>,    <span style=\"font-family:'Mangal'\"><span><span>जबकि    पुलिसकर्मी </span></span></span>7    <span style=\"font-family:'Mangal'\"><span><span>मीटर</span></span></span>/<span style=\"font-family:'Mangal'\"><span><span>सेकंड    की गति से पीछा करता है।    पुलिसकर्मी द्वारा पकड़े    जाने पर चोर द्वारा तय की गई    दूरी ज्ञात कीजिए।</span></span></span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p>     295    m</p>",
+      "<style> img {max-width:100% !important} </style><p>     375    m</p>",
+      "<style> img {max-width:100% !important} </style><p>     325    m</p>",
+      "<style> img {max-width:100% !important} </style><p>     285    m</p>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<style> img {max-width:100% !important} </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_1b26e53366433b17.png\" > </p>",
+    "question_index": 1
+  },
+  {
+    "question": "<style> img {max-width:100% !important}  @font-face { font-family: 'Mangal';src: url('https://appxcontent.kaxa.in/fonts/MANGAL.ttf') format('truetype'); } </style><p>    A    shopkeeper allows a discount of 15% on a text book with the marked    price Rs.100. On request, he further allows a discount of 10% on    the new price of the goods. What is the overall discount given to    the customer?</p>    <p>    <span style=\"font-family:'Mangal'\"><span><span>एक    दुकानदार </span></span></span>100    <span style=\"font-family:'Mangal'\"><span><span>रुपये    अंकित मूल्य वाली एक पाठ्य    पुस्तक पर </span></span></span>15%    <span style=\"font-family:'Mangal'\"><span><span>की    छूट देता है। अनुरोध पर</span></span></span>,    <span style=\"font-family:'Mangal'\"><span><span>वह    सामान की नई कीमत पर </span></span></span>10%    <span style=\"font-family:'Mangal'\"><span><span>की    छूट भी देता है। ग्राहक को    दी गई कुल छूट कितनी है</span></span></span>?</p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p>     Rs.76.50</p>",
+      "<style> img {max-width:100% !important} </style><p>     Rs.25.00</p>",
+      "<style> img {max-width:100% !important} </style><p>     Rs.75.00</p>",
+      "<style> img {max-width:100% !important} </style><p>     Rs.23.50</p>"
+    ],
+    "correct_option_id": 3,
+    "solution": "<style> img {max-width:100% !important} </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_1bedf56f679a1140.png\" > </p>",
+    "question_index": 2
+  },
+  {
+    "question": "<style> img {max-width:100% !important}  @font-face { font-family: 'Mangal';src: url('https://appxcontent.kaxa.in/fonts/MANGAL.ttf') format('truetype'); } </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_8748debc5645f1cd.jpg\" > </p>    <p>    <span style=\"font-family:'Mangal'\"><span><span style=\"font-family:'Mangal'\"><span>शिवी    गंतव्य तक पहुंचने के लिए    अपनी कार को तीन अलग</span></span></span></span>-<span style=\"font-family:'Mangal'\"><span><span style=\"font-family:'Mangal'\"><span>अलग    तरीकों से चलाती है। इस यात्रा    के दौरान औसत गति ज्ञात कीजिए।</span></span></span></span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p>     42.8    km/h</p>",
+      "<style> img {max-width:100% !important} </style><p>     43.5    km/h</p>",
+      "<style> img {max-width:100% !important} </style><p>     41.5    km/h</p>",
+      "<style> img {max-width:100% !important} </style><p>     41.8    km/h</p>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<style> img {max-width:100% !important} </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_e9e31465514a8252.png\" > </p>",
+    "question_index": 3
+  },
+  {
+    "question": "<style> img {max-width:100% !important}  @font-face { font-family: 'Mangal';src: url('https://appxcontent.kaxa.in/fonts/MANGAL.ttf') format('truetype'); } </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_2edbabafc1b42af1.jpg\" > </p>    <p>    <span style=\"font-family:'Mangal'\"><span><span>वर्ष    </span></span></span>2018    <span style=\"font-family:'Mangal'\"><span><span>की    जनसंख्या की तुलना में </span></span></span>2021    <span style=\"font-family:'Mangal'\"><span><span>में    गाँव </span></span></span>A    <span style=\"font-family:'Mangal'\"><span><span>की    जनसंख्या में कितने प्रतिशत    की वृद्धि हुई है</span></span></span>?    (<span style=\"font-family:'Mangal'\"><span><span>दशमलव    के दो स्थानों तक सही करें।</span></span></span>)</p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p>     6.89</p>",
+      "<style> img {max-width:100% !important} </style><p>     7.07</p>",
+      "<style> img {max-width:100% !important} </style><p>     9.63</p>",
+      "<style> img {max-width:100% !important} </style><p>     8.07</p>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<style> img {max-width:100% !important} </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_6869636b927b52db.png\" > </p>",
+    "question_index": 4
+  },
+  {
+    "question": "<style> img {max-width:100% !important}  @font-face { font-family: 'Mangal';src: url('https://appxcontent.kaxa.in/fonts/MANGAL.ttf') format('truetype'); } </style><p>    Class    10, consisting of 40 students, took a science test. 30 students    had an average score of 95. The other students had an average    score of 85. What is the average score of the whole class?</p>    <p>    <span style=\"font-family:'Mangal'\"><span><span>कक्षा    </span></span></span>10,    <span style=\"font-family:'Mangal'\"><span><span>जिसमें    </span></span></span>40    <span style=\"font-family:'Mangal'\"><span><span>छात्र    शामिल थे</span></span></span>,    <span style=\"font-family:'Mangal'\"><span><span>ने    विज्ञान की परीक्षा दी। </span></span></span>30    <span style=\"font-family:'Mangal'\"><span><span>छात्रों    का औसत स्कोर </span></span></span>95    <span style=\"font-family:'Mangal'\"><span><span>था।    अन्य छात्रों का औसत स्कोर    </span></span></span>85    <span style=\"font-family:'Mangal'\"><span><span>था।    पूरी कक्षा का औसत स्कोर क्या    है</span></span></span>?</p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p>     92.3</p>",
+      "<style> img {max-width:100% !important} </style><p>     92.4</p>",
+      "<style> img {max-width:100% !important} </style><p>     92.5</p>",
+      "<style> img {max-width:100% !important} </style><p>     92.2</p>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<style> img {max-width:100% !important} </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_e32a65eef85f1061.png\" > </p>",
+    "question_index": 5
+  },
+  {
+    "question": "<style> img {max-width:100% !important}  @font-face { font-family: 'Mangal';src: url('https://appxcontent.kaxa.in/fonts/MANGAL.ttf') format('truetype'); } </style><p>    Two    trains start from Delhi and Poona towards each other at 7 a.m.    with speeds of 85 km/h and 67km/h, respectively. If they cross    each other at 3.30 p.m., the distance between the stations is:</p>    <p>    <span style=\"font-family:'Mangal'\"><span><span>दो    रेलगाड़ियाँ क्रमशः </span></span></span>85    <span style=\"font-family:'Mangal'\"><span><span>किमी</span></span></span>/<span style=\"font-family:'Mangal'\"><span><span>घंटा    और </span></span></span>67    <span style=\"font-family:'Mangal'\"><span><span>किमी</span></span></span>/<span style=\"font-family:'Mangal'\"><span><span>घंटा    की गति से सुबह </span></span></span>7    <span style=\"font-family:'Mangal'\"><span><span>बजे    दिल्ली और पूना से एक</span></span></span>-<span style=\"font-family:'Mangal'\"><span><span>दूसरे    की ओर चलती हैं। यदि वे अपराह्न    </span></span></span>3.30    <span style=\"font-family:'Mangal'\"><span><span>बजे    एक</span></span></span>-<span style=\"font-family:'Mangal'\"><span><span>दूसरे    को पार करते हैं</span></span></span>,    <span style=\"font-family:'Mangal'\"><span><span>तो    स्टेशनों के बीच की दूरी है</span></span></span>:</p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p>     1292    km</p>",
+      "<style> img {max-width:100% !important} </style><p>     1283    km</p>",
+      "<style> img {max-width:100% !important} </style><p>     1227    km</p>",
+      "<style> img {max-width:100% !important} </style><p>     1245    km</p>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<style> img {max-width:100% !important} </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_e0808fd232e6dc81.png\" > </p>",
+    "question_index": 6
+  },
+  {
+    "question": "<style> img {max-width:100% !important}  @font-face { font-family: 'Mangal';src: url('https://appxcontent.kaxa.in/fonts/MANGAL.ttf') format('truetype'); } </style><p>    Find    the difference between the simple interest and the compound    interest payable annually on a sum of Rs.6,500 at 7% per annum for    3 years. (Correct to two decimal places.)</p>    <p>    6,500    <span style=\"font-family:'Mangal'\"><span><span>रुपये    की राशि पर </span></span></span>3    <span style=\"font-family:'Mangal'\"><span><span>वर्षों    के लिए </span></span></span>7%    <span style=\"font-family:'Mangal'\"><span><span>प्रतिवर्ष    की दर से देय साधारण ब्याज    और चक्रवृद्धि ब्याज के बीच    अंतर ज्ञात कीजिए। </span></span></span>(<span style=\"font-family:'Mangal'\"><span><span>दो    दशमलव स्थानों तक सही करें।</span></span></span>)</p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p>     Rs.97.78</p>",
+      "<style> img {max-width:100% !important} </style><p>     Rs.98.73</p>",
+      "<style> img {max-width:100% !important} </style><p>     Rs.95.67</p>",
+      "<style> img {max-width:100% !important} </style><p>     Rs.94.34</p>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<style> img {max-width:100% !important} </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_1122046e507a4839.png\" > </p>",
+    "question_index": 7
+  },
+  {
+    "question": "<style> img {max-width:100% !important}  @font-face { font-family: 'Mangal';src: url('https://appxcontent.kaxa.in/fonts/MANGAL.ttf') format('truetype'); } </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_9e1d96003195450c.jpg\" > </p>    <p>    1991    <span style=\"font-family:'Mangal'\"><span><span>से    </span></span></span>1992    <span style=\"font-family:'Mangal'\"><span><span>तक    उपस्थित होने वाले अर्ध</span></span></span>-<span style=\"font-family:'Mangal'\"><span><span>शहरी    उम्मीदवारों की संख्या में    प्रतिशत गिरावट का अनुमानित    मूल्य क्या था</span></span></span>?</p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p>     10%</p>",
+      "<style> img {max-width:100% !important} </style><p>     8%</p>",
+      "<style> img {max-width:100% !important} </style><p>     5%</p>",
+      "<style> img {max-width:100% !important} </style><p>     15%</p>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<style> img {max-width:100% !important} </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_6c48d3d11ca3fdb6.png\" > </p>",
+    "question_index": 8
+  },
+  {
+    "question": "<style> img {max-width:100% !important}  @font-face { font-family: 'Mangal';src: url('https://appxcontent.kaxa.in/fonts/MANGAL.ttf') format('truetype'); } </style><p>    The    monthly income of Ramesh was Rs.16,500 and his monthly expenditure    was Rs.10,500. Next year his income increased by 25% and his    expenditure increased by 19%. Find the percentage increase in his    saving.</p>    <p>    <span style=\"font-family:'Mangal'\"><span><span>रमेश    की मासिक आय </span></span></span>16,500    <span style=\"font-family:'Mangal'\"><span><span>रुपये    थी और उसका मासिक खर्च </span></span></span>10,500    <span style=\"font-family:'Mangal'\"><span><span>रुपये    था। अगले वर्ष उसकी आय </span></span></span>25%    <span style=\"font-family:'Mangal'\"><span><span>बढ़    गई और उसका व्यय </span></span></span>19%    <span style=\"font-family:'Mangal'\"><span><span>बढ़    गया। उसकी बचत में प्रतिशत    वृद्धि ज्ञात कीजिये।</span></span></span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p>     32.5%</p>",
+      "<style> img {max-width:100% !important} </style><p>     34.5%</p>",
+      "<style> img {max-width:100% !important} </style><p>     33.5%</p>",
+      "<style> img {max-width:100% !important} </style><p>     35.5%</p>"
+    ],
+    "correct_option_id": 3,
+    "solution": "<style> img {max-width:100% !important} </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_4728c22f70cbe725.png\" > </p>",
+    "question_index": 9
+  },
+  {
+    "question": "<style> img {max-width:100% !important}  @font-face { font-family: 'Mangal';src: url('https://appxcontent.kaxa.in/fonts/MANGAL.ttf') format('truetype'); }  @font-face { font-family: 'serif';src: url('https://appxcontent.kaxa.in/fonts/serif.ttf') format('truetype'); } </style><p><span style=\"font-size:11pt\"><span style=\"font-family:Calibri,sans-serif\">The following Bar Graph displays the hightest, average and lowest marks obtained in Accounts, Business studies, Economics and English by students of Class XII in an Examination. The maximum marks for each subject is 100. Study the graph carefully and answer the question that follows.</span></span></p>\r\n\r\n<p><span style=\"font-size:11pt\"><span style=\"font-family:Calibri,sans-serif\">Which of the two Highest Scores is better and by how much?</span></span></p>\r\n\r\n<p><span style=\"font-size:11pt\"><span style=\"font-family:Calibri,sans-serif\">The combined Highest Score of Accounts and Business Studies or the Highest Score of Economics and English taken together.</span></span></p>\r\n\r\n<p><span style=\"font-size:11pt\"><span style=\"font-family:Calibri,sans-serif\"><span style=\"font-family:&quot;Mangal&quot;,serif\">निम्नलिखित बार ग्राफ एक परीक्षा में बारहवीं कक्षा के छात्रों द्वारा अकाउंट्स</span>, <span style=\"font-family:&quot;Mangal&quot;,serif\">बिजनेस स्टडीज</span>, <span style=\"font-family:&quot;Mangal&quot;,serif\">अर्थशास्त्र और अंग्रेजी में प्राप्त उच्चतम</span>, <span style=\"font-family:&quot;Mangal&quot;,serif\">औसत और निम्नतम अंकों को प्रदर्शित करता है। प्रत्येक विषय के लिए अधिकतम अंक 100 हैं। ग्राफ का ध्यानपूर्वक अध्ययन करें और उसके बाद आने वाले प्रश्न का उत्तर दें।</span></span></span></p>\r\n\r\n<p><span style=\"font-size:11pt\"><span style=\"font-family:Calibri,sans-serif\"><span style=\"font-family:&quot;Mangal&quot;,serif\">दोनों उच्चतम स्कोरों में से कौन सा बेहतर है और कितना</span>?</span></span></p>\r\n\r\n<p><span style=\"font-size:11pt\"><span style=\"font-family:Calibri,sans-serif\"><span style=\"font-family:&quot;Mangal&quot;,serif\">अकाउंट्स और बिजनेस स्टडीज का संयुक्त उच्चतम स्कोर या अर्थशास्त्र और अंग्रेजी का एक साथ लिया गया उच्चतम स्कोर।</span></span></span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style>\r\n<p>Accounts and Business Studies by 8</p>",
+      "<style> img {max-width:100% !important} </style>\r\n<p>Economics and English by 8</p>",
+      "<style> img {max-width:100% !important} </style>\r\n<p>Accounts and Business Studies by 9</p>",
+      "<style> img {max-width:100% !important} </style>\r\n<p>Economics and English by 10</p>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<style> img {max-width:100% !important} </style>\r\n\r\n<p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_62b7f7ee00ad42e2.png\" /></p>",
+    "question_index": 10
+  },
+  {
+    "question": "<style> img {max-width:100% !important}  @font-face { font-family: 'Mangal';src: url('https://appxcontent.kaxa.in/fonts/MANGAL.ttf') format('truetype'); } </style><p>    A    boat can travel 104 km downstream in 8 hours. If the speed of the    stream is 2 km/h, then find in what time will it be able to cover    13 km upstream?</p>    <p>    <span style=\"font-family:'Mangal'\"><span><span>एक    नाव धारा के अनुकूल </span></span></span>104    <span style=\"font-family:'Mangal'\"><span><span>किमी    की दूरी </span></span></span>8    <span style=\"font-family:'Mangal'\"><span><span>घंटे    में तय कर सकती है। यदि धारा    की गति </span></span></span>2    <span style=\"font-family:'Mangal'\"><span><span>किमी</span></span></span>/<span style=\"font-family:'Mangal'\"><span><span>घंटा    है</span></span></span>,    <span style=\"font-family:'Mangal'\"><span><span>तो    ज्ञात कीजिए कि यह धारा के    प्रतिकूल </span></span></span>13    <span style=\"font-family:'Mangal'\"><span><span>किमी    की दूरी कितने समय में तय कर    पाएगी</span></span></span>?</p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_90bfec0bb27f15db.jpg\" > </p>",
+      "<style> img {max-width:100% !important} </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_26a68070807d253f.jpg\" > </p>",
+      "<style> img {max-width:100% !important} </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_4f9ecd0da88f112b.jpg\" > </p>",
+      "<style> img {max-width:100% !important} </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_6d660acad519aeec.jpg\" > </p>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<style> img {max-width:100% !important} </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_ea0a0aa74e431912.png\" > </p>",
+    "question_index": 11
+  },
+  {
+    "question": "<style> img {max-width:100% !important}  @font-face { font-family: 'Mangal';src: url('https://appxcontent.kaxa.in/fonts/MANGAL.ttf') format('truetype'); } </style><p>    A    and B can complete a work in 10 days and 15 days, respectively.    They got a total of Rs. 1,250 for that work. What will be B’s    share?</p>    <p>    A    <span style=\"font-family:'Mangal'\"><span><span>और    </span></span></span>B    <span style=\"font-family:'Mangal'\"><span><span>एक    कार्य को क्रमशः </span></span></span>10    <span style=\"font-family:'Mangal'\"><span><span>दिन    और </span></span></span>15    <span style=\"font-family:'Mangal'\"><span><span>दिन    में पूरा कर सकते हैं। उस काम    के लिए उन्हें कुल </span></span></span>1,250    <span style=\"font-family:'Mangal'\"><span><span>रुपये    मिले</span></span></span>.    B <span style=\"font-family:'Mangal'\"><span><span>का    हिस्सा क्या होगा</span></span></span>?</p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p>     Rs.    400</p>",
+      "<style> img {max-width:100% !important} </style><p>     Rs.    200</p>",
+      "<style> img {max-width:100% !important} </style><p>     Rs.    600</p>",
+      "<style> img {max-width:100% !important} </style><p>     Rs.    500</p>"
+    ],
+    "correct_option_id": 3,
+    "solution": "<style> img {max-width:100% !important} </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_56b8e177ceccce96.png\" > </p>",
+    "question_index": 12
+  },
+  {
+    "question": "<style> img {max-width:100% !important}  @font-face { font-family: 'Mangal';src: url('https://appxcontent.kaxa.in/fonts/MANGAL.ttf') format('truetype'); } </style><p>    The    mean proportional between 0.04 and 0.36 is:</p>    <p>    0.04    <span style=\"font-family:'Mangal'\"><span><span>और    </span></span></span>0.36    <span style=\"font-family:'Mangal'\"><span><span>के    बीच माध्य आनुपातिक है</span></span></span>:</p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p>     0.12</p>",
+      "<style> img {max-width:100% !important} </style><p>     1.2</p>",
+      "<style> img {max-width:100% !important} </style><p>     12</p>",
+      "<style> img {max-width:100% !important} </style><p>     0.144</p>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<style> img {max-width:100% !important} </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_4e53cf9e82c41222.png\" > </p>",
+    "question_index": 13
+  },
+  {
+    "question": "<style> img {max-width:100% !important}  @font-face { font-family: 'Mangal';src: url('https://appxcontent.kaxa.in/fonts/MANGAL.ttf') format('truetype'); } </style><p>    The    salaries of A,B and C are in ratio 2 : 3 : 4. If increments of    30%, 20% and 10% are allowed, respectively, in their salaries,    then what will be the new ratio of their salaries?</p>    <p>    A,B    <span style=\"font-family:'Mangal'\"><span><span>और    </span></span></span>C    <span style=\"font-family:'Mangal'\"><span><span>का    वेतन </span></span></span>2:3:4    <span style=\"font-family:'Mangal'\"><span><span>के    अनुपात में है। यदि उनके वेतन    में क्रमशः </span></span></span>30%,    20% <span style=\"font-family:'Mangal'\"><span><span>और    </span></span></span>10%    <span style=\"font-family:'Mangal'\"><span><span>की    वृद्धि की अनुमति है</span></span></span>,    <span style=\"font-family:'Mangal'\"><span><span>तो    उनके वेतन का नया अनुपात क्या    होगा</span></span></span>?</p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p>     22    : 18 : 13</p>",
+      "<style> img {max-width:100% !important} </style><p>     22    : 11 : 18</p>",
+      "<style> img {max-width:100% !important} </style><p>     18    : 13 : 22</p>",
+      "<style> img {max-width:100% !important} </style><p>     13    : 18 : 22</p>"
+    ],
+    "correct_option_id": 3,
+    "solution": "<style> img {max-width:100% !important} </style> <p>    <img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1705397704224_html_7e61562af2ebbdd5.png\" > </p>",
+    "question_index": 14
+  }
+];
+                this.curQ = 0;
+                this.ans = new Array(this.qs.length).fill(null);
+                this.startT = Date.now();
+                this.timeLeft = 15 * 60;
+                this.sub = false;
+                this.eng = true;
+                this.timer = null;
+                this.initEls();
+                this.init();
+                this.validateData(); // Add data validation
+            }
+            
+            // Add data validation method
+            validateData() {
+                console.log('Validating question data...');
+                this.qs.forEach((q, idx) => {
+                    if (q.correct_option_id !== undefined) {
+                        console.log(`Q${idx + 1}: correct_option_id = ${q.correct_option_id}, options count = ${q.options ? q.options.length : 0}`);
+                        
+                        // Ensure correct_option_id is within valid range
+                        if (q.options && (q.correct_option_id < 0 || q.correct_option_id >= q.options.length)) {
+                            console.warn(`Q${idx + 1}: Invalid correct_option_id ${q.correct_option_id} for ${q.options.length} options`);
+                        }
+                    }
+                });
+            }
+            
+            initEls() {
+                this.els = {
+                    qInfo: document.getElementById('qInfo'),
+                    progTxt: document.getElementById('progTxt'),
+                    ansCnt: document.getElementById('ansCnt'),
+                    timer: document.getElementById('timer'),
+                    qTxt: document.getElementById('qTxt'),
+                    compSec: document.getElementById('compSec'),
+                    compCont: document.getElementById('compCont'),
+                    opts: document.getElementById('opts'),
+                    sol: document.getElementById('sol'),
+                    solCont: document.getElementById('solCont'),
+                    qGrid: document.getElementById('qGrid'),
+                    panel: document.getElementById('panel'),
+                    modalOver: document.getElementById('modalOver'),
+                    scoreDisp: document.getElementById('scoreDisp'),
+                    corrStat: document.getElementById('corrStat'),
+                    incStat: document.getElementById('incStat'),
+                    unaStat: document.getElementById('unaStat'),
+                    timeStat: document.getElementById('timeStat')
+                };
+            }
+            
+            init() {
+                this.createGrid();
+                this.startTimer();
+                this.loadQ(0);
+                this.setupEvents();
+            }
+            
+            setupEvents() {
+                document.getElementById('menuBtn').onclick = () => this.togglePanel();
+                document.getElementById('subBtn').onclick = () => this.confirmSub();
+                document.getElementById('prevBtn').onclick = () => this.nav(-1);
+                document.getElementById('nextBtn').onclick = () => this.nav(1);
+                document.getElementById('engBtn').onclick = () => this.setLang(true);
+                document.getElementById('hinBtn').onclick = () => this.setLang(false);
+                document.getElementById('panelClose').onclick = () => this.closePanel();
+                document.getElementById('closeModal').onclick = () => this.closeModal();
+                document.getElementById('revBtn').onclick = () => this.review();
+            }
+            
+            extractTxt(html, isEng) {
+                if (!html) return '';
+                const cls = isEng ? 'eqt' : 'hqt';
+                const match = html.match(new RegExp(`<span class="${cls}"[^>]*>(.*?)</span>`, 's'));
+                return match ? match[1] : html;
+            }
+            
+            createGrid() {
+                this.els.qGrid.innerHTML = '';
+                this.qs.forEach((_, i) => {
+                    const div = document.createElement('div');
+                    div.className = 'q-num';
+                    div.textContent = i + 1;
+                    div.onclick = () => this.goToQ(i);
+                    this.els.qGrid.appendChild(div);
+                });
+            }
+            
+            loadQ(idx) {
+                this.curQ = idx;
+                const q = this.qs[idx];
+                
+                this.els.qInfo.textContent = `Q${idx + 1}/${this.qs.length}`;
+                this.els.progTxt.textContent = `${idx + 1} of ${this.qs.length}`;
+                this.updateAnsCnt();
+                this.updateNav();
+                this.updateGrid();
+                
+                if (q.comp) {
+                    this.els.compSec.style.display = 'block';
+                    this.els.compCont.innerHTML = q.comp;
+                } else {
+                    this.els.compSec.style.display = 'none';
+                }
+                
+                this.els.qTxt.innerHTML = this.extractTxt(q.question, this.eng);
+                this.loadOpts(q, idx);
+                
+                if (this.sub && q.solution) {
+                    this.els.solCont.innerHTML = q.solution;
+                    this.els.sol.classList.add('show');
+                } else {
+                    this.els.sol.classList.remove('show');
+                }
+            }
+            
+            loadOpts(q, qIdx) {
+                this.els.opts.innerHTML = '';
+                const userAnswer = this.ans[qIdx];
+                const correctAnswer = q.correct_option_id;
+                
+                console.log(`Loading Q${qIdx + 1} options:`, {
+                    userAnswer: userAnswer,
+                    correctAnswer: correctAnswer,
+                    submitted: this.sub,
+                    optionsCount: q.options ? q.options.length : 0
+                });
+                
+                if (!q.options || !Array.isArray(q.options)) {
+                    console.error(`Q${qIdx + 1}: No valid options array`);
+                    return;
+                }
+                
+                q.options.forEach((opt, i) => {
+                    const div = document.createElement('div');
+                    let cls = 'opt';
+                    
+                    // Add submitted class if test is submitted
+                    if (this.sub) {
+                        cls += ' submitted';
+                    }
+                    
+                    // User's selection
+                    if (userAnswer === i) {
+                        cls += ' sel';
+                        console.log(`Q${qIdx + 1}: User selected option ${i}`);
+                    }
+                    
+                    // After submission - show correct/wrong highlighting
+                    if (this.sub && correctAnswer !== undefined && correctAnswer !== null) {
+                        if (i === correctAnswer) {
+                            // This is the correct answer - always highlight as correct
+                            cls += ' correct';
+                            console.log(`Q${qIdx + 1}: Option ${i} marked as correct (is correct answer)`);
+                        } else if (userAnswer === i && userAnswer !== correctAnswer) {
+                            // User selected this option but it's wrong
+                            cls += ' wrong';
+                            console.log(`Q${qIdx + 1}: Option ${i} marked as wrong (user selected but incorrect)`);
+                        }
+                    }
+                    
+                    div.className = cls;
+                    div.innerHTML = `
+                        <div class="opt-radio"></div>
+                        <div class="opt-txt">${this.extractTxt(opt, this.eng)}</div>
+                    `;
+                    
+                    // Only allow clicking if test is not submitted
+                    if (!this.sub) {
+                        div.onclick = () => this.selOpt(i, qIdx);
+                    }
+                    
+                    this.els.opts.appendChild(div);
+                });
+            }
+            
+            selOpt(optIdx, qIdx) {
+                if (this.sub) return;
+                this.ans[qIdx] = this.ans[qIdx] === optIdx ? null : optIdx;
+                console.log(`Q${qIdx + 1}: Selected option ${optIdx}, answer array:`, this.ans[qIdx]);
+                this.loadOpts(this.qs[qIdx], qIdx);
+                this.updateAnsCnt();
+                this.updateGrid();
+            }
+            
+            nav(dir) {
+                const newIdx = this.curQ + dir;
+                if (newIdx >= 0 && newIdx < this.qs.length) {
+                    this.loadQ(newIdx);
+                }
+            }
+            
+            goToQ(idx) {
+                this.loadQ(idx);
+                this.closePanel();
+            }
+            
+            updateNav() {
+                document.getElementById('prevBtn').disabled = this.curQ === 0;
+                document.getElementById('nextBtn').disabled = this.curQ === this.qs.length - 1;
+            }
+            
+            updateGrid() {
+                const nums = this.els.qGrid.querySelectorAll('.q-num');
+                nums.forEach((el, i) => {
+                    el.className = 'q-num';
+                    if (i === this.curQ) {
+                        el.classList.add('cur');
+                    } else if (this.ans[i] !== null) {
+                        // Check if it's correct or wrong after submission
+                        if (this.sub && this.qs[i].correct_option_id !== undefined && this.qs[i].correct_option_id !== null) {
+                            if (this.ans[i] === this.qs[i].correct_option_id) {
+                                el.classList.add('ans'); // Correct answer
+                            } else {
+                                el.classList.add('wrong'); // Wrong answer
+                            }
+                        } else {
+                            el.classList.add('ans'); // Just answered (before submission)
+                        }
+                    }
+                });
+            }
+            
+            updateAnsCnt() {
+                const cnt = this.ans.filter(a => a !== null).length;
+                this.els.ansCnt.textContent = cnt;
+            }
+            
+            setLang(eng) {
+                this.eng = eng;
+                document.getElementById('engBtn').classList.toggle('active', eng);
+                document.getElementById('hinBtn').classList.toggle('active', !eng);
+                this.loadQ(this.curQ);
+            }
+            
+            startTimer() {
+                this.timer = setInterval(() => {
+                    this.timeLeft--;
+                    if (this.timeLeft <= 0) {
+                        clearInterval(this.timer);
+                        this.subTest();
+                        return;
+                    }
+                    const mins = Math.floor(this.timeLeft / 60);
+                    const secs = this.timeLeft % 60;
+                    this.els.timer.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+                }, 1000);
+            }
+            
+            stopTimer() {
+                if (this.timer) clearInterval(this.timer);
+            }
+            
+            togglePanel() {
+                this.els.panel.classList.toggle('open');
+            }
+            
+            closePanel() {
+                this.els.panel.classList.remove('open');
+            }
+            
+            confirmSub() {
+                const unanswered = this.ans.filter(a => a === null).length;
+                const msg = unanswered > 0 ? `${unanswered} questions unanswered. Submit anyway?` : 'Submit test?';
+                if (confirm(msg)) this.subTest();
+            }
+            
+            subTest() {
+                if (this.sub) return;
+                console.log('Submitting test. Final answers:', this.ans);
+                this.sub = true;
+                this.stopTimer();
+                document.getElementById('subBtn').style.display = 'none';
+                const results = this.calcResults();
+                this.showResults(results);
+                // Reload current question to show correct/incorrect highlighting
+                this.loadQ(this.curQ);
+                this.updateGrid();
+            }
+            
+            calcResults() {
+                const timeTaken = Math.round((Date.now() - this.startT) / 60000);
+                let correct = 0, incorrect = 0, unattempted = 0, score = 0;
+                
+                console.log('Calculating results...');
+                this.qs.forEach((q, i) => {
+                    const userAns = this.ans[i];
+                    const correctAns = q.correct_option_id;
+                    
+                    console.log(`Q${i + 1}: user=${userAns}, correct=${correctAns}`);
+                    
+                    if (userAns === null || userAns === undefined) {
+                        unattempted++;
+                    } else if (correctAns !== undefined && correctAns !== null && userAns === correctAns) {
+                        correct++;
+                        score += 2;
+                        console.log(`Q${i + 1}: CORRECT (+2 marks)`);
+                    } else {
+                        incorrect++;
+                        score -= 0.50;
+                        console.log(`Q${i + 1}: INCORRECT (-0.50 marks)`);
+                    }
+                });
+                
+                const results = { score: Math.max(0, score), correct, incorrect, unattempted, timeTaken };
+                console.log('Final results:', results);
+                return results;
+            }
+            
+            showResults(results) {
+                this.els.scoreDisp.textContent = `${results.score}/30`;
+                this.els.corrStat.textContent = results.correct;
+                this.els.incStat.textContent = results.incorrect;
+                this.els.unaStat.textContent = results.unattempted;
+                this.els.timeStat.textContent = results.timeTaken;
+                this.els.modalOver.classList.add('show');
+            }
+            
+            closeModal() {
+                this.els.modalOver.classList.remove('show');
+            }
+            
+            review() {
+                this.closeModal();
+                this.loadQ(0);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => new TestApp());
+    </script>
+</body>
+</html>

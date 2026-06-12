@@ -1,5 +1,5 @@
 window.MOCKS_MANIFEST = {
-  "generatedAt": "2026-06-12T14:21:08.364Z",
+  "generatedAt": "2026-06-12T14:54:49.968Z",
   "files": [
   "Aman Sir/04 June 2026 Editorial Analysis Livemint Vishalparihar.pdf",
   "Aman Sir/Advance Ancient History 360 Pro Level M (Hindi).html",
@@ -835,6 +835,103 @@ window.MOCKS_MANIFEST = {
   "Mocks Wallah/Sectional Tests/Cgl 2025 T 2 Paid Mock 2 (Hindi).html",
   "Mocks Wallah/Sectional Tests/Cgl 2025 T 2 Paid Mock 9 (Hindi).html",
   "Mocks Wallah/Sectional Tests/Cgl 2025 T 2 Paid Mock 9 Hi (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 001 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 002 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 003 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 004 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 005 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 006 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 007 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 008 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 009 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 010 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 011 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 012 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 013 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 014 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 015 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 016 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 017 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 018 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 019 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 020 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 021 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 022 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 023 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 024 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 025 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 026 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 027 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 028 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 029 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 030 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 031 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 032 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 033 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 034 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 035 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 036 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 037 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 038 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 039 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 040 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 041 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 042 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 043 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 044 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 045 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 046 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 047 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 048 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 049 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 050 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 051 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 052 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 053 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 054 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 055 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 056 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 057 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 058 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 059 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 060 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 061 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 062 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 063 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 064 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 065 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 066 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 067 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 068 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 069 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 070 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 071 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 072 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 073 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 074 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 075 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 076 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 077 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 078 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 079 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 080 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 081 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 082 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 083 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 084 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 085 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 086 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 087 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 088 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 089 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 090 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 091 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 092 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 093 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 094 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 095 (Hindi).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Concept Test 096 (English).html",
+  "Mocks Wallah/Sectional Tests/Maths & Reasoning/Error (English).html",
   "Mocks Wallah/Sectional Tests/Ssc Cgl Mains 2026 Mock 01 New (Hindi).html",
   "Mocks Wallah/Sectional Tests/Ssc Cgl Mains 2026 Mock 02 New (Hindi).html",
   "Mocks Wallah/Sectional Tests/Ssc Cgl Mains 2026 Mock 03 New (Hindi).html",
@@ -859,9 +956,9 @@ window.MOCKS_MANIFEST = {
   "Mocks Wallah/Sectional Tests/Ssc Cgl pre Mock Test Mock 08 (Hindi).html",
   "Mocks Wallah/Sectional Tests/Ssc Cgl pre Mock Test Mock 09 (Hindi).html",
   "Mocks Wallah/Sectional Tests/Ssc Cgl pre Mock Test Mock 10 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Concept Tests/Concept Test 001 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Concept Tests/Concept Test 002 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Concept Tests/Concept Test 003 (Hindi).html",
+  "Mocks Wallah/Topic-Concept Tests/Concept Tests/Concept Test 097 (Hindi).html",
+  "Mocks Wallah/Topic-Concept Tests/Concept Tests/Concept Test 098 (Hindi).html",
+  "Mocks Wallah/Topic-Concept Tests/Concept Tests/Concept Test 099 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/English/C&ag , Political Parties , National Symbols & Official Languages (English).html",
   "Mocks Wallah/Topic-Concept Tests/English/Fundamental Rights (English).html",
   "Mocks Wallah/Topic-Concept Tests/English/Miscellaneous Polity (English).html",
@@ -945,7 +1042,6 @@ window.MOCKS_MANIFEST = {
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 107 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 108 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 109 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 11 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 110 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 111 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 112 (Hindi).html",
@@ -956,7 +1052,6 @@ window.MOCKS_MANIFEST = {
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 117 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 118 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 119 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 12 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 120 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 121 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 122 (Hindi).html",
@@ -967,7 +1062,6 @@ window.MOCKS_MANIFEST = {
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 127 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 128 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 129 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 13 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 130 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 131 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 132 (Hindi).html",
@@ -978,7 +1072,6 @@ window.MOCKS_MANIFEST = {
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 137 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 138 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 139 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 14 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 140 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 141 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 142 (Hindi).html",
@@ -989,7 +1082,6 @@ window.MOCKS_MANIFEST = {
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 147 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 148 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 149 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 15 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 150 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 151 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 152 (Hindi).html",
@@ -1000,7 +1092,6 @@ window.MOCKS_MANIFEST = {
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 157 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 158 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 159 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 16 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 160 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 161 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 162 (Hindi).html",
@@ -1011,7 +1102,6 @@ window.MOCKS_MANIFEST = {
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 167 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 168 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 169 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 17 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 170 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 171 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 172 (Hindi).html",
@@ -1022,7 +1112,6 @@ window.MOCKS_MANIFEST = {
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 177 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 178 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 179 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 18 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 180 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 181 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 182 (Hindi).html",
@@ -1033,7 +1122,6 @@ window.MOCKS_MANIFEST = {
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 187 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 188 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 189 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 19 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 190 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 191 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 192 (Hindi).html",
@@ -1044,8 +1132,6 @@ window.MOCKS_MANIFEST = {
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 197 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 198 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 199 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 2 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 20 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 200 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 201 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 202 (Hindi).html",
@@ -1056,7 +1142,6 @@ window.MOCKS_MANIFEST = {
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 207 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 208 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 209 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 21 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 210 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 211 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 212 (Hindi).html",
@@ -1067,7 +1152,6 @@ window.MOCKS_MANIFEST = {
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 217 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 218 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 219 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 22 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 220 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 221 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 222 (Hindi).html",
@@ -1078,7 +1162,6 @@ window.MOCKS_MANIFEST = {
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 227 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 228 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 229 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 23 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 230 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 231 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 232 (Hindi).html",
@@ -1089,7 +1172,6 @@ window.MOCKS_MANIFEST = {
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 237 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 238 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 239 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 24 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 240 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 241 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 242 (Hindi).html",
@@ -1099,88 +1181,6 @@ window.MOCKS_MANIFEST = {
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 246 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 247 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 248 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 25 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 26 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 27 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 28 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 29 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 3 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 30 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 31 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 32 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 33 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 34 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 35 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 36 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 37 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 38 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 39 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 4 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 40 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 41 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 42 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 43 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 44 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 45 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 46 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 47 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 48 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 49 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 5 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 50 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 51 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 52 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 53 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 54 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 55 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 56 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 57 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 58 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 59 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 6 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 60 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 61 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 62 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 63 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 64 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 65 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 66 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 67 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 68 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 69 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 7 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 70 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 71 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 72 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 73 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 74 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 75 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 76 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 77 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 78 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 79 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 8 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 80 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 81 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 82 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 83 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 84 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 85 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 86 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 87 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 88 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 89 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 9 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 90 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 91 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 92 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 93 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 94 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 95 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 96 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 97 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 98 (Hindi).html",
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 99 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice 100 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice 101 (Hindi).html",
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice 102 (Hindi).html",
@@ -1491,7 +1491,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 18 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 19 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 2 (English).html",
-  "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 2 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 20 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 21 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 22 (Hindi).html",
@@ -1502,7 +1501,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 27 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 28 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 29 (Hindi).html",
-  "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 3 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 30 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 31 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 32 (Hindi).html",
@@ -1513,7 +1511,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 37 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 38 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 39 (Hindi).html",
-  "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 4 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 40 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 41 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 42 (Hindi).html",
@@ -1524,13 +1521,8 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 47 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 48 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 49 (Hindi).html",
-  "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 5 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 50 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 51 (Hindi).html",
-  "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 6 (Hindi).html",
-  "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 7 (Hindi).html",
-  "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 8 (Hindi).html",
-  "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 9 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 1 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 10 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 11 (Hindi).html",
@@ -1542,7 +1534,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 17 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 18 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 19 (Hindi).html",
-  "oliveboard/Oliveboard_Mocks/Ssct2np - Part 2 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 20 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 21 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 22 (Hindi).html",
@@ -1553,7 +1544,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 27 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 28 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 29 (Hindi).html",
-  "oliveboard/Oliveboard_Mocks/Ssct2np - Part 3 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 30 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 31 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 32 (Hindi).html",
@@ -1564,7 +1554,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 37 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 38 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 39 (Hindi).html",
-  "oliveboard/Oliveboard_Mocks/Ssct2np - Part 4 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 40 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 41 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 42 (Hindi).html",
@@ -1575,7 +1564,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 47 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 48 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 49 (Hindi).html",
-  "oliveboard/Oliveboard_Mocks/Ssct2np - Part 5 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 50 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 51 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 52 (Hindi).html",
@@ -1586,14 +1574,10 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 57 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 58 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 59 (Hindi).html",
-  "oliveboard/Oliveboard_Mocks/Ssct2np - Part 6 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 60 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 61 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 62 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 63 (Hindi).html",
-  "oliveboard/Oliveboard_Mocks/Ssct2np - Part 7 (Hindi).html",
-  "oliveboard/Oliveboard_Mocks/Ssct2np - Part 8 (Hindi).html",
-  "oliveboard/Oliveboard_Mocks/Ssct2np - Part 9 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Super Batch 001 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Super Batch 002 (Hindi).html",
   "oliveboard/Oliveboard_Mocks/Super Batch 003 (Hindi).html",
@@ -1634,14 +1618,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/Biology/Super Batch - Part 15 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Biology/Super Batch - Part 16 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Biology/Super Batch - Part 17 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Biology/Super Batch - Part 2 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Biology/Super Batch - Part 3 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Biology/Super Batch - Part 4 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Biology/Super Batch - Part 5 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Biology/Super Batch - Part 6 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Biology/Super Batch - Part 7 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Biology/Super Batch - Part 8 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Biology/Super Batch - Part 9 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Chemistry/Super Batch - Part 1 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Chemistry/Super Batch - Part 10 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Chemistry/Super Batch - Part 11 (Hindi).html",
@@ -1649,26 +1625,10 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/Chemistry/Super Batch - Part 13 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Chemistry/Super Batch - Part 14 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Chemistry/Super Batch - Part 15 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Chemistry/Super Batch - Part 2 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Chemistry/Super Batch - Part 3 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Chemistry/Super Batch - Part 4 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Chemistry/Super Batch - Part 5 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Chemistry/Super Batch - Part 6 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Chemistry/Super Batch - Part 7 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Chemistry/Super Batch - Part 8 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Chemistry/Super Batch - Part 9 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Economics/Super Batch - Part 1 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Economics/Super Batch - Part 10 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Economics/Super Batch - Part 11 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Economics/Super Batch - Part 12 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Economics/Super Batch - Part 2 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Economics/Super Batch - Part 3 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Economics/Super Batch - Part 4 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Economics/Super Batch - Part 5 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Economics/Super Batch - Part 6 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Economics/Super Batch - Part 7 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Economics/Super Batch - Part 8 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Economics/Super Batch - Part 9 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Cgl2 1 @protoppers (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Cgl2 10 @protoppers (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Cgl2 11 @protoppers (Hindi).html",
@@ -1698,7 +1658,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 107 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 108 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 109 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 11 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 110 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 111 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 112 (Hindi).html",
@@ -1709,7 +1668,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 117 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 118 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 119 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 12 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 120 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 121 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 122 (Hindi).html",
@@ -1720,7 +1678,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 127 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 128 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 129 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 13 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 130 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 131 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 132 (Hindi).html",
@@ -1731,7 +1688,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 137 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 138 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 139 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 14 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 140 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 141 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 142 (Hindi).html",
@@ -1742,7 +1698,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 147 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 148 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 149 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 15 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 150 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 151 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 152 (Hindi).html",
@@ -1753,7 +1708,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 157 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 158 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 159 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 16 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 160 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 161 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 162 (Hindi).html",
@@ -1764,7 +1718,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 167 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 168 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 169 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 17 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 170 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 171 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 172 (Hindi).html",
@@ -1775,7 +1728,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 177 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 178 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 179 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 18 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 180 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 181 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 182 (Hindi).html",
@@ -1786,7 +1738,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 187 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 188 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 189 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 19 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 190 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 191 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 192 (Hindi).html",
@@ -1794,94 +1745,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 194 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 195 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 196 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 2 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 20 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 21 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 22 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 23 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 24 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 25 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 26 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 27 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 28 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 29 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 3 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 30 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 31 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 32 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 33 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 34 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 35 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 36 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 37 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 38 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 39 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 4 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 40 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 41 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 42 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 43 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 44 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 45 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 46 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 47 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 48 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 49 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 5 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 50 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 51 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 52 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 53 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 54 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 55 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 56 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 57 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 58 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 59 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 6 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 60 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 61 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 62 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 63 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 64 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 65 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 66 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 67 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 68 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 69 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 7 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 70 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 71 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 72 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 73 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 74 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 75 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 76 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 77 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 78 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 79 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 8 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 80 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 81 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 82 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 83 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 84 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 85 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 86 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 87 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 88 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 89 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 9 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 90 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 91 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 92 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 93 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 94 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 95 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 96 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 97 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 98 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 99 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice 1 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice 10 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice 107 (Hindi).html",
@@ -1962,7 +1825,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/Geography/Super Batch - Part 17 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Geography/Super Batch - Part 18 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Geography/Super Batch - Part 19 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Geography/Super Batch - Part 2 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Geography/Super Batch - Part 20 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Geography/Super Batch - Part 21 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Geography/Super Batch - Part 22 (Hindi).html",
@@ -1970,13 +1832,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/Geography/Super Batch - Part 24 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Geography/Super Batch - Part 25 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Geography/Super Batch - Part 26 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Geography/Super Batch - Part 3 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Geography/Super Batch - Part 4 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Geography/Super Batch - Part 5 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Geography/Super Batch - Part 6 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Geography/Super Batch - Part 7 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Geography/Super Batch - Part 8 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Geography/Super Batch - Part 9 (Hindi).html",
   "oliveboard/Topic-Concept Tests/History/Super Batch - Part 1 (Hindi).html",
   "oliveboard/Topic-Concept Tests/History/Super Batch - Part 10 (Hindi).html",
   "oliveboard/Topic-Concept Tests/History/Super Batch - Part 11 (Hindi).html",
@@ -1988,19 +1843,11 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/History/Super Batch - Part 17 (Hindi).html",
   "oliveboard/Topic-Concept Tests/History/Super Batch - Part 18 (Hindi).html",
   "oliveboard/Topic-Concept Tests/History/Super Batch - Part 19 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/History/Super Batch - Part 2 (Hindi).html",
   "oliveboard/Topic-Concept Tests/History/Super Batch - Part 20 (Hindi).html",
   "oliveboard/Topic-Concept Tests/History/Super Batch - Part 21 (Hindi).html",
   "oliveboard/Topic-Concept Tests/History/Super Batch - Part 22 (Hindi).html",
   "oliveboard/Topic-Concept Tests/History/Super Batch - Part 23 (Hindi).html",
   "oliveboard/Topic-Concept Tests/History/Super Batch - Part 24 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/History/Super Batch - Part 3 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/History/Super Batch - Part 4 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/History/Super Batch - Part 5 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/History/Super Batch - Part 6 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/History/Super Batch - Part 7 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/History/Super Batch - Part 8 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/History/Super Batch - Part 9 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Physics/Super Batch - Part 1 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Physics/Super Batch - Part 10 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Physics/Super Batch - Part 11 (Hindi).html",
@@ -2012,14 +1859,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/Physics/Super Batch - Part 17 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Physics/Super Batch - Part 18 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Physics/Super Batch - Part 19 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Physics/Super Batch - Part 2 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Physics/Super Batch - Part 3 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Physics/Super Batch - Part 4 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Physics/Super Batch - Part 5 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Physics/Super Batch - Part 6 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Physics/Super Batch - Part 7 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Physics/Super Batch - Part 8 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Physics/Super Batch - Part 9 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Polity/Super Batch - Part 1 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Polity/Super Batch - Part 10 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Polity/Super Batch - Part 11 (Hindi).html",
@@ -2028,14 +1867,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/Polity/Super Batch - Part 14 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Polity/Super Batch - Part 15 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Polity/Super Batch - Part 16 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Polity/Super Batch - Part 2 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Polity/Super Batch - Part 3 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Polity/Super Batch - Part 4 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Polity/Super Batch - Part 5 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Polity/Super Batch - Part 6 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Polity/Super Batch - Part 7 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Polity/Super Batch - Part 8 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Polity/Super Batch - Part 9 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 1 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 10 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 11 (Hindi).html",
@@ -2047,7 +1878,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 17 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 18 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 19 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 2 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 20 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 21 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 22 (Hindi).html",
@@ -2056,13 +1886,6 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 25 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 26 (Hindi).html",
   "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 27 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 3 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 4 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 5 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 6 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 7 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 8 (Hindi).html",
-  "oliveboard/Topic-Concept Tests/Static GK/Super Batch - Part 9 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 1 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 10 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 100 (Hindi).html",
@@ -2075,7 +1898,6 @@ window.MOCKS_MANIFEST = {
   "Other Brands/Practice Sets/Mock - Part 107 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 108 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 109 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 11 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 110 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 111 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 112 (Hindi).html",
@@ -2086,7 +1908,6 @@ window.MOCKS_MANIFEST = {
   "Other Brands/Practice Sets/Mock - Part 117 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 118 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 119 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 12 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 120 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 121 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 122 (Hindi).html",
@@ -2097,7 +1918,6 @@ window.MOCKS_MANIFEST = {
   "Other Brands/Practice Sets/Mock - Part 127 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 128 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 129 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 13 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 130 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 131 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 132 (Hindi).html",
@@ -2108,7 +1928,6 @@ window.MOCKS_MANIFEST = {
   "Other Brands/Practice Sets/Mock - Part 137 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 138 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 139 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 14 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 140 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 141 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 142 (Hindi).html",
@@ -2119,7 +1938,6 @@ window.MOCKS_MANIFEST = {
   "Other Brands/Practice Sets/Mock - Part 147 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 148 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 149 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 15 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 150 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 151 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 152 (Hindi).html",
@@ -2130,7 +1948,6 @@ window.MOCKS_MANIFEST = {
   "Other Brands/Practice Sets/Mock - Part 157 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 158 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 159 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 16 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 160 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 161 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 162 (Hindi).html",
@@ -2141,7 +1958,6 @@ window.MOCKS_MANIFEST = {
   "Other Brands/Practice Sets/Mock - Part 167 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 168 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 169 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 17 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 170 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 171 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 172 (Hindi).html",
@@ -2152,7 +1968,6 @@ window.MOCKS_MANIFEST = {
   "Other Brands/Practice Sets/Mock - Part 177 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 178 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 179 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 18 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 180 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 181 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 182 (Hindi).html",
@@ -2163,7 +1978,6 @@ window.MOCKS_MANIFEST = {
   "Other Brands/Practice Sets/Mock - Part 187 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 188 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 189 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 19 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 190 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 191 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 192 (Hindi).html",
@@ -2174,94 +1988,6 @@ window.MOCKS_MANIFEST = {
   "Other Brands/Practice Sets/Mock - Part 197 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 198 (Hindi).html",
   "Other Brands/Practice Sets/Mock - Part 199 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 2 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 20 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 21 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 22 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 23 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 24 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 25 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 26 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 27 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 28 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 29 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 3 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 30 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 31 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 32 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 33 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 34 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 35 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 36 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 37 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 38 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 39 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 4 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 40 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 41 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 42 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 43 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 44 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 45 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 46 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 47 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 48 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 49 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 5 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 50 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 51 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 52 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 53 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 54 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 55 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 56 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 57 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 58 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 59 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 6 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 60 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 61 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 62 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 63 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 64 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 65 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 66 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 67 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 68 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 69 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 7 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 70 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 71 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 72 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 73 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 74 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 75 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 76 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 77 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 78 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 79 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 8 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 80 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 81 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 82 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 83 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 84 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 85 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 86 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 87 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 88 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 89 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 9 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 90 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 91 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 92 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 93 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 94 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 95 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 96 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 97 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 98 (Hindi).html",
-  "Other Brands/Practice Sets/Mock - Part 99 (Hindi).html",
   "Other Brands/Previous Year Papers/Mock - Part 1 (Hindi).html",
   "Other Brands/Previous Year Papers/Mock - Part 2 (Hindi).html",
   "Pundits/Previous Year Papers/Paid 11 (Hindi).html",
@@ -2422,7 +2148,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 17 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 18 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 19 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 2 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 20 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 21 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 22 (Hindi).html",
@@ -2433,7 +2158,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 27 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 28 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 29 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 3 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 30 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 31 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 32 (Hindi).html",
@@ -2444,7 +2168,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 37 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 38 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 39 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 4 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 40 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 41 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 42 (Hindi).html",
@@ -2455,7 +2178,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 47 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 48 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 49 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 5 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 50 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 51 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 52 (Hindi).html",
@@ -2466,11 +2188,7 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 57 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 58 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 59 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 6 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 60 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 7 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 8 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Antonyms/Mock - Part 9 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Super Batch - Part 1 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Super Batch - Part 2 (Hindi).html",
   "Pundits/Topic-Concept Tests/Antonyms/Super Batch - Part 3 (Hindi).html",
@@ -2487,20 +2205,12 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Cloze Test/Mock - Part 17 (Hindi).html",
   "Pundits/Topic-Concept Tests/Cloze Test/Mock - Part 18 (Hindi).html",
   "Pundits/Topic-Concept Tests/Cloze Test/Mock - Part 19 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Cloze Test/Mock - Part 2 (Hindi).html",
   "Pundits/Topic-Concept Tests/Cloze Test/Mock - Part 20 (Hindi).html",
   "Pundits/Topic-Concept Tests/Cloze Test/Mock - Part 21 (Hindi).html",
   "Pundits/Topic-Concept Tests/Cloze Test/Mock - Part 22 (Hindi).html",
   "Pundits/Topic-Concept Tests/Cloze Test/Mock - Part 23 (Hindi).html",
   "Pundits/Topic-Concept Tests/Cloze Test/Mock - Part 24 (Hindi).html",
   "Pundits/Topic-Concept Tests/Cloze Test/Mock - Part 25 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Cloze Test/Mock - Part 3 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Cloze Test/Mock - Part 4 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Cloze Test/Mock - Part 5 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Cloze Test/Mock - Part 6 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Cloze Test/Mock - Part 7 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Cloze Test/Mock - Part 8 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Cloze Test/Mock - Part 9 (Hindi).html",
   "Pundits/Topic-Concept Tests/Cloze Test/Super Batch - Part 1 (Hindi).html",
   "Pundits/Topic-Concept Tests/Cloze Test/Super Batch - Part 2 (Hindi).html",
   "Pundits/Topic-Concept Tests/Cloze Test/Super Batch - Part 3 (Hindi).html",
@@ -2656,7 +2366,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 17 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 18 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 19 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 2 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 20 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 21 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 22 (Hindi).html",
@@ -2667,7 +2376,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 27 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 28 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 29 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 3 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 30 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 31 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 32 (Hindi).html",
@@ -2678,7 +2386,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 37 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 38 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 39 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 4 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 40 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 41 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 42 (Hindi).html",
@@ -2689,7 +2396,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 47 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 48 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 49 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 5 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 50 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 51 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 52 (Hindi).html",
@@ -2700,16 +2406,12 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 57 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 58 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 59 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 6 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 60 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 61 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 62 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 63 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 64 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 65 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 7 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 8 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Idioms and Phrases/Mock - Part 9 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Phrase and Clauses Quiz (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Super Batch - Part 1 (Hindi).html",
   "Pundits/Topic-Concept Tests/Idioms and Phrases/Super Batch - Part 2 (Hindi).html",
@@ -2848,7 +2550,7 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Miscellaneous/Computer Knowledge Mock 7 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Computer Knowledge Mock 8 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Computer Knowledge Mock 9 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Concept Test 004 (Hindi).html",
+  "Pundits/Topic-Concept Tests/Miscellaneous/Concept Test 100 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Conditionals 1 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Countries & Capitals Mock 1 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Countries & Capitals Mock 10 (Hindi).html",
@@ -2977,8 +2679,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 18 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 19 (English).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 19 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 2 (English).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 2 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 20 (English).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 20 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 21 (English).html",
@@ -2996,8 +2696,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 27 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 28 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 29 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 3 (English).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 3 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 30 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 31 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 32 (Hindi).html",
@@ -3008,8 +2706,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 37 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 38 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 39 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 4 (English).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 4 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 40 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 41 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 42 (Hindi).html",
@@ -3020,8 +2716,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 47 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 48 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 49 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 5 (English).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 5 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 50 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 51 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 52 (Hindi).html",
@@ -3032,8 +2726,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 57 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 58 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 59 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 6 (English).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 6 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 60 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 61 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 62 (Hindi).html",
@@ -3044,8 +2736,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 67 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 68 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 69 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 7 (English).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 7 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 70 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 71 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 72 (Hindi).html",
@@ -3056,8 +2746,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 77 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 78 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 79 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 8 (English).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 8 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 80 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 81 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 82 (Hindi).html",
@@ -3068,8 +2756,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 87 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 88 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 89 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 9 (English).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 9 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 90 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 91 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Modals 1 (Hindi).html",
@@ -3365,14 +3051,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Miscellaneous/Sscsec (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Ssct1py - Part 1 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Ssct1py - Part 10 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Ssct1py - Part 2 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Ssct1py - Part 3 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Ssct1py - Part 4 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Ssct1py - Part 5 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Ssct1py - Part 6 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Ssct1py - Part 7 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Ssct1py - Part 8 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Ssct1py - Part 9 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 1 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 10 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 11 (Hindi).html",
@@ -3384,7 +3062,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 17 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 18 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 19 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 2 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 20 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 21 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 22 (Hindi).html",
@@ -3395,7 +3072,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 27 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 28 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 29 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 3 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 30 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 31 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 32 (Hindi).html",
@@ -3406,14 +3082,8 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 37 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 38 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 39 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 4 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 40 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 41 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 5 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 6 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 7 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 8 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Miscellaneous/Super Batch - Part 9 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Tense 1 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/Tense 2 (Hindi).html",
   "Pundits/Topic-Concept Tests/Miscellaneous/The Pqrs Quiz (Hindi).html",
@@ -3483,109 +3153,12 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 107 (Hindi).html",
   "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 108 (Hindi).html",
   "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 109 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 11 (Hindi).html",
   "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 110 (Hindi).html",
   "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 111 (Hindi).html",
   "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 112 (Hindi).html",
   "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 113 (Hindi).html",
   "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 114 (Hindi).html",
   "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 115 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 12 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 13 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 14 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 15 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 16 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 17 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 18 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 19 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 2 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 20 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 21 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 22 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 23 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 24 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 25 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 26 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 27 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 28 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 29 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 3 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 30 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 31 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 32 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 33 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 34 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 35 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 36 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 37 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 38 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 39 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 4 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 40 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 41 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 42 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 43 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 44 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 45 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 46 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 47 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 48 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 49 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 5 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 50 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 51 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 52 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 53 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 54 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 55 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 56 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 57 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 58 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 59 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 6 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 60 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 61 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 62 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 63 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 64 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 65 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 66 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 67 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 68 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 69 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 7 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 70 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 71 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 72 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 73 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 74 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 75 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 76 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 77 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 78 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 79 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 8 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 80 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 81 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 82 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 83 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 84 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 85 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 86 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 87 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 88 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 89 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 9 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 90 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 91 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 92 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 93 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 94 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 95 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 96 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 97 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 98 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Reasoning/Super Batch - Part 99 (Hindi).html",
   "Pundits/Topic-Concept Tests/Sentence Improvement/All Sentence Improvements Questions Asked in Ssc Cgl 2025 (English).html",
   "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 1 (Hindi).html",
   "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 10 (Hindi).html",
@@ -3598,7 +3171,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 17 (Hindi).html",
   "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 18 (Hindi).html",
   "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 19 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 2 (Hindi).html",
   "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 20 (Hindi).html",
   "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 21 (Hindi).html",
   "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 22 (Hindi).html",
@@ -3608,13 +3180,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 26 (Hindi).html",
   "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 27 (Hindi).html",
   "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 28 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 3 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 4 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 5 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 6 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 7 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 8 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Sentence Improvement/Mock - Part 9 (Hindi).html",
   "Pundits/Topic-Concept Tests/Sentence Improvement/Super Batch - Part 1 (Hindi).html",
   "Pundits/Topic-Concept Tests/Sentence Improvement/Super Batch - Part 2 (Hindi).html",
   "Pundits/Topic-Concept Tests/Sentence Improvement/Super Batch - Part 3 (Hindi).html",
@@ -3635,7 +3200,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Spelling/Mock - Part 17 (Hindi).html",
   "Pundits/Topic-Concept Tests/Spelling/Mock - Part 18 (Hindi).html",
   "Pundits/Topic-Concept Tests/Spelling/Mock - Part 19 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Spelling/Mock - Part 2 (Hindi).html",
   "Pundits/Topic-Concept Tests/Spelling/Mock - Part 20 (Hindi).html",
   "Pundits/Topic-Concept Tests/Spelling/Mock - Part 21 (Hindi).html",
   "Pundits/Topic-Concept Tests/Spelling/Mock - Part 22 (Hindi).html",
@@ -3646,13 +3210,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Spelling/Mock - Part 27 (Hindi).html",
   "Pundits/Topic-Concept Tests/Spelling/Mock - Part 28 (Hindi).html",
   "Pundits/Topic-Concept Tests/Spelling/Mock - Part 29 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Spelling/Mock - Part 3 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Spelling/Mock - Part 4 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Spelling/Mock - Part 5 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Spelling/Mock - Part 6 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Spelling/Mock - Part 7 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Spelling/Mock - Part 8 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Spelling/Mock - Part 9 (Hindi).html",
   "Pundits/Topic-Concept Tests/Spelling/Super Batch - Part 1 (Hindi).html",
   "Pundits/Topic-Concept Tests/Spelling/Super Batch - Part 2 (Hindi).html",
   "Pundits/Topic-Concept Tests/Spelling/Super Batch - Part 3 (Hindi).html",
@@ -3670,7 +3227,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 17 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 18 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 19 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 2 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 20 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 21 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 22 (Hindi).html",
@@ -3681,7 +3237,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 27 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 28 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 29 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 3 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 30 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 31 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 32 (Hindi).html",
@@ -3692,7 +3247,6 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 37 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 38 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 39 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 4 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 40 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 41 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 42 (Hindi).html",
@@ -3703,22 +3257,9 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 47 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 48 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 49 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 5 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 50 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 6 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 7 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 8 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Synonyms/Mock - Part 9 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Super Batch - Part 1 (Hindi).html",
   "Pundits/Topic-Concept Tests/Synonyms/Super Batch - Part 10 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Synonyms/Super Batch - Part 2 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Synonyms/Super Batch - Part 3 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Synonyms/Super Batch - Part 4 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Synonyms/Super Batch - Part 5 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Synonyms/Super Batch - Part 6 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Synonyms/Super Batch - Part 7 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Synonyms/Super Batch - Part 8 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Synonyms/Super Batch - Part 9 (Hindi).html",
   "Pundits/Topic-Concept Tests/Vocabulary/Blackbook Vocab Day 2 (Hindi).html",
   "Pundits/Topic-Concept Tests/Vocabulary/Blackbook Vocab Day 3 (Hindi).html",
   "Pundits/Topic-Concept Tests/Vocabulary/Super Batch - Part 1 (Hindi).html",
@@ -3757,16 +3298,8 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Voice and Narration/Mock - Part 13 (English).html",
   "Pundits/Topic-Concept Tests/Voice and Narration/Mock - Part 14 (English).html",
   "Pundits/Topic-Concept Tests/Voice and Narration/Mock - Part 15 (English).html",
-  "Pundits/Topic-Concept Tests/Voice and Narration/Mock - Part 2 (English).html",
   "Pundits/Topic-Concept Tests/Voice and Narration/Mock - Part 2 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Voice and Narration/Mock - Part 3 (English).html",
   "Pundits/Topic-Concept Tests/Voice and Narration/Mock - Part 3 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Voice and Narration/Mock - Part 4 (English).html",
-  "Pundits/Topic-Concept Tests/Voice and Narration/Mock - Part 5 (English).html",
-  "Pundits/Topic-Concept Tests/Voice and Narration/Mock - Part 6 (English).html",
-  "Pundits/Topic-Concept Tests/Voice and Narration/Mock - Part 7 (English).html",
-  "Pundits/Topic-Concept Tests/Voice and Narration/Mock - Part 8 (English).html",
-  "Pundits/Topic-Concept Tests/Voice and Narration/Mock - Part 9 (English).html",
   "Pundits/Topic-Concept Tests/Voice and Narration/Narration Quiz (Hindi).html",
   "Pundits/Topic-Concept Tests/Voice and Narration/Super Batch - Part 1 (Hindi).html",
   "Pundits/Topic-Concept Tests/Voice and Narration/Super Batch - Part 10 (Hindi).html",
@@ -3776,14 +3309,55 @@ window.MOCKS_MANIFEST = {
   "Pundits/Topic-Concept Tests/Voice and Narration/Super Batch - Part 14 (Hindi).html",
   "Pundits/Topic-Concept Tests/Voice and Narration/Super Batch - Part 15 (Hindi).html",
   "Pundits/Topic-Concept Tests/Voice and Narration/Super Batch - Part 16 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Voice and Narration/Super Batch - Part 2 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Voice and Narration/Super Batch - Part 3 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Voice and Narration/Super Batch - Part 4 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Voice and Narration/Super Batch - Part 5 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Voice and Narration/Super Batch - Part 6 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Voice and Narration/Super Batch - Part 7 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Voice and Narration/Super Batch - Part 8 (Hindi).html",
-  "Pundits/Topic-Concept Tests/Voice and Narration/Super Batch - Part 9 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 1 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 10 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 11 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 12 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 13 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 14 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 15 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 16 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 17 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 18 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 19 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 2 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 20 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 21 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 22 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 23 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 24 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 25 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 26 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 27 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 28 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 29 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 3 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 30 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 31 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 32 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 33 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 34 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 35 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 36 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 37 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 38 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 39 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 4 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 40 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 41 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 42 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 43 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 44 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 45 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 46 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 47 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 48 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 49 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 5 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 6 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 7 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 8 (Hindi).html",
+  "RBE/Arithmetic Booster/Mock - Part 9 (Hindi).html",
   "Testbook/Sectional Tests/1 by The Cgl 2025 pre (Hindi).html",
   "Testbook/Topic-Concept Tests/Full Length Mocks/1 by The Cgl 2025 pre (Hindi).html",
   "The Solvers/CHSL/Chsl - Part 1 (Hindi).html",
@@ -3863,17 +3437,9 @@ window.MOCKS_MANIFEST = {
   "The Solvers/Previous Year Papers/Ssct1py - Part 17 (Hindi).html",
   "The Solvers/Previous Year Papers/Ssct1py - Part 18 (Hindi).html",
   "The Solvers/Previous Year Papers/Ssct1py - Part 19 (Hindi).html",
-  "The Solvers/Previous Year Papers/Ssct1py - Part 2 (Hindi).html",
   "The Solvers/Previous Year Papers/Ssct1py - Part 20 (Hindi).html",
   "The Solvers/Previous Year Papers/Ssct1py - Part 21 (Hindi).html",
   "The Solvers/Previous Year Papers/Ssct1py - Part 22 (Hindi).html",
-  "The Solvers/Previous Year Papers/Ssct1py - Part 3 (Hindi).html",
-  "The Solvers/Previous Year Papers/Ssct1py - Part 4 (Hindi).html",
-  "The Solvers/Previous Year Papers/Ssct1py - Part 5 (Hindi).html",
-  "The Solvers/Previous Year Papers/Ssct1py - Part 6 (Hindi).html",
-  "The Solvers/Previous Year Papers/Ssct1py - Part 7 (Hindi).html",
-  "The Solvers/Previous Year Papers/Ssct1py - Part 8 (Hindi).html",
-  "The Solvers/Previous Year Papers/Ssct1py - Part 9 (Hindi).html",
   "The Solvers/Sectional Tests/Cgl Tier I English Sectional Test 1 (Hindi).html",
   "The Solvers/Sectional Tests/Cgl Tier I English Sectional Test 10 (Hindi).html",
   "The Solvers/Sectional Tests/Cgl Tier I English Sectional Test 2 (Hindi).html",
@@ -3906,14 +3472,6 @@ window.MOCKS_MANIFEST = {
   "The Solvers/Sectional Tests/Cgl Tier I Quant Sectional Test 9 (Hindi).html",
   "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 1 (Hindi).html",
   "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 10 (Hindi).html",
-  "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 2 (Hindi).html",
-  "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 3 (Hindi).html",
-  "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 4 (Hindi).html",
-  "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 5 (Hindi).html",
-  "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 6 (Hindi).html",
-  "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 7 (Hindi).html",
-  "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 8 (Hindi).html",
-  "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 9 (Hindi).html",
   "The Solvers/Sectional Tests/Part 1 (Hindi).html",
   "The Solvers/Sectional Tests/Part 10 (Hindi).html",
   "The Solvers/Sectional Tests/Part 11 (Hindi).html",
@@ -3968,7 +3526,6 @@ window.MOCKS_MANIFEST = {
   "The Solvers/Sectional Tests/Ssccgl - Part 17 (Hindi).html",
   "The Solvers/Sectional Tests/Ssccgl - Part 18 (Hindi).html",
   "The Solvers/Sectional Tests/Ssccgl - Part 19 (Hindi).html",
-  "The Solvers/Sectional Tests/Ssccgl - Part 2 (Hindi).html",
   "The Solvers/Sectional Tests/Ssccgl - Part 20 (Hindi).html",
   "The Solvers/Sectional Tests/Ssccgl - Part 21 (Hindi).html",
   "The Solvers/Sectional Tests/Ssccgl - Part 22 (Hindi).html",
@@ -3979,31 +3536,16 @@ window.MOCKS_MANIFEST = {
   "The Solvers/Sectional Tests/Ssccgl - Part 27 (Hindi).html",
   "The Solvers/Sectional Tests/Ssccgl - Part 28 (Hindi).html",
   "The Solvers/Sectional Tests/Ssccgl - Part 29 (Hindi).html",
-  "The Solvers/Sectional Tests/Ssccgl - Part 3 (Hindi).html",
   "The Solvers/Sectional Tests/Ssccgl - Part 30 (Hindi).html",
   "The Solvers/Sectional Tests/Ssccgl - Part 31 (Hindi).html",
   "The Solvers/Sectional Tests/Ssccgl - Part 32 (Hindi).html",
   "The Solvers/Sectional Tests/Ssccgl - Part 33 (Hindi).html",
-  "The Solvers/Sectional Tests/Ssccgl - Part 4 (Hindi).html",
-  "The Solvers/Sectional Tests/Ssccgl - Part 5 (Hindi).html",
-  "The Solvers/Sectional Tests/Ssccgl - Part 6 (Hindi).html",
-  "The Solvers/Sectional Tests/Ssccgl - Part 7 (Hindi).html",
-  "The Solvers/Sectional Tests/Ssccgl - Part 8 (Hindi).html",
-  "The Solvers/Sectional Tests/Ssccgl - Part 9 (Hindi).html",
   "The Solvers/Sectional Tests/Sscsec - Part 1 (Hindi).html",
   "The Solvers/Sectional Tests/Sscsec - Part 10 (Hindi).html",
   "The Solvers/Sectional Tests/Sscsec - Part 11 (Hindi).html",
   "The Solvers/Sectional Tests/Sscsec - Part 12 (Hindi).html",
   "The Solvers/Sectional Tests/Sscsec - Part 13 (Hindi).html",
   "The Solvers/Sectional Tests/Sscsec - Part 14 (Hindi).html",
-  "The Solvers/Sectional Tests/Sscsec - Part 2 (Hindi).html",
-  "The Solvers/Sectional Tests/Sscsec - Part 3 (Hindi).html",
-  "The Solvers/Sectional Tests/Sscsec - Part 4 (Hindi).html",
-  "The Solvers/Sectional Tests/Sscsec - Part 5 (Hindi).html",
-  "The Solvers/Sectional Tests/Sscsec - Part 6 (Hindi).html",
-  "The Solvers/Sectional Tests/Sscsec - Part 7 (Hindi).html",
-  "The Solvers/Sectional Tests/Sscsec - Part 8 (Hindi).html",
-  "The Solvers/Sectional Tests/Sscsec - Part 9 (Hindi).html",
   "The Solvers/Topic-Concept Tests/Advance Ancient History 360 Pro Level M (Hindi).html",
   "The Solvers/Topic-Concept Tests/Advance Biology 360 Pro Level Mock I (Hindi).html",
   "The Solvers/Topic-Concept Tests/Advance Economics 360 Pro Level Mock (Hindi).html",
@@ -4030,7 +3572,6 @@ window.MOCKS_MANIFEST = {
   "The Solvers/Topic-Concept Tests/Gktests - Part 17 (Hindi).html",
   "The Solvers/Topic-Concept Tests/Gktests - Part 18 (Hindi).html",
   "The Solvers/Topic-Concept Tests/Gktests - Part 19 (Hindi).html",
-  "The Solvers/Topic-Concept Tests/Gktests - Part 2 (Hindi).html",
   "The Solvers/Topic-Concept Tests/Gktests - Part 20 (Hindi).html",
   "The Solvers/Topic-Concept Tests/Gktests - Part 21 (Hindi).html",
   "The Solvers/Topic-Concept Tests/Gktests - Part 22 (Hindi).html",
@@ -4041,7 +3582,6 @@ window.MOCKS_MANIFEST = {
   "The Solvers/Topic-Concept Tests/Gktests - Part 27 (Hindi).html",
   "The Solvers/Topic-Concept Tests/Gktests - Part 28 (Hindi).html",
   "The Solvers/Topic-Concept Tests/Gktests - Part 29 (Hindi).html",
-  "The Solvers/Topic-Concept Tests/Gktests - Part 3 (Hindi).html",
   "The Solvers/Topic-Concept Tests/Gktests - Part 30 (Hindi).html",
   "The Solvers/Topic-Concept Tests/Gktests - Part 31 (Hindi).html",
   "The Solvers/Topic-Concept Tests/Gktests - Part 32 (Hindi).html",
@@ -4050,12 +3590,6 @@ window.MOCKS_MANIFEST = {
   "The Solvers/Topic-Concept Tests/Gktests - Part 35 (Hindi).html",
   "The Solvers/Topic-Concept Tests/Gktests - Part 36 (Hindi).html",
   "The Solvers/Topic-Concept Tests/Gktests - Part 37 (Hindi).html",
-  "The Solvers/Topic-Concept Tests/Gktests - Part 4 (Hindi).html",
-  "The Solvers/Topic-Concept Tests/Gktests - Part 5 (Hindi).html",
-  "The Solvers/Topic-Concept Tests/Gktests - Part 6 (Hindi).html",
-  "The Solvers/Topic-Concept Tests/Gktests - Part 7 (Hindi).html",
-  "The Solvers/Topic-Concept Tests/Gktests - Part 8 (Hindi).html",
-  "The Solvers/Topic-Concept Tests/Gktests - Part 9 (Hindi).html",
   "The Solvers/Topic-Concept Tests/Historical Background of Indian Constitu (Hindi).html",
   "The Solvers/Topic-Concept Tests/New Criminal Law 360 Mock (Hindi).html",
   "The Solvers/Topic-Concept Tests/Padma Awards Mock 2026 Mock (Hindi).html",
@@ -4081,14 +3615,6 @@ window.MOCKS_MANIFEST = {
   "The Solvers/Topic-Concept Tests/Ssclivepy - Part 15 (Hindi).html",
   "The Solvers/Topic-Concept Tests/Ssclivepy - Part 16 (Hindi).html",
   "The Solvers/Topic-Concept Tests/Ssclivepy - Part 17 (Hindi).html",
-  "The Solvers/Topic-Concept Tests/Ssclivepy - Part 2 (Hindi).html",
-  "The Solvers/Topic-Concept Tests/Ssclivepy - Part 3 (Hindi).html",
-  "The Solvers/Topic-Concept Tests/Ssclivepy - Part 4 (Hindi).html",
-  "The Solvers/Topic-Concept Tests/Ssclivepy - Part 5 (Hindi).html",
-  "The Solvers/Topic-Concept Tests/Ssclivepy - Part 6 (Hindi).html",
-  "The Solvers/Topic-Concept Tests/Ssclivepy - Part 7 (Hindi).html",
-  "The Solvers/Topic-Concept Tests/Ssclivepy - Part 8 (Hindi).html",
-  "The Solvers/Topic-Concept Tests/Ssclivepy - Part 9 (Hindi).html",
   "The Solvers/Topic-Concept Tests/The Delhi Sultanate (Hindi).html",
   "The Solvers/Topic-Concept Tests/The Indian Judicial System 360 Mock (Hindi).html",
   "The Solvers/Topic-Concept Tests/The Mughal Empire Mughal Administration (Hindi).html",
@@ -5276,17 +4802,17 @@ window.MOCKS_MANIFEST = {
     "time": 15,
     "marks": 75
   },
-  "Mocks Wallah/Topic-Concept Tests/Concept Tests/Concept Test 001 (Hindi).html": {
+  "Mocks Wallah/Topic-Concept Tests/Concept Tests/Concept Test 097 (Hindi).html": {
     "q": 0,
     "time": 60,
     "marks": 0
   },
-  "Mocks Wallah/Topic-Concept Tests/Concept Tests/Concept Test 002 (Hindi).html": {
+  "Mocks Wallah/Topic-Concept Tests/Concept Tests/Concept Test 098 (Hindi).html": {
     "q": 0,
     "time": 60,
     "marks": 0
   },
-  "Mocks Wallah/Topic-Concept Tests/Concept Tests/Concept Test 003 (Hindi).html": {
+  "Mocks Wallah/Topic-Concept Tests/Concept Tests/Concept Test 099 (Hindi).html": {
     "q": 0,
     "time": 60,
     "marks": 0
@@ -5686,11 +5212,6 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 60
   },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 11 (Hindi).html": {
-    "q": 80,
-    "time": 60,
-    "marks": 240
-  },
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 110 (Hindi).html": {
     "q": 20,
     "time": 60,
@@ -5741,11 +5262,6 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 60
   },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 12 (Hindi).html": {
-    "q": 40,
-    "time": 60,
-    "marks": 120
-  },
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 120 (Hindi).html": {
     "q": 20,
     "time": 60,
@@ -5792,11 +5308,6 @@ window.MOCKS_MANIFEST = {
     "marks": 60
   },
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 129 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 13 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -5851,11 +5362,6 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 60
   },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 14 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 140 (Hindi).html": {
     "q": 20,
     "time": 60,
@@ -5902,11 +5408,6 @@ window.MOCKS_MANIFEST = {
     "marks": 60
   },
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 149 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 15 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -5961,11 +5462,6 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 60
   },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 16 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 160 (Hindi).html": {
     "q": 20,
     "time": 60,
@@ -6012,11 +5508,6 @@ window.MOCKS_MANIFEST = {
     "marks": 60
   },
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 169 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 17 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -6071,11 +5562,6 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 60
   },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 18 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 180 (Hindi).html": {
     "q": 20,
     "time": 60,
@@ -6122,11 +5608,6 @@ window.MOCKS_MANIFEST = {
     "marks": 60
   },
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 189 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 19 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -6181,16 +5662,6 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 60
   },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 2 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 20 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 200 (Hindi).html": {
     "q": 20,
     "time": 60,
@@ -6237,11 +5708,6 @@ window.MOCKS_MANIFEST = {
     "marks": 60
   },
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 209 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 21 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -6296,11 +5762,6 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 60
   },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 22 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 220 (Hindi).html": {
     "q": 20,
     "time": 60,
@@ -6347,11 +5808,6 @@ window.MOCKS_MANIFEST = {
     "marks": 60
   },
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 229 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 23 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -6406,11 +5862,6 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 60
   },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 24 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 240 (Hindi).html": {
     "q": 20,
     "time": 60,
@@ -6452,416 +5903,6 @@ window.MOCKS_MANIFEST = {
     "marks": 60
   },
   "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 248 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 25 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 26 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 27 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 28 (Hindi).html": {
-    "q": 40,
-    "time": 60,
-    "marks": 120
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 29 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 3 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 30 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 31 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 32 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 33 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 34 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 35 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 36 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 37 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 38 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 39 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 4 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 40 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 41 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 42 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 43 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 44 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 45 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 46 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 47 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 48 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 49 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 5 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 50 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 51 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 52 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 53 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 54 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 55 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 56 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 57 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 58 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 59 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 6 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 60 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 61 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 62 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 63 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 64 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 65 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 66 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 67 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 68 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 69 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 7 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 70 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 71 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 72 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 73 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 74 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 75 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 76 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 77 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 78 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 79 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 8 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 80 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 81 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 82 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 83 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 84 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 85 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 86 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 87 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 88 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 89 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 9 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 90 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 91 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 92 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 93 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 94 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 95 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 96 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 97 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 98 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Mocks Wallah/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 99 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -8396,11 +7437,6 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 300
   },
-  "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 2 (Hindi).html": {
-    "q": 100,
-    "time": 60,
-    "marks": 300
-  },
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 20 (Hindi).html": {
     "q": 100,
     "time": 60,
@@ -8447,11 +7483,6 @@ window.MOCKS_MANIFEST = {
     "marks": 300
   },
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 29 (Hindi).html": {
-    "q": 100,
-    "time": 60,
-    "marks": 300
-  },
-  "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 3 (Hindi).html": {
     "q": 100,
     "time": 60,
     "marks": 300
@@ -8506,11 +7537,6 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 300
   },
-  "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 4 (Hindi).html": {
-    "q": 100,
-    "time": 60,
-    "marks": 300
-  },
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 40 (Hindi).html": {
     "q": 100,
     "time": 60,
@@ -8561,37 +7587,12 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 300
   },
-  "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 5 (Hindi).html": {
-    "q": 100,
-    "time": 60,
-    "marks": 300
-  },
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 50 (Hindi).html": {
     "q": 100,
     "time": 60,
     "marks": 300
   },
   "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 51 (Hindi).html": {
-    "q": 100,
-    "time": 60,
-    "marks": 300
-  },
-  "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 6 (Hindi).html": {
-    "q": 100,
-    "time": 60,
-    "marks": 300
-  },
-  "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 7 (Hindi).html": {
-    "q": 58,
-    "time": 60,
-    "marks": 174
-  },
-  "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 8 (Hindi).html": {
-    "q": 100,
-    "time": 60,
-    "marks": 300
-  },
-  "oliveboard/Oliveboard_Mocks/Cgl1 Responsive Exam Interface - Part 9 (Hindi).html": {
     "q": 100,
     "time": 60,
     "marks": 300
@@ -8639,7 +7640,7 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 17 (Hindi).html": {
     "q": 150,
     "time": 135,
-    "marks": 300
+    "marks": 450
   },
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 18 (Hindi).html": {
     "q": 150,
@@ -8647,11 +7648,6 @@ window.MOCKS_MANIFEST = {
     "marks": 450
   },
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 19 (Hindi).html": {
-    "q": 150,
-    "time": 135,
-    "marks": 450
-  },
-  "oliveboard/Oliveboard_Mocks/Ssct2np - Part 2 (Hindi).html": {
     "q": 150,
     "time": 135,
     "marks": 450
@@ -8664,7 +7660,7 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 21 (Hindi).html": {
     "q": 150,
     "time": 135,
-    "marks": 450
+    "marks": 300
   },
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 22 (Hindi).html": {
     "q": 150,
@@ -8679,7 +7675,7 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 24 (Hindi).html": {
     "q": 150,
     "time": 135,
-    "marks": 450
+    "marks": 300
   },
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 25 (Hindi).html": {
     "q": 150,
@@ -8699,14 +7695,9 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 28 (Hindi).html": {
     "q": 150,
     "time": 135,
-    "marks": 300
-  },
-  "oliveboard/Oliveboard_Mocks/Ssct2np - Part 29 (Hindi).html": {
-    "q": 150,
-    "time": 135,
     "marks": 450
   },
-  "oliveboard/Oliveboard_Mocks/Ssct2np - Part 3 (Hindi).html": {
+  "oliveboard/Oliveboard_Mocks/Ssct2np - Part 29 (Hindi).html": {
     "q": 150,
     "time": 135,
     "marks": 450
@@ -8714,7 +7705,7 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 30 (Hindi).html": {
     "q": 150,
     "time": 135,
-    "marks": 300
+    "marks": 450
   },
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 31 (Hindi).html": {
     "q": 150,
@@ -8757,11 +7748,6 @@ window.MOCKS_MANIFEST = {
     "marks": 450
   },
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 39 (Hindi).html": {
-    "q": 150,
-    "time": 135,
-    "marks": 450
-  },
-  "oliveboard/Oliveboard_Mocks/Ssct2np - Part 4 (Hindi).html": {
     "q": 150,
     "time": 135,
     "marks": 450
@@ -8816,11 +7802,6 @@ window.MOCKS_MANIFEST = {
     "time": 135,
     "marks": 450
   },
-  "oliveboard/Oliveboard_Mocks/Ssct2np - Part 5 (Hindi).html": {
-    "q": 150,
-    "time": 135,
-    "marks": 450
-  },
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 50 (Hindi).html": {
     "q": 150,
     "time": 135,
@@ -8871,11 +7852,6 @@ window.MOCKS_MANIFEST = {
     "time": 135,
     "marks": 450
   },
-  "oliveboard/Oliveboard_Mocks/Ssct2np - Part 6 (Hindi).html": {
-    "q": 150,
-    "time": 135,
-    "marks": 450
-  },
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 60 (Hindi).html": {
     "q": 150,
     "time": 135,
@@ -8894,22 +7870,7 @@ window.MOCKS_MANIFEST = {
   "oliveboard/Oliveboard_Mocks/Ssct2np - Part 63 (Hindi).html": {
     "q": 150,
     "time": 135,
-    "marks": 450
-  },
-  "oliveboard/Oliveboard_Mocks/Ssct2np - Part 7 (Hindi).html": {
-    "q": 150,
-    "time": 135,
-    "marks": 450
-  },
-  "oliveboard/Oliveboard_Mocks/Ssct2np - Part 8 (Hindi).html": {
-    "q": 150,
-    "time": 135,
-    "marks": 450
-  },
-  "oliveboard/Oliveboard_Mocks/Ssct2np - Part 9 (Hindi).html": {
-    "q": 150,
-    "time": 135,
-    "marks": 450
+    "marks": 300
   },
   "oliveboard/Oliveboard_Mocks/Super Batch 001 (Hindi).html": {
     "q": 20,
@@ -9192,9 +8153,9 @@ window.MOCKS_MANIFEST = {
     "marks": 60
   },
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 106 (Hindi).html": {
-    "q": 1,
+    "q": 20,
     "time": 60,
-    "marks": 3
+    "marks": 60
   },
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 107 (Hindi).html": {
     "q": 20,
@@ -9202,16 +8163,11 @@ window.MOCKS_MANIFEST = {
     "marks": 60
   },
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 108 (Hindi).html": {
-    "q": 20,
+    "q": 80,
     "time": 60,
-    "marks": 60
+    "marks": 240
   },
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 109 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 11 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -9266,11 +8222,6 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 60
   },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 12 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 120 (Hindi).html": {
     "q": 20,
     "time": 60,
@@ -9317,11 +8268,6 @@ window.MOCKS_MANIFEST = {
     "marks": 60
   },
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 129 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 13 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -9376,11 +8322,6 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 60
   },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 14 (Hindi).html": {
-    "q": 20,
-    "time": 1,
-    "marks": 60
-  },
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 140 (Hindi).html": {
     "q": 20,
     "time": 60,
@@ -9427,11 +8368,6 @@ window.MOCKS_MANIFEST = {
     "marks": 60
   },
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 149 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 15 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -9486,11 +8422,6 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 60
   },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 16 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 160 (Hindi).html": {
     "q": 20,
     "time": 60,
@@ -9537,11 +8468,6 @@ window.MOCKS_MANIFEST = {
     "marks": 60
   },
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 169 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 17 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -9596,11 +8522,6 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 60
   },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 18 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 180 (Hindi).html": {
     "q": 20,
     "time": 60,
@@ -9632,9 +8553,9 @@ window.MOCKS_MANIFEST = {
     "marks": 60
   },
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 186 (Hindi).html": {
-    "q": 20,
+    "q": 1,
     "time": 60,
-    "marks": 60
+    "marks": 3
   },
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 187 (Hindi).html": {
     "q": 20,
@@ -9647,11 +8568,6 @@ window.MOCKS_MANIFEST = {
     "marks": 60
   },
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 189 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 19 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -9687,446 +8603,6 @@ window.MOCKS_MANIFEST = {
     "marks": 60
   },
   "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 196 (Hindi).html": {
-    "q": 80,
-    "time": 60,
-    "marks": 240
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 2 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 20 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 21 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 22 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 23 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 24 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 25 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 26 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 27 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 28 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 29 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 3 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 30 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 31 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 32 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 33 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 34 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 35 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 36 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 37 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 38 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 39 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 4 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 40 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 41 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 42 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 43 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 44 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 45 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 46 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 47 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 48 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 49 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 5 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 50 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 51 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 52 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 53 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 54 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 55 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 56 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 57 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 58 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 59 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 6 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 60 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 61 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 62 (Hindi).html": {
-    "q": 13,
-    "time": 60,
-    "marks": 39
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 63 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 64 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 65 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 66 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 67 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 68 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 69 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 7 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 70 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 71 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 72 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 73 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 74 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 75 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 76 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 77 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 78 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 79 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 8 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 80 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 81 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 82 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 83 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 84 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 85 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 86 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 87 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 88 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 89 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 9 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 90 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 91 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 92 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 93 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 94 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 95 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 96 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 97 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 98 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "oliveboard/Topic-Concept Tests/Full Length Mocks/Ssc Cgl Mocks 2025 Ssc Super Practice - Part 99 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -12416,7 +10892,7 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 90
   },
-  "Pundits/Topic-Concept Tests/Miscellaneous/Concept Test 004 (Hindi).html": {
+  "Pundits/Topic-Concept Tests/Miscellaneous/Concept Test 100 (Hindi).html": {
     "q": 0,
     "time": 60,
     "marks": 0
@@ -12956,6 +11432,11 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 60
   },
+  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 12 (Hindi).html": {
+    "q": 20,
+    "time": 60,
+    "marks": 60
+  },
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 13 (Hindi).html": {
     "q": 20,
     "time": 60,
@@ -12967,6 +11448,11 @@ window.MOCKS_MANIFEST = {
     "marks": 60
   },
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 15 (Hindi).html": {
+    "q": 20,
+    "time": 60,
+    "marks": 60
+  },
+  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 16 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -12986,17 +11472,7 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 60
   },
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 2 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 20 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 21 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -13031,42 +11507,17 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 60
   },
+  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 28 (Hindi).html": {
+    "q": 20,
+    "time": 60,
+    "marks": 60
+  },
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 29 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
   },
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 3 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 30 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 31 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 32 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 33 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 34 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 35 (Hindi).html": {
+  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 40 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -13076,7 +11527,7 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 60
   },
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 5 (Hindi).html": {
+  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 52 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -13086,7 +11537,7 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 60
   },
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 6 (Hindi).html": {
+  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 64 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -13096,27 +11547,17 @@ window.MOCKS_MANIFEST = {
     "time": 60,
     "marks": 60
   },
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 7 (Hindi).html": {
+  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 76 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
   },
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 78 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 8 (Hindi).html": {
+  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 88 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
   },
   "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 89 (Hindi).html": {
-    "q": 20,
-    "time": 60,
-    "marks": 60
-  },
-  "Pundits/Topic-Concept Tests/Miscellaneous/Mock - Part 9 (Hindi).html": {
     "q": 20,
     "time": 60,
     "marks": 60
@@ -15322,46 +13763,6 @@ window.MOCKS_MANIFEST = {
     "marks": 50
   },
   "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 10 (Hindi).html": {
-    "q": 25,
-    "time": 15,
-    "marks": 50
-  },
-  "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 2 (Hindi).html": {
-    "q": 25,
-    "time": 15,
-    "marks": 50
-  },
-  "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 3 (Hindi).html": {
-    "q": 25,
-    "time": 15,
-    "marks": 50
-  },
-  "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 4 (Hindi).html": {
-    "q": 25,
-    "time": 15,
-    "marks": 50
-  },
-  "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 5 (Hindi).html": {
-    "q": 25,
-    "time": 15,
-    "marks": 50
-  },
-  "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 6 (Hindi).html": {
-    "q": 25,
-    "time": 15,
-    "marks": 50
-  },
-  "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 7 (Hindi).html": {
-    "q": 25,
-    "time": 15,
-    "marks": 50
-  },
-  "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 8 (Hindi).html": {
-    "q": 25,
-    "time": 15,
-    "marks": 50
-  },
-  "The Solvers/Sectional Tests/Cgl Tier I Reasoning Sectional - Part 9 (Hindi).html": {
     "q": 25,
     "time": 15,
     "marks": 50

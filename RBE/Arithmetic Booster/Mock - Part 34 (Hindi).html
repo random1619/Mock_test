@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock (Hindi)</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--p:#4F46E5;--s:#10B981;--d:#EF4444;--w:#F59E0B;--bg:#F8FAFC;--card:#FFF;--txt:#1F2937;--txtL:#6B7280;--brd:#E5E7EB}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);line-height:1.5;padding-bottom:80px}
+        
+        /* Image containment styles */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 8px 0;
+            border-radius: 4px;
+        }
+        
+        /* Ensure images don't overflow in any container */
+        .q-txt img, .opt-txt img, .sol img, .comp img {
+            max-width: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+        
+        /* Specific image containers */
+        .img-container {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+        
+        .hdr{background:var(--card);border-bottom:1px solid var(--brd);padding:12px 16px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;position:sticky;top:0;z-index:100}
+        .hdr-l{display:flex;align-items:center;gap:12px;justify-self:start}
+        .hdr-c{text-align:center;font-weight:600;font-size:15px}
+        .hdr-r{display:flex;justify-self:end;align-items:center;gap:8px}
+        .q-info{font-size:14px;font-weight:600}
+        .timer{background:#FEF3C7;color:#92400E;padding:6px 12px;border-radius:16px;font-size:13px;font-weight:600}
+        .btn{border:none;border-radius:8px;font-weight:500;cursor:pointer;transition:all .2s;font-size:13px}
+        .btn-sm{padding:8px 12px}
+        .btn-p{background:var(--p);color:white}
+        .btn-o{background:transparent;border:1px solid var(--brd);color:var(--txt)}
+        .btn:active{transform:scale(.98)}
+        .cont{padding:16px;max-width:100%;overflow-x:hidden}
+        .q-card{background:var(--card);border-radius:12px;padding:20px;margin-bottom:16px;border:1px solid var(--brd);overflow:hidden}
+        .lang{display:flex;background:#F3F4F6;border-radius:8px;padding:2px;margin-bottom:16px}
+        .lang-btn{flex:1;padding:8px;border:none;background:transparent;border-radius:6px;font-size:13px;cursor:pointer;transition:all .2s}
+        .lang-btn.active{background:white;color:var(--p);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+        .comp{background:#F0F9FF;border:1px solid #BAE6FD;border-radius:8px;padding:16px;margin-bottom:20px;overflow:hidden}
+        .comp h4{color:#0369A1;font-size:14px;margin-bottom:8px}
+        .q-txt{font-size:16px;line-height:1.6;margin-bottom:20px;color:var(--txt);overflow:hidden;word-wrap:break-word}
+        .opts{display:flex;flex-direction:column;gap:12px}
+        .opt{display:flex;align-items:center;padding:16px;background:var(--card);border:2px solid var(--brd);border-radius:12px;cursor:pointer;transition:all .2s;gap:12px;overflow:hidden}
+        .opt:hover:not(.submitted){border-color:var(--p)}
+        .opt.sel{border-color:var(--p);background:#F0F9FF}
+        .opt.correct{border-color:var(--s);background:#F0FDF4 !important}
+        .opt.wrong{border-color:var(--d);background:#FEF2F2 !important}
+        .opt.submitted{cursor:default}
+        .opt-radio{width:20px;height:20px;border:2px solid var(--brd);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .opt.sel .opt-radio{border-color:var(--p);background:var(--p)}
+        .opt.sel .opt-radio::after{content:'✓';color:white;font-size:12px;font-weight:bold}
+        .opt.correct .opt-radio{border-color:var(--s) !important;background:var(--s) !important}
+        .opt.correct .opt-radio::after{content:'✓';color:white;font-size:12px;font-weight:bold}
+        .opt.wrong .opt-radio{border-color:var(--d) !important;background:var(--d) !important}
+        .opt.wrong .opt-radio::after{content:'✗';color:white;font-size:12px;font-weight:bold}
+        .opt-txt{flex:1;font-size:15px;overflow:hidden;word-wrap:break-word}
+        .sol{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:16px;margin-top:20px;display:none;overflow:hidden}
+        .sol.show{display:block}
+        .sol h4{color:var(--s);font-size:14px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+        .nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--brd);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;z-index:100}
+        .nav-btn{padding:12px 20px;border-radius:8px;font-weight:600;min-width:80px}
+        .nav-btn:disabled{opacity:.5;cursor:not-allowed}
+        .prog{text-align:center;font-size:13px;color:var(--txtL)}
+        .panel{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--card);z-index:200;transform:translateY(100%);transition:transform .3s ease;overflow-y:auto}
+        .panel.open{transform:translateY(0)}
+        .panel-hdr{background:var(--p);color:white;padding:16px;display:flex;justify-content:space-between;align-items:center}
+        .panel-close{background:none;border:none;color:white;font-size:18px;cursor:pointer}
+        .q-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;padding:20px}
+        .q-num{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:#F3F4F6;border-radius:8px;font-weight:600;cursor:pointer;transition:all .2s;font-size:14px}
+        .q-num.cur{background:var(--p);color:white}
+        .q-num.ans{background:var(--s);color:white}
+        .q-num.wrong{background:var(--d);color:white}
+        .q-num:hover{transform:scale(1.05)}
+        .modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:300;display:none;align-items:center;justify-content:center;padding:20px}
+        .modal.show{display:flex}
+        .result{background:var(--card);border-radius:16px;padding:24px;width:100%;max-width:400px;text-align:center}
+        .score{font-size:2rem;font-weight:bold;color:var(--p);margin:16px 0}
+        .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:20px 0}
+        .stat{text-align:center;padding:12px;border-radius:8px;border:1px solid var(--brd)}
+        .stat-val{font-size:1.5rem;font-weight:bold;margin-bottom:4px}
+        .stat-lbl{font-size:12px;color:var(--txtL)}
+        .stat.c{border-color:var(--s);background:#F0FDF4}
+        .stat.c .stat-val{color:var(--s)}
+        .stat.w{border-color:var(--d);background:#FEF2F2}
+        .stat.w .stat-val{color:var(--d)}
+        .modal-acts{display:flex;gap:12px;margin-top:20px}
+        .modal-btn{flex:1;padding:12px;border-radius:8px;font-weight:600}
+        @media (max-width:375px){.hdr{padding:10px 12px}.cont{padding:12px}.q-card{padding:16px}.q-grid{grid-template-columns:repeat(4,1fr)}}
+    </style>
+</head>
+<body>
+    <div class="hdr">
+        <div class="hdr-l">
+            <div class="q-info" id="qInfo">Q1/25</div>
+            <div class="timer" id="timer">60:00</div>
+        </div>
+        <div class="hdr-c">Mocks Wallah</div>
+        <div class="hdr-r">
+            <button class="btn btn-o btn-sm" id="menuBtn"><i class="fas fa-th"></i></button>
+            <button class="btn btn-p btn-sm" id="subBtn">Submit</button>
+        </div>
+    </div>
+
+    <div class="cont">
+        <div class="q-card">
+            <div class="lang">
+                <button class="lang-btn active" id="engBtn">English</button>
+                <button class="lang-btn" id="hinBtn">हिंदी</button>
+            </div>
+
+            <div id="compSec" class="comp" style="display:none">
+                <h4><i class="fas fa-book"></i> Comprehension</h4>
+                <div id="compCont"></div>
+            </div>
+
+            <div class="q-txt" id="qTxt"></div>
+            <div class="opts" id="opts"></div>
+
+            <div class="sol" id="sol">
+                <h4><i class="fas fa-lightbulb"></i> Solution</h4>
+                <div id="solCont"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav">
+        <button class="btn btn-o nav-btn" id="prevBtn"><i class="fas fa-chevron-left"></i> Prev</button>
+        <div class="prog">
+            <div id="progTxt">1 of 25</div>
+            <div style="font-size:11px">Answered: <span id="ansCnt">0</span> | <a href="https://t.me/mocks_wallah">Mocks Wallah</a></div>
+        </div>
+        <button class="btn btn-p nav-btn" id="nextBtn">Next <i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <div class="panel" id="panel">
+        <div class="panel-hdr">
+            <h3>All Questions</h3>
+            <button class="panel-close" id="panelClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="q-grid" id="qGrid"></div>
+        <div style="padding:20px;font-size:12px;color:var(--txtL)">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                <div class="q-num ans" style="width:24px;height:24px">✓</div><span>Answered</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+                <div class="q-num cur" style="width:24px;height:24px">•</div><span>Current</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modalOver">
+        <div class="result">
+            <h2>Test Complete!</h2>
+            <div class="score" id="scoreDisp">0/50</div>
+            <div class="stats">
+                <div class="stat c"><div class="stat-val" id="corrStat">0</div><div class="stat-lbl">Correct</div></div>
+                <div class="stat w"><div class="stat-val" id="incStat">0</div><div class="stat-lbl">Incorrect</div></div>
+                <div class="stat"><div class="stat-val" id="unaStat">0</div><div class="stat-lbl">Unattempted</div></div>
+                <div class="stat"><div class="stat-val" id="timeStat">0</div><div class="stat-lbl">Minutes</div></div>
+            </div>
+            <div class="modal-acts">
+                <button class="btn btn-o modal-btn" id="closeModal">Close</button>
+                <button class="btn btn-p modal-btn" id="revBtn">Review</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class TestApp {
+            constructor() {
+                this.qs = [
+  {
+    "question": "<style> img {max-width:100% !important}  @font-face { font-family: 'Mangal';src: url('https://appxcontent.kaxa.in/fonts/MANGAL.ttf') format('truetype'); } </style><p><span>The perimeter of a rectangle and a square are 160 m each. The area of the rectangle is less than that of the square by 100 m². The length of the rectangle is _________.</span></p><p><span style=\"font-family:'Mangal'\">एक आयत और एक वर्ग प्रत्येक का परिमाप </span><span>160 </span><span style=\"font-family:'Mangal'\">मीटर है। आयत का क्षेत्रफल वर्ग के क्षेत्रफल से </span><span>100 </span><span style=\"font-family:'Mangal'\">वर्ग मीटर कम है। आयत की लंबाई </span><span>_________ </span><span style=\"font-family:'Mangal'\">है।</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span> </span><span>60 m</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span> </span><span>65 m</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span>  </span><span>50 m</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span> </span><span>55 m</span></p>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image001.png\" width=\"376\" height=\"864\" alt ></p>",
+    "question_index": 0
+  },
+  {
+    "question": "<style> img {max-width:100% !important}  @font-face { font-family: 'Mangal';src: url('https://appxcontent.kaxa.in/fonts/MANGAL.ttf') format('truetype'); } </style><p><span>On selling a mobile for Rs.3,825 a man loses 15%. For how much should he sell it to gain 12%?</span></p><p><span>3,825 </span><span style=\"font-family:'Mangal'\">रुपये में मोबाइल बेचने पर एक आदमी को </span><span>15% </span><span style=\"font-family:'Mangal'\">का नुकसान होता है। </span><span>12% </span><span style=\"font-family:'Mangal'\">लाभ प्राप्त करने के लिए उसे इसे कितने में बेचना चाहिए</span><span>?</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>Rs.5,040</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>Rs.4,820</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>Rs.4,950</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>Rs.4,860</span></p>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image002.png\" width=\"576\" height=\"189\" alt ></p>",
+    "question_index": 1
+  },
+  {
+    "question": "<style> img {max-width:100% !important}  @font-face { font-family: 'Mangal';src: url('https://appxcontent.kaxa.in/fonts/MANGAL.ttf') format('truetype'); } </style><p><span>16 kg of ₹20 per kg wheat is mixed with 8 kg of another type of wheat to get a mixture that costs ₹25 per kg. Find the price (per kg) of the costlier wheat.</span></p><p><span>₹20 </span><span style=\"font-family:'Mangal'\">प्रति किलो वाले </span><span>16 </span><span style=\"font-family:'Mangal'\">किलो गेहूं को </span><span>8 </span><span style=\"font-family:'Mangal'\">किलो अन्य प्रकार के गेहूं के साथ मिलाकर एक मिश्रण प्राप्त किया जाता है जिसकी कीमत </span><span>₹25 </span><span style=\"font-family:'Mangal'\">प्रति किलो है। महँगे गेहूँ का मूल्य (प्रति किग्रा) ज्ञात कीजिए।</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image003.jpeg\" width=\"30\" height=\"23\" alt ></p>",
+      "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image004.jpeg\" width=\"31\" height=\"23\" alt ></p>",
+      "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image005.jpeg\" width=\"31\" height=\"22\" alt ></p>",
+      "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image006.jpeg\" width=\"31\" height=\"23\" alt ></p>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image007.png\" width=\"576\" height=\"344\" alt ></p>",
+    "question_index": 2
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>The ratio of expenditure to savings of a woman is 2 : 1. If her income and expenditure increase by 17% and 13%, respectively, then find the percentage increase in her saving.</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image008.jpeg\" width=\"44\" height=\"25\" alt ></p>",
+      "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image009.jpeg\" width=\"44\" height=\"25\" alt ></p>",
+      "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image010.jpeg\" width=\"44\" height=\"25\" alt ></p>",
+      "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image011.jpeg\" width=\"44\" height=\"25\" alt ></p>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image012.png\" width=\"576\" height=\"653\" alt ></p>",
+    "question_index": 3
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>The ratio of the two numbers is 5 : 8 and their LCM is 840. What are the two numbers?</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>105, 168</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>102, 179</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>110, 180</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>98, 140</span></p>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image013.png\" width=\"576\" height=\"702\" alt ></p>",
+    "question_index": 4
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>A number is square of 167. When digits of the number are rearranged in descending order, then the new number which is formed will be divisible by:</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>17</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>11</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>13</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>5</span></p>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image014.png\" width=\"576\" height=\"386\" alt ></p>",
+    "question_index": 5
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>The third proportional to 0.9 and 0.3 is:</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>0.1</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>0.3</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>0.9</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>0.01</span></p>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image015.png\" width=\"576\" height=\"185\" alt ></p>",
+    "question_index": 6
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>A thief steals a car at 3:30 A.M. and drives it at 64 km/h. The thief is discovered at 4:30 A.M. and the owner starts the chase with another car at 80 km/h. When will he catch the thief?</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>7:30 AM</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>8:30 AM</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>7:30 PM</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>8:30 PM</span></p>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image016.png\" width=\"576\" height=\"603\" alt ></p>",
+    "question_index": 7
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>Ramesh purchased watches at the rate of Rs.600 each from a wholesaler. He raised the price by 25% and then allowed a discount of 12% on each watch. What was his profit percentage?</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>11.5%</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>10.5%</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>11%</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>10%</span></p>"
+    ],
+    "correct_option_id": 3,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image017.png\" width=\"576\" height=\"398\" alt ></p>",
+    "question_index": 8
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>If 10% of an electricity bill is deducted, Rs.45 is still to be paid.The bill amount is ________.</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>Rs.50</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>Rs.55</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>Rs.65</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>Rs.45</span></p>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image018.png\" width=\"576\" height=\"227\" alt ></p>",
+    "question_index": 9
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>Sonu and Ravi working together can complete a job in 3 hours whereas Sonu alone can complete the same job in 4 hours. In how many hours can Ravi alone do the job?</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>12</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>8</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>10</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>15</span></p>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image019.png\" width=\"576\" height=\"283\" alt ></p>",
+    "question_index": 10
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>A sum is invested at CI payable annually. The interest in 2 successive years was Rs.225 and Rs.238.50, respectively. Find the rate percentage per annum.</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>6%</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>4%</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>8%</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>5%</span></p>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image020.png\" width=\"576\" height=\"248\" alt ></p>",
+    "question_index": 11
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>The arithmetic mean of 16 student's scores is 320. Find the sum of these scores.</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>7150</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>6240</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>5320</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>5120</span></p>"
+    ],
+    "correct_option_id": 3,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image021.png\" width=\"576\" height=\"149\" alt ></p>",
+    "question_index": 12
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>A and B can complete a piece of work in 12 days and 18 days, respectively. A begins to do the work and they work alternately, one at a time, for one day each. The whole work will be completed in ________.</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image022.jpeg\" width=\"61\" height=\"30\" alt ></p>",
+      "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image023.jpeg\" width=\"61\" height=\"30\" alt ></p>",
+      "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image024.jpeg\" width=\"61\" height=\"30\" alt ></p>",
+      "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image025.jpeg\" width=\"61\" height=\"30\" alt ></p>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image026.png\" width=\"576\" height=\"494\" alt ></p>",
+    "question_index": 13
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>A teacher is giving students the practical experience of compounding. A sum of Rs.1,00,000 is invested at the rate of 10% compound interest by the students for a period of two years. There are two different cases — the given money being compounded annually and being compounded half-yearly. What is the difference between the compound interest earned in the two different cases? (Round off the answer to nearest Rs.)</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>Rs.21,000</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>Rs.551</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>Rs.625</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>Rs.651</span></p>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image027.png\" width=\"576\" height=\"843\" alt ></p>",
+    "question_index": 14
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>ABC Ltd is selling laptops across the nation. The manager said that the company earned a profit of the sale price of 1008 laptops on the sale of 6608 laptops in a year. What is the gain percentage that the company earned?</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>16%</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>15%</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>18%</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>20%</span></p>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image028.png\" width=\"576\" height=\"239\" alt ></p>",
+    "question_index": 15
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>A tradesman marks his goods at 30% above the cost price. If he allows the customers a 10% discount, how much percentage does he make as profit?</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>20%</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>17%</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>23%</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>22%</span></p>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image029.png\" width=\"576\" height=\"523\" alt ></p>",
+    "question_index": 16
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>A dishonest shopkeeper professes to sell his goods at cost price, but he uses a weight of 900 g for the kg weight. Find the gain percentage.</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>10.10%</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>13.33%</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>12.12%</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>11.11%</span></p>"
+    ],
+    "correct_option_id": 3,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image030.png\" width=\"576\" height=\"370\" alt ></p>",
+    "question_index": 17
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>The population of a town 2 years ago was 8000. If the population growth rate is 30% per annum. What will the population after 1 year ?</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>17000</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>16754</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>17576</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>15678</span></p>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image031.png\" width=\"576\" height=\"234\" alt ></p>",
+    "question_index": 18
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image032.jpeg\" width=\"322\" height=\"30\" alt ></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image033.jpeg\" width=\"29\" height=\"30\" alt ></p>",
+      "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image034.jpeg\" width=\"29\" height=\"30\" alt ></p>",
+      "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image035.jpeg\" width=\"30\" height=\"30\" alt ></p>",
+      "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image036.jpeg\" width=\"29\" height=\"30\" alt ></p>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image037.png\" width=\"576\" height=\"513\" alt ></p>",
+    "question_index": 19
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image038.jpeg\" width=\"483\" height=\"31\" alt ></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>221.76 cm²</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>211.76 cm²</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>222.26 cm²</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>221.16 cm²</span></p>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image039.png\" width=\"576\" height=\"255\" alt ></p>",
+    "question_index": 20
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>A 315-m-long train is moving at a speed of 24 km/h. It will cross a man coming from the opposite direction at a speed of 3 km/h in __________.</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span>  </span><span>36 sec</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span> </span><span>40 sec</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span> </span><span>42 sec</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span> </span><span>38 sec</span></p>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image040.png\" width=\"576\" height=\"425\" alt ></p>",
+    "question_index": 21
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>The fourth proportional to 0.08, 0.12 and 6 is:</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>9</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>0.13</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>10</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>0.09</span></p>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image041.png\" width=\"576\" height=\"331\" alt ></p>",
+    "question_index": 22
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>An employee spends 75% of his income. His income rises by 25%, while his spending rises by 10%. The percentage of increase in his saving is ________.</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>65%</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>70%</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>68%</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>72%</span></p>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image042.png\" width=\"576\" height=\"597\" alt ></p>",
+    "question_index": 23
+  },
+  {
+    "question": "<style> img {max-width:100% !important} </style><p><span>A shopkeeper mixed two varieties of rice of prices Rs.36/kg and Rs.24/kg in the ratio of 1 : 2, respectively. He sold the mixture for Rs.2,100 to earn a profit of 25%.Find the quantity of rice of cost Rs.24/kg used in the mixture.</span></p>",
+    "options": [
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>39 kg</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>38 kg</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>37 kg</span></p>",
+      "<style> img {max-width:100% !important} </style><p><span> </span><span>40 kg</span></p>"
+    ],
+    "correct_option_id": 3,
+    "solution": "<style> img {max-width:100% !important} </style> <p><img src=\"https://appx-db.akamai.net.in/bulk_uploader_images/1711974993929_image043.png\" width=\"576\" height=\"849\" alt ></p>",
+    "question_index": 24
+  }
+];
+                this.curQ = 0;
+                this.ans = new Array(this.qs.length).fill(null);
+                this.startT = Date.now();
+                this.timeLeft = 25 * 60;
+                this.sub = false;
+                this.eng = true;
+                this.timer = null;
+                this.initEls();
+                this.init();
+                this.validateData(); // Add data validation
+            }
+            
+            // Add data validation method
+            validateData() {
+                console.log('Validating question data...');
+                this.qs.forEach((q, idx) => {
+                    if (q.correct_option_id !== undefined) {
+                        console.log(`Q${idx + 1}: correct_option_id = ${q.correct_option_id}, options count = ${q.options ? q.options.length : 0}`);
+                        
+                        // Ensure correct_option_id is within valid range
+                        if (q.options && (q.correct_option_id < 0 || q.correct_option_id >= q.options.length)) {
+                            console.warn(`Q${idx + 1}: Invalid correct_option_id ${q.correct_option_id} for ${q.options.length} options`);
+                        }
+                    }
+                });
+            }
+            
+            initEls() {
+                this.els = {
+                    qInfo: document.getElementById('qInfo'),
+                    progTxt: document.getElementById('progTxt'),
+                    ansCnt: document.getElementById('ansCnt'),
+                    timer: document.getElementById('timer'),
+                    qTxt: document.getElementById('qTxt'),
+                    compSec: document.getElementById('compSec'),
+                    compCont: document.getElementById('compCont'),
+                    opts: document.getElementById('opts'),
+                    sol: document.getElementById('sol'),
+                    solCont: document.getElementById('solCont'),
+                    qGrid: document.getElementById('qGrid'),
+                    panel: document.getElementById('panel'),
+                    modalOver: document.getElementById('modalOver'),
+                    scoreDisp: document.getElementById('scoreDisp'),
+                    corrStat: document.getElementById('corrStat'),
+                    incStat: document.getElementById('incStat'),
+                    unaStat: document.getElementById('unaStat'),
+                    timeStat: document.getElementById('timeStat')
+                };
+            }
+            
+            init() {
+                this.createGrid();
+                this.startTimer();
+                this.loadQ(0);
+                this.setupEvents();
+            }
+            
+            setupEvents() {
+                document.getElementById('menuBtn').onclick = () => this.togglePanel();
+                document.getElementById('subBtn').onclick = () => this.confirmSub();
+                document.getElementById('prevBtn').onclick = () => this.nav(-1);
+                document.getElementById('nextBtn').onclick = () => this.nav(1);
+                document.getElementById('engBtn').onclick = () => this.setLang(true);
+                document.getElementById('hinBtn').onclick = () => this.setLang(false);
+                document.getElementById('panelClose').onclick = () => this.closePanel();
+                document.getElementById('closeModal').onclick = () => this.closeModal();
+                document.getElementById('revBtn').onclick = () => this.review();
+            }
+            
+            extractTxt(html, isEng) {
+                if (!html) return '';
+                const cls = isEng ? 'eqt' : 'hqt';
+                const match = html.match(new RegExp(`<span class="${cls}"[^>]*>(.*?)</span>`, 's'));
+                return match ? match[1] : html;
+            }
+            
+            createGrid() {
+                this.els.qGrid.innerHTML = '';
+                this.qs.forEach((_, i) => {
+                    const div = document.createElement('div');
+                    div.className = 'q-num';
+                    div.textContent = i + 1;
+                    div.onclick = () => this.goToQ(i);
+                    this.els.qGrid.appendChild(div);
+                });
+            }
+            
+            loadQ(idx) {
+                this.curQ = idx;
+                const q = this.qs[idx];
+                
+                this.els.qInfo.textContent = `Q${idx + 1}/${this.qs.length}`;
+                this.els.progTxt.textContent = `${idx + 1} of ${this.qs.length}`;
+                this.updateAnsCnt();
+                this.updateNav();
+                this.updateGrid();
+                
+                if (q.comp) {
+                    this.els.compSec.style.display = 'block';
+                    this.els.compCont.innerHTML = q.comp;
+                } else {
+                    this.els.compSec.style.display = 'none';
+                }
+                
+                this.els.qTxt.innerHTML = this.extractTxt(q.question, this.eng);
+                this.loadOpts(q, idx);
+                
+                if (this.sub && q.solution) {
+                    this.els.solCont.innerHTML = q.solution;
+                    this.els.sol.classList.add('show');
+                } else {
+                    this.els.sol.classList.remove('show');
+                }
+            }
+            
+            loadOpts(q, qIdx) {
+                this.els.opts.innerHTML = '';
+                const userAnswer = this.ans[qIdx];
+                const correctAnswer = q.correct_option_id;
+                
+                console.log(`Loading Q${qIdx + 1} options:`, {
+                    userAnswer: userAnswer,
+                    correctAnswer: correctAnswer,
+                    submitted: this.sub,
+                    optionsCount: q.options ? q.options.length : 0
+                });
+                
+                if (!q.options || !Array.isArray(q.options)) {
+                    console.error(`Q${qIdx + 1}: No valid options array`);
+                    return;
+                }
+                
+                q.options.forEach((opt, i) => {
+                    const div = document.createElement('div');
+                    let cls = 'opt';
+                    
+                    // Add submitted class if test is submitted
+                    if (this.sub) {
+                        cls += ' submitted';
+                    }
+                    
+                    // User's selection
+                    if (userAnswer === i) {
+                        cls += ' sel';
+                        console.log(`Q${qIdx + 1}: User selected option ${i}`);
+                    }
+                    
+                    // After submission - show correct/wrong highlighting
+                    if (this.sub && correctAnswer !== undefined && correctAnswer !== null) {
+                        if (i === correctAnswer) {
+                            // This is the correct answer - always highlight as correct
+                            cls += ' correct';
+                            console.log(`Q${qIdx + 1}: Option ${i} marked as correct (is correct answer)`);
+                        } else if (userAnswer === i && userAnswer !== correctAnswer) {
+                            // User selected this option but it's wrong
+                            cls += ' wrong';
+                            console.log(`Q${qIdx + 1}: Option ${i} marked as wrong (user selected but incorrect)`);
+                        }
+                    }
+                    
+                    div.className = cls;
+                    div.innerHTML = `
+                        <div class="opt-radio"></div>
+                        <div class="opt-txt">${this.extractTxt(opt, this.eng)}</div>
+                    `;
+                    
+                    // Only allow clicking if test is not submitted
+                    if (!this.sub) {
+                        div.onclick = () => this.selOpt(i, qIdx);
+                    }
+                    
+                    this.els.opts.appendChild(div);
+                });
+            }
+            
+            selOpt(optIdx, qIdx) {
+                if (this.sub) return;
+                this.ans[qIdx] = this.ans[qIdx] === optIdx ? null : optIdx;
+                console.log(`Q${qIdx + 1}: Selected option ${optIdx}, answer array:`, this.ans[qIdx]);
+                this.loadOpts(this.qs[qIdx], qIdx);
+                this.updateAnsCnt();
+                this.updateGrid();
+            }
+            
+            nav(dir) {
+                const newIdx = this.curQ + dir;
+                if (newIdx >= 0 && newIdx < this.qs.length) {
+                    this.loadQ(newIdx);
+                }
+            }
+            
+            goToQ(idx) {
+                this.loadQ(idx);
+                this.closePanel();
+            }
+            
+            updateNav() {
+                document.getElementById('prevBtn').disabled = this.curQ === 0;
+                document.getElementById('nextBtn').disabled = this.curQ === this.qs.length - 1;
+            }
+            
+            updateGrid() {
+                const nums = this.els.qGrid.querySelectorAll('.q-num');
+                nums.forEach((el, i) => {
+                    el.className = 'q-num';
+                    if (i === this.curQ) {
+                        el.classList.add('cur');
+                    } else if (this.ans[i] !== null) {
+                        // Check if it's correct or wrong after submission
+                        if (this.sub && this.qs[i].correct_option_id !== undefined && this.qs[i].correct_option_id !== null) {
+                            if (this.ans[i] === this.qs[i].correct_option_id) {
+                                el.classList.add('ans'); // Correct answer
+                            } else {
+                                el.classList.add('wrong'); // Wrong answer
+                            }
+                        } else {
+                            el.classList.add('ans'); // Just answered (before submission)
+                        }
+                    }
+                });
+            }
+            
+            updateAnsCnt() {
+                const cnt = this.ans.filter(a => a !== null).length;
+                this.els.ansCnt.textContent = cnt;
+            }
+            
+            setLang(eng) {
+                this.eng = eng;
+                document.getElementById('engBtn').classList.toggle('active', eng);
+                document.getElementById('hinBtn').classList.toggle('active', !eng);
+                this.loadQ(this.curQ);
+            }
+            
+            startTimer() {
+                this.timer = setInterval(() => {
+                    this.timeLeft--;
+                    if (this.timeLeft <= 0) {
+                        clearInterval(this.timer);
+                        this.subTest();
+                        return;
+                    }
+                    const mins = Math.floor(this.timeLeft / 60);
+                    const secs = this.timeLeft % 60;
+                    this.els.timer.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+                }, 1000);
+            }
+            
+            stopTimer() {
+                if (this.timer) clearInterval(this.timer);
+            }
+            
+            togglePanel() {
+                this.els.panel.classList.toggle('open');
+            }
+            
+            closePanel() {
+                this.els.panel.classList.remove('open');
+            }
+            
+            confirmSub() {
+                const unanswered = this.ans.filter(a => a === null).length;
+                const msg = unanswered > 0 ? `${unanswered} questions unanswered. Submit anyway?` : 'Submit test?';
+                if (confirm(msg)) this.subTest();
+            }
+            
+            subTest() {
+                if (this.sub) return;
+                console.log('Submitting test. Final answers:', this.ans);
+                this.sub = true;
+                this.stopTimer();
+                document.getElementById('subBtn').style.display = 'none';
+                const results = this.calcResults();
+                this.showResults(results);
+                // Reload current question to show correct/incorrect highlighting
+                this.loadQ(this.curQ);
+                this.updateGrid();
+            }
+            
+            calcResults() {
+                const timeTaken = Math.round((Date.now() - this.startT) / 60000);
+                let correct = 0, incorrect = 0, unattempted = 0, score = 0;
+                
+                console.log('Calculating results...');
+                this.qs.forEach((q, i) => {
+                    const userAns = this.ans[i];
+                    const correctAns = q.correct_option_id;
+                    
+                    console.log(`Q${i + 1}: user=${userAns}, correct=${correctAns}`);
+                    
+                    if (userAns === null || userAns === undefined) {
+                        unattempted++;
+                    } else if (correctAns !== undefined && correctAns !== null && userAns === correctAns) {
+                        correct++;
+                        score += 2;
+                        console.log(`Q${i + 1}: CORRECT (+2 marks)`);
+                    } else {
+                        incorrect++;
+                        score -= 0.50;
+                        console.log(`Q${i + 1}: INCORRECT (-0.50 marks)`);
+                    }
+                });
+                
+                const results = { score: Math.max(0, score), correct, incorrect, unattempted, timeTaken };
+                console.log('Final results:', results);
+                return results;
+            }
+            
+            showResults(results) {
+                this.els.scoreDisp.textContent = `${results.score}/50`;
+                this.els.corrStat.textContent = results.correct;
+                this.els.incStat.textContent = results.incorrect;
+                this.els.unaStat.textContent = results.unattempted;
+                this.els.timeStat.textContent = results.timeTaken;
+                this.els.modalOver.classList.add('show');
+            }
+            
+            closeModal() {
+                this.els.modalOver.classList.remove('show');
+            }
+            
+            review() {
+                this.closeModal();
+                this.loadQ(0);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => new TestApp());
+    </script>
+</body>
+</html>
