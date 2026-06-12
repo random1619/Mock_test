@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#060913">
+  <title>Pundits CBT</title>
+
+  <!-- Capacitor Core Bridge -->
+  <script src="https://unpkg.com/@capacitor/core@latest/dist/capacitor.js"></script>
+
+  <style>
+    :root {
+      --bg: #060913;
+      --indigo: #6366f1;
+      --violet: #8b5cf6;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    /* ── Loading Splash ─────────────────────────────────────── */
+    #splash {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(160deg, #060913 0%, #0d1133 50%, #060913 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      gap: 28px;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    #splash.fade-out {
+      opacity: 0;
+      transform: scale(1.05);
+      pointer-events: none;
+    }
+
+    .splash-logo {
+      width: 100px;
+      height: 100px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, var(--indigo), var(--violet));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      box-shadow:
+        0 0 40px rgba(99, 102, 241, 0.5),
+        0 0 80px rgba(99, 102, 241, 0.2);
+      animation: pulse-glow 2.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.5), 0 0 80px rgba(99, 102, 241, 0.2); }
+      50% { box-shadow: 0 0 60px rgba(99, 102, 241, 0.7), 0 0 120px rgba(99, 102, 241, 0.3); }
+    }
+
+    .splash-title {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      color: white;
+      letter-spacing: -0.03em;
+    }
+
+    .splash-subtitle {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: -20px;
+    }
+
+    .splash-bar {
+      width: 200px;
+      height: 3px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .splash-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--indigo), var(--violet));
+      border-radius: 99px;
+      width: 0%;
+      animation: progress-fill 2s ease-out forwards;
+    }
+
+    @keyframes progress-fill {
+      0% { width: 0%; }
+      60% { width: 70%; }
+      90% { width: 90%; }
+      100% { width: 100%; }
+    }
+
+    /* ── Main WebView Frame ─────────────────────────────────── */
+    #app-frame {
+      position: fixed;
+      inset: 0;
+      border: none;
+      width: 100%;
+      height: 100%;
+      background: #060913;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    #app-frame.loaded {
+      opacity: 1;
+    }
+
+    /* ── Error Screen ───────────────────────────────────────── */
+    #error-screen {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 40px;
+      text-align: center;
+      font-family: system-ui, sans-serif;
+      color: rgba(255,255,255,0.7);
+    }
+
+    #error-screen.show { display: flex; }
+
+    #error-screen .error-icon {
+      font-size: 56px;
+      filter: grayscale(0.3);
+    }
+
+    #error-screen h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: white;
+    }
+
+    #error-screen p {
+      font-size: 13px;
+      max-width: 320px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.4);
+    }
+
+    #retry-btn {
+      padding: 12px 28px;
+      background: var(--indigo);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #retry-btn:hover { background: var(--violet); }
+  </style>
+
+  <!-- Google Fonts preload -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ═══ SPLASH LOADING SCREEN ══════════════════════════════ -->
+  <div id="splash">
+    <div class="splash-logo">🎓</div>
+    <div>
+      <div class="splash-title">Pundits CBT</div>
+      <div class="splash-subtitle">Mock Test Portal</div>
+    </div>
+    <div class="splash-bar">
+      <div class="splash-bar-fill"></div>
+    </div>
+  </div>
+
+  <!-- ═══ ERROR SCREEN ════════════════════════════════════════ -->
+  <div id="error-screen">
+    <div class="error-icon">📡</div>
+    <h2>Connection Failed</h2>
+    <p>Could not connect to the Pundits CBT backend. Make sure you have an internet connection and the server is running.</p>
+    <button id="retry-btn" onclick="loadApp()">Retry</button>
+  </div>
+
+  <!-- ═══ APP IFRAME ═══════════════════════════════════════════ -->
+  <iframe id="app-frame" src="about:blank" allow="fullscreen"></iframe>
+
+  <script>
+  // ── Configuration ─────────────────────────────────────────
+  // IMPORTANT: Replace this URL with your actual Render deployment URL
+  const BACKEND_URL = 'https://pundits-mocks.onrender.com';
+
+  // Fallback to localhost for development
+  const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:3000'
+    : BACKEND_URL;
+
+  const splash = document.getElementById('splash');
+  const frame = document.getElementById('app-frame');
+  const errorScreen = document.getElementById('error-screen');
+
+  let loadAttempts = 0;
+
+  function showError() {
+    splash.style.display = 'none';
+    errorScreen.classList.add('show');
+  }
+
+  function loadApp() {
+    loadAttempts++;
+    errorScreen.classList.remove('show');
+    splash.style.display = 'flex';
+    splash.classList.remove('fade-out');
+
+    // Check if backend is reachable
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+
+    fetch(`${API_BASE}/api/mocks`, { signal: controller.signal, mode: 'cors' })
+      .then(res => {
+        clearTimeout(timeout);
+        if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+        return res.json();
+      })
+      .then(() => {
+        // Backend is up — load the main app in the iframe
+        frame.src = `${API_BASE}/`;
+        frame.onload = () => {
+          setTimeout(() => {
+            splash.classList.add('fade-out');
+            frame.classList.add('loaded');
+            setTimeout(() => { splash.style.display = 'none'; }, 500);
+          }, 500);
+        };
+        frame.onerror = showError;
+      })
+      .catch(err => {
+        clearTimeout(timeout);
+        console.error('Backend unreachable:', err);
+        if (loadAttempts < 3) {
+          setTimeout(loadApp, 2000); // Auto-retry up to 3 times
+        } else {
+          showError();
+        }
+      });
+  }
+
+  // Start loading when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(loadApp, 1200); // let the splash animation breathe
+  });
+
+  // Handle Capacitor app resume (re-check connection)
+  if (window.Capacitor && window.Capacitor.isNativePlatform?.()) {
+    window.Capacitor.Plugins?.App?.addListener('appStateChange', ({ isActive }) => {
+      if (isActive && frame.src === 'about:blank') {
+        loadApp();
+      }
+    });
+    // Handle back button at outer level
+    window.Capacitor.Plugins?.App?.addListener('backButton', () => {
+      // Try to propagate back to iframe first
+      try {
+        frame.contentWindow?.history?.back();
+      } catch (e) {
+        window.Capacitor.Plugins?.App?.minimizeApp().catch(() => {});
+      }
+    });
+  }
+  </script>
+</body>
+</html>

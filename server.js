@@ -47,16 +47,25 @@ function scanMocks(dir, baseDir) {
   return list;
 }
 
-// GET mocks catalog dynamically scanned from the filesystem on demand (with caching)
+// GET mocks catalog dynamically served from mocks-manifest.json or scanned from filesystem as fallback
 app.get('/api/mocks', (req, res) => {
   try {
+    const manifestPath = path.join(__dirname, 'mocks-manifest.json');
+    if (fs.existsSync(manifestPath)) {
+      try {
+        const manifestData = fs.readFileSync(manifestPath, 'utf8');
+        return res.json(JSON.parse(manifestData));
+      } catch (err) {
+        console.warn('Failed to parse mocks-manifest.json, falling back to dynamic scan:', err.message);
+      }
+    }
+
     const now = Date.now();
     if (cachedMocks && (now - lastScanTime < CACHE_TTL)) {
       return res.json(cachedMocks);
     }
 
     const filesList = scanMocks(__dirname, __dirname);
-    // Sort files to keep order consistent
     filesList.sort();
 
     cachedMocks = {
@@ -67,7 +76,7 @@ app.get('/api/mocks', (req, res) => {
 
     return res.json(cachedMocks);
   } catch (err) {
-    return res.status(500).json({ error: 'Failed to dynamically scan mocks directory' });
+    return res.status(500).json({ error: 'Failed to serve mocks catalog' });
   }
 });
 

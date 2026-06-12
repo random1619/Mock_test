@@ -1,0 +1,3015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Practice 003 (Hindi)</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e40af;
+            --primary-hover: #1e3a8a;
+            --success: #059669;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --bg: #f3f4f6;
+            --card: #ffffff;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #d1d5db;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --radius: 6px;
+            --font-sans: 'Space Grotesk', sans-serif;
+            --font-mono: 'Share Tech Mono', monospace;
+        }
+
+        body.dark-mode {
+            --bg: #0b0f19;
+            --card: #151f32;
+            --text: #f3f4f6;
+            --text-light: #9ca3af;
+            --border: #374151;
+            --primary: #3b82f6;
+            --primary-hover: #60a5fa;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg);
+            z-index: 1000;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .welcome-screen.hidden {
+            display: none;
+        }
+
+        .welcome-container {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            margin: 20px auto;
+            border: 1px solid var(--border);
+        }
+
+        .welcome-header {
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .welcome-header h1 {
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .test-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .detail-item {
+            background: rgba(0,0,0,0.02);
+            padding: 15px;
+            border-radius: var(--radius);
+            border-left: 3px solid var(--primary);
+            border-top: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .section-info {
+            margin-bottom: 25px;
+        }
+
+        .section-info h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .section-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+        }
+
+        .section-table th,
+        .section-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        .section-table th {
+            background: rgba(0,0,0,0.04);
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .subsec-container {
+            margin-top: 8px;
+            padding-left: 15px;
+        }
+
+        .subsec-row {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .welcome-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .start-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .start-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .channel-link {
+            color: var(--primary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: 2px solid var(--primary);
+            border-radius: var(--radius);
+            font-weight: 600;
+        }
+
+        /* CBT Interface */
+        .exam-container {
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .exam-container.active {
+            display: flex;
+        }
+
+        /* Header block */
+        .exam-header {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .exam-title {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary);
+        }
+
+        .exam-timer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timer-box {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 16px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .dark-mode .timer-box {
+            background: #78350f;
+            color: #fef3c7;
+        }
+
+        /* Candidate info block */
+        .candidate-bar {
+            background: rgba(0,0,0,0.02);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .candidate-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .candidate-photo {
+            width: 36px;
+            height: 36px;
+            background: var(--border);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            color: var(--text-light);
+        }
+
+        .candidate-details {
+            font-size: 13px;
+        }
+
+        .candidate-name {
+            font-weight: 600;
+        }
+
+        .section-badge {
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 4px;
+        }
+
+        /* Segment switcher tabs */
+        .section-tabs {
+            display: flex;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .section-tab {
+            padding: 14px 20px;
+            border: none;
+            background: transparent;
+            color: var(--text-light);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+        }
+
+        .section-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .section-tab.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Main Workspace */
+        .exam-main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 300px;
+            background: var(--bg);
+        }
+
+        .question-area {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 120px);
+            overflow: hidden;
+        }
+
+        .question-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .question-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .question-marks {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .lang-toggle {
+            display: flex;
+            background: rgba(0,0,0,0.05);
+            padding: 2px;
+            border-radius: var(--radius);
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            padding: 6px 12px;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: var(--radius);
+            color: var(--text-light);
+        }
+
+        .lang-btn.active {
+            background: var(--card);
+            color: var(--primary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .comprehension {
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .comprehension h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .question-text {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        /* Math rendering fractions */
+        .math-exp {
+            display: inline-block;
+            vertical-align: middle;
+            position: relative;
+            margin: 0 2px;
+        }
+        
+        .math-num {
+            text-align: center;
+            display: block;
+            padding: 0;
+        }
+        
+        .math-line {
+            display: block;
+            border-top: 1px solid;
+            padding: 0;
+            text-align: center;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            gap: 12px;
+        }
+
+        .option:hover:not(.submitted) {
+            border-color: var(--primary);
+            background: rgba(30, 64, 175, 0.02);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background: rgba(30, 64, 175, 0.05);
+        }
+
+        .option.correct {
+            border-color: var(--success) !important;
+            background: rgba(16, 185, 129, 0.08) !important;
+        }
+
+        .option.wrong {
+            border-color: var(--danger) !important;
+            background: rgba(239, 68, 68, 0.08) !important;
+        }
+
+        .option-indicator {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .option.selected .option-indicator {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .option.correct .option-indicator {
+            border-color: var(--success) !important;
+            background: var(--success) !important;
+            color: white !important;
+        }
+
+        .option.wrong .option-indicator {
+            border-color: var(--danger) !important;
+            background: var(--danger) !important;
+            color: white !important;
+        }
+
+        .solution-box {
+            margin-top: 24px;
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: var(--radius);
+            padding: 20px;
+            display: none;
+        }
+
+        .solution-box.show {
+            display: block;
+        }
+
+        .solution-header {
+            color: var(--success);
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .solution-stats {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Navigation control bar */
+        .navigation-bar {
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn {
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-prev {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-next {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-next:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-review {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .btn-review.marked {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-submit {
+            background: var(--success);
+            color: white;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress-info {
+            text-align: center;
+            font-size: 13px;
+        }
+
+        /* Sidebar Question Navigator */
+        .navigator-sidebar {
+            background: var(--card);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 120px);
+        }
+
+        .navigator-header {
+            padding: 16px;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .navigator-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            padding: 16px;
+            overflow-y: auto;
+            align-content: start;
+        }
+
+        .nav-question {
+            aspect-ratio: 1;
+            border: 2px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            border-radius: var(--radius);
+            font-size: 13px;
+            font-weight: 600;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+        }
+
+        .nav-question.current {
+            border-color: var(--primary);
+            background: rgba(30, 64, 175, 0.05);
+            color: var(--primary);
+        }
+
+        .nav-question.answered {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .nav-question.wrong {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+        }
+
+        .nav-question.review {
+            background: var(--warning);
+            border-color: var(--warning);
+            color: white;
+        }
+
+        .nav-question.disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .navigator-legend {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+            font-size: 12px;
+            color: var(--text-light);
+            display: grid;
+            gap: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-box {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+
+        /* Result Modal */
+        .result-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .result-modal.show {
+            display: flex;
+        }
+
+        .result-container {
+            background: var(--card);
+            border-radius: var(--radius);
+            max-width: 500px;
+            width: 100%;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .result-score {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 10px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .result-stat {
+            padding: 12px;
+            border-radius: var(--radius);
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .result-stat-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .result-stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .result-stat.correct {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
+            color: var(--success);
+        }
+
+        .result-stat.incorrect {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.05);
+            color: var(--danger);
+        }
+
+        .section-results {
+            margin-bottom: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .section-results h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .section-results-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .section-results-table th,
+        .section-results-table td {
+            padding: 6px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .section-results-table th {
+            background: rgba(0,0,0,0.03);
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .result-btn {
+            flex: 1;
+            border: none;
+            padding: 12px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-close {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-review-ans {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .theme-toggle:hover {
+            color: var(--primary);
+        }
+
+        .mobile-only {
+            display: none;
+        }
+
+        /* Mobile drawer navigation */
+        .mobile-navigator {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            width: 280px;
+            background: var(--card);
+            border-left: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            z-index: 200;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-navigator.open {
+            transform: translateX(0);
+        }
+
+        .mobile-nav-header {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .close-nav {
+            font-size: 24px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        @media (max-width: 1023px) {
+            .exam-main {
+                grid-template-columns: 1fr;
+            }
+            .desktop-only {
+                display: none;
+            }
+            .mobile-only {
+                display: block;
+            }
+            .question-area {
+                height: calc(100vh - 120px);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .exam-header {
+                padding: 10px 15px;
+            }
+            .exam-title {
+                font-size: 15px;
+            }
+            .timer-box {
+                font-size: 14px;
+                padding: 6px 12px;
+            }
+            .candidate-bar {
+                padding: 8px 15px;
+            }
+            .section-tab {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+        }
+    </style>
+
+    
+    
+    
+    
+    <!-- START: Unified Premium Dark Mode Overrides -->
+  <style>
+      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+      
+      :root {
+          --primary: #16a34a !important;
+          --primary-hover: #15803d !important;
+          --success: #10b981 !important;
+          --danger: #ef4444 !important;
+          --warning: #f59e0b !important;
+          --bg: #090d16 !important;
+          --card: #111827 !important;
+          --text: #f3f4f6 !important;
+          --text-light: #9ca3af !important;
+          --border: rgba(255, 255, 255, 0.08) !important;
+          --font-sans: 'Plus Jakarta Sans', sans-serif !important;
+          --radius: 10px !important;
+      }
+
+      body {
+          background: var(--bg) !important;
+          color: var(--text) !important;
+          font-family: var(--font-sans) !important;
+      }
+
+      .welcome-screen, .exam-container, .question-area, .navigator-sidebar, .mobile-navigator {
+          background: var(--bg) !important;
+      }
+      
+      .welcome-container, .question-card, .option, .navigator-sidebar, .exam-header, 
+      .navigation-bar, .footer, .candidate-bar, .footer-bar, .action-bar, .navigator-header, .navigator-legend {
+          background: var(--card) !important;
+          border-color: var(--border) !important;
+          color: var(--text) !important;
+      }
+
+      .welcome-container, .question-card, .option, .navigator-sidebar {
+          border: 1px solid var(--border) !important;
+          border-radius: var(--radius) !important;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1) !important;
+      }
+
+      .detail-item {
+          background: rgba(255, 255, 255, 0.03) !important;
+          border-left: 3px solid var(--primary) !important;
+          border-top: 1px solid var(--border) !important;
+          border-right: 1px solid var(--border) !important;
+          border-bottom: 1px solid var(--border) !important;
+          border-radius: 6px !important;
+      }
+      .detail-label {
+          color: var(--text-light) !important;
+      }
+      .detail-value {
+          color: var(--primary) !important;
+          font-weight: 700 !important;
+      }
+      .section-table, table.section-table {
+          background: var(--card) !important;
+          border: 1px solid var(--border) !important;
+      }
+      .section-table th, .section-table td, table.section-table th, table.section-table td {
+          border: 1px solid var(--border) !important;
+          background: transparent !important;
+      }
+      .section-table th, table.section-table th {
+          background: rgba(255, 255, 255, 0.05) !important;
+          color: #ffffff !important;
+      }
+      .section-table td, table.section-table td {
+          color: var(--text) !important;
+      }
+
+      .exam-header {
+          background: #151d30 !important;
+          border-bottom: 1px solid var(--border) !important;
+      }
+      .exam-title, .exam-timer {
+          color: #ffffff !important;
+      }
+
+      .candidate-bar {
+          background: var(--card) !important;
+          border-bottom: 1px solid var(--border) !important;
+      }
+      .candidate-name {
+          color: #ffffff !important;
+          font-weight: 600 !important;
+      }
+      .candidate-id, .candidate-details, .candidate-details * {
+          color: var(--text-light) !important;
+      }
+      .candidate-photo {
+          background: rgba(255, 255, 255, 0.03) !important;
+          border: 1px solid var(--border) !important;
+          color: var(--text-light) !important;
+      }
+
+      .section-badge {
+          background: var(--primary) !important;
+          color: #ffffff !important;
+      }
+
+      .lang-toggle {
+          background: rgba(255, 255, 255, 0.05) !important;
+          border: 1px solid var(--border) !important;
+      }
+      .lang-btn {
+          color: var(--text-light) !important;
+      }
+      .lang-btn.active {
+          background: var(--primary) !important;
+          color: #ffffff !important;
+      }
+
+      .question-text, .question-text *,
+      .option, .option *,
+      .comprehension, .comprehension *,
+      .solution-box, .solution-box *,
+      .candidate-bar *,
+      .exam-title, .exam-title *,
+      .timer-box, .timer-box *,
+      .nav-question,
+      table, tr, td, th {
+          color: #e5e7eb !important;
+      }
+
+      .comprehension {
+          background: rgba(255, 255, 255, 0.02) !important;
+          border-left: 4px solid var(--primary) !important;
+          border-top: 1px solid var(--border) !important;
+          border-right: 1px solid var(--border) !important;
+          border-bottom: 1px solid var(--border) !important;
+          border-radius: var(--radius) !important;
+      }
+      .comprehension h4 {
+          color: var(--primary) !important;
+          font-weight: 600 !important;
+      }
+
+      .solution-box {
+          background: rgba(16, 185, 129, 0.08) !important;
+          border-left: 4px solid var(--success) !important;
+          border-top: 1px solid var(--border) !important;
+          border-right: 1px solid var(--border) !important;
+          border-bottom: 1px solid var(--border) !important;
+          border-radius: var(--radius) !important;
+      }
+      .solution-header {
+          color: var(--success) !important;
+      }
+
+      mjx-container, math, .mathjax, [class*="mathjax"], [id*="MathJax"], .katex, .katex * {
+          color: #f3f4f6 !important;
+          fill: #f3f4f6 !important;
+      }
+      
+      mjx-container svg *, math svg *, .katex svg * {
+          fill: currentColor !important;
+          stroke: currentColor !important;
+      }
+      
+      .math-exp, .math-num, .math-line {
+          color: inherit !important;
+      }
+
+      .question-card img, .option img, .comprehension img, .solution-box img {
+          filter: invert(1) brightness(1.5) contrast(1.1) !important;
+      }
+
+      table, tr, td, th {
+          border-color: rgba(255, 255, 255, 0.12) !important;
+      }
+      th {
+          background: rgba(255, 255, 255, 0.05) !important;
+          color: #ffffff !important;
+          font-weight: 600 !important;
+      }
+
+      .option {
+          background: rgba(255, 255, 255, 0.01) !important;
+          border: 1.5px solid var(--border) !important;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      }
+      .option:hover:not(.submitted):not(.correct):not(.wrong):not(.selected) {
+          border-color: var(--primary) !important;
+          background: rgba(255, 255, 255, 0.03) !important;
+      }
+      .option.selected {
+          border-color: var(--primary) !important;
+          background: rgba(255, 255, 255, 0.06) !important;
+      }
+      .option.selected, .option.selected * {
+          color: #ffffff !important;
+      }
+      .option.correct, .option.correct * {
+          color: #10b981 !important;
+          background: rgba(16, 185, 129, 0.1) !important;
+          border-color: var(--success) !important;
+      }
+      .option.wrong, .option.wrong * {
+          color: #ef4444 !important;
+          background: rgba(239, 68, 68, 0.1) !important;
+          border-color: var(--danger) !important;
+      }
+
+      .option-indicator {
+          border-color: rgba(255, 255, 255, 0.3) !important;
+          background: transparent !important;
+      }
+      .option.selected .option-indicator {
+          border-color: var(--primary) !important;
+          background: var(--primary) !important;
+      }
+      .option.correct .option-indicator {
+          border-color: var(--success) !important;
+          background: var(--success) !important;
+      }
+      .option.wrong .option-indicator {
+          border-color: var(--danger) !important;
+          background: var(--danger) !important;
+      }
+
+      .start-btn, .btn-next {
+          background: var(--primary) !important;
+          color: white !important;
+          font-weight: 600 !important;
+          border: none !important;
+          border-radius: var(--radius) !important;
+          transition: all 0.2s ease !important;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+      }
+      .start-btn:hover, .btn-next:hover {
+          background: var(--primary-hover) !important;
+          box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35) !important;
+      }
+      
+      .btn-prev {
+          background: rgba(255, 255, 255, 0.06) !important;
+          color: #f3f4f6 !important;
+          border: 1px solid rgba(255, 255, 255, 0.1) !important;
+          border-radius: var(--radius) !important;
+          transition: all 0.2s ease !important;
+      }
+      .btn-prev:hover:not(:disabled) {
+          background: rgba(255, 255, 255, 0.1) !important;
+      }
+
+      .timer-box {
+          background: rgba(245, 158, 11, 0.08) !important;
+          color: var(--warning) !important;
+          border: 1px solid rgba(245, 158, 11, 0.2) !important;
+          border-radius: 6px !important;
+      }
+
+      .nav-question {
+          background: rgba(255, 255, 255, 0.02) !important;
+          border-color: var(--border) !important;
+          border-radius: 6px !important;
+          color: var(--text-light) !important;
+          transition: all 0.15s ease !important;
+      }
+      .nav-question:hover {
+          background: rgba(255, 255, 255, 0.08) !important;
+          color: var(--text) !important;
+      }
+      .nav-question.current {
+          border-color: var(--primary) !important;
+          color: var(--primary) !important;
+          background: rgba(255, 255, 255, 0.08) !important;
+      }
+      .nav-question.answered {
+          background: var(--success) !important;
+          border-color: var(--success) !important;
+          color: white !important;
+      }
+      .nav-question.wrong {
+          background: var(--danger) !important;
+          border-color: var(--danger) !important;
+          color: white !important;
+      }
+      .nav-question.review {
+          background: var(--warning) !important;
+          border-color: var(--warning) !important;
+          color: white !important;
+      }
+
+      .welcome-instructions {
+          background: rgba(245, 158, 11, 0.08) !important;
+          border: 1px solid rgba(245, 158, 11, 0.2) !important;
+          color: #fef08a !important;
+          border-radius: var(--radius) !important;
+      }
+      .welcome-instructions h3 {
+          color: #fbbf24 !important;
+      }
+      .welcome-instructions ul, .welcome-instructions li {
+          color: #fef08a !important;
+      }
+
+      .section-tabs {
+          counter-reset: section-counter;
+          display: flex !important;
+          gap: 8px !important;
+          background: rgba(0, 0, 0, 0.3) !important;
+          border: 1px solid var(--border) !important;
+          padding: 6px 12px !important;
+          border-radius: 30px !important;
+          margin: 12px auto !important;
+          width: fit-content !important;
+          max-width: calc(100% - 40px) !important;
+          overflow-x: auto !important;
+          scrollbar-width: none !important;
+      }
+      .section-tabs::-webkit-scrollbar {
+          display: none !important;
+      }
+      .section-tab {
+          display: inline-flex !important;
+          align-items: center !important;
+          gap: 8px !important;
+          padding: 8px 16px !important;
+          border: 1px solid transparent !important;
+          background: transparent !important;
+          color: var(--text-light) !important;
+          font-weight: 600 !important;
+          font-size: 13px !important;
+          border-radius: 20px !important;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+          cursor: pointer !important;
+          white-space: nowrap !important;
+      }
+      .section-tab::before {
+          counter-increment: section-counter;
+          content: "0" counter(section-counter);
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 20px;
+          height: 20px;
+          background: rgba(255, 255, 255, 0.08);
+          color: var(--text-light);
+          border-radius: 50%;
+          font-size: 10px;
+          font-weight: 700;
+          transition: all 0.2s ease;
+      }
+      .section-tab:hover {
+          color: var(--text) !important;
+          background: rgba(255, 255, 255, 0.03) !important;
+      }
+      .section-tab.active {
+          background: var(--primary) !important;
+          color: #ffffff !important;
+          border-color: var(--primary) !important;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+      }
+      .section-tab.active::before {
+          background: rgba(255, 255, 255, 0.2) !important;
+          color: #ffffff !important;
+      }
+
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 99px; }
+      ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+      .option {
+          position: relative;
+          overflow: hidden;
+      }
+      .option::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.02), transparent);
+          transform: translateX(-100%);
+          transition: transform 0.6s ease;
+      }
+      .option:hover::after {
+          transform: translateX(100%);
+      }
+
+      .section-badge {
+          background: var(--primary) !important;
+          color: #ffffff !important;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.15), 0 0 1px var(--primary) !important;
+          border: 1px solid rgba(255, 255, 255, 0.1) !important;
+          font-weight: 700 !important;
+      }
+
+      .result-modal {
+          background: rgba(9, 13, 22, 0.85) !important;
+          backdrop-filter: blur(8px) !important;
+      }
+      .result-container {
+          background: var(--card) !important;
+          border: 1px solid var(--border) !important;
+          border-radius: var(--radius) !important;
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4) !important;
+          color: var(--text) !important;
+      }
+      .result-header h2 {
+          color: #ffffff !important;
+      }
+      .result-score {
+          font-size: 42px !important;
+          font-weight: 800 !important;
+          background: linear-gradient(135deg, var(--primary), #a78bfa) !important;
+          -webkit-background-clip: text !important;
+          -webkit-text-fill-color: transparent !important;
+          margin: 10px 0 !important;
+      }
+      .result-stat {
+          background: rgba(255, 255, 255, 0.02) !important;
+          border: 1px solid var(--border) !important;
+          border-radius: 8px !important;
+      }
+      .result-stat-value {
+          color: #ffffff !important;
+          font-weight: 700 !important;
+      }
+      .result-stat-label {
+          color: var(--text-light) !important;
+      }
+      .result-stat.correct .result-stat-value {
+          color: var(--success) !important;
+      }
+      .result-stat.incorrect .result-stat-value {
+          color: var(--danger) !important;
+      }
+      
+      .section-results h3 {
+          color: #ffffff !important;
+          margin-bottom: 12px !important;
+      }
+      .section-results-table, table.section-results-table {
+          background: rgba(255, 255, 255, 0.01) !important;
+          border: 1px solid var(--border) !important;
+          width: 100% !important;
+          border-collapse: collapse !important;
+      }
+      .section-results-table th, .section-results-table td {
+          border: 1px solid var(--border) !important;
+          color: var(--text) !important;
+          padding: 10px !important;
+      }
+      .section-results-table th {
+          background: rgba(255, 255, 255, 0.04) !important;
+          color: #ffffff !important;
+          font-weight: 600 !important;
+      }
+      
+      .result-btn {
+          padding: 10px 24px !important;
+          border-radius: 6px !important;
+          font-weight: 600 !important;
+          cursor: pointer !important;
+          transition: all 0.2s ease !important;
+          font-size: 14px !important;
+      }
+      .result-btn.btn-close {
+          background: rgba(255, 255, 255, 0.08) !important;
+          color: #f3f4f6 !important;
+          border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      }
+      .result-btn.btn-close:hover {
+          background: rgba(255, 255, 255, 0.12) !important;
+      }
+      .result-btn.btn-review-ans {
+          background: var(--primary) !important;
+          color: white !important;
+          border: none !important;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+      }
+      .result-btn.btn-review-ans:hover {
+          background: var(--primary-hover) !important;
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3) !important;
+      }
+  </style>
+  <!-- END: Unified Premium Dark Mode Overrides -->
+
+
+
+
+
+
+<!-- PUNDITS-MOBILE-FIX-v2 -->
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   PUNDITS CBT — UNIVERSAL MOBILE & DESIGN FIX PATCH v2
+   Fixes: 19 issues across all HTML mock files
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Fix 14: Hide Telegram / channel links ────────────────────── */
+.channel-link,
+a[href*="t.me"],
+a[href*="telegram"],
+a[href*="youtube.com/@"],
+.telegram-link, .yt-link {
+  display: none !important;
+}
+
+/* ── Fix 19: Exam title overflow in header ───────────────────── */
+.exam-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 55%;
+  min-width: 0;
+}
+
+/* ── Fix 11: Timer box — prevent shrink ─────────────────────── */
+.exam-timer {
+  flex-shrink: 0;
+}
+.timer-box {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* ── Fix 15: Mark-for-Review button in dark mode ────────────── */
+.btn-review {
+  background: rgba(245, 158, 11, 0.12) !important;
+  color: #f59e0b !important;
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+}
+.btn-review.marked {
+  background: rgba(245, 158, 11, 0.25) !important;
+  color: #fcd34d !important;
+  border-color: rgba(245, 158, 11, 0.5) !important;
+}
+
+/* ── Fix 13: Touch-action optimization ──────────────────────── */
+.option,
+.nav-btn,
+.nav-question,
+.section-tab,
+.start-btn,
+.lang-btn {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Fix 17: Focus-visible accessibility ────────────────────── */
+.option:focus-visible,
+.nav-btn:focus-visible,
+.nav-question:focus-visible,
+.section-tab:focus-visible,
+.start-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* ── Fix 18: Image invert filter — less aggressive ──────────── */
+.question-card img,
+.option img,
+.comprehension img,
+.solution-box img {
+  filter: brightness(0.88) invert(0.88) !important;
+}
+
+/* ── Fix 10: Section table horizontal scroll ────────────────── */
+.section-info {
+  overflow-x: auto;
+}
+.section-table {
+  min-width: 400px;
+}
+
+/* ── Fix 9: Result modal scrollable ─────────────────────────── */
+.result-container {
+  max-height: 92vh;
+  overflow-y: auto;
+}
+
+/* ── Fix 4: Dark mode mobile navigator complete ─────────────── */
+.mobile-navigator {
+  background: var(--card) !important;
+}
+.mobile-navigator *:not(.nav-question):not(.nav-question *) {
+  color: var(--text) !important;
+}
+
+/* ── Fix 16: Legend items — larger touch targets ────────────── */
+.legend-box {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 4px !important;
+  flex-shrink: 0;
+}
+.navigator-legend {
+  font-size: 13px !important;
+  gap: 10px !important;
+}
+.legend-item {
+  gap: 10px !important;
+  padding: 2px 0;
+}
+
+/* ── Fix 12: Solution stats wrap ────────────────────────────── */
+.solution-stats {
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+}
+
+/* ── Fix 6: Candidate bar — prevent overflow ────────────────── */
+.candidate-bar {
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.candidate-info {
+  min-width: 0;
+  flex: 1;
+}
+.candidate-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   ══════════════════════════════════════════════════════ */
+
+/* ── Fix 8: Welcome container — tablet/small laptop ─── */
+@media (max-width: 768px) {
+  .welcome-container {
+    padding: 20px !important;
+    margin: 10px auto !important;
+  }
+  .test-details {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+}
+
+/* ── Fix 5 + 2 + 3 + 6 + 7 + 8: Phone breakpoint ──── */
+@media (max-width: 480px) {
+
+  /* Welcome screen */
+  .welcome-container {
+    padding: 14px !important;
+    margin: 6px !important;
+    border-radius: 8px !important;
+  }
+  .welcome-header h1 {
+    font-size: 18px !important;
+  }
+  .test-details {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+  .detail-item {
+    padding: 10px 12px !important;
+  }
+  .detail-value {
+    font-size: 15px !important;
+  }
+  .welcome-actions {
+    gap: 10px !important;
+  }
+  .start-btn {
+    padding: 12px 24px !important;
+    font-size: 14px !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Exam header — Fix 11, 19 */
+  .exam-header {
+    padding: 8px 12px !important;
+    gap: 8px !important;
+  }
+  .exam-title {
+    font-size: 13px !important;
+    max-width: 48% !important;
+  }
+  .timer-box {
+    font-size: 13px !important;
+    padding: 5px 10px !important;
+  }
+
+  /* Candidate bar — Fix 6 */
+  .candidate-bar {
+    padding: 6px 12px !important;
+    gap: 4px !important;
+  }
+  .candidate-name {
+    font-size: 12px !important;
+    max-width: 140px !important;
+  }
+  .candidate-details {
+    font-size: 11px !important;
+  }
+  .section-badge {
+    font-size: 10px !important;
+    padding: 3px 7px !important;
+  }
+
+  /* Section tabs */
+  .section-tab {
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+  }
+
+  /* Question area — Fix 3 */
+  .question-area {
+    height: calc(100vh - 185px) !important;
+  }
+  .question-scroll {
+    padding: 10px !important;
+  }
+
+  /* Question card */
+  .question-card {
+    padding: 14px 12px !important;
+  }
+
+  /* Question header — Fix 7 */
+  .question-header {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    align-items: flex-start !important;
+  }
+  .question-number {
+    font-size: 15px !important;
+  }
+  .question-marks {
+    font-size: 11px !important;
+  }
+  .lang-toggle {
+    margin-left: auto;
+  }
+
+  /* Question text */
+  .question-text {
+    font-size: 14px !important;
+    line-height: 1.65 !important;
+  }
+
+  /* Options */
+  .option {
+    padding: 11px 12px !important;
+    gap: 10px !important;
+  }
+  .option-indicator {
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 11px !important;
+    flex-shrink: 0;
+  }
+
+  /* Comprehension block */
+  .comprehension {
+    padding: 12px !important;
+    font-size: 13px !important;
+  }
+
+  /* Solution box */
+  .solution-box {
+    padding: 12px !important;
+  }
+  .solution-header {
+    font-size: 14px !important;
+  }
+
+  /* ── Fix 2: Navigation bar — Fix overflow ──────────── */
+  .navigation-bar {
+    padding: 8px 10px !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    justify-content: space-between !important;
+  }
+  .nav-btn {
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+    gap: 5px !important;
+    flex: 1 1 auto;
+    min-width: 0;
+    justify-content: center;
+    white-space: nowrap;
+  }
+  .btn-prev, .btn-next, .btn-submit {
+    flex: 0 1 auto !important;
+  }
+  .btn-review {
+    flex: 1 1 100% !important;
+    order: -1 !important; /* Show "Mark for Review" on top row */
+    margin-bottom: 2px;
+  }
+  .progress-info {
+    display: none !important; /* Hide "Q 3 of 30" text to save space */
+  }
+
+  /* Result modal — Fix 9 */
+  .result-container {
+    padding: 16px !important;
+    max-height: 88vh !important;
+    border-radius: 12px !important;
+  }
+  .result-score {
+    font-size: 26px !important;
+  }
+  .result-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+  .result-stat-value {
+    font-size: 17px !important;
+  }
+
+  /* Navigator sidebar (when shown as modal on mobile) */
+  .mobile-navigator {
+    width: 85vw !important;
+    max-width: 340px !important;
+  }
+  .navigator-grid {
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 6px !important;
+    padding: 12px !important;
+  }
+  .nav-question {
+    font-size: 11px !important;
+    min-height: 32px !important;
+  }
+}
+
+/* ── Very small phones (360px) ───────────────────────── */
+@media (max-width: 380px) {
+  .exam-title {
+    font-size: 12px !important;
+    max-width: 42% !important;
+  }
+  .nav-btn {
+    padding: 7px 9px !important;
+    font-size: 11px !important;
+  }
+  .option {
+    padding: 10px 10px !important;
+  }
+  .question-text {
+    font-size: 13px !important;
+  }
+  .start-btn {
+    padding: 11px 20px !important;
+    font-size: 13px !important;
+  }
+}
+</style>
+<script>
+/* ── Fix 1: Auto-fix generic page titles ───────────────────── */
+(function fixPageTitle() {
+  const genericTitles = ['devgagan', 'CBT Exam - pundits', 'CBT Exam'];
+  const currentTitle = document.title || '';
+  const isGeneric = genericTitles.some(g => currentTitle.toLowerCase() === g.toLowerCase());
+  if (isGeneric) {
+    // Try to get title from welcome header h1
+    document.addEventListener('DOMContentLoaded', function() {
+      const h1 = document.querySelector('.welcome-header h1, .welcome-header h2');
+      if (h1 && h1.textContent.trim()) {
+        document.title = h1.textContent.trim().substring(0, 80);
+      }
+    });
+  }
+})();
+</script>
+
+</head>
+<body>
+    <!-- Welcome Start page -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-container">
+            <div class="welcome-header">
+                <h1><i class="fas fa-graduation-cap"></i> CBT Portal</h1>
+                <p>Computer Based Test Environment</p>
+            </div>
+            
+            <div class="test-details">
+                <div class="detail-item">
+                    <div class="detail-label">Total Questions</div>
+                    <div class="detail-value" id="welcomeTotalQs">0</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Total Marks</div>
+                    <div class="detail-value" id="welcomeTotalMarks">0</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Duration</div>
+                    <div class="detail-value" id="welcomeDuration">0 mins</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Marking Scheme</div>
+                    <div class="detail-value" id="welcomeMarksScheme">+0.0 / -0.0</div>
+                </div>
+            </div>
+            
+            <div class="section-info" id="welcomeSectionsBlock" style="display:none;">
+                <h3><i class="fas fa-layer-group"></i> Section Details</h3>
+                <table class="section-table">
+                    <thead>
+                        <tr>
+                            <th>Section Name</th>
+                            <th>Questions</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="welcomeSectionsBody"></tbody>
+                </table>
+            </div>
+            
+            <div class="welcome-actions">
+                <button class="start-btn" id="startBtn">
+                    <i class="fas fa-play"></i> Start Test
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Active Exam Interface -->
+    <div class="exam-container" id="examContainer">
+        <div class="exam-header">
+            <div class="exam-title">Mocks Wallah</div>
+            <div class="exam-timer">
+                <div class="timer-box" id="mainTimer">00:00</div>
+                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <button class="nav-btn btn-submit mobile-only" id="submitBtn">Submit</button>
+            </div>
+        </div>
+        
+        <div class="candidate-bar">
+            <div class="candidate-info">
+                <div class="candidate-photo">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="candidate-details">
+                    <div class="candidate-name">Candidate</div>
+                    <div class="candidate-id">ID: User</div>
+                </div>
+            </div>
+            <div class="section-badge" id="sectionBadge" style="display:none;">
+                <span id="sectionName"></span><span id="sectionTimer"></span>
+            </div>
+        </div>
+
+        <!-- Section tabs for Soft Switching (Tier I) -->
+        <div class="section-tabs" id="sectionTabs" style="display:none;"></div>
+        
+        <div class="exam-main">
+            <div class="question-area">
+                <div class="question-scroll">
+                    <div class="question-card">
+                        <div class="question-header">
+                            <div>
+                                <div class="question-number" id="questionNum">Question 1</div>
+                                <div class="question-marks" id="questionMarks">Marks: 3.0</div>
+                            </div>
+                            <div class="lang-toggle">
+                                <button class="lang-btn active" id="engBtn">English</button>
+                                <button class="lang-btn" id="hinBtn">हिंदी</button>
+                            </div>
+                        </div>
+                        
+                        <div class="comprehension" id="comprehension" style="display:none;">
+                            <h4><i class="fas fa-book-open"></i> Comprehension</h4>
+                            <div id="comprehensionText"></div>
+                        </div>
+                        
+                        <div class="question-text" id="questionText"></div>
+                        <div class="options-list" id="optionsList"></div>
+                        
+                        <div class="solution-box" id="solutionBox">
+                            <div class="solution-header">
+                                <i class="fas fa-lightbulb"></i> Solution
+                            </div>
+                            <div class="solution-stats" id="solutionStats"></div>
+                            <div id="solutionText"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="navigation-bar">
+                    <button class="nav-btn btn-prev" id="prevBtn"><i class="fas fa-chevron-left"></i> Prev</button>
+                    <div class="progress-info">
+                        <div id="progressText">Question 1</div>
+                        <div style="font-size:11px;margin-top:4px">
+                            Answered: <span id="answeredCount">0</span>
+                        </div>
+                    </div>
+                    <button class="nav-btn btn-review" id="reviewBtn"><i class="fas fa-flag"></i> Mark for Review</button>
+                    <button class="nav-btn mobile-only" id="navigatorBtn"><i class="fas fa-th"></i> Grid</button>
+                    <button class="nav-btn btn-submit desktop-only" id="submitBtnDesktop">Submit</button>
+                    <button class="nav-btn btn-next">Next <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            
+            <div class="navigator-sidebar desktop-only">
+                <div class="navigator-header">Question Navigator</div>
+                <div class="navigator-grid" id="desktopNav"></div>
+                <div class="navigator-legend">
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--success)"></div>
+                        <span>Answered</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--warning)"></div>
+                        <span>Marked for Review</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--danger)"></div>
+                        <span>Incorrect</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background:var(--card);border:2px solid var(--border)"></div>
+                        <span>Unattempted</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile drawer panel -->
+    <div class="mobile-navigator" id="mobileNav">
+        <div class="mobile-nav-header">
+            <h3>Question Navigator</h3>
+            <button class="close-nav" id="closeNav">&times;</button>
+        </div>
+        <div class="navigator-grid" id="mobileNavGrid"></div>
+        <div class="navigator-legend">
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--success)"></div>
+                <span>Answered</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--warning)"></div>
+                <span>Marked for Review</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--danger)"></div>
+                <span>Incorrect</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background:var(--card);border:2px solid var(--border)"></div>
+                <span>Unattempted</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Result Overlay -->
+    <div class="result-modal" id="resultModal">
+        <div class="result-container">
+            <div class="result-header">
+                <h2>Test Completed!</h2>
+                <div class="result-score" id="resultScore">0.00</div>
+            </div>
+            
+            <div class="result-grid">
+                <div class="result-stat correct">
+                    <div class="result-stat-value" id="correctCount">0</div>
+                    <div class="result-stat-label">Correct</div>
+                </div>
+                <div class="result-stat incorrect">
+                    <div class="result-stat-value" id="incorrectCount">0</div>
+                    <div class="result-stat-label">Incorrect</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="unattemptedCount">0</div>
+                    <div class="result-stat-label">Unattempted</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="timeTaken">0</div>
+                    <div class="result-stat-label">Minutes</div>
+                </div>
+            </div>
+            
+            <div class="section-results" id="sectionResults" style="display:none;">
+                <h3>Section-wise Performance</h3>
+                <table class="section-results-table">
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Attempted</th>
+                            <th>Correct</th>
+                            <th>Wrong</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sectionResultsBody"></tbody>
+                </table>
+            </div>
+            
+            <div class="result-actions">
+                <button class="result-btn btn-close" id="closeResult">Close</button>
+                <button class="result-btn btn-review-ans" id="reviewAnswers">Review Answers</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const questions = [
+  {
+    "question": "<span class=\"eqt\"><p>Which of the following statements accurately describes the content of the Annual Financial Statement as per Article 112 of the Indian Constitution?</p></span><span class=\"hqt\" style=\"display:none\"><p>&#2344;&#2367;&#2350;&#2381;&#2344;&#2354;&#2367;&#2326;&#2367;&#2340; &#2350;&#2375;&#2306; &#2360;&#2375; &#2325;&#2380;&#2344; &#2360;&#2366; &#2325;&#2341;&#2344; &#2349;&#2366;&#2352;&#2340;&#2368;&#2351; &#2360;&#2306;&#2357;&#2367;&#2343;&#2366;&#2344; &#2325;&#2375; &#2309;&#2344;&#2369;&#2330;&#2381;&#2331;&#2375;&#2342; 112 &#2325;&#2375; &#2309;&#2344;&#2369;&#2360;&#2366;&#2352; &#2357;&#2366;&#2352;&#2381;&#2359;&#2367;&#2325; &#2357;&#2367;&#2340;&#2381;&#2340;&#2368;&#2351; &#2357;&#2367;&#2357;&#2352;&#2339; &#2325;&#2368; &#2360;&#2366;&#2350;&#2327;&#2381;&#2352;&#2368; &#2325;&#2366; &#2360;&#2335;&#2368;&#2325; &#2357;&#2352;&#2381;&#2339;&#2344; &#2325;&#2352;&#2340;&#2366; &#2361;&#2376;?</p></span>",
+    "options": [
+      "<span class=\"eqt\">It includes only estimates of revenue receipts and expenditure.</span><span class=\"hqt\" style=\"display:none\">&#2311;&#2360;&#2350;&#2375;&#2306; &#2325;&#2375;&#2357;&#2354; &#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2324;&#2352; &#2357;&#2381;&#2351;&#2351; &#2325;&#2366; &#2309;&#2344;&#2369;&#2350;&#2366;&#2344; &#2358;&#2366;&#2350;&#2367;&#2354; &#2361;&#2376;&#2404;</span>",
+      "<span class=\"eqt\">It covers estimates of revenue and capital receipts, actual receipts and expenditure of the previous year, and the economic policy for the coming year.</span><span class=\"hqt\" style=\"display:none\">&#2311;&#2360;&#2350;&#2375;&#2306; &#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2324;&#2352; &#2346;&#2370;&#2306;&#2332;&#2368;&#2327;&#2340; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2325;&#2375; &#2309;&#2344;&#2369;&#2350;&#2366;&#2344;, &#2346;&#2367;&#2331;&#2354;&#2375; &#2357;&#2352;&#2381;&#2359; &#2325;&#2368; &#2357;&#2366;&#2360;&#2381;&#2340;&#2357;&#2367;&#2325; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2366;&#2306; &#2324;&#2352; &#2357;&#2381;&#2351;&#2351; &#2340;&#2341;&#2366; &#2310;&#2327;&#2366;&#2350;&#2368; &#2357;&#2352;&#2381;&#2359; &#2325;&#2375; &#2354;&#2367;&#2319; &#2310;&#2352;&#2381;&#2341;&#2367;&#2325; &#2344;&#2368;&#2340;&#2367; &#2358;&#2366;&#2350;&#2367;&#2354; &#2361;&#2379;&#2340;&#2368; &#2361;&#2376;&#2404;</span>",
+      "<span class=\"eqt\">It only provides details about the actual receipts and expenditure of the current financial year.</span><span class=\"hqt\" style=\"display:none\">&#2351;&#2361; &#2325;&#2375;&#2357;&#2354; &#2330;&#2366;&#2354;&#2370; &#2357;&#2367;&#2340;&#2381;&#2340; &#2357;&#2352;&#2381;&#2359; &#2325;&#2368; &#2357;&#2366;&#2360;&#2381;&#2340;&#2357;&#2367;&#2325; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2324;&#2352; &#2357;&#2381;&#2351;&#2351; &#2325;&#2375; &#2348;&#2366;&#2352;&#2375; &#2350;&#2375;&#2306; &#2357;&#2367;&#2357;&#2352;&#2339; &#2346;&#2381;&#2352;&#2342;&#2366;&#2344; &#2325;&#2352;&#2340;&#2366; &#2361;&#2376;&#2404;</span>",
+      "<span class=\"eqt\">It focuses solely on the economic and financial policies for the coming year.</span><span class=\"hqt\" style=\"display:none\">&#2351;&#2361; &#2310;&#2327;&#2366;&#2350;&#2368; &#2357;&#2352;&#2381;&#2359; &#2325;&#2375; &#2354;&#2367;&#2319; &#2346;&#2370;&#2352;&#2368; &#2340;&#2352;&#2361; &#2360;&#2375; &#2310;&#2352;&#2381;&#2341;&#2367;&#2325; &#2324;&#2352; &#2357;&#2367;&#2340;&#2381;&#2340;&#2368;&#2351; &#2344;&#2368;&#2340;&#2367;&#2351;&#2379;&#2306; &#2346;&#2352; &#2325;&#2375;&#2306;&#2342;&#2381;&#2352;&#2367;&#2340; &#2361;&#2376;&#2404;</span>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<p>&bull; <b>The Annual Financial Statement includes more than just estimates of revenue receipts and expenditure; it also covers capital receipts and expenditure</b> etc.</p><p>&bull; This option accurately describes the comprehensive content of the Annual Financial Statement as it includes estimates of revenue and capital receipts, details of actual receipts and expenditure of the closing year, and the economic policy for the coming year.</p><p>&bull; It provides more than just details of the current year's actual receipts and expenditure.</p><p><b>Further Insight:</b></p><p>&bull; <b>Article: 112 Annual financial statement.</b></p><p>&#9675; (1) The <b>President shall in respect of every financial year cause to be laid</b> before both the Houses of Parliament a<b> statement of the estimated receipts and expenditure of the Government of India for that year</b>, in this Part referred to as the \"annual financial statement''.</p><p>&#9675; (2) The estimates of expenditure embodied in the annual financial statement shall show separately - </p><p>&#9632; (a) the <b>sums required to meet expenditure described by this Constitution as expenditure charged upon the Consolidated Fund of India</b>; </p><p>&#9632; (b) the<b> sums required to meet other expenditure proposed to be made from the Consolidated Fund of India</b>, and shall distinguish expenditure on revenue account from other expenditure</p>",
+    "question_index": 0
+  },
+  {
+    "question": "<span class=\"eqt\"><p>Which body is primarily responsible for preparing the Union Budget?</p></span><span class=\"hqt\" style=\"display:none\"><p>&#2325;&#2375;&#2344;&#2381;&#2342;&#2381;&#2352;&#2368;&#2351; &#2348;&#2332;&#2335; &#2340;&#2376;&#2351;&#2366;&#2352; &#2325;&#2352;&#2344;&#2375; &#2325;&#2375; &#2354;&#2367;&#2319; &#2350;&#2369;&#2326;&#2381;&#2351; &#2352;&#2370;&#2346; &#2360;&#2375; &#2325;&#2380;&#2344; &#2360;&#2366; &#2344;&#2367;&#2325;&#2366;&#2351; &#2332;&#2367;&#2350;&#2381;&#2350;&#2375;&#2342;&#2366;&#2352; &#2361;&#2376;?</p></span>",
+    "options": [
+      "<span class=\"eqt\">Ministry of Commerce and Industry</span><span class=\"hqt\" style=\"display:none\">&#2357;&#2366;&#2339;&#2367;&#2332;&#2381;&#2351; &#2319;&#2357;&#2306; &#2313;&#2342;&#2381;&#2351;&#2379;&#2327; &#2350;&#2306;&#2340;&#2381;&#2352;&#2366;&#2354;&#2351;</span>",
+      "<span class=\"eqt\">Reserve Bank of India</span><span class=\"hqt\" style=\"display:none\">&#2349;&#2366;&#2352;&#2340;&#2368;&#2351; &#2352;&#2367;&#2332;&#2352;&#2381;&#2357; &#2348;&#2376;&#2306;&#2325;</span>",
+      "<span class=\"eqt\">Budget Division of the Department of Economic Affairs</span><span class=\"hqt\" style=\"display:none\">&#2310;&#2352;&#2381;&#2341;&#2367;&#2325; &#2350;&#2366;&#2350;&#2354;&#2379;&#2306; &#2325;&#2375; &#2357;&#2367;&#2349;&#2366;&#2327; &#2325;&#2366; &#2348;&#2332;&#2335; &#2346;&#2381;&#2352;&#2349;&#2366;&#2327;</span>",
+      "<span class=\"eqt\">Planning Commission</span><span class=\"hqt\" style=\"display:none\">&#2351;&#2379;&#2332;&#2344;&#2366; &#2310;&#2351;&#2379;&#2327;</span>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<p>&bull; The Ministry of Commerce and Industry does not prepare the Union Budget.</p><p>&bull; The<b> Reserve Bank of India does not prepare the Union Budget but plays a role in deficit financing</b>.</p><p>&bull; The <b>Budget Division of the Department of Economic Affairs in the Finance Ministry is responsible for preparing the Budget.</b></p><p>&bull; The Planning Commission was replaced by the NITI Aayog and does not prepare the Union Budget.</p><p><b>Further Insight:</b></p><p>&bull; <b>Finance Minister: Nirmala Sitharaman</b></p><p>&bull; <b>Current Chief Economic Advisor (CEA) is Venkatraman Anantha Nageswaran</b></p><p>&#9675; <b>CEA prepares the Economic Survey and Present Before Budget.</b></p>",
+    "question_index": 1
+  },
+  {
+    "question": "<span class=\"eqt\"><p>Which of the following changes introduced in the 2017 Budget presentation aimed to streamline the budgeting process?</p></span><span class=\"hqt\" style=\"display:none\"><p>2017 &#2325;&#2375; &#2348;&#2332;&#2335; &#2346;&#2381;&#2352;&#2360;&#2381;&#2340;&#2369;&#2340;&#2367; &#2350;&#2375;&#2306; &#2344;&#2367;&#2350;&#2381;&#2344;&#2354;&#2367;&#2326;&#2367;&#2340; &#2350;&#2375;&#2306; &#2360;&#2375; &#2325;&#2380;&#2344; &#2360;&#2375; &#2346;&#2352;&#2367;&#2357;&#2352;&#2381;&#2340;&#2344; &#2325;&#2366; &#2313;&#2342;&#2381;&#2342;&#2375;&#2358;&#2381;&#2351; &#2348;&#2332;&#2335; &#2346;&#2381;&#2352;&#2325;&#2381;&#2352;&#2367;&#2351;&#2366; &#2325;&#2379; &#2360;&#2369;&#2357;&#2381;&#2351;&#2357;&#2360;&#2381;&#2341;&#2367;&#2340; &#2325;&#2352;&#2344;&#2366; &#2341;&#2366;?</p></span>",
+    "options": [
+      "<span class=\"eqt\">Introduction of a new tax regime</span><span class=\"hqt\" style=\"display:none\">&#2344;&#2312; &#2325;&#2352; &#2357;&#2381;&#2351;&#2357;&#2360;&#2381;&#2341;&#2366; &#2325;&#2366; &#2346;&#2352;&#2367;&#2330;&#2351;</span>",
+      "<span class=\"eqt\">Merger of Railway Budget with the General Budget</span><span class=\"hqt\" style=\"display:none\">&#2352;&#2375;&#2354; &#2348;&#2332;&#2335; &#2325;&#2366; &#2310;&#2350; &#2348;&#2332;&#2335; &#2350;&#2375;&#2306; &#2357;&#2367;&#2354;&#2351;</span>",
+      "<span class=\"eqt\">Increase in the number of financial statements</span><span class=\"hqt\" style=\"display:none\">&#2357;&#2367;&#2340;&#2381;&#2340;&#2368;&#2351; &#2357;&#2367;&#2357;&#2352;&#2339;&#2379;&#2306; &#2325;&#2368; &#2360;&#2306;&#2326;&#2381;&#2351;&#2366; &#2350;&#2375;&#2306; &#2357;&#2371;&#2342;&#2381;&#2343;&#2367;</span>",
+      "<span class=\"eqt\">Extension of the financial year</span><span class=\"hqt\" style=\"display:none\">&#2357;&#2367;&#2340;&#2381;&#2340;&#2368;&#2351; &#2357;&#2352;&#2381;&#2359; &#2325;&#2366; &#2357;&#2367;&#2360;&#2381;&#2340;&#2366;&#2352;</span>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<p>&bull; <b>The merger of the Railway Budget with the General Budget was a significant change aimed at streamlining the budgeting process.</b></p><p><b>Further Insight:</b></p><p>&bull; The Union Budget for 2017-18 was announced by Finance Minister Arun Jaitley on February 1, 2017.</p><p>&bull; The budget included three major reforms:</p><p>&#9675; The date of presentation was advanced</p><p>&#9675; The railway budget was merged with the general budget</p><p>&#9675; Plan and non-plan expenditure were eliminated </p>",
+    "question_index": 2
+  },
+  {
+    "question": "<span class=\"eqt\"><p>Which of the following best describes the difference between Plan and Non-Plan Expenditure?</p></span><span class=\"hqt\" style=\"display:none\"><p>&#2344;&#2367;&#2350;&#2381;&#2344;&#2354;&#2367;&#2326;&#2367;&#2340; &#2350;&#2375;&#2306; &#2360;&#2375; &#2325;&#2380;&#2344; &#2360;&#2366; &#2351;&#2379;&#2332;&#2344;&#2366; &#2324;&#2352; &#2327;&#2376;&#2352;-&#2351;&#2379;&#2332;&#2344;&#2366; &#2357;&#2381;&#2351;&#2351; &#2325;&#2375; &#2348;&#2368;&#2330; &#2309;&#2306;&#2340;&#2352; &#2325;&#2366; &#2360;&#2348;&#2360;&#2375; &#2309;&#2330;&#2381;&#2331;&#2366; &#2357;&#2352;&#2381;&#2339;&#2344; &#2325;&#2352;&#2340;&#2366; &#2361;&#2376;?</p></span>",
+    "options": [
+      "<span class=\"eqt\">Plan Expenditure includes interest payments, while Non-Plan Expenditure includes developmental projects.</span><span class=\"hqt\" style=\"display:none\">&#2351;&#2379;&#2332;&#2344;&#2366; &#2357;&#2381;&#2351;&#2351; &#2350;&#2375;&#2306; &#2348;&#2381;&#2351;&#2366;&#2332; &#2349;&#2369;&#2327;&#2340;&#2366;&#2344; &#2358;&#2366;&#2350;&#2367;&#2354; &#2361;&#2376;, &#2332;&#2348;&#2325;&#2367; &#2327;&#2376;&#2352;-&#2351;&#2379;&#2332;&#2344;&#2366; &#2357;&#2381;&#2351;&#2351; &#2350;&#2375;&#2306; &#2357;&#2367;&#2325;&#2366;&#2360;&#2366;&#2340;&#2381;&#2350;&#2325; &#2346;&#2352;&#2367;&#2351;&#2379;&#2332;&#2344;&#2366;&#2319;&#2306; &#2358;&#2366;&#2350;&#2367;&#2354; &#2361;&#2376;&#2306;&#2404;</span>",
+      "<span class=\"eqt\">Plan Expenditure is related to developmental activities, while Non-Plan Expenditure covers regular administrative expenses.</span><span class=\"hqt\" style=\"display:none\">&#2351;&#2379;&#2332;&#2344;&#2366;&#2327;&#2340; &#2357;&#2381;&#2351;&#2351; &#2357;&#2367;&#2325;&#2366;&#2360;&#2366;&#2340;&#2381;&#2350;&#2325; &#2327;&#2340;&#2367;&#2357;&#2367;&#2343;&#2367;&#2351;&#2379;&#2306; &#2360;&#2375; &#2360;&#2306;&#2348;&#2306;&#2343;&#2367;&#2340; &#2361;&#2379;&#2340;&#2366; &#2361;&#2376;, &#2332;&#2348;&#2325;&#2367; &#2327;&#2376;&#2352;-&#2351;&#2379;&#2332;&#2344;&#2366;&#2327;&#2340; &#2357;&#2381;&#2351;&#2351; &#2350;&#2375;&#2306; &#2344;&#2367;&#2351;&#2350;&#2367;&#2340; &#2346;&#2381;&#2352;&#2358;&#2366;&#2360;&#2344;&#2367;&#2325; &#2357;&#2381;&#2351;&#2351; &#2358;&#2366;&#2350;&#2367;&#2354; &#2361;&#2379;&#2340;&#2375; &#2361;&#2376;&#2306;&#2404;</span>",
+      "<span class=\"eqt\">Plan Expenditure pertains to Pension, while Non-Plan Expenditure relates to tax revenues.</span><span class=\"hqt\" style=\"display:none\">&#2351;&#2379;&#2332;&#2344;&#2366; &#2357;&#2381;&#2351;&#2351; &#2346;&#2375;&#2306;&#2358;&#2344; &#2360;&#2375; &#2360;&#2306;&#2348;&#2306;&#2343;&#2367;&#2340; &#2361;&#2376;, &#2332;&#2348;&#2325;&#2367; &#2327;&#2376;&#2352;-&#2351;&#2379;&#2332;&#2344;&#2366; &#2357;&#2381;&#2351;&#2351; &#2325;&#2352; &#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2360;&#2375; &#2360;&#2306;&#2348;&#2306;&#2343;&#2367;&#2340; &#2361;&#2376;&#2404;</span>",
+      "<span class=\"eqt\">Plan Expenditure is concerned with Statutory transfers to States, while Non-Plan Expenditure deals with loans and borrowings.</span><span class=\"hqt\" style=\"display:none\">&#2351;&#2379;&#2332;&#2344;&#2366;&#2327;&#2340; &#2357;&#2381;&#2351;&#2351; &#2352;&#2366;&#2332;&#2381;&#2351;&#2379;&#2306; &#2325;&#2379; &#2360;&#2366;&#2306;&#2357;&#2367;&#2343;&#2367;&#2325; &#2361;&#2360;&#2381;&#2340;&#2366;&#2306;&#2340;&#2352;&#2339; &#2360;&#2375; &#2360;&#2306;&#2348;&#2306;&#2343;&#2367;&#2340; &#2361;&#2376;, &#2332;&#2348;&#2325;&#2367; &#2327;&#2376;&#2352;-&#2351;&#2379;&#2332;&#2344;&#2366;&#2327;&#2340; &#2357;&#2381;&#2351;&#2351; &#2315;&#2339; &#2324;&#2352; &#2313;&#2343;&#2366;&#2352; &#2360;&#2375; &#2360;&#2306;&#2348;&#2306;&#2343;&#2367;&#2340; &#2361;&#2376;&#2404;</span>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<p>&bull; Interest payments are part of Non-Plan Expenditure, not Plan Expenditure.</p><p>&bull; <b>Plan Expenditure is related to developmental and planning activities, while Non-Plan Expenditure covers routine administrative expenses.</b></p><p>&bull; Pension are not considered Plan Expenditure, and tax revenues are not covered by Non-Plan Expenditure.</p><p>&bull; Plan Expenditure does not cover Statutory transfers to States, and Non-Plan Expenditure is not related to loans and borrowings in this context.</p><p><b>Further Insight:</b></p><p>&bull; Plan Expenditure</p><p>&#9675; Expenditures related to planning (e.g., Five Year Plans).</p><p>&#9675; For example: Electricity generation, irrigation, rural development, road construction.</p><p>&bull; Non-Plan Expenditure</p><p>&#9675; Expenditures other than plan expenditure.</p><p>&#9675; Examples: Interest payments, pensions, statutory transfers to states and union territories.</p>",
+    "question_index": 3
+  },
+  {
+    "question": "<span class=\"eqt\"><p>Which of the following accurately describes Capital Receipts?</p></span><span class=\"hqt\" style=\"display:none\"><p>&#2344;&#2367;&#2350;&#2381;&#2344;&#2354;&#2367;&#2326;&#2367;&#2340; &#2350;&#2375;&#2306; &#2360;&#2375; &#2325;&#2380;&#2344; &#2346;&#2370;&#2306;&#2332;&#2368; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2325;&#2366; &#2360;&#2335;&#2368;&#2325; &#2357;&#2352;&#2381;&#2339;&#2344; &#2325;&#2352;&#2340;&#2366; &#2361;&#2376;?</p></span>",
+    "options": [
+      "<span class=\"eqt\">Receipts that increase the government's assets or decrease liabilities.</span><span class=\"hqt\" style=\"display:none\">&#2357;&#2375; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2366;&#2306; &#2332;&#2379; &#2360;&#2352;&#2325;&#2366;&#2352; &#2325;&#2368; &#2346;&#2352;&#2367;&#2360;&#2306;&#2346;&#2340;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2350;&#2375;&#2306; &#2357;&#2371;&#2342;&#2381;&#2343;&#2367; &#2325;&#2352;&#2340;&#2368; &#2361;&#2376;&#2306; &#2351;&#2366; &#2342;&#2375;&#2351;&#2340;&#2366;&#2323;&#2306; &#2350;&#2375;&#2306; &#2325;&#2350;&#2368; &#2325;&#2352;&#2340;&#2368; &#2361;&#2376;&#2306;&#2404;</span>",
+      "<span class=\"eqt\">Receipts that do not impact the government's assets or liabilities.</span><span class=\"hqt\" style=\"display:none\">&#2357;&#2375; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2366;&#2306; &#2332;&#2379; &#2360;&#2352;&#2325;&#2366;&#2352; &#2325;&#2368; &#2346;&#2352;&#2367;&#2360;&#2306;&#2346;&#2340;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2351;&#2366; &#2342;&#2375;&#2344;&#2342;&#2366;&#2352;&#2367;&#2351;&#2379;&#2306; &#2346;&#2352; &#2346;&#2381;&#2352;&#2349;&#2366;&#2357; &#2344;&#2361;&#2368;&#2306; &#2337;&#2366;&#2354;&#2340;&#2368;&#2306;&#2404;</span>",
+      "<span class=\"eqt\">Receipts that result from disinvestment and borrowing.</span><span class=\"hqt\" style=\"display:none\">&#2357;&#2367;&#2344;&#2367;&#2357;&#2375;&#2358; &#2324;&#2352; &#2313;&#2343;&#2366;&#2352; &#2360;&#2375; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2366;&#2305;&#2404;</span>",
+      "<span class=\"eqt\">Receipts used for routine administrative expenses.</span><span class=\"hqt\" style=\"display:none\">&#2344;&#2367;&#2351;&#2350;&#2367;&#2340; &#2346;&#2381;&#2352;&#2358;&#2366;&#2360;&#2344;&#2367;&#2325; &#2357;&#2381;&#2351;&#2351; &#2325;&#2375; &#2354;&#2367;&#2319; &#2313;&#2346;&#2351;&#2379;&#2327; &#2325;&#2368; &#2332;&#2366;&#2344;&#2375; &#2357;&#2366;&#2354;&#2368; &#2352;&#2360;&#2368;&#2342;&#2375;&#2306;&#2404;</span>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<p>&bull; Capital Receipts typically decrease assets or increase liabilities.</p><p>&bull; Capital Receipts do impact the government's assets and liabilities.</p><p>&bull; <b>Capital Receipts include disinvestment and borrowings.</b></p><p>&bull; Routine administrative expenses are covered under Revenue Expenditure, not Capital Receipts.</p><p><b>Further Insight:</b></p><p><b><img width=584 height=301 id=image1.png src=\"https://u1.oliveboard.in/exams/solution/oliveimg/p25759/image001.jpg\"></b></p>",
+    "question_index": 4
+  },
+  {
+    "question": "<span class=\"eqt\"><p>What is included in Revenue Expenditure?</p></span><span class=\"hqt\" style=\"display:none\"><p>&#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2357;&#2381;&#2351;&#2351; &#2350;&#2375;&#2306; &#2325;&#2381;&#2351;&#2366; &#2358;&#2366;&#2350;&#2367;&#2354; &#2361;&#2376;?</p></span>",
+    "options": [
+      "<span class=\"eqt\">Long-term investments by the government in creating assets.</span><span class=\"hqt\" style=\"display:none\">&#2346;&#2352;&#2367;&#2360;&#2306;&#2346;&#2340;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2325;&#2375; &#2344;&#2367;&#2352;&#2381;&#2350;&#2366;&#2339; &#2350;&#2375;&#2306; &#2360;&#2352;&#2325;&#2366;&#2352; &#2342;&#2381;&#2357;&#2366;&#2352;&#2366; &#2342;&#2368;&#2352;&#2381;&#2328;&#2325;&#2366;&#2354;&#2367;&#2325; &#2344;&#2367;&#2357;&#2375;&#2358;&#2404;</span>",
+      "<span class=\"eqt\">The repayment of loans and borrowings.</span><span class=\"hqt\" style=\"display:none\">&#2315;&#2339; &#2319;&#2357;&#2306; &#2313;&#2343;&#2366;&#2352; &#2325;&#2368; &#2330;&#2369;&#2325;&#2380;&#2340;&#2368;&#2404;</span>",
+      "<span class=\"eqt\">Regular expenses such as salaries and pensions.</span><span class=\"hqt\" style=\"display:none\">&#2357;&#2375;&#2340;&#2344; &#2324;&#2352; &#2346;&#2375;&#2306;&#2358;&#2344; &#2332;&#2376;&#2360;&#2375; &#2344;&#2367;&#2351;&#2350;&#2367;&#2340; &#2357;&#2381;&#2351;&#2351;&#2404;</span>",
+      "<span class=\"eqt\">Receipts from the sale of government assets.</span><span class=\"hqt\" style=\"display:none\">&#2360;&#2352;&#2325;&#2366;&#2352;&#2368; &#2346;&#2352;&#2367;&#2360;&#2306;&#2346;&#2340;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2325;&#2368; &#2348;&#2367;&#2325;&#2381;&#2352;&#2368; &#2360;&#2375; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2366;&#2306;&#2404;</span>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<p>&bull; Long-term investments are part of Capital Expenditure.</p><p>&bull; Repayment of loans is part of Capital Expenditure.</p><p>&bull; <b>Revenue Expenditure includes routine expenses such as salaries and pensions.</b></p><p>&bull; Receipts from asset sales are part of Capital Receipts</p><p><b>Further Insight:</b></p><table style=\"border-collapse:collapse;\"><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>Budget Expenditure</b></td><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>Revenue Expenditure (Components)</b></td><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>Capital Expenditure (Components)</b></td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b> </b></td><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>(Expenditure which neither creates assets nor reduces liabilities)</b></td><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>(Expenditure which creates assets or reduces liabilities)</b></td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">Examples</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">Examples</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">Examples</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\"></td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">(i) Payment of interest</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">(i) Construction of roads, bridges, buildings</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\"></td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">(ii) Payment of salaries and pensions</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">(ii) Purchase of land and machinery</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\"></td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">(iii) Grants and subsidies</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">(iii) Investment in shares</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\"></td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">(iv) Education and health services</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">(iv) Loans to states and foreign government</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\"></td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">(v) Defence services</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">(v) Repayment of loans</td></tr></table>",
+    "question_index": 5
+  },
+  {
+    "question": "<span class=\"eqt\"><p>Which of the following is a characteristic of a Deficit Budget?</p></span><span class=\"hqt\" style=\"display:none\"><p>&#2344;&#2367;&#2350;&#2381;&#2344;&#2354;&#2367;&#2326;&#2367;&#2340; &#2350;&#2375;&#2306; &#2360;&#2375; &#2325;&#2380;&#2344; &#2360;&#2368; &#2328;&#2366;&#2335;&#2375; &#2357;&#2366;&#2354;&#2375; &#2348;&#2332;&#2335; &#2325;&#2368; &#2357;&#2367;&#2358;&#2375;&#2359;&#2340;&#2366; &#2361;&#2376;?</p></span>",
+    "options": [
+      "<span class=\"eqt\">Expected expenditure is equal to anticipated receipts.</span><span class=\"hqt\" style=\"display:none\">&#2309;&#2346;&#2375;&#2325;&#2381;&#2359;&#2367;&#2340; &#2357;&#2381;&#2351;&#2351; &#2346;&#2381;&#2352;&#2340;&#2381;&#2351;&#2366;&#2358;&#2367;&#2340; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2325;&#2375; &#2348;&#2352;&#2366;&#2348;&#2352; &#2361;&#2376;&#2404;</span>",
+      "<span class=\"eqt\">Expected revenues exceed estimated expenditure.</span><span class=\"hqt\" style=\"display:none\">&#2309;&#2346;&#2375;&#2325;&#2381;&#2359;&#2367;&#2340; &#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2309;&#2344;&#2369;&#2350;&#2366;&#2344;&#2367;&#2340; &#2357;&#2381;&#2351;&#2351; &#2360;&#2375; &#2309;&#2343;&#2367;&#2325; &#2361;&#2376;&#2404;</span>",
+      "<span class=\"eqt\">Expenditure surpasses revenue for a designated year.</span><span class=\"hqt\" style=\"display:none\">&#2344;&#2367;&#2352;&#2381;&#2342;&#2367;&#2359;&#2381;&#2335; &#2357;&#2352;&#2381;&#2359; &#2325;&#2375; &#2354;&#2367;&#2319; &#2357;&#2381;&#2351;&#2351; &#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2360;&#2375; &#2309;&#2343;&#2367;&#2325; &#2361;&#2376;&#2404;</span>",
+      "<span class=\"eqt\">The budget is balanced with no surplus or deficit.</span><span class=\"hqt\" style=\"display:none\">&#2348;&#2332;&#2335; &#2360;&#2306;&#2340;&#2369;&#2354;&#2367;&#2340; &#2361;&#2376;, &#2311;&#2360;&#2350;&#2375;&#2306; &#2325;&#2379;&#2312; &#2309;&#2343;&#2367;&#2358;&#2375;&#2359; &#2351;&#2366; &#2328;&#2366;&#2335;&#2366; &#2344;&#2361;&#2368;&#2306; &#2361;&#2376;&#2404;</span>"
+    ],
+    "correct_option_id": 2,
+    "solution": "<p>&bull; Expected expenditure is equal to anticipated receipts, It describes a<b> Balanced Budget.</b>.</p><p>&bull; Expected revenues exceed estimated expenditure, It describes a <b>Surplus Budget.</b></p><p>&bull; <b>A Deficit Budget occurs when expenditure exceeds revenue.</b></p><p>&bull; The budget is balanced with no surplus or deficit, It also describes a <b>Balanced Budget.</b></p><p><b>Further Inisght:</b></p><p>&bull; Types of Deficit:</p><p>&#9675; Revenue Deficit = Revenue Expenditure  -  Revenue Receipts</p><p>&#9675; Budgetary Deficit = Total Expenditure  -  Total Receipts (excluding net sale of treasury bills)</p><p>&#9675; Monetized Deficit (Deficit Financing) = Increase in net RBI credit to the Government</p><p>&#9675; Fiscal Deficit = Total Expenditure  -  (Revenue Receipts + Recovery of Loans + Receipts from the sale of assets by the Public Sector enterprises)</p><p>&#9675; Primary Deficit = Fiscal Deficit  -  Interest Payments</p>",
+    "question_index": 6
+  },
+  {
+    "question": "<span class=\"eqt\"><p>What does the Fiscal Deficit measure?</p></span><span class=\"hqt\" style=\"display:none\"><p>&#2352;&#2366;&#2332;&#2325;&#2379;&#2359;&#2368;&#2351; &#2328;&#2366;&#2335;&#2366; &#2325;&#2381;&#2351;&#2366; &#2350;&#2366;&#2346;&#2340;&#2366; &#2361;&#2376;?</p></span>",
+    "options": [
+      "<span class=\"eqt\">The difference between total expenditure and revenue receipts plus non-debt creating capital receipts.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2369;&#2354; &#2357;&#2381;&#2351;&#2351; &#2324;&#2352; &#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2340;&#2341;&#2366; &#2327;&#2376;&#2352;-&#2315;&#2339; &#2360;&#2371;&#2332;&#2344; &#2346;&#2370;&#2306;&#2332;&#2368; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2325;&#2375; &#2348;&#2368;&#2330; &#2325;&#2366; &#2309;&#2306;&#2340;&#2352;&#2404;</span>",
+      "<span class=\"eqt\">The excess of revenue expenditure over revenue receipts.</span><span class=\"hqt\" style=\"display:none\">&#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2325;&#2368; &#2340;&#2369;&#2354;&#2344;&#2366; &#2350;&#2375;&#2306; &#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2357;&#2381;&#2351;&#2351; &#2325;&#2368; &#2309;&#2343;&#2367;&#2325;&#2340;&#2366;&#2404;</span>",
+      "<span class=\"eqt\">The total borrowing requirements of the government.</span><span class=\"hqt\" style=\"display:none\">&#2360;&#2352;&#2325;&#2366;&#2352; &#2325;&#2368; &#2325;&#2369;&#2354; &#2313;&#2343;&#2366;&#2352; &#2310;&#2357;&#2358;&#2381;&#2351;&#2325;&#2340;&#2366;&#2319;&#2306;&#2404;</span>",
+      "<span class=\"eqt\">The gap between expenditure and interest payments only.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2375;&#2357;&#2354; &#2357;&#2381;&#2351;&#2351; &#2324;&#2352; &#2348;&#2381;&#2351;&#2366;&#2332; &#2349;&#2369;&#2327;&#2340;&#2366;&#2344; &#2325;&#2375; &#2348;&#2368;&#2330; &#2325;&#2366; &#2309;&#2306;&#2340;&#2352;&#2404;</span>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<p>&bull; <b>Fiscal Deficit measures the difference between total expenditure and revenue receipts plus non-debt creating capital receipts.</b></p><p>&bull; Fiscal Deficit = Total Expenditure  -  (Revenue Receipts + Recovery of Loans + Receipts from the sale of assets by the Public Sector enterprises)</p><p>&bull; The excess of revenue expenditure over revenue receipts, it describes <b>Revenue Deficit</b>.</p>",
+    "question_index": 7
+  },
+  {
+    "question": "<span class=\"eqt\"><p>What is the implication of a revenue deficit on government savings?</p></span><span class=\"hqt\" style=\"display:none\"><p>&#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2328;&#2366;&#2335;&#2375; &#2325;&#2366; &#2360;&#2352;&#2325;&#2366;&#2352;&#2368; &#2348;&#2330;&#2340; &#2346;&#2352; &#2325;&#2381;&#2351;&#2366; &#2346;&#2381;&#2352;&#2349;&#2366;&#2357; &#2346;&#2337;&#2364;&#2340;&#2366; &#2361;&#2376;?</p></span>",
+    "options": [
+      "<span class=\"eqt\">It indicates the government is saving more and not spending beyond its means.</span><span class=\"hqt\" style=\"display:none\">&#2311;&#2360;&#2360;&#2375; &#2360;&#2306;&#2325;&#2375;&#2340; &#2350;&#2367;&#2354;&#2340;&#2366; &#2361;&#2376; &#2325;&#2367; &#2360;&#2352;&#2325;&#2366;&#2352; &#2309;&#2343;&#2367;&#2325; &#2348;&#2330;&#2340; &#2325;&#2352; &#2352;&#2361;&#2368; &#2361;&#2376; &#2340;&#2341;&#2366; &#2309;&#2346;&#2344;&#2368; &#2325;&#2381;&#2359;&#2350;&#2340;&#2366; &#2360;&#2375; &#2309;&#2343;&#2367;&#2325; &#2326;&#2352;&#2381;&#2330; &#2344;&#2361;&#2368;&#2306; &#2325;&#2352; &#2352;&#2361;&#2368; &#2361;&#2376;&#2404;</span>",
+      "<span class=\"eqt\">It implies that the government is spending more and using up savings from other sectors.</span><span class=\"hqt\" style=\"display:none\">&#2311;&#2360;&#2325;&#2366; &#2340;&#2366;&#2340;&#2381;&#2346;&#2352;&#2381;&#2351; &#2351;&#2361; &#2361;&#2376; &#2325;&#2367; &#2360;&#2352;&#2325;&#2366;&#2352; &#2309;&#2343;&#2367;&#2325; &#2326;&#2352;&#2381;&#2330; &#2325;&#2352; &#2352;&#2361;&#2368; &#2361;&#2376; &#2340;&#2341;&#2366; &#2309;&#2344;&#2381;&#2351; &#2325;&#2381;&#2359;&#2375;&#2340;&#2381;&#2352;&#2379;&#2306; &#2325;&#2368; &#2348;&#2330;&#2340; &#2325;&#2366; &#2313;&#2346;&#2351;&#2379;&#2327; &#2325;&#2352; &#2352;&#2361;&#2368; &#2361;&#2376;&#2404;</span>",
+      "<span class=\"eqt\">It shows that the government has a surplus in its revenue receipts.</span><span class=\"hqt\" style=\"display:none\">&#2311;&#2360;&#2360;&#2375; &#2346;&#2340;&#2366; &#2330;&#2354;&#2340;&#2366; &#2361;&#2376; &#2325;&#2367; &#2360;&#2352;&#2325;&#2366;&#2352; &#2325;&#2368; &#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2366;&#2306; &#2309;&#2343;&#2367;&#2358;&#2375;&#2359; &#2361;&#2376;&#2306;&#2404;</span>",
+      "<span class=\"eqt\">It suggests an increase in capital expenditure.</span><span class=\"hqt\" style=\"display:none\">&#2311;&#2360;&#2350;&#2375;&#2306; &#2346;&#2370;&#2306;&#2332;&#2368;&#2327;&#2340; &#2357;&#2381;&#2351;&#2351; &#2350;&#2375;&#2306; &#2357;&#2371;&#2342;&#2381;&#2343;&#2367; &#2325;&#2366; &#2360;&#2369;&#2333;&#2366;&#2357; &#2342;&#2367;&#2351;&#2366; &#2327;&#2351;&#2366; &#2361;&#2376;&#2404;</span>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<p>&bull; <b>Revenue Deficit indicates overspending, not savings.</b></p><p>&bull; <b>Revenue Deficit implies that the government is spending more and using up savings from other sectors.</b></p><p>&bull; <b>A revenue deficit means the government's revenue receipts are not sufficient to cover its expenditure</b>.</p><p>&bull; Revenue Deficit does not specifically relate to an increase in capital expenditure.</p><p>&bull; Revenue Deficit = Revenue Expenditure  -  Revenue Receipts</p>",
+    "question_index": 8
+  },
+  {
+    "question": "<span class=\"eqt\"><p>What does Deficit Financing in India primarily involve?</p></span><span class=\"hqt\" style=\"display:none\"><p>&#2349;&#2366;&#2352;&#2340; &#2350;&#2375;&#2306; &#2328;&#2366;&#2335;&#2375; &#2325;&#2375; &#2357;&#2367;&#2340;&#2381;&#2340;&#2346;&#2379;&#2359;&#2339; &#2350;&#2375;&#2306; &#2350;&#2369;&#2326;&#2381;&#2351; &#2352;&#2370;&#2346; &#2360;&#2375; &#2325;&#2381;&#2351;&#2366; &#2358;&#2366;&#2350;&#2367;&#2354; &#2361;&#2376;?</p></span>",
+    "options": [
+      "<span class=\"eqt\">Borrowing from foreign sources.</span><span class=\"hqt\" style=\"display:none\">&#2357;&#2367;&#2342;&#2375;&#2358;&#2368; &#2360;&#2381;&#2352;&#2379;&#2340;&#2379;&#2306; &#2360;&#2375; &#2313;&#2343;&#2366;&#2352; &#2354;&#2375;&#2344;&#2366;&#2404;</span>",
+      "<span class=\"eqt\">Issuing Treasury Bills and borrowing from the Reserve Bank of India.</span><span class=\"hqt\" style=\"display:none\">&#2335;&#2381;&#2352;&#2375;&#2332;&#2352;&#2368; &#2348;&#2367;&#2354; &#2332;&#2366;&#2352;&#2368; &#2325;&#2352;&#2344;&#2366; &#2324;&#2352; &#2349;&#2366;&#2352;&#2340;&#2368;&#2351; &#2352;&#2367;&#2332;&#2352;&#2381;&#2357; &#2348;&#2376;&#2306;&#2325; &#2360;&#2375; &#2313;&#2343;&#2366;&#2352; &#2354;&#2375;&#2344;&#2366;&#2404;</span>",
+      "<span class=\"eqt\">Increasing taxes to cover the deficit.</span><span class=\"hqt\" style=\"display:none\">&#2328;&#2366;&#2335;&#2375; &#2325;&#2379; &#2346;&#2370;&#2352;&#2366; &#2325;&#2352;&#2344;&#2375; &#2325;&#2375; &#2354;&#2367;&#2319; &#2325;&#2352;&#2379;&#2306; &#2350;&#2375;&#2306; &#2357;&#2371;&#2342;&#2381;&#2343;&#2367;&#2404;</span>",
+      "<span class=\"eqt\">Reducing government expenditures significantly.</span><span class=\"hqt\" style=\"display:none\">&#2360;&#2352;&#2325;&#2366;&#2352;&#2368; &#2357;&#2381;&#2351;&#2351; &#2350;&#2375;&#2306; &#2313;&#2354;&#2381;&#2354;&#2375;&#2326;&#2344;&#2368;&#2351; &#2325;&#2350;&#2368; &#2354;&#2366;&#2344;&#2366;&#2404;</span>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<p>&bull; <b>Deficit Financing primarily involves domestic borrowing rather than foreign sources.</b></p><p>&bull; <b>Deficit Financing involves issuing Treasury Bills and borrowing from the Reserve Bank of India.</b></p><p>&bull; Deficit Financing <b>does not primarily involve increasing taxes.</b></p><p>&bull; <b>Reducing expenditures is a measure to control deficit but not the main component of Deficit Financing.</b></p><p><b>Further Insight:</b></p><p>&bull; Types of Deficit:</p><p>&#9675; <b>Revenue Deficit = Revenue Expenditure  -  Revenue Receipts</b></p><p>&#9675; <b>Budgetary Deficit = Total Expenditure  -  Total Receipts (excluding net sale of treasury bills)</b></p><p>&#9675; <b>Monetized Deficit (Deficit Financing) = Increase in net RBI credit to the Government</b></p><p>&#9675; <b>Fiscal Deficit = Total Expenditure  -  (Revenue Receipts + Recovery of Loans + Receipts from the sale of assets by the Public Sector enterprises)</b></p><p>&#9675; <b>Primary Deficit = Fiscal Deficit  -  Interest Payments</b></p>",
+    "question_index": 9
+  },
+  {
+    "question": "<span class=\"eqt\"><p>What is one of the primary objectives of the Fiscal Responsibility and Budget Management (FRBM) Act, 2003?</p></span><span class=\"hqt\" style=\"display:none\"><p>&#2352;&#2366;&#2332;&#2325;&#2379;&#2359;&#2368;&#2351; &#2313;&#2340;&#2381;&#2340;&#2352;&#2342;&#2366;&#2351;&#2367;&#2340;&#2381;&#2357; &#2324;&#2352; &#2348;&#2332;&#2335; &#2346;&#2381;&#2352;&#2348;&#2306;&#2343;&#2344; (&#2319;&#2347;&#2310;&#2352;&#2348;&#2368;&#2319;&#2350;) &#2309;&#2343;&#2367;&#2344;&#2367;&#2351;&#2350;, 2003 &#2325;&#2366; &#2319;&#2325; &#2346;&#2381;&#2352;&#2366;&#2341;&#2350;&#2367;&#2325; &#2313;&#2342;&#2381;&#2342;&#2375;&#2358;&#2381;&#2351; &#2325;&#2381;&#2351;&#2366; &#2361;&#2376;?</p></span>",
+    "options": [
+      "<span class=\"eqt\">To increase the fiscal deficit to stimulate economic growth.</span><span class=\"hqt\" style=\"display:none\">&#2310;&#2352;&#2381;&#2341;&#2367;&#2325; &#2357;&#2367;&#2325;&#2366;&#2360; &#2325;&#2379; &#2346;&#2381;&#2352;&#2379;&#2340;&#2381;&#2360;&#2366;&#2361;&#2367;&#2340; &#2325;&#2352;&#2344;&#2375; &#2325;&#2375; &#2354;&#2367;&#2319; &#2352;&#2366;&#2332;&#2325;&#2379;&#2359;&#2368;&#2351; &#2328;&#2366;&#2335;&#2375; &#2350;&#2375;&#2306; &#2357;&#2371;&#2342;&#2381;&#2343;&#2367; &#2325;&#2352;&#2344;&#2366;&#2404;</span>",
+      "<span class=\"eqt\">To ensure transparency in fiscal operations and reduce fiscal deficit.</span><span class=\"hqt\" style=\"display:none\">&#2352;&#2366;&#2332;&#2325;&#2379;&#2359;&#2368;&#2351; &#2346;&#2352;&#2367;&#2330;&#2366;&#2354;&#2344; &#2350;&#2375;&#2306; &#2346;&#2366;&#2352;&#2342;&#2352;&#2381;&#2358;&#2367;&#2340;&#2366; &#2360;&#2369;&#2344;&#2367;&#2358;&#2381;&#2330;&#2367;&#2340; &#2325;&#2352;&#2344;&#2366; &#2340;&#2341;&#2366; &#2352;&#2366;&#2332;&#2325;&#2379;&#2359;&#2368;&#2351; &#2328;&#2366;&#2335;&#2375; &#2325;&#2379; &#2325;&#2350; &#2325;&#2352;&#2344;&#2366;&#2404;</span>",
+      "<span class=\"eqt\">To eliminate all forms of government borrowing.</span><span class=\"hqt\" style=\"display:none\">&#2360;&#2349;&#2368; &#2346;&#2381;&#2352;&#2325;&#2366;&#2352; &#2325;&#2375; &#2360;&#2352;&#2325;&#2366;&#2352;&#2368; &#2313;&#2343;&#2366;&#2352; &#2325;&#2379; &#2360;&#2350;&#2366;&#2346;&#2381;&#2340; &#2325;&#2352;&#2344;&#2366;&#2404;</span>",
+      "<span class=\"eqt\">To expand the Planning Commission's role in budget preparation.</span><span class=\"hqt\" style=\"display:none\">&#2348;&#2332;&#2335; &#2340;&#2376;&#2351;&#2366;&#2352; &#2325;&#2352;&#2344;&#2375; &#2350;&#2375;&#2306; &#2351;&#2379;&#2332;&#2344;&#2366; &#2310;&#2351;&#2379;&#2327; &#2325;&#2368; &#2349;&#2370;&#2350;&#2367;&#2325;&#2366; &#2325;&#2366; &#2357;&#2367;&#2360;&#2381;&#2340;&#2366;&#2352; &#2325;&#2352;&#2344;&#2366;&#2404;</span>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<p>&bull; <b>The FRBM Act aims to reduce, not increase, fiscal deficit.</b></p><p>&bull; <b>One of the primary objectives of the FRBM Act is to ensure transparency in fiscal operations and reduce fiscal deficit.</b></p><p><b> Further Insight:</b></p><p>&bull; <b>Fiscal Responsibility and Budget Management Act, 2003 Also known as FRBM act 2003.</b></p><p>&bull; <b>Objectives:</b></p><p>&#9675; <b>Reduce fiscal and revenue deficits.</b></p><p>&#9675; <b>Achieve inter-generational equity by reducing debt burden.</b></p><p>&#9675; <b>Ensure long-term macroeconomic stability.</b></p><p>&#9675; <b>Better coordination between fiscal and monetary policy.</b></p><p>&#9675; <b>Enhance transparency in fiscal operations.</b></p>",
+    "question_index": 10
+  },
+  {
+    "question": "<span class=\"eqt\"><p>Which statement best describes Zero-Based Budgeting?</p><p>a) It is a method where expenses are justified from a zero base for each budgeting period, rather than adjusting previous budgets.</p><p>b) It involves setting aside a fixed amount of funds for each department without re-evaluating their needs.</p><p>c) It focuses on maintaining a balanced budget by controlling expenses based on previous periods' data.</p></span><span class=\"hqt\" style=\"display:none\"><p>&#2325;&#2380;&#2344; &#2360;&#2366; &#2325;&#2341;&#2344; &#2358;&#2370;&#2344;&#2381;&#2351;-&#2310;&#2343;&#2366;&#2352;&#2367;&#2340; &#2348;&#2332;&#2335; &#2325;&#2366; &#2360;&#2348;&#2360;&#2375; &#2309;&#2330;&#2381;&#2331;&#2366; &#2357;&#2352;&#2381;&#2339;&#2344; &#2325;&#2352;&#2340;&#2366; &#2361;&#2376;?</p><p>a) &#2351;&#2361; &#2319;&#2325; &#2320;&#2360;&#2368; &#2357;&#2367;&#2343;&#2367; &#2361;&#2376; &#2332;&#2367;&#2360;&#2350;&#2375;&#2306; &#2346;&#2367;&#2331;&#2354;&#2375; &#2348;&#2332;&#2335; &#2325;&#2379; &#2360;&#2350;&#2366;&#2351;&#2379;&#2332;&#2367;&#2340; &#2325;&#2352;&#2344;&#2375; &#2325;&#2375; &#2348;&#2332;&#2366;&#2351; &#2346;&#2381;&#2352;&#2340;&#2381;&#2351;&#2375;&#2325; &#2348;&#2332;&#2335; &#2309;&#2357;&#2343;&#2367; &#2325;&#2375; &#2354;&#2367;&#2319; &#2358;&#2370;&#2344;&#2381;&#2351; &#2310;&#2343;&#2366;&#2352; &#2360;&#2375; &#2357;&#2381;&#2351;&#2351; &#2325;&#2379; &#2313;&#2330;&#2367;&#2340; &#2336;&#2361;&#2352;&#2366;&#2351;&#2366; &#2332;&#2366;&#2340;&#2366; &#2361;&#2376;&#2404;</p><p>b) &#2311;&#2360;&#2350;&#2375;&#2306; &#2346;&#2381;&#2352;&#2340;&#2381;&#2351;&#2375;&#2325; &#2357;&#2367;&#2349;&#2366;&#2327; &#2325;&#2375; &#2354;&#2367;&#2319; &#2313;&#2344;&#2325;&#2368; &#2310;&#2357;&#2358;&#2381;&#2351;&#2325;&#2340;&#2366;&#2323;&#2306; &#2325;&#2366; &#2346;&#2369;&#2344;&#2352;&#2381;&#2350;&#2370;&#2354;&#2381;&#2351;&#2366;&#2306;&#2325;&#2344; &#2325;&#2367;&#2319; &#2348;&#2367;&#2344;&#2366; &#2319;&#2325; &#2344;&#2367;&#2358;&#2381;&#2330;&#2367;&#2340; &#2352;&#2366;&#2358;&#2367; &#2344;&#2367;&#2352;&#2381;&#2343;&#2366;&#2352;&#2367;&#2340; &#2325;&#2352;&#2344;&#2366; &#2358;&#2366;&#2350;&#2367;&#2354; &#2361;&#2376;&#2404;</p><p>c) &#2351;&#2361; &#2346;&#2367;&#2331;&#2354;&#2368; &#2309;&#2357;&#2343;&#2367; &#2325;&#2375; &#2337;&#2375;&#2335;&#2366; &#2325;&#2375; &#2310;&#2343;&#2366;&#2352; &#2346;&#2352; &#2357;&#2381;&#2351;&#2351; &#2325;&#2379; &#2344;&#2367;&#2351;&#2306;&#2340;&#2381;&#2352;&#2367;&#2340; &#2325;&#2352;&#2325;&#2375; &#2319;&#2325; &#2360;&#2306;&#2340;&#2369;&#2354;&#2367;&#2340; &#2348;&#2332;&#2335; &#2348;&#2344;&#2366;&#2319; &#2352;&#2326;&#2344;&#2375; &#2346;&#2352; &#2325;&#2375;&#2306;&#2342;&#2381;&#2352;&#2367;&#2340; &#2361;&#2376;&#2404;</p></span>",
+    "options": [
+      "<span class=\"eqt\">Statement a is correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; a &#2360;&#2361;&#2368; &#2361;&#2376;.</span>",
+      "<span class=\"eqt\">Statement b and c is correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; &#2348;&#2368; &#2324;&#2352; &#2360;&#2368; &#2360;&#2361;&#2368; &#2361;&#2376;&#2404;</span>",
+      "<span class=\"eqt\">Statement c is correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; c &#2360;&#2361;&#2368; &#2361;&#2376;.</span>",
+      "<span class=\"eqt\">Statements a and b are correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; a &#2324;&#2352; b &#2360;&#2361;&#2368; &#2361;&#2376;&#2306;&#2404;</span>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<p>&bull; <b>Zero-Based Budgeting requires justifying all expenses from a zero base each period, rather than just adjusting previous budgets.</b></p><p>&bull; Zero-Based Budgeting involves evaluating needs from scratch, not just setting aside fixed funds.</p><p>&bull; Zero-Based Budgeting does not focus on maintaining a balanced budget based on past data.</p><p>Further Insight:</p><p>&bull; <b>Zero-Based Budgeting</b></p><p>&#9675; Budgeting method where all expenses are evaluated each period and must be justified.</p><p>&#9675; It starts from a zero base; every function is analyzed for needs and costs.</p><p>&bull; <b>Outcome Budget </b></p><p>&#9675; Analyzes the progress and outcomes of government programs.</p><p>&#9675; It was Introduced in 2005 in India.</p><p>&bull; <b>Gender Budgeting: </b></p><p>&#9675; Gender-based assessment of budgets, incorporating gender perspectives and promoting gender equality.</p><p>&#9675; It allocates funds for development, welfare, and empowerment schemes for females.</p>",
+    "question_index": 11
+  },
+  {
+    "question": "<span class=\"eqt\"><p>Which of the following describes a Balanced Budget?</p><p>a) A Balanced Budget occurs when the government's expenditure surpasses its revenue for a fiscal year.</p><p>b) It is achieved when expected revenues equal anticipated expenditures for a specific fiscal year.</p><p>c) It refers to a situation where the government has a surplus in its revenue receipts.</p></span><span class=\"hqt\" style=\"display:none\"><p>&#2344;&#2367;&#2350;&#2381;&#2344;&#2354;&#2367;&#2326;&#2367;&#2340; &#2350;&#2375;&#2306; &#2360;&#2375; &#2325;&#2380;&#2344; &#2360;&#2306;&#2340;&#2369;&#2354;&#2367;&#2340; &#2348;&#2332;&#2335; &#2325;&#2366; &#2357;&#2352;&#2381;&#2339;&#2344; &#2325;&#2352;&#2340;&#2366; &#2361;&#2376;?</p><p>a) &#2360;&#2306;&#2340;&#2369;&#2354;&#2367;&#2340; &#2348;&#2332;&#2335; &#2340;&#2348; &#2361;&#2379;&#2340;&#2366; &#2361;&#2376; &#2332;&#2348; &#2360;&#2352;&#2325;&#2366;&#2352; &#2325;&#2366; &#2357;&#2381;&#2351;&#2351; &#2325;&#2367;&#2360;&#2368; &#2357;&#2367;&#2340;&#2381;&#2340;&#2368;&#2351; &#2357;&#2352;&#2381;&#2359; &#2325;&#2375; &#2354;&#2367;&#2319; &#2313;&#2360;&#2325;&#2375; &#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2360;&#2375; &#2309;&#2343;&#2367;&#2325; &#2361;&#2379;&#2340;&#2366; &#2361;&#2376;&#2404;</p><p>b) &#2351;&#2361; &#2340;&#2348; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340; &#2361;&#2379;&#2340;&#2366; &#2361;&#2376; &#2332;&#2348; &#2309;&#2346;&#2375;&#2325;&#2381;&#2359;&#2367;&#2340; &#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2325;&#2367;&#2360;&#2368; &#2357;&#2367;&#2358;&#2367;&#2359;&#2381;&#2335; &#2357;&#2367;&#2340;&#2381;&#2340;&#2368;&#2351; &#2357;&#2352;&#2381;&#2359; &#2325;&#2375; &#2354;&#2367;&#2319; &#2346;&#2381;&#2352;&#2340;&#2381;&#2351;&#2366;&#2358;&#2367;&#2340; &#2357;&#2381;&#2351;&#2351; &#2325;&#2375; &#2348;&#2352;&#2366;&#2348;&#2352; &#2361;&#2379;&#2340;&#2366; &#2361;&#2376;&#2404;</p><p>c) &#2351;&#2361; &#2313;&#2360; &#2360;&#2381;&#2341;&#2367;&#2340;&#2367; &#2325;&#2379; &#2360;&#2306;&#2342;&#2352;&#2381;&#2349;&#2367;&#2340; &#2325;&#2352;&#2340;&#2366; &#2361;&#2376; &#2332;&#2361;&#2366;&#2306; &#2360;&#2352;&#2325;&#2366;&#2352; &#2325;&#2375; &#2346;&#2366;&#2360; &#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2350;&#2375;&#2306; &#2309;&#2343;&#2367;&#2358;&#2375;&#2359; &#2361;&#2379;&#2340;&#2366; &#2361;&#2376;&#2404;</p></span>",
+    "options": [
+      "<span class=\"eqt\">Statement a is correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; a &#2360;&#2361;&#2368; &#2361;&#2376;.</span>",
+      "<span class=\"eqt\">Statement b is correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; b &#2360;&#2361;&#2368; &#2361;&#2376;.</span>",
+      "<span class=\"eqt\">Statement c is correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; c &#2360;&#2361;&#2368; &#2361;&#2376;.</span>",
+      "<span class=\"eqt\">Statements a and b are correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; a &#2324;&#2352; b &#2360;&#2361;&#2368; &#2361;&#2376;&#2306;&#2404;</span>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<p>&bull; When the government's expenditure surpasses its revenue for a fiscal year know as Deficit Budget.</p><p>&bull; <b>A Balanced Budget is when expected revenues equal anticipated expenditures</b>.</p><p>&bull; The government has a surplus in its revenue receipts describing a Surplus Budget</p>",
+    "question_index": 12
+  },
+  {
+    "question": "<span class=\"eqt\"><p>Which statement correctly explains Primary Deficit?</p><p>a) Primary Deficit equals fiscal deficit minus interest payments and represents the gap in current expenditures excluding past loan interest.</p><p>b) It is the total amount of money borrowed by the government in a fiscal year.</p><p>c) Primary Deficit is the difference between revenue receipts and total government expenditure.</p></span><span class=\"hqt\" style=\"display:none\"><p>&#2325;&#2380;&#2344; &#2360;&#2366; &#2325;&#2341;&#2344; &#2346;&#2381;&#2352;&#2366;&#2341;&#2350;&#2367;&#2325; &#2328;&#2366;&#2335;&#2375; &#2325;&#2368; &#2360;&#2361;&#2368; &#2357;&#2381;&#2351;&#2366;&#2326;&#2381;&#2351;&#2366; &#2325;&#2352;&#2340;&#2366; &#2361;&#2376;?</p><p>a) &#2346;&#2381;&#2352;&#2366;&#2341;&#2350;&#2367;&#2325; &#2328;&#2366;&#2335;&#2366; &#2352;&#2366;&#2332;&#2325;&#2379;&#2359;&#2368;&#2351; &#2328;&#2366;&#2335;&#2375; &#2350;&#2375;&#2306; &#2360;&#2375; &#2348;&#2381;&#2351;&#2366;&#2332; &#2349;&#2369;&#2327;&#2340;&#2366;&#2344; &#2325;&#2379; &#2328;&#2335;&#2366;&#2344;&#2375; &#2325;&#2375; &#2348;&#2352;&#2366;&#2348;&#2352; &#2361;&#2379;&#2340;&#2366; &#2361;&#2376; &#2324;&#2352; &#2346;&#2367;&#2331;&#2354;&#2375; &#2315;&#2339; &#2348;&#2381;&#2351;&#2366;&#2332; &#2325;&#2379; &#2331;&#2379;&#2337;&#2364;&#2325;&#2352; &#2357;&#2352;&#2381;&#2340;&#2350;&#2366;&#2344; &#2357;&#2381;&#2351;&#2351; &#2325;&#2375; &#2309;&#2306;&#2340;&#2352; &#2325;&#2379; &#2342;&#2352;&#2381;&#2358;&#2366;&#2340;&#2366; &#2361;&#2376;&#2404;</p><p>b) &#2351;&#2361; &#2319;&#2325; &#2357;&#2367;&#2340;&#2381;&#2340;&#2368;&#2351; &#2357;&#2352;&#2381;&#2359; &#2350;&#2375;&#2306; &#2360;&#2352;&#2325;&#2366;&#2352; &#2342;&#2381;&#2357;&#2366;&#2352;&#2366; &#2313;&#2343;&#2366;&#2352; &#2354;&#2368; &#2327;&#2312; &#2325;&#2369;&#2354; &#2352;&#2366;&#2358;&#2367; &#2361;&#2376;&#2404;</p><p>c) &#2346;&#2381;&#2352;&#2366;&#2341;&#2350;&#2367;&#2325; &#2328;&#2366;&#2335;&#2366; &#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2324;&#2352; &#2325;&#2369;&#2354; &#2360;&#2352;&#2325;&#2366;&#2352;&#2368; &#2357;&#2381;&#2351;&#2351; &#2325;&#2375; &#2348;&#2368;&#2330; &#2325;&#2366; &#2309;&#2306;&#2340;&#2352; &#2361;&#2376;&#2404;</p></span>",
+    "options": [
+      "<span class=\"eqt\">Statement a is correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; a &#2360;&#2361;&#2368; &#2361;&#2376;.</span>",
+      "<span class=\"eqt\">Statement b is correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; b &#2360;&#2361;&#2368; &#2361;&#2376;.</span>",
+      "<span class=\"eqt\">Statement c is correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; c &#2360;&#2361;&#2368; &#2361;&#2376;.</span>",
+      "<span class=\"eqt\">Statements a and c are correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; a &#2324;&#2352; c &#2360;&#2361;&#2368; &#2361;&#2376;&#2306;&#2404;</span>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<p>&bull; <b>Primary Deficit is calculated as Fiscal Deficit minus interest payments, focusing on the gap excluding past interest.</b></p><p>&bull; Total borrowing is related to Fiscal Deficit, not Primary Deficit.</p><p>&bull; Primary Deficit is not simply the difference between revenue receipts and total expenditure.</p>",
+    "question_index": 13
+  },
+  {
+    "question": "<span class=\"eqt\"><p>Which of the following is a key objective of the Fiscal Responsibility and Budget Management (FRBM) Act of 2003?</p><p>a) To eliminate all forms of government borrowing.</p><p>b) To reduce the fiscal deficit and ensure long-term macroeconomic stability.</p><p>c) To expand the role of the NITI Aayog in budget preparation.</p></span><span class=\"hqt\" style=\"display:none\"><p>&#2344;&#2367;&#2350;&#2381;&#2344;&#2354;&#2367;&#2326;&#2367;&#2340; &#2350;&#2375;&#2306; &#2360;&#2375; &#2325;&#2380;&#2344; &#2360;&#2366; &#2352;&#2366;&#2332;&#2325;&#2379;&#2359;&#2368;&#2351; &#2313;&#2340;&#2381;&#2340;&#2352;&#2342;&#2366;&#2351;&#2367;&#2340;&#2381;&#2357; &#2324;&#2352; &#2348;&#2332;&#2335; &#2346;&#2381;&#2352;&#2348;&#2306;&#2343;&#2344; (&#2319;&#2347;&#2310;&#2352;&#2348;&#2368;&#2319;&#2350;) &#2309;&#2343;&#2367;&#2344;&#2367;&#2351;&#2350; 2003 &#2325;&#2366; &#2350;&#2369;&#2326;&#2381;&#2351; &#2313;&#2342;&#2381;&#2342;&#2375;&#2358;&#2381;&#2351; &#2361;&#2376;?</p><p>a) &#2360;&#2349;&#2368; &#2346;&#2381;&#2352;&#2325;&#2366;&#2352; &#2325;&#2375; &#2360;&#2352;&#2325;&#2366;&#2352;&#2368; &#2313;&#2343;&#2366;&#2352; &#2325;&#2379; &#2360;&#2350;&#2366;&#2346;&#2381;&#2340; &#2325;&#2352;&#2344;&#2366;&#2404;</p><p>b) &#2352;&#2366;&#2332;&#2325;&#2379;&#2359;&#2368;&#2351; &#2328;&#2366;&#2335;&#2375; &#2325;&#2379; &#2325;&#2350; &#2325;&#2352;&#2344;&#2366; &#2324;&#2352; &#2342;&#2368;&#2352;&#2381;&#2328;&#2325;&#2366;&#2354;&#2367;&#2325; &#2357;&#2381;&#2351;&#2366;&#2346;&#2325; &#2310;&#2352;&#2381;&#2341;&#2367;&#2325; &#2360;&#2381;&#2341;&#2367;&#2352;&#2340;&#2366; &#2360;&#2369;&#2344;&#2367;&#2358;&#2381;&#2330;&#2367;&#2340; &#2325;&#2352;&#2344;&#2366;&#2404;</p><p>c) &#2348;&#2332;&#2335; &#2340;&#2376;&#2351;&#2366;&#2352; &#2325;&#2352;&#2344;&#2375; &#2350;&#2375;&#2306; &#2344;&#2368;&#2340;&#2367; &#2310;&#2351;&#2379;&#2327; &#2325;&#2368; &#2349;&#2370;&#2350;&#2367;&#2325;&#2366; &#2325;&#2366; &#2357;&#2367;&#2360;&#2381;&#2340;&#2366;&#2352; &#2325;&#2352;&#2344;&#2366;&#2404;</p></span>",
+    "options": [
+      "<span class=\"eqt\">Statement a is correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; a &#2360;&#2361;&#2368; &#2361;&#2376;.</span>",
+      "<span class=\"eqt\">Statement b is correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; b &#2360;&#2361;&#2368; &#2361;&#2376;.</span>",
+      "<span class=\"eqt\">Statement c is correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; c &#2360;&#2361;&#2368; &#2361;&#2376;.</span>",
+      "<span class=\"eqt\">Statements a and b are correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; a &#2324;&#2352; b &#2360;&#2361;&#2368; &#2361;&#2376;&#2306;&#2404;</span>"
+    ],
+    "correct_option_id": 1,
+    "solution": "<p>&bull; The FRBM Act does not aim to eliminate government borrowing but to manage it more effectively.</p><p>&bull; <b>A primary objective of the FRBM Act is to reduce fiscal deficit and ensure long-term macroeconomic stability.</b></p><p>&bull; The FRBM Act does not focus on expanding the NITI Aayog's role.</p><p><b>Further Insight: </b></p><p>&bull; Fiscal Responsibility and Budget Management Act, 2003 Also known as FRBM act 2003.</p><p>&bull; Objectives:</p><p>&#9675; Reduce fiscal and revenue deficits.</p><p>&#9675; Achieve inter-generational equity by reducing debt burden.</p><p>&#9675; Ensure long-term macroeconomic stability.</p><p>&#9675; Better coordination between fiscal and monetary policy.</p><p>&#9675; Enhance transparency in fiscal operations.</p>",
+    "question_index": 14
+  },
+  {
+    "question": "<span class=\"eqt\"><p>Match the following types of Budget Receipts with their definitions:</p><table style=\"border-collapse:collapse;\"><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">Column 1</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">Column 2</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">i. Tax Revenue</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">a. Income generated by the government from dividends, fees, and fines</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">ii. Non-Tax Revenue</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">b. Money the government receives from borrowing or disinvestment</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">iii. Capital Receipts</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">c. Money collected through taxes like income tax and GST</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">iv. Revenue Receipts</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">d. Receipts that don't impact government assets or liabilities</td></tr></table></span><span class=\"hqt\" style=\"display:none\"><p>&#2344;&#2367;&#2350;&#2381;&#2344;&#2354;&#2367;&#2326;&#2367;&#2340; &#2346;&#2381;&#2352;&#2325;&#2366;&#2352; &#2325;&#2375; &#2348;&#2332;&#2335; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2325;&#2366; &#2313;&#2344;&#2325;&#2368; &#2346;&#2352;&#2367;&#2349;&#2366;&#2359;&#2366;&#2323;&#2306; &#2360;&#2375; &#2350;&#2367;&#2354;&#2366;&#2344; &#2325;&#2352;&#2375;&#2306;:</p><table style=\"border-collapse:collapse;\"><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">&#2360;&#2381;&#2340;&#2306;&#2349; 1</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">&#2360;&#2381;&#2340;&#2306;&#2349; 2</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">i. &#2325;&#2352; &#2352;&#2366;&#2332;&#2360;&#2381;&#2357;</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">a. &#2354;&#2366;&#2349;&#2366;&#2306;&#2358;, &#2358;&#2369;&#2354;&#2381;&#2325; &#2324;&#2352; &#2332;&#2369;&#2352;&#2381;&#2350;&#2366;&#2344;&#2375; &#2360;&#2375; &#2360;&#2352;&#2325;&#2366;&#2352; &#2342;&#2381;&#2357;&#2366;&#2352;&#2366; &#2309;&#2352;&#2381;&#2332;&#2367;&#2340; &#2310;&#2351;</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">ii. &#2327;&#2376;&#2352;-&#2325;&#2352; &#2352;&#2366;&#2332;&#2360;&#2381;&#2357;</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">b. &#2360;&#2352;&#2325;&#2366;&#2352; &#2325;&#2379; &#2313;&#2343;&#2366;&#2352; &#2351;&#2366; &#2357;&#2367;&#2344;&#2367;&#2357;&#2375;&#2358; &#2360;&#2375; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340; &#2343;&#2344;</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">iii. &#2346;&#2370;&#2306;&#2332;&#2368; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2366;&#2306;</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">c. &#2310;&#2351;&#2325;&#2352; &#2324;&#2352; &#2332;&#2368;&#2319;&#2360;&#2335;&#2368; &#2332;&#2376;&#2360;&#2375; &#2325;&#2352;&#2379;&#2306; &#2325;&#2375; &#2350;&#2366;&#2343;&#2381;&#2351;&#2350; &#2360;&#2375; &#2319;&#2325;&#2340;&#2381;&#2352; &#2343;&#2344;</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">iv. &#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2366;&#2306;</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">d. &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2366;&#2306; &#2332;&#2379; &#2360;&#2352;&#2325;&#2366;&#2352;&#2368; &#2346;&#2352;&#2367;&#2360;&#2306;&#2346;&#2340;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2351;&#2366; &#2342;&#2375;&#2344;&#2342;&#2366;&#2352;&#2367;&#2351;&#2379;&#2306; &#2325;&#2379; &#2346;&#2381;&#2352;&#2349;&#2366;&#2357;&#2367;&#2340; &#2344;&#2361;&#2368;&#2306; &#2325;&#2352;&#2340;&#2368; &#2361;&#2376;&#2306;</td></tr></table></span>",
+    "options": [
+      "<span class=\"eqt\">i-c, ii-a, iii-b, iv-d</span><span class=\"hqt\" style=\"display:none\">i-c, ii-a, iii-b, iv-d</span>",
+      "<span class=\"eqt\">i-a, ii-b, iii-c, iv-d</span><span class=\"hqt\" style=\"display:none\">i-a, ii-b, iii-c, iv-d</span>",
+      "<span class=\"eqt\">i-b, ii-c, iii-a, iv-d</span><span class=\"hqt\" style=\"display:none\">i-b, ii-c, iii-a, iv-d</span>",
+      "<span class=\"eqt\">i-d, ii-a, iii-b, iv-c</span><span class=\"hqt\" style=\"display:none\">i-d, ii-a, iii-b, iv-c</span>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<p>&bull; Tax Revenue refers to money collected from taxes imposed on individuals or companies, such as income tax and corporate tax.</p><p>&bull; Non-Tax Revenue is revenue earned through sources other than taxes, such as fees, fines, and dividends from government-owned companies.</p><p>&bull; Capital Receipts represent money the government receives which either increases its liabilities (like borrowings) or reduces its assets (like selling shares of public sector companies).</p><p>&bull; Revenue Receipts do not affect the assets or liabilities of the government; it includes tax and non-tax revenue but does not include capital transactions.</p>",
+    "question_index": 15
+  },
+  {
+    "question": "<span class=\"eqt\"><p>Match the following types of deficits with their descriptions:</p><table style=\"border-collapse:collapse;\"><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>Column 1</b></td><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>Column 2</b></td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">i. Revenue Deficit</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">a. Difference between total expenditure and total receipts excluding borrowings</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">ii. Fiscal Deficit</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">b. Excess of revenue expenditure over revenue receipts</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">iii. Primary Deficit</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">c. Fiscal deficit minus interest payments</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">iv. Budget Deficit</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">d. Shortfall in the total budget receipts compared to the total budget expenditures</td></tr></table></span><span class=\"hqt\" style=\"display:none\"><p>&#2344;&#2367;&#2350;&#2381;&#2344;&#2354;&#2367;&#2326;&#2367;&#2340; &#2346;&#2381;&#2352;&#2325;&#2366;&#2352; &#2325;&#2375; &#2328;&#2366;&#2335;&#2375; &#2325;&#2366; &#2313;&#2344;&#2325;&#2375; &#2357;&#2367;&#2357;&#2352;&#2339; &#2360;&#2375; &#2350;&#2367;&#2354;&#2366;&#2344; &#2325;&#2352;&#2375;&#2306;:</p><table style=\"border-collapse:collapse;\"><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">&#2360;&#2381;&#2340;&#2306;&#2349; 1</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">&#2360;&#2381;&#2340;&#2306;&#2349; 2</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">i. &#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2328;&#2366;&#2335;&#2366;</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">a. &#2325;&#2369;&#2354; &#2357;&#2381;&#2351;&#2351; &#2324;&#2352; &#2313;&#2343;&#2366;&#2352; &#2325;&#2379; &#2331;&#2379;&#2337;&#2364;&#2325;&#2352; &#2325;&#2369;&#2354; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2325;&#2375; &#2348;&#2368;&#2330; &#2309;&#2306;&#2340;&#2352;</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">ii. &#2352;&#2366;&#2332;&#2325;&#2379;&#2359;&#2368;&#2351; &#2328;&#2366;&#2335;&#2366;</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">b. &#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2325;&#2368; &#2340;&#2369;&#2354;&#2344;&#2366; &#2350;&#2375;&#2306; &#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2357;&#2381;&#2351;&#2351; &#2325;&#2366; &#2310;&#2343;&#2367;&#2325;&#2381;&#2351;</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">iii. &#2346;&#2381;&#2352;&#2366;&#2341;&#2350;&#2367;&#2325; &#2328;&#2366;&#2335;&#2366;</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">c. &#2352;&#2366;&#2332;&#2325;&#2379;&#2359;&#2368;&#2351; &#2328;&#2366;&#2335;&#2366; &#2350;&#2366;&#2311;&#2344;&#2360; &#2348;&#2381;&#2351;&#2366;&#2332; &#2349;&#2369;&#2327;&#2340;&#2366;&#2344;</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">iv. &#2348;&#2332;&#2335; &#2328;&#2366;&#2335;&#2366;</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">&#2328;. &#2325;&#2369;&#2354; &#2348;&#2332;&#2335; &#2357;&#2381;&#2351;&#2351; &#2325;&#2368; &#2340;&#2369;&#2354;&#2344;&#2366; &#2350;&#2375;&#2306; &#2325;&#2369;&#2354; &#2348;&#2332;&#2335; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2350;&#2375;&#2306; &#2325;&#2350;&#2368;</td></tr></table></span>",
+    "options": [
+      "<span class=\"eqt\">i-b, ii-a, iii-c, iv-d</span><span class=\"hqt\" style=\"display:none\">i-b, ii-a, iii-c, iv-d</span>",
+      "<span class=\"eqt\">i-d, ii-b, iii-a, iv-c</span><span class=\"hqt\" style=\"display:none\">i-d, ii-b, iii-a, iv-c</span>",
+      "<span class=\"eqt\">i-a, ii-d, iii-b, iv-c</span><span class=\"hqt\" style=\"display:none\">i-a, ii-d, iii-b, iv-c</span>",
+      "<span class=\"eqt\">i-c, ii-a, iii-d, iv-b</span><span class=\"hqt\" style=\"display:none\">i-c, ii-a, iii-d, iv-b</span>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<p>&bull; <b>Revenue Deficit </b>occurs when the government's revenue expenditure exceeds its revenue receipts, indicating a shortfall in the income generated from taxes and non-tax revenues.</p><p>&bull; <b>Fiscal Deficit </b>is the difference between the government's total expenditure (including capital and revenue expenditure) and total receipts (excluding borrowings). It reflects the overall gap the government needs to borrow.</p><p>&bull; <b>Primary Deficit </b>is derived from fiscal deficit after subtracting interest payments. It represents the government's deficit excluding the burden of interest payments on past loans.</p><p>&bull; <b>Budget Deficit</b> refers to when the total receipts of the government are less than the total expenditures, leading to an overall shortfall.</p>",
+    "question_index": 16
+  },
+  {
+    "question": "<span class=\"eqt\"><p>Match the following budgeting terms with their definitions:</p><table style=\"border-collapse:collapse;\"><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>Column 1</b></td><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>Column 2</b></td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">i. Outcome Budget</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">a. Planning that ensures expenditure is evaluated each time a new budget is made</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">ii. Zero-Based Budgeting</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">b. Analyzes the progress of each ministry and department</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">iii. Gender Budgeting</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">c. Targets spending to promote gender equality</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">iv. Balanced Budget</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">d. When expected expenditure is equal to anticipated receipts</td></tr></table></span><span class=\"hqt\" style=\"display:none\"><p>&#2344;&#2367;&#2350;&#2381;&#2344;&#2354;&#2367;&#2326;&#2367;&#2340; &#2348;&#2332;&#2335; &#2358;&#2348;&#2381;&#2342;&#2379;&#2306; &#2325;&#2379; &#2313;&#2344;&#2325;&#2368; &#2346;&#2352;&#2367;&#2349;&#2366;&#2359;&#2366;&#2323;&#2306; &#2360;&#2375; &#2350;&#2367;&#2354;&#2366;&#2319;&#2306;:</p><table style=\"border-collapse:collapse;\"><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">&#2360;&#2381;&#2340;&#2306;&#2349; 1</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">&#2360;&#2381;&#2340;&#2306;&#2349; 2</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">i. &#2346;&#2352;&#2367;&#2339;&#2366;&#2350; &#2348;&#2332;&#2335;</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">a. &#2351;&#2379;&#2332;&#2344;&#2366; &#2332;&#2379; &#2351;&#2361; &#2360;&#2369;&#2344;&#2367;&#2358;&#2381;&#2330;&#2367;&#2340; &#2325;&#2352;&#2340;&#2368; &#2361;&#2376; &#2325;&#2367; &#2361;&#2352; &#2348;&#2366;&#2352; &#2344;&#2351;&#2366; &#2348;&#2332;&#2335; &#2348;&#2344;&#2366;&#2319; &#2332;&#2366;&#2344;&#2375; &#2346;&#2352; &#2357;&#2381;&#2351;&#2351; &#2325;&#2366; &#2350;&#2370;&#2354;&#2381;&#2351;&#2366;&#2306;&#2325;&#2344; &#2325;&#2367;&#2351;&#2366; &#2332;&#2366;&#2319;</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">ii. &#2358;&#2370;&#2344;&#2381;&#2351;-&#2310;&#2343;&#2366;&#2352;&#2367;&#2340; &#2348;&#2332;&#2335;</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">b. &#2346;&#2381;&#2352;&#2340;&#2381;&#2351;&#2375;&#2325; &#2350;&#2306;&#2340;&#2381;&#2352;&#2366;&#2354;&#2351; &#2324;&#2352; &#2357;&#2367;&#2349;&#2366;&#2327; &#2325;&#2368; &#2346;&#2381;&#2352;&#2327;&#2340;&#2367; &#2325;&#2366; &#2357;&#2367;&#2358;&#2381;&#2354;&#2375;&#2359;&#2339; &#2325;&#2352;&#2340;&#2366; &#2361;&#2376;</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">iii. &#2354;&#2367;&#2306;&#2327; &#2348;&#2332;&#2335;</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">c. &#2354;&#2376;&#2306;&#2327;&#2367;&#2325; &#2360;&#2350;&#2366;&#2344;&#2340;&#2366; &#2325;&#2379; &#2348;&#2338;&#2364;&#2366;&#2357;&#2366; &#2342;&#2375;&#2344;&#2375; &#2325;&#2375; &#2354;&#2367;&#2319; &#2326;&#2352;&#2381;&#2330; &#2325;&#2379; &#2354;&#2325;&#2381;&#2359;&#2367;&#2340; &#2325;&#2352;&#2340;&#2366; &#2361;&#2376;</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">iv. &#2360;&#2306;&#2340;&#2369;&#2354;&#2367;&#2340; &#2348;&#2332;&#2335;</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">d. &#2332;&#2348; &#2309;&#2346;&#2375;&#2325;&#2381;&#2359;&#2367;&#2340; &#2357;&#2381;&#2351;&#2351; &#2346;&#2381;&#2352;&#2340;&#2381;&#2351;&#2366;&#2358;&#2367;&#2340; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2325;&#2375; &#2348;&#2352;&#2366;&#2348;&#2352; &#2361;&#2379;</td></tr></table></span>",
+    "options": [
+      "<span class=\"eqt\">i-b, ii-a, iii-c, iv-d</span><span class=\"hqt\" style=\"display:none\">i-b, ii-a, iii-c, iv-d</span>",
+      "<span class=\"eqt\">i-a, ii-b, iii-d, iv-c</span><span class=\"hqt\" style=\"display:none\">i-a, ii-b, iii-d, iv-c</span>",
+      "<span class=\"eqt\">i-c, ii-d, iii-b, iv-a</span><span class=\"hqt\" style=\"display:none\">i-c, ii-d, iii-b, iv-a</span>",
+      "<span class=\"eqt\">i-d, ii-a, iii-c, iv-b</span><span class=\"hqt\" style=\"display:none\">i-d, ii-a, iii-c, iv-b</span>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<p>&bull; <b>Outcome Budget</b> is a detailed analysis of how effectively the money allocated to different ministries and departments has been used in terms of meeting specific outcomes and goals.</p><p>&bull; <b>Zero-Based Budgeting</b> starts from a <b>zero base</b> every financial period, meaning each department or ministry must justify all its expenses anew, irrespective of previous budgets.</p><p>&bull; <b>Gender Budgeting</b> ensures that the budget focuses on <b>gender equality</b>, and specific financial allocations are made for <b>women's empowerment</b> and programs targeted at improving their socio-economic condition.</p><p>&bull; A <b>Balanced Budget</b> occurs when the government's <b>anticipated receipts</b> are equal to its <b>planned expenditure</b>, leading to neither a deficit nor a surplus.</p>",
+    "question_index": 17
+  },
+  {
+    "question": "<span class=\"eqt\"><p>Match the following terms with their relevant concepts:</p><table style=\"border-collapse:collapse;\"><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>Column 1</b></td><td align=\"left\" style=\"border:1px solid black;padding:5px;\"><b>Column 2</b></td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">i. Deficit Financing</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">a. Borrowing through Treasury Bills from the Reserve Bank of India</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">ii. FRBM Act</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">b. Aiming to reduce fiscal and revenue deficits while improving macroeconomic stability</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">iii. NK Singh Committee</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">c. Targeted fiscal deficit of 3% of GDP by March 31, 2020</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">iv. Fiscal Deficit</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">d. Gap between government's expenditure requirements and its receipts</td></tr></table></span><span class=\"hqt\" style=\"display:none\"><p>&#2344;&#2367;&#2350;&#2381;&#2344;&#2354;&#2367;&#2326;&#2367;&#2340; &#2358;&#2348;&#2381;&#2342;&#2379;&#2306; &#2325;&#2379; &#2313;&#2344;&#2325;&#2368; &#2346;&#2381;&#2352;&#2366;&#2360;&#2306;&#2327;&#2367;&#2325; &#2309;&#2357;&#2343;&#2366;&#2352;&#2339;&#2366;&#2323;&#2306; &#2360;&#2375; &#2350;&#2367;&#2354;&#2366;&#2319;&#2306;:</p><table style=\"border-collapse:collapse;\"><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">&#2360;&#2381;&#2340;&#2306;&#2349; 1</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">&#2360;&#2381;&#2340;&#2306;&#2349; 2</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">i. &#2328;&#2366;&#2335;&#2375; &#2325;&#2366; &#2357;&#2367;&#2340;&#2381;&#2340;&#2346;&#2379;&#2359;&#2339;</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">a. &#2349;&#2366;&#2352;&#2340;&#2368;&#2351; &#2352;&#2367;&#2332;&#2352;&#2381;&#2357; &#2348;&#2376;&#2306;&#2325; &#2360;&#2375; &#2335;&#2381;&#2352;&#2375;&#2332;&#2352;&#2368; &#2348;&#2367;&#2354; &#2325;&#2375; &#2350;&#2366;&#2343;&#2381;&#2351;&#2350; &#2360;&#2375; &#2313;&#2343;&#2366;&#2352; &#2354;&#2375;&#2344;&#2366;</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">ii. FRBM &#2309;&#2343;&#2367;&#2344;&#2367;&#2351;&#2350;</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">b. &#2357;&#2381;&#2351;&#2366;&#2346;&#2325; &#2310;&#2352;&#2381;&#2341;&#2367;&#2325; &#2360;&#2381;&#2341;&#2367;&#2352;&#2340;&#2366; &#2350;&#2375;&#2306; &#2360;&#2369;&#2343;&#2366;&#2352; &#2325;&#2352;&#2340;&#2375; &#2361;&#2369;&#2319; &#2352;&#2366;&#2332;&#2325;&#2379;&#2359;&#2368;&#2351; &#2324;&#2352; &#2352;&#2366;&#2332;&#2360;&#2381;&#2357; &#2328;&#2366;&#2335;&#2375; &#2325;&#2379; &#2325;&#2350; &#2325;&#2352;&#2344;&#2375; &#2325;&#2366; &#2354;&#2325;&#2381;&#2359;&#2381;&#2351;</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">iii. &#2319;&#2344;&#2325;&#2375; &#2360;&#2367;&#2306;&#2361; &#2360;&#2350;&#2367;&#2340;&#2367;</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">c. 31 &#2350;&#2366;&#2352;&#2381;&#2330; 2020 &#2340;&#2325; &#2360;&#2325;&#2354; &#2328;&#2352;&#2375;&#2354;&#2370; &#2313;&#2340;&#2381;&#2346;&#2366;&#2342; &#2325;&#2375; 3% &#2325;&#2366; &#2354;&#2325;&#2381;&#2359;&#2367;&#2340; &#2352;&#2366;&#2332;&#2325;&#2379;&#2359;&#2368;&#2351; &#2328;&#2366;&#2335;&#2366;</td></tr><tr><td align=\"left\" style=\"border:1px solid black;padding:5px;\">iv. &#2352;&#2366;&#2332;&#2325;&#2379;&#2359;&#2368;&#2351; &#2328;&#2366;&#2335;&#2366;</td><td align=\"left\" style=\"border:1px solid black;padding:5px;\">&#2328;. &#2360;&#2352;&#2325;&#2366;&#2352; &#2325;&#2368; &#2357;&#2381;&#2351;&#2351; &#2310;&#2357;&#2358;&#2381;&#2351;&#2325;&#2340;&#2366;&#2323;&#2306; &#2324;&#2352; &#2313;&#2360;&#2325;&#2368; &#2346;&#2381;&#2352;&#2366;&#2346;&#2381;&#2340;&#2367;&#2351;&#2379;&#2306; &#2325;&#2375; &#2348;&#2368;&#2330; &#2325;&#2366; &#2309;&#2306;&#2340;&#2352;</td></tr></table></span>",
+    "options": [
+      "<span class=\"eqt\">i-a, ii-b, iii-c, iv-d</span><span class=\"hqt\" style=\"display:none\">i-a, ii-b, iii-c, iv-d</span>",
+      "<span class=\"eqt\">i-d, ii-c, iii-a, iv-b</span><span class=\"hqt\" style=\"display:none\">i-d, ii-c, iii-a, iv-b</span>",
+      "<span class=\"eqt\">i-b, ii-d, iii-c, iv-a</span><span class=\"hqt\" style=\"display:none\">i-b, ii-d, iii-c, iv-a</span>",
+      "<span class=\"eqt\">i-c, ii-a, iii-d, iv-b</span><span class=\"hqt\" style=\"display:none\">i-c, ii-a, iii-d, iv-b</span>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<p>&bull; Deficit Financing refers to the method used by the government to finance its deficits by borrowing from the Reserve Bank of India through Treasury Bills or utilizing cash reserves.</p><p>&bull; The FRBM Act (Fiscal Responsibility and Budget Management Act) was introduced to enforce fiscal discipline and gradually reduce India's fiscal deficit and revenue deficit to maintain economic stability.</p><p>&bull; The NK Singh Committee was set up to review the targets under the FRBM Act and recommended the fiscal deficit should be brought down to 3% of GDP by March 2020, and further down to 2.5% by 2023.</p><p>&bull; Fiscal Deficit is the overall shortfall in government finances, calculated as the difference between total expenditure and total receipts (excluding borrowing). It reflects how much the government needs to borrow to meet its spending.</p>",
+    "question_index": 18
+  },
+  {
+    "question": "<span class=\"eqt\"><p>Which of the following Statement correct regarding the first Union Budget?</p><p>a) The first Union Budget was presented in 1947 by the then Finance Minister, R. K. Shanmukham Chetty.</p><p>b) The first Union Budget was presented in 1950 by Jawaharlal Nehru.</p><p>c) The first Union Budget was presented in 1951 by the then Finance Minister, K. L. Shrimali.</p></span><span class=\"hqt\" style=\"display:none\"><p>&#2346;&#2361;&#2354;&#2375; &#2325;&#2375;&#2306;&#2342;&#2381;&#2352;&#2368;&#2351; &#2348;&#2332;&#2335; &#2325;&#2375; &#2360;&#2306;&#2348;&#2306;&#2343; &#2350;&#2375;&#2306; &#2344;&#2367;&#2350;&#2381;&#2344;&#2354;&#2367;&#2326;&#2367;&#2340; &#2350;&#2375;&#2306; &#2360;&#2375; &#2325;&#2380;&#2344; &#2360;&#2366; &#2325;&#2341;&#2344; &#2360;&#2361;&#2368; &#2361;&#2376;?</p><p>a) &#2346;&#2361;&#2354;&#2366; &#2325;&#2375;&#2306;&#2342;&#2381;&#2352;&#2368;&#2351; &#2348;&#2332;&#2335; 1947 &#2350;&#2375;&#2306; &#2340;&#2340;&#2381;&#2325;&#2366;&#2354;&#2368;&#2344; &#2357;&#2367;&#2340;&#2381;&#2340; &#2350;&#2306;&#2340;&#2381;&#2352;&#2368; &#2310;&#2352;. &#2325;&#2375;. &#2359;&#2339;&#2350;&#2369;&#2326;&#2350; &#2330;&#2375;&#2335;&#2381;&#2335;&#2368; &#2342;&#2381;&#2357;&#2366;&#2352;&#2366; &#2346;&#2381;&#2352;&#2360;&#2381;&#2340;&#2369;&#2340; &#2325;&#2367;&#2351;&#2366; &#2327;&#2351;&#2366; &#2341;&#2366;&#2404;</p><p>b) &#2346;&#2361;&#2354;&#2366; &#2325;&#2375;&#2306;&#2342;&#2381;&#2352;&#2368;&#2351; &#2348;&#2332;&#2335; 1950 &#2350;&#2375;&#2306; &#2332;&#2357;&#2366;&#2361;&#2352;&#2354;&#2366;&#2354; &#2344;&#2375;&#2361;&#2352;&#2370; &#2342;&#2381;&#2357;&#2366;&#2352;&#2366; &#2346;&#2381;&#2352;&#2360;&#2381;&#2340;&#2369;&#2340; &#2325;&#2367;&#2351;&#2366; &#2327;&#2351;&#2366; &#2341;&#2366;&#2404;</p><p>c) &#2346;&#2361;&#2354;&#2366; &#2325;&#2375;&#2306;&#2342;&#2381;&#2352;&#2368;&#2351; &#2348;&#2332;&#2335; 1951 &#2350;&#2375;&#2306; &#2340;&#2340;&#2381;&#2325;&#2366;&#2354;&#2368;&#2344; &#2357;&#2367;&#2340;&#2381;&#2340; &#2350;&#2306;&#2340;&#2381;&#2352;&#2368; &#2325;&#2375;. &#2319;&#2354;. &#2358;&#2381;&#2352;&#2368;&#2350;&#2366;&#2354;&#2368; &#2342;&#2381;&#2357;&#2366;&#2352;&#2366; &#2346;&#2381;&#2352;&#2360;&#2381;&#2340;&#2369;&#2340; &#2325;&#2367;&#2351;&#2366; &#2327;&#2351;&#2366; &#2341;&#2366;&#2404;</p></span>",
+    "options": [
+      "<span class=\"eqt\">Statement a is correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; a &#2360;&#2361;&#2368; &#2361;&#2376;.</span>",
+      "<span class=\"eqt\">Statement b is correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; b &#2360;&#2361;&#2368; &#2361;&#2376;.</span>",
+      "<span class=\"eqt\">Statement c is correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; c &#2360;&#2361;&#2368; &#2361;&#2376;.</span>",
+      "<span class=\"eqt\">Statements a and b are correct.</span><span class=\"hqt\" style=\"display:none\">&#2325;&#2341;&#2344; a &#2324;&#2352; b &#2360;&#2361;&#2368; &#2361;&#2376;&#2306;&#2404;</span>"
+    ],
+    "correct_option_id": 0,
+    "solution": "<p>&bull; <b>The first Union Budget of independent India was presented on November 26, 1947, by Finance Minister R. K. Shanmukham Chetty.</b></p><p><b>Further Insight:</b></p><p>&bull; Revenue and expenditure:</p><p>&#9675; The estimated revenue for the budget was around &#8377;171 crore, while the estimated expenditure was &#8377;197 crore.</p><p>&#9675; The gap between revenue and expenditure reflected the fiscal challenges India faced at the time.</p><p>&bull; Development Focus:</p><p>&#9675; The budget aimed to prioritize agriculture, industry, and infrastructure, sectors crucial for rebuilding the Indian economy after independence.</p><p>&#9675; It also focused on addressing the needs of the masses, reflecting the new government's commitment to inclusive growth.</p>",
+    "question_index": 19
+  }
+];
+        const sectionsData = null;
+        const marksPerQ = 3.0;
+        const negMarks = 1.0;
+        const totalDuration = 60;
+        
+        class CBTExamApp {
+            constructor() {
+                this.questions = questions;
+                this.sections = sectionsData;
+                this.currentQuestion = 0;
+                this.answers = new Array(this.questions.length).fill(null);
+                this.markedForReview = new Array(this.questions.length).fill(false);
+                this.timeSpent = new Array(this.questions.length).fill(0);
+                this.isEnglish = true;
+                this.isSubmitted = false;
+                this.startTime = null;
+                this.lastQuestionTime = null;
+                this.mainTimer = null;
+                this.sectionTimer = null;
+                
+                // Determine active section index for hard locks, or custom segment tabs
+                this.currentSectionIdx = 0;
+                
+                this.totalTimeLeft = totalDuration * 60;
+                
+                this.initElements();
+                this.setupWelcomeScreen();
+                this.setupThemeToggle();
+                this.setupBeforeUnload();
+            }
+            
+            initElements() {
+                this.els = {
+                    welcomeScreen: document.getElementById('welcomeScreen'),
+                    examContainer: document.getElementById('examContainer'),
+                    mainTimer: document.getElementById('mainTimer'),
+                    sectionBadge: document.getElementById('sectionBadge'),
+                    sectionName: document.getElementById('sectionName'),
+                    sectionTimer: document.getElementById('sectionTimer'),
+                    sectionTabs: document.getElementById('sectionTabs'),
+                    questionNum: document.getElementById('questionNum'),
+                    questionMarks: document.getElementById('questionMarks'),
+                    questionText: document.getElementById('questionText'),
+                    comprehension: document.getElementById('comprehension'),
+                    comprehensionText: document.getElementById('comprehensionText'),
+                    optionsList: document.getElementById('optionsList'),
+                    solutionBox: document.getElementById('solutionBox'),
+                    solutionStats: document.getElementById('solutionStats'),
+                    solutionText: document.getElementById('solutionText'),
+                    progressText: document.getElementById('progressText'),
+                    answeredCount: document.getElementById('answeredCount'),
+                    desktopNav: document.getElementById('desktopNav'),
+                    mobileNav: document.getElementById('mobileNav'),
+                    mobileNavGrid: document.getElementById('mobileNavGrid'),
+                    resultModal: document.getElementById('resultModal'),
+                    resultScore: document.getElementById('resultScore'),
+                    correctCount: document.getElementById('correctCount'),
+                    incorrectCount: document.getElementById('incorrectCount'),
+                    unattemptedCount: document.getElementById('unattemptedCount'),
+                    timeTaken: document.getElementById('timeTaken'),
+                    sectionResults: document.getElementById('sectionResults'),
+                    sectionResultsBody: document.getElementById('sectionResultsBody')
+                };
+            }
+
+            setupWelcomeScreen() {
+                document.getElementById('welcomeTotalQs').textContent = this.questions.length;
+                document.getElementById('welcomeTotalMarks').textContent = (this.questions.length * marksPerQ).toFixed(1);
+                document.getElementById('welcomeDuration').textContent = totalDuration;
+                document.getElementById('welcomeMarksScheme').textContent = `+${marksPerQ.toFixed(1)} / -${negMarks.toFixed(1)}`;
+                
+                if (this.sections && this.sections.length > 0) {
+                    const sBlock = document.getElementById('welcomeSectionsBlock');
+                    const sBody = document.getElementById('welcomeSectionsBody');
+                    sBlock.style.display = 'block';
+                    sBody.innerHTML = this.sections.map(s => `
+                        <tr>
+                            <td>
+                                <strong>${s.name}</strong>
+                                ${s.subsections ? `<div class="subsec-container">${s.subsections.map(sub => `<div class="subsec-row">${sub.name}: Q${sub.start+1}-Q${sub.end+1}</div>`).join('')}</div>` : ''}
+                            </td>
+                            <td>Q${s.start+1} - Q${s.end+1}</td>
+                            <td>${Math.round(s.timer / 60)} mins</td>
+                        </tr>
+                    `).join('');
+                }
+
+                document.getElementById('startBtn').addEventListener('click', () => {
+                    this.els.welcomeScreen.classList.add('hidden');
+                    this.els.examContainer.classList.add('active');
+                    this.startExam();
+                });
+            }
+
+            setupThemeToggle() {
+                const btn = document.getElementById('themeToggle');
+                btn.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-mode');
+                    const isDark = document.body.classList.contains('dark-mode');
+                    btn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                });
+            }
+
+            setupBeforeUnload() {
+                window.addEventListener('beforeunload', (e) => {
+                    if (!this.isSubmitted) {
+                        e.preventDefault();
+                        e.returnValue = 'Your test is in progress. Are you sure you want to leave?';
+                        return e.returnValue;
+                    }
+                });
+            }
+
+            startExam() {
+                this.startTime = Date.now();
+                this.lastQuestionTime = this.startTime;
+                
+                // If it is Tier I (no hard sectionsData), construct segment switcher bar dynamically
+                if (!this.sections || this.sections.length === 0) {
+                    this.buildSoftSections();
+                }
+                
+                this.createNavigator();
+                this.startMainTimer();
+                
+                if (this.sections && this.sections.length > 0) {
+                    this.startSectionTimer();
+                    this.updateSectionInfo();
+                }
+                
+                this.loadQuestion(0);
+                this.setupEventListeners();
+            }
+
+            // Dynamically construct Tier I segments (Reasoning, GK, Maths, English)
+            buildSoftSections() {
+                if (this.questions.length === 100) {
+                    this.softSections = [
+                        { name: "REASONING", start: 0, end: 24 },
+                        { name: "GENERAL AWARENESS", start: 25, end: 49 },
+                        { name: "QUANTITATIVE APTITUDE", start: 50, end: 74 },
+                        { name: "ENGLISH COMPREHENSION", start: 75, end: 99 }
+                    ];
+                } else {
+                    // Fallback division by 4
+                    const part = Math.floor(this.questions.length / 4);
+                    this.softSections = [
+                        { name: "SECTION A", start: 0, end: part - 1 },
+                        { name: "SECTION B", start: part, end: (part * 2) - 1 },
+                        { name: "SECTION C", start: part * 2, end: (part * 3) - 1 },
+                        { name: "SECTION D", start: part * 3, end: this.questions.length - 1 }
+                    ];
+                }
+                
+                this.els.sectionTabs.style.display = 'flex';
+                this.renderSoftSectionTabs();
+            }
+
+            renderSoftSectionTabs() {
+                this.els.sectionTabs.innerHTML = this.softSections.map((sec, idx) => {
+                    const isActive = this.currentQuestion >= sec.start && this.currentQuestion <= sec.end;
+                    return `<button class="section-tab${isActive ? ' active' : ''}" onclick="window.app.goToQuestion(${sec.start})">${sec.name}</button>`;
+                }).join('');
+            }
+
+            updateSoftSectionTabs() {
+                if (!this.softSections) return;
+                const tabs = this.els.sectionTabs.querySelectorAll('.section-tab');
+                this.softSections.forEach((sec, idx) => {
+                    const isActive = this.currentQuestion >= sec.start && this.currentQuestion <= sec.end;
+                    tabs[idx].classList.toggle('active', isActive);
+                });
+            }
+
+            setupEventListeners() {
+                document.getElementById('engBtn').onclick = () => this.setLanguage(true);
+                document.getElementById('hinBtn').onclick = () => this.setLanguage(false);
+                document.getElementById('prevBtn').onclick = () => this.navigate(-1);
+                document.querySelector('.navigation-bar .btn-next').onclick = () => this.navigate(1);
+                document.getElementById('reviewBtn').onclick = () => this.toggleReview();
+                document.getElementById('submitBtn').onclick = () => this.confirmSubmit();
+                document.getElementById('submitBtnDesktop').onclick = () => this.confirmSubmit();
+                document.getElementById('navigatorBtn').onclick = () => this.openMobileNav();
+                document.getElementById('closeNav').onclick = () => this.closeMobileNav();
+                document.getElementById('closeResult').onclick = () => this.closeResultModal();
+                document.getElementById('reviewAnswers').onclick = () => this.reviewAnswers();
+            }
+
+            createNavigator() {
+                [this.els.desktopNav, this.els.mobileNavGrid].forEach(container => {
+                    container.innerHTML = '';
+                    this.questions.forEach((_, i) => {
+                        const btn = document.createElement('div');
+                        btn.className = 'nav-question';
+                        btn.textContent = i + 1;
+                        btn.onclick = () => this.goToQuestion(i);
+                        container.appendChild(btn);
+                    });
+                });
+            }
+
+            extractText(html, isEng) {
+                if (!html) return '';
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                
+                const langSpans = temp.querySelectorAll('span.eqt, span.hqt');
+                langSpans.forEach(span => {
+                    if ((isEng && span.classList.contains('hqt')) || 
+                        (!isEng && span.classList.contains('eqt'))) {
+                        span.style.display = 'none';
+                    } else {
+                        span.style.display = '';
+                    }
+                });
+                
+                return temp.innerHTML;
+            }
+
+            getQuestionMarks(qIdx) {
+                if (!this.sections) return marksPerQ;
+                for (const section of this.sections) {
+                    if (qIdx >= section.start && qIdx <= section.end) {
+                        if (section.subsections) {
+                            for (const subsec of section.subsections) {
+                                if (qIdx >= subsec.start && qIdx <= subsec.end) {
+                                    return subsec.marks_per_q;
+                                }
+                            }
+                        }
+                        return marksPerQ;
+                    }
+                }
+                return marksPerQ;
+            }
+
+            loadQuestion(idx) {
+                if (this.currentQuestion !== idx) {
+                    const now = Date.now();
+                    this.timeSpent[this.currentQuestion] += (now - this.lastQuestionTime) / 1000;
+                    this.lastQuestionTime = now;
+                }
+                
+                this.currentQuestion = idx;
+                const q = this.questions[idx];
+                const qMarks = this.getQuestionMarks(idx);
+                
+                this.els.questionNum.textContent = `Question ${idx + 1} of ${this.questions.length}`;
+                this.els.questionMarks.textContent = `Marks: ${qMarks.toFixed(1)}`;
+                this.els.progressText.textContent = `Question ${idx + 1} of ${this.questions.length}`;
+                this.updateAnsweredCount();
+                this.updateNavigator();
+                this.updateNavigationButtons();
+                this.updateReviewButton();
+                this.updateSoftSectionTabs();
+                
+                if (q.comp) {
+                    this.els.comprehension.style.display = 'block';
+                    this.els.comprehensionText.innerHTML = this.extractText(q.comp, this.isEnglish);
+                } else {
+                    this.els.comprehension.style.display = 'none';
+                }
+                
+                this.els.questionText.innerHTML = this.extractText(q.question, this.isEnglish);
+                this.loadOptions(q, idx);
+                
+                if (this.isSubmitted && q.solution) {
+                    const timeSpent = Math.round(this.timeSpent[idx]);
+                    const mins = Math.floor(timeSpent / 60);
+                    const secs = timeSpent % 60;
+                    const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+                    
+                    this.els.solutionStats.innerHTML = `
+                        <span><i class="fas fa-clock"></i> Time spent: ${timeStr}</span>
+                        <span><i class="fas fa-check-circle"></i> Correct Option: ${String.fromCharCode(65 + q.correct_option_id)}</span>
+                    `;
+                    this.els.solutionText.innerHTML = this.extractText(q.solution, this.isEnglish);
+                    this.els.solutionBox.classList.add('show');
+                } else {
+                    this.els.solutionBox.classList.remove('show');
+                }
+            }
+
+            loadOptions(q, qIdx) {
+                this.els.optionsList.innerHTML = '';
+                const userAnswer = this.answers[qIdx];
+                const correctAnswer = q.correct_option_id;
+                
+                if (!q.options || !Array.isArray(q.options)) return;
+                
+                q.options.forEach((opt, i) => {
+                    const div = document.createElement('div');
+                    let className = 'option';
+                    
+                    if (this.isSubmitted) className += ' submitted';
+                    if (userAnswer === i) className += ' selected';
+                    
+                    if (this.isSubmitted && correctAnswer !== undefined) {
+                        if (i === correctAnswer) {
+                            className += ' correct';
+                        } else if (userAnswer === i && userAnswer !== correctAnswer) {
+                            className += ' wrong';
+                        }
+                    }
+                    
+                    div.className = className;
+                    
+                    let indicator = String.fromCharCode(65 + i);
+                    if (this.isSubmitted && correctAnswer !== undefined) {
+                        if (i === correctAnswer) {
+                            indicator = '✓';
+                        } else if (userAnswer === i) {
+                            indicator = '✗';
+                        }
+                    } else if (userAnswer === i) {
+                        indicator = '✓';
+                    }
+                    
+                    div.innerHTML = `
+                        <div class="option-indicator">${indicator}</div>
+                        <div class="option-text">${this.extractText(opt, this.isEnglish)}</div>
+                    `;
+                    
+                    if (!this.isSubmitted) {
+                        div.onclick = () => this.selectOption(i, qIdx);
+                    }
+                    
+                    this.els.optionsList.appendChild(div);
+                });
+            }
+
+            selectOption(optIdx, qIdx) {
+                if (this.isSubmitted) return;
+                this.answers[qIdx] = this.answers[qIdx] === optIdx ? null : optIdx;
+                this.loadOptions(this.questions[qIdx], qIdx);
+                this.updateAnsweredCount();
+                this.updateNavigator();
+            }
+
+            toggleReview() {
+                if (this.isSubmitted) return;
+                this.markedForReview[this.currentQuestion] = !this.markedForReview[this.currentQuestion];
+                this.updateNavigator();
+                this.updateReviewButton();
+            }
+
+            updateReviewButton() {
+                const btn = document.getElementById('reviewBtn');
+                if (this.markedForReview[this.currentQuestion]) {
+                    btn.classList.add('marked');
+                    btn.innerHTML = '<i class="fas fa-flag"></i> Marked';
+                } else {
+                    btn.classList.remove('marked');
+                    btn.innerHTML = '<i class="fas fa-flag"></i> Mark for Review';
+                }
+            }
+
+            navigate(dir) {
+                const newIdx = this.currentQuestion + dir;
+                if (this.isSubmitted) {
+                    if (newIdx >= 0 && newIdx < this.questions.length) {
+                        this.loadQuestion(newIdx);
+                    }
+                    return;
+                }
+                
+                if (this.sections && this.sections.length > 0) {
+                    const currentSection = this.sections[this.currentSectionIdx];
+                    if (newIdx < currentSection.start || newIdx > currentSection.end) {
+                        return;
+                    }
+                }
+                
+                if (newIdx >= 0 && newIdx < this.questions.length) {
+                    this.loadQuestion(newIdx);
+                }
+            }
+
+            goToQuestion(idx) {
+                if (this.isSubmitted) {
+                    this.loadQuestion(idx);
+                    this.closeMobileNav();
+                    return;
+                }
+                
+                if (this.sections && this.sections.length > 0) {
+                    const currentSection = this.sections[this.currentSectionIdx];
+                    if (idx < currentSection.start || idx > currentSection.end) {
+                        return;
+                    }
+                }
+                
+                this.loadQuestion(idx);
+                this.closeMobileNav();
+            }
+
+            updateNavigator() {
+                [this.els.desktopNav, this.els.mobileNavGrid].forEach(container => {
+                    const btns = container.querySelectorAll('.nav-question');
+                    btns.forEach((btn, i) => {
+                        btn.className = 'nav-question';
+                        
+                        if (i === this.currentQuestion) {
+                            btn.classList.add('current');
+                        } else if (this.isSubmitted) {
+                            if (this.answers[i] !== null && this.questions[i].correct_option_id !== undefined) {
+                                if (this.answers[i] === this.questions[i].correct_option_id) {
+                                    btn.classList.add('answered');
+                                } else {
+                                    btn.classList.add('wrong');
+                                }
+                            }
+                        } else {
+                            if (this.markedForReview[i]) {
+                                btn.classList.add('review');
+                            } else if (this.answers[i] !== null) {
+                                btn.classList.add('answered');
+                            }
+                            
+                            if (this.sections && this.sections.length > 0) {
+                                const currentSection = this.sections[this.currentSectionIdx];
+                                if (i < currentSection.start || i > currentSection.end) {
+                                    btn.classList.add('disabled');
+                                }
+                            }
+                        }
+                    });
+                });
+            }
+
+            updateNavigationButtons() {
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.querySelector('.navigation-bar .btn-next');
+                const reviewBtn = document.getElementById('reviewBtn');
+                
+                prevBtn.disabled = this.currentQuestion === 0;
+                nextBtn.disabled = this.currentQuestion === this.questions.length - 1;
+                
+                if (this.isSubmitted) {
+                    reviewBtn.style.display = 'none';
+                } else {
+                    reviewBtn.style.display = 'inline-flex';
+                }
+                
+                if (this.sections && this.sections.length > 0 && !this.isSubmitted) {
+                    const currentSection = this.sections[this.currentSectionIdx];
+                    prevBtn.disabled = prevBtn.disabled || (this.currentQuestion === currentSection.start);
+                    nextBtn.disabled = nextBtn.disabled || (this.currentQuestion === currentSection.end);
+                }
+            }
+
+            updateAnsweredCount() {
+                const count = this.answers.filter(a => a !== null).length;
+                this.els.answeredCount.textContent = count;
+            }
+
+            setLanguage(isEng) {
+                this.isEnglish = isEng;
+                document.getElementById('engBtn').classList.toggle('active', isEng);
+                document.getElementById('hinBtn').classList.toggle('active', !isEng);
+                this.loadQuestion(this.currentQuestion);
+            }
+
+            startMainTimer() {
+                this.mainTimer = setInterval(() => {
+                    this.totalTimeLeft--;
+                    if (this.totalTimeLeft <= 0) {
+                        clearInterval(this.mainTimer);
+                        this.submitTest();
+                        return;
+                    }
+                    const mins = Math.floor(this.totalTimeLeft / 60);
+                    const secs = this.totalTimeLeft % 60;
+                    this.els.mainTimer.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+                }, 1000);
+            }
+
+            startSectionTimer() {
+                if (!this.sections || this.sections.length === 0) return;
+                
+                if (this.sectionTimer) clearInterval(this.sectionTimer);
+                
+                const section = this.sections[this.currentSectionIdx];
+                if (section.time_left === undefined) {
+                    section.time_left = section.timer;
+                }
+                
+                const updateTimerDisplay = () => {
+                    const mins = Math.floor(section.time_left / 60);
+                    const secs = section.time_left % 60;
+                    this.els.sectionTimer.textContent = ` | ${mins}:${secs.toString().padStart(2, '0')}`;
+                };
+                
+                updateTimerDisplay();
+                
+                this.sectionTimer = setInterval(() => {
+                    section.time_left--;
+                    updateTimerDisplay();
+                    
+                    if (section.time_left <= 0) {
+                        clearInterval(this.sectionTimer);
+                        this.submitSection();
+                    }
+                }, 1000);
+            }
+
+            updateSectionInfo() {
+                if (!this.sections || this.sections.length === 0) return;
+                const section = this.sections[this.currentSectionIdx];
+                this.els.sectionName.textContent = section.name;
+                this.els.sectionBadge.style.display = 'block';
+                
+                if (section.time_left !== undefined) {
+                    const mins = Math.floor(section.time_left / 60);
+                    const secs = section.time_left % 60;
+                    this.els.sectionTimer.textContent = ` | ${mins}:${secs.toString().padStart(2, '0')}`;
+                }
+            }
+
+            submitSection() {
+                if (!this.sections || this.sections.length === 0) return;
+                
+                const section = this.sections[this.currentSectionIdx];
+                section.submitted = true;
+                clearInterval(this.sectionTimer);
+                
+                const nextSectionIdx = this.currentSectionIdx + 1;
+                if (nextSectionIdx < this.sections.length) {
+                    this.currentSectionIdx = nextSectionIdx;
+                    this.startSectionTimer();
+                    this.updateSectionInfo();
+                    this.loadQuestion(this.sections[nextSectionIdx].start);
+                } else {
+                    this.submitTest();
+                }
+                
+                this.updateNavigator();
+            }
+
+            confirmSubmit() {
+                if (this.sections && this.sections.length > 0) {
+                    const section = this.sections[this.currentSectionIdx];
+                    const unanswered = this.answers.slice(section.start, section.end + 1)
+                        .filter(a => a === null).length;
+                    
+                    let msg = unanswered > 0 
+                        ? `You have ${unanswered} unanswered questions in this section. Submit Section?`
+                        : 'Submit this section?';
+                    
+                    if (confirm(msg)) this.submitSection();
+                } else {
+                    const unanswered = this.answers.filter(a => a === null).length;
+                    let msg = unanswered > 0 
+                        ? `You have ${unanswered} unanswered questions. Submit entire test?`
+                        : 'Submit test?';
+                    
+                    if (confirm(msg)) this.submitTest();
+                }
+            }
+
+            submitTest() {
+                if (this.isSubmitted) return;
+                
+                const now = Date.now();
+                this.timeSpent[this.currentQuestion] += (now - this.lastQuestionTime) / 1000;
+                
+                this.isSubmitted = true;
+                clearInterval(this.mainTimer);
+                if (this.sectionTimer) clearInterval(this.sectionTimer);
+                
+                document.getElementById('submitBtn').style.display = 'none';
+                document.getElementById('submitBtnDesktop').style.display = 'none';
+                document.getElementById('reviewBtn').style.display = 'none';
+                
+                if (this.sections && this.sections.length > 0) {
+                    this.els.sectionBadge.style.display = 'none';
+                }
+                
+                const results = this.calculateResults();
+                this.showResults(results);
+                this.loadQuestion(this.currentQuestion);
+                this.updateNavigator();
+            }
+
+            calculateResults() {
+                const timeTaken = Math.round((Date.now() - this.startTime) / 60000);
+                let correct = 0, incorrect = 0, unattempted = 0, score = 0;
+                
+                const sectionResults = [];
+                
+                if (this.sections && this.sections.length > 0) {
+                    for (const section of this.sections) {
+                        let secCorrect = 0, secIncorrect = 0, secUnattempted = 0, secScore = 0;
+                        const subsecResults = [];
+                        
+                        if (section.subsections) {
+                            for (const subsec of section.subsections) {
+                                let subCorrect = 0, subIncorrect = 0, subUnattempted = 0, subScore = 0;
+                                
+                                for (let i = subsec.start; i <= subsec.end; i++) {
+                                    const userAns = this.answers[i];
+                                    const correctAns = this.questions[i].correct_option_id;
+                                    
+                                    if (userAns === null) {
+                                        subUnattempted++;
+                                    } else if (correctAns !== undefined && userAns === correctAns) {
+                                        subCorrect++;
+                                        subScore += subsec.marks_per_q;
+                                    } else {
+                                        subIncorrect++;
+                                        subScore -= negMarks;
+                                    }
+                                }
+                                
+                                subsecResults.push({
+                                    name: subsec.name,
+                                    attempted: subCorrect + subIncorrect,
+                                    correct: subCorrect,
+                                    incorrect: subIncorrect,
+                                    unattempted: subUnattempted,
+                                    score: Math.max(0, subScore)
+                                });
+                                
+                                secCorrect += subCorrect;
+                                secIncorrect += subIncorrect;
+                                secUnattempted += subUnattempted;
+                                secScore += subScore;
+                            }
+                        } else {
+                            for (let i = section.start; i <= section.end; i++) {
+                                const userAns = this.answers[i];
+                                const correctAns = this.questions[i].correct_option_id;
+                                
+                                if (userAns === null) {
+                                    secUnattempted++;
+                                } else if (correctAns !== undefined && userAns === correctAns) {
+                                    secCorrect++;
+                                    secScore += marksPerQ;
+                                } else {
+                                    secIncorrect++;
+                                    secScore -= negMarks;
+                                }
+                            }
+                        }
+                        
+                        sectionResults.push({
+                            name: section.name,
+                            attempted: secCorrect + secIncorrect,
+                            correct: secCorrect,
+                            incorrect: secIncorrect,
+                            unattempted: secUnattempted,
+                            score: Math.max(0, secScore),
+                            subsections: subsecResults.length > 0 ? subsecResults : null
+                        });
+                        
+                        correct += secCorrect;
+                        incorrect += secIncorrect;
+                        unattempted += secUnattempted;
+                        score += secScore;
+                    }
+                } else {
+                    this.questions.forEach((q, i) => {
+                        const userAns = this.answers[i];
+                        const correctAns = q.correct_option_id;
+                        
+                        if (userAns === null) {
+                            unattempted++;
+                        } else if (correctAns !== undefined && userAns === correctAns) {
+                            correct++;
+                            score += marksPerQ;
+                        } else {
+                            incorrect++;
+                            score -= negMarks;
+                        }
+                    });
+                }
+                
+                return {
+                    score: Math.max(0, score),
+                    correct,
+                    incorrect,
+                    unattempted,
+                    timeTaken,
+                    sectionResults: sectionResults.length > 0 ? sectionResults : null
+                };
+            }
+
+            showResults(results) {
+                this.els.resultScore.textContent = `${results.score.toFixed(2)}/${(this.questions.length * marksPerQ).toFixed(1)}`;
+                this.els.correctCount.textContent = results.correct;
+                this.els.incorrectCount.textContent = results.incorrect;
+                this.els.unattemptedCount.textContent = results.unattempted;
+                this.els.timeTaken.textContent = results.timeTaken;
+                
+                if (results.sectionResults) {
+                    this.els.sectionResults.style.display = 'block';
+                    this.els.sectionResultsBody.innerHTML = '';
+                    
+                    results.sectionResults.forEach(section => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td><strong>${section.name}</strong></td>
+                            <td>${section.attempted}</td>
+                            <td>${section.correct}</td>
+                            <td>${section.incorrect}</td>
+                            <td><strong>${section.score.toFixed(2)}</strong></td>
+                        `;
+                        this.els.sectionResultsBody.appendChild(row);
+                        
+                        if (section.subsections) {
+                            section.subsections.forEach(subsec => {
+                                const subRow = document.createElement('tr');
+                                subRow.className = 'subsection-row';
+                                subRow.innerHTML = `
+                                    <td style="padding-left: 20px;">${subsec.name}</td>
+                                    <td>${subsec.attempted}</td>
+                                    <td>${subsec.correct}</td>
+                                    <td>${subsec.incorrect}</td>
+                                    <td>${subsec.score.toFixed(2)}</td>
+                                `;
+                                this.els.sectionResultsBody.appendChild(subRow);
+                            });
+                        }
+                    });
+                } else {
+                    this.els.sectionResults.style.display = 'none';
+                }
+                
+                this.els.resultModal.classList.add('show');
+            }
+
+            closeResultModal() {
+                this.els.resultModal.classList.remove('show');
+            }
+
+            reviewAnswers() {
+                this.closeResultModal();
+                this.loadQuestion(0);
+            }
+
+            openMobileNav() {
+                this.els.mobileNav.classList.add('open');
+            }
+
+            closeMobileNav() {
+                this.els.mobileNav.classList.remove('open');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.app = new CBTExamApp();
+        });
+    </script>
+</body>
+</html>
