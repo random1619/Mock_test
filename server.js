@@ -85,12 +85,18 @@ app.get('/api/progress', (req, res) => {
   if (fs.existsSync(PROGRESS_FILE)) {
     try {
       const data = fs.readFileSync(PROGRESS_FILE, 'utf8');
-      return res.json(JSON.parse(data));
+      const parsed = JSON.parse(data);
+      return res.json({
+        solved: Array.isArray(parsed.solved) ? parsed.solved : [],
+        starred: Array.isArray(parsed.starred) ? parsed.starred : [],
+        recent: Array.isArray(parsed.recent) ? parsed.recent : [],
+        scores: Array.isArray(parsed.scores) ? parsed.scores : []
+      });
     } catch (err) {
       // Fallback on read error
     }
   }
-  return res.json({ solved: [], starred: [], recent: [] });
+  return res.json({ solved: [], starred: [], recent: [], scores: [] });
 });
 
 // POST save progress
