@@ -1,5 +1,61 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<html><head>
+<!-- START: Injected Theme Toggle Immediate -->
+<script id="theme-toggle-handler">
+(function() {
+    var savedTheme = 'dark';
+    try {
+        savedTheme = localStorage.getItem('portal-theme') || 'dark';
+    } catch (e) {}
+    if (savedTheme === 'light') {
+        document.documentElement.classList.add('light-theme');
+        var observer = new MutationObserver(function(mutations, obs) {
+            if (document.body) {
+                document.body.classList.add('light-theme');
+                obs.disconnect();
+            }
+        });
+        observer.observe(document.documentElement, { childList: true, subtree: true });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var btn = document.getElementById('themeToggle');
+        if (btn) {
+            var newBtn = btn.cloneNode(true);
+            newBtn.removeAttribute('onclick');
+            btn.parentNode.replaceChild(newBtn, btn);
+            
+            var currentTheme = 'dark';
+            try {
+                currentTheme = localStorage.getItem('portal-theme') || 'dark';
+            } catch (e) {}
+            
+            var icon = newBtn.querySelector('i');
+            if (icon) {
+                icon.className = currentTheme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+            
+            newBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var isLight = document.body.classList.toggle('light-theme');
+                document.documentElement.classList.toggle('light-theme', isLight);
+                var nextTheme = isLight ? 'light' : 'dark';
+                try {
+                    localStorage.setItem('portal-theme', nextTheme);
+                } catch (err) {}
+                
+                var currentIcon = newBtn.querySelector('i');
+                if (currentIcon) {
+                    currentIcon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+                }
+            });
+        }
+    });
+})();
+</script>
+<!-- END: Injected Theme Toggle Immediate -->
+
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Tier Ii Mock 29 (Hindi)</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--p:#4361ee;--s:#3f37c9;--ok:#4cc9f0;--err:#f72585;--warn:#f8961e}
@@ -611,7 +667,53 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f7fa;min-height:100vh;color
             background: var(--primary-hover) !important;
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3) !important;
         }
-    </style>
+    
+
+
+/* START: Light Theme Stylesheet Overrides */
+#themeToggle {
+    background: transparent !important;
+    border: none !important;
+    color: var(--text-light) !important;
+    font-size: 18px !important;
+    cursor: pointer !important;
+    padding: 4px 8px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: color 0.2s ease !important;
+}
+#themeToggle:hover {
+    color: var(--primary) !important;
+}
+body.light-theme {
+    --bg: #f3f4f6 !important;
+    --card: #ffffff !important;
+    --text: #1f2937 !important;
+    --text-light: #6b7280 !important;
+    --border: #d1d5db !important;
+}
+/* Additional override helpers to fix light-theme text colors and avoid white-on-white text */
+body.light-theme .exam-header {
+    background: #ffffff !important;
+    border-bottom: 1px solid var(--border) !important;
+}
+body.light-theme .exam-title, body.light-theme .exam-timer, body.light-theme .candidate-name {
+    color: var(--text) !important;
+}
+body.light-theme .section-table th, body.light-theme table.section-table th {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: var(--text) !important;
+}
+/* Reset math images filter in light theme so they don't invert */
+body.light-theme .question-card img, 
+body.light-theme .option img, 
+body.light-theme .comprehension img, 
+body.light-theme .solution-box img {
+    filter: none !important;
+}
+/* END: Light Theme Stylesheet Overrides */
+</style>
     <!-- END: Unified Premium Dark Mode Overrides -->
 
 
@@ -1186,6 +1288,7 @@ a[href*="youtube.com/@"],
 <div class="ttl">Mocks Wallah</div>
 <div class="tmr" id="tmr">45:00</div>
 <button id="pauseBtn" title="Pause Test" style="margin-left:8px;background:transparent;border:none;color:inherit;font-size:18px;cursor:pointer;vertical-align:middle;">⏸</button>
+                <button class="theme-toggle" id="themeToggle" title="Toggle Theme"><i class="fas fa-moon"></i></button>
 </div>
 <button class="sub" onclick="sub()" id="sub-btn">Submit</button>
 </div>
