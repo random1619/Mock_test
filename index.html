@@ -85,6 +85,13 @@
       background: var(--indigo);
     }
 
+    /* MathML and MathJax horizontal overflow constraint */
+    math, .mathjax, .katex, mjx-container, .math-container {
+      max-width: 100%;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+    }
+
     /* ── APP HEADER ────────────────────────────────────────── */
     .header {
       height: 76px;
@@ -1251,13 +1258,15 @@
       backdrop-filter: blur(8px);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      visibility: hidden;
+      transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
       z-index: 90;
     }
 
     .preview-backdrop.open {
       opacity: 1;
       pointer-events: auto;
+      visibility: visible;
     }
 
     .preview-drawer {
@@ -1271,7 +1280,8 @@
       border-left: 1px solid var(--border-thin);
       box-shadow: -20px 0 50px rgba(0, 0, 0, 0.6);
       transform: translate3d(100%, 0, 0);
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      visibility: hidden;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
       z-index: 100;
       display: flex;
       flex-direction: column;
@@ -1280,6 +1290,7 @@
 
     .preview-drawer.open {
       transform: translate3d(0, 0, 0);
+      visibility: visible;
     }
 
     .drawer-header {
@@ -1427,7 +1438,8 @@
       backdrop-filter: blur(12px);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.25s ease;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s;
       z-index: 100;
       display: flex;
       justify-content: center;
@@ -1437,6 +1449,7 @@
     .spotlight-backdrop.open {
       opacity: 1;
       pointer-events: auto;
+      visibility: visible;
     }
 
     .spotlight-box {
@@ -1591,10 +1604,17 @@
         padding: 0 20px;
       }
       .search-trigger-btn {
-        width: 200px;
+        display: none;
+      }
+      .nav-tabs {
+        display: none;
       }
       .wrapper {
         padding: 20px;
+        padding-bottom: 84px; /* leave room for bottom nav */
+      }
+      body {
+        padding-bottom: calc(env(safe-area-inset-bottom) + 64px);
       }
     }
 
@@ -1806,7 +1826,7 @@
       display: none; /* hidden on desktop */
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 980px) {
       .bottom-nav {
         display: flex;
         position: fixed;
@@ -2401,6 +2421,35 @@
 
     body.light-theme .accordion-body {
       border-top-color: rgba(15, 23, 42, 0.04);
+    }
+
+    /* Light theme contrast & element overrides */
+    body.light-theme .nav-tab.active {
+      background: var(--indigo) !important;
+      color: white !important;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2) !important;
+    }
+    body.light-theme .category-btn.active,
+    body.light-theme .filter-opt-btn.active {
+      background: var(--indigo) !important;
+      color: white !important;
+    }
+    body.light-theme input,
+    body.light-theme select,
+    body.light-theme textarea {
+      background: #ffffff !important;
+      border: 1px solid rgba(15, 23, 42, 0.18) !important;
+      color: #0f172a !important;
+    }
+    body.light-theme input::placeholder,
+    body.light-theme textarea::placeholder {
+      color: #64748b !important;
+    }
+    body.light-theme ::-webkit-scrollbar-thumb {
+      background: rgba(15, 23, 42, 0.15) !important;
+    }
+    body.light-theme ::-webkit-scrollbar-thumb:hover {
+      background: var(--indigo) !important;
     }
 
     /* ── PDF FALLBACK SCREEN GLASSMORPHISM ──────────────────── */
@@ -5159,6 +5208,49 @@
 
     // Keyboard keys listener
     document.addEventListener('keydown', e => {
+      // Focus trapping in spotlight search
+      if (spotlightBackdrop.classList.contains('open') && e.key === 'Tab') {
+        const focusables = Array.from(spotlightBackdrop.querySelectorAll('input, button, [tabindex]:not([tabindex="-1"])'));
+        if (focusables.length > 0) {
+          const first = focusables[0];
+          const last = focusables[focusables.length - 1];
+          if (e.shiftKey) {
+            if (document.activeElement === first) {
+              last.focus();
+              e.preventDefault();
+            }
+          } else {
+            if (document.activeElement === last) {
+              first.focus();
+              e.preventDefault();
+            }
+          }
+        }
+      }
+
+      // Focus trapping in preview drawer
+      if (previewDrawer.classList.contains('open') && e.key === 'Tab') {
+        const allFocusables = Array.from(previewDrawer.querySelectorAll('button, input, iframe, a'));
+        const focusables = allFocusables.filter(el => {
+          return el.offsetParent !== null && !el.disabled && el.getAttribute('tabindex') !== '-1';
+        });
+        if (focusables.length > 0) {
+          const first = focusables[0];
+          const last = focusables[focusables.length - 1];
+          if (e.shiftKey) {
+            if (document.activeElement === first) {
+              last.focus();
+              e.preventDefault();
+            }
+          } else {
+            if (document.activeElement === last) {
+              first.focus();
+              e.preventDefault();
+            }
+          }
+        }
+      }
+
       // Spotlight Toggle (/)
       if (e.key === '/' && document.activeElement !== spotlightInput && document.activeElement.tagName !== 'INPUT') {
         e.preventDefault();
